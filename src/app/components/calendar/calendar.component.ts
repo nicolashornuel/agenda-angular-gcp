@@ -1,23 +1,8 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ViewEncapsulation,
-} from '@angular/core';
-import { Subject } from 'rxjs';
-import {
-  CalendarEvent,
-  CalendarEventTimesChangedEvent,
-  CalendarView,
-} from 'angular-calendar';
-import {
-  addDays,
-  addHours,
-  isSameDay,
-  setDay,
-  startOfDay,
-  subDays,
-  subSeconds,
-} from 'date-fns';
+import {ChangeDetectionStrategy, Component, Input, ViewEncapsulation} from '@angular/core';
+import {Subject} from 'rxjs';
+import {CalendarEvent, CalendarEventTimesChangedEvent, CalendarView} from 'angular-calendar';
+import {addDays, addHours, isSameDay, setDay, startOfDay, subDays, subSeconds} from 'date-fns';
+import { EventService } from 'src/app/services/event.service';
 
 @Component({
   selector: 'app-calendar',
@@ -27,9 +12,11 @@ import {
   encapsulation: ViewEncapsulation.None
 })
 export class CalendarComponent {
-  view: CalendarView = CalendarView.Week;
+  @Input() view: CalendarView = CalendarView.Week;
 
-  viewDate: Date = new Date();
+  @Input() viewDate: Date = new Date();
+  public CalendarView = CalendarView;
+  public activeDayIsOpen = false;
 
   events: CalendarEvent[] = [
     {
@@ -40,9 +27,9 @@ export class CalendarComponent {
       allDay: true,
       resizable: {
         beforeStart: true,
-        afterEnd: true,
+        afterEnd: true
       },
-      draggable: true,
+      draggable: true
     },
     {
       start: addHours(startOfDay(setDay(new Date(), 3)), 2),
@@ -51,9 +38,9 @@ export class CalendarComponent {
       //color: colors.yellow,
       resizable: {
         beforeStart: true,
-        afterEnd: true,
+        afterEnd: true
       },
-      draggable: true,
+      draggable: true
     },
     {
       start: addHours(startOfDay(setDay(new Date(), 3)), 5),
@@ -62,16 +49,18 @@ export class CalendarComponent {
       //color: colors.yellow,
       resizable: {
         beforeStart: true,
-        afterEnd: true,
+        afterEnd: true
       },
-      draggable: true,
-    },
+      draggable: true
+    }
   ];
 
   refresh = new Subject<void>();
 
+  constructor(private eventService: EventService) {}
+
   public validateEventTimesChanged = (
-    { event, newStart, newEnd, allDay }: CalendarEventTimesChangedEvent,
+    {event, newStart, newEnd, allDay}: CalendarEventTimesChangedEvent,
     addCssClass = true
   ) => {
     if (event.allDay) {
@@ -87,7 +76,7 @@ export class CalendarComponent {
     }
 
     // don't allow dragging events to the same times as other events
-    const overlappingEvent = this.events.find((otherEvent) => {
+    const overlappingEvent = this.events.find(otherEvent => {
       return (
         otherEvent !== event &&
         !otherEvent.allDay &&
@@ -107,15 +96,19 @@ export class CalendarComponent {
     return true;
   };
 
-  public eventTimesChanged(
-    eventTimesChangedEvent: CalendarEventTimesChangedEvent
-  ): void {
+  public eventTimesChanged(eventTimesChangedEvent: CalendarEventTimesChangedEvent): void {
     delete eventTimesChangedEvent.event.cssClass;
     if (this.validateEventTimesChanged(eventTimesChangedEvent, false)) {
-      const { event, newStart, newEnd } = eventTimesChangedEvent;
+      const {event, newStart, newEnd} = eventTimesChangedEvent;
       event.start = newStart;
       event.end = newEnd;
       this.refresh.next();
     }
+  }
+
+  public eventDropped({event, newStart, newEnd, allDay}: CalendarEventTimesChangedEvent): void {
+
+    this.eventService
+
   }
 }

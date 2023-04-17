@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -8,13 +8,20 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { HeaderComponent } from './components/header/header.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { HttpClientModule } from '@angular/common/http';
+import { PredefinedEventComponent } from './components/predefined-event/predefined-event.component';
+import { LayoutComponent } from './components/layout/layout.component';
+
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    CalendarComponent
+    CalendarComponent,
+    PredefinedEventComponent,
+    LayoutComponent
   ],
   imports: [
     BrowserModule,
@@ -22,7 +29,13 @@ import { HttpClientModule } from '@angular/common/http';
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'fr' }
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+    registerLocaleData(localeFr);
+  }
+}
