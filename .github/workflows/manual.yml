@@ -29,13 +29,7 @@ jobs:
         run: npm install
       # Runs a set of commands to build
       - name: Build
-        run: npm run build -- --prod
-      # sotre the artifact
-      - name: Archive Production Artifact
-        uses: actions/upload-artifact@master
-        with:
-          name: public
-          path: dist/agenda
+        run: npm run build
   # deploy job   
   deploy:
     name: Deploy to firebase
