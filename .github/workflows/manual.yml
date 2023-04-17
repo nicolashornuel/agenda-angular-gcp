@@ -3,7 +3,6 @@
 
 run-name: Deploy-To-Firebase
 name: Deploy to Firebase Hosting
-date: '`r format(Sys.Date(), "%d %B %Y")`'
 'on':
   push:
     branches:
