@@ -37,18 +37,7 @@ jobs:
     # only run if build job complte successfully 
     needs: [build]
     steps:
-      # building the app before deploy
-      - uses: actions/checkout@master
-      - uses: actions/setup-node@master
-        with:
-          node-version: '10.x'
-      # Install the dependencies need to build the app
-      - name: Install Dependencies
-        run: npm install
-      # build the app
-      - name: Build the app artifact for prod
-        run: npm run build --prod
-      # ddeploy the app artifact to firebase
+      # deploy the app artifact to firebase
       - name: Deploy angular app to Firebase
         uses: w9jds/firebase-action@master
         with:
