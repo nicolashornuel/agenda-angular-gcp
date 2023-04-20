@@ -1,4 +1,4 @@
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -13,7 +13,9 @@ import { LayoutComponent } from './components/layout/layout.component';
 
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
+import { HolidayService } from './services/holiday.service';
 
+function initializeHolidays(holidays: HolidayService) {holidays.init()}
 
 @NgModule({
   declarations: [
@@ -30,7 +32,13 @@ import localeFr from '@angular/common/locales/fr';
     HttpClientModule
   ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'fr' }
+    { provide: LOCALE_ID, useValue: 'fr' },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeHolidays,
+      deps: [HolidayService],
+      multi: false
+    }
   ],
   bootstrap: [AppComponent]
 })

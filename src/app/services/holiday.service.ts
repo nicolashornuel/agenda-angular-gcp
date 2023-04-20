@@ -2,6 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {CalendarEvent} from 'angular-calendar';
 import {map, Observable} from 'rxjs';
+import { EventService } from './event.service';
 
 interface Holiday {
   date: string;
@@ -18,7 +19,11 @@ export class HolidayService {
   private readonly COUNTRY_CODE = 'FR-OCC';
   private readonly URL = 'https://holidayapi.com/v1/holidays';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private eventService: EventService) {}
+
+  public init(): void {
+    //this.fetchHolidays().subscribe( res => this.eventService.setEvents$(res))
+  }
 
   public fetchHolidays(): Observable<CalendarEventWithMeta[]> {
     const params = {

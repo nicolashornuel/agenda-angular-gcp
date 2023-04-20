@@ -1,0 +1,21 @@
+.my-custom-class {
+  color: #ff3d7f !important;
+}
+.drag-active {
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+  a {
+    color:aqua;
+    text-decoration: none !important;
+  }
+}
+.drag-over {
+  background-color: #c73c3c37;
+}
+
+app-predefined-event {
+    a {
+        text-decoration: none !important;
+      }
+}

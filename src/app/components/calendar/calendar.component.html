@@ -3,7 +3,6 @@
     *ngSwitchCase="'month'"
     [viewDate]="viewDate"
     [events]="events"
-    [activeDayIsOpen]="true"
     [refresh]="refresh"
     (eventTimesChanged)="eventTimesChanged($event)"
   >
@@ -13,7 +12,6 @@
     [viewDate]="viewDate"
     [events]="events"
     [refresh]="refresh"
-    [validateEventTimesChanged]="validateEventTimesChanged"
     (eventTimesChanged)="eventTimesChanged($event)"
   >
   </mwl-calendar-week-view>
@@ -22,7 +20,6 @@
     [viewDate]="viewDate"
     [events]="events"
     [refresh]="refresh"
-    [validateEventTimesChanged]="validateEventTimesChanged"
     (eventTimesChanged)="eventTimesChanged($event)"
   >
   </mwl-calendar-day-view>
