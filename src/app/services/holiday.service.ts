@@ -1,8 +1,8 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {CalendarEvent} from 'angular-calendar';
-import {map, Observable} from 'rxjs';
-import { EventService } from './event.service';
+import {Observable, map, take, tap} from 'rxjs';
+import {EventService} from './event.service';
 
 interface Holiday {
   date: string;
@@ -22,7 +22,9 @@ export class HolidayService {
   constructor(private http: HttpClient, private eventService: EventService) {}
 
   public init(): void {
-    //this.fetchHolidays().subscribe( res => this.eventService.setEvents$(res))
+    this.fetchHolidays()
+      .pipe(take(1))
+      .subscribe(holidays => this.eventService.setEvents$(holidays));
   }
 
   public fetchHolidays(): Observable<CalendarEventWithMeta[]> {
@@ -31,9 +33,11 @@ export class HolidayService {
       year: String(new Date().getFullYear() - 1),
       key: this.HOLIDAY_API_KEY
     };
+    console.log(params);
+    
     return this.http
-      .get<Holiday[]>(this.URL, {params})
-      .pipe(map((holidays: Holiday[]) => holidays.map((holiday: Holiday) => this.mapperHoliday(holiday))));
+      .get<{holidays: Holiday[]}>(this.URL, {params})
+      .pipe(map(({holidays}) => holidays.map(holiday => this.mapperHoliday(holiday))));
   }
 
   private mapperHoliday(holiday: Holiday): CalendarEventWithMeta {

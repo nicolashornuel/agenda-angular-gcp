@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
-import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
-import { Subject } from 'rxjs';
-import { EventService } from 'src/app/services/event.service';
+import {ChangeDetectionStrategy, Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {CalendarEvent, CalendarEventTimesChangedEvent, CalendarView} from 'angular-calendar';
+import {Subject, takeUntil} from 'rxjs';
+import {DestroyService} from 'src/app/services/destroy.service';
+import {EventService} from 'src/app/services/event.service';
 
 @Component({
   selector: 'app-calendar',
@@ -10,16 +11,21 @@ import { EventService } from 'src/app/services/event.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class CalendarComponent {
+export class CalendarComponent implements OnInit {
   @Input() view: CalendarView = CalendarView.Month;
   @Input() viewDate: Date = new Date();
   public events: CalendarEvent[] = [];
   public refresh = new Subject<void>();
 
-  constructor(private eventService: EventService) {}
+  constructor(private eventService: EventService, private destroy$: DestroyService) {}
 
-  public eventTimesChanged(calendarEventTimesChangedEvent: CalendarEventTimesChangedEvent): void {  
-    this.events = this.eventService.eventTimesChanged(calendarEventTimesChangedEvent)
+  ngOnInit(): void {
+    this.eventService.getEvents$
+    .pipe(takeUntil(this.destroy$))
+    .subscribe((calendarEvents: CalendarEvent[]) => this.events = calendarEvents);
   }
 
+  public eventTimesChanged(calendarEventTimesChangedEvent: CalendarEventTimesChangedEvent): void {
+    this.events = this.eventService.eventTimesChanged(calendarEventTimesChangedEvent);
+  }
 }

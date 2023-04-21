@@ -14,17 +14,21 @@ export class EventService {
 
   private readonly events$ = new BehaviorSubject<CalendarEvent[]>([]);
   
-  constructor(private holidayService: HolidayService) {}
+  constructor() {}
 
   public get getEvents$(): Observable<CalendarEvent[]> {
     return this.events$.asObservable();
   }
 
-  public setEvents$(calendarEvent: CalendarEvent): void {
+  public setEvents$(calendarEvents: CalendarEvent[]): void {
+    this.events = [...calendarEvents];
+    this.events$.next(this.events);
+  }
+
+  public pushEvent(calendarEvent: CalendarEvent): void {
     this.events.push(calendarEvent);
     this.events = [...this.events];
     this.events$.next(this.events);
-
   }
 
   public eventTimesChanged({event, newStart, allDay}: CalendarEventTimesChangedEvent): CalendarEvent[] {
