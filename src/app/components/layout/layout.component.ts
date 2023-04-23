@@ -7,6 +7,6 @@ import { CalendarView } from 'angular-calendar';
   styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent {
-  view: CalendarView = CalendarView.Week;
+  view: CalendarView = CalendarView.Month;
   viewDate: Date = new Date();
 }

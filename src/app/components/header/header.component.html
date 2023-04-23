@@ -1,61 +1,67 @@
 <div class="row text-center">
-  <div class="col-md-4">
-    <div class="btn-group">
-      <div
-        class="btn btn-primary"
-        mwlCalendarPreviousView
-        [view]="view"
-        [(viewDate)]="viewDate"
-        (viewDateChange)="viewDateChange.next(viewDate)"
-      >
-        Previous
-      </div>
-      <div
-        class="btn btn-outline-secondary"
-        mwlCalendarToday
-        [(viewDate)]="viewDate"
-        (viewDateChange)="viewDateChange.next(viewDate)"
-      >
-        Today
-      </div>
-      <div
-        class="btn btn-primary"
-        mwlCalendarNextView
-        [view]="view"
-        [(viewDate)]="viewDate"
-        (viewDateChange)="viewDateChange.next(viewDate)"
-      >
-        Next
-      </div>
+  <div class="col-6 d-flex justify-content-end">
+    <h3 class="text-danger text-uppercase mb-0">{{ viewDate | calendarDate : view + 'ViewTitle' : locale }}</h3>
+  </div>
+  <div class="col-6 d-flex justify-content-end align-items-center">
+    <div class="btn-group mx-3">
+      <ng-container [ngTemplateOutlet]="btnGroupViewDateChange"></ng-container>
     </div>
-  </div>
-  <div class="col-md-4">
-    <h3>{{ viewDate | calendarDate : view + 'ViewTitle' : locale }}</h3>
-  </div>
-  <div class="col-md-4">
     <div class="btn-group">
-      <div
-        class="btn btn-primary"
-        (click)="viewChange.emit(CalendarView.Month)"
-        [class.active]="view === CalendarView.Month"
-      >
-        Month
-      </div>
-      <div
-        class="btn btn-primary"
-        (click)="viewChange.emit(CalendarView.Week)"
-        [class.active]="view === CalendarView.Week"
-      >
-        Week
-      </div>
-      <div
-        class="btn btn-primary"
-        (click)="viewChange.emit(CalendarView.Day)"
-        [class.active]="view === CalendarView.Day"
-      >
-        Day
-      </div>
+      <ng-container [ngTemplateOutlet]="btnGroupViewChange"></ng-container>
     </div>
   </div>
 </div>
 <br />
+
+<ng-template #btnGroupViewDateChange>
+  <div
+    class="btn btn-outline-primary btn-sm"
+    mwlCalendarPreviousView
+    [view]="view"
+    [(viewDate)]="viewDate"
+    (viewDateChange)="viewDateChange.next(viewDate)"
+  >
+    <i class="fas fa-angle-left fa-lg"></i>
+  </div>
+  <div
+    class="btn btn-outline-secondary btn-sm"
+    mwlCalendarToday
+    [(viewDate)]="viewDate"
+    (viewDateChange)="viewDateChange.next(viewDate)"
+  >
+    Aujourd'hui
+  </div>
+  <div
+    class="btn btn-outline-primary btn-sm"
+    mwlCalendarNextView
+    [view]="view"
+    [(viewDate)]="viewDate"
+    (viewDateChange)="viewDateChange.next(viewDate)"
+  >
+    <i class="fas fa-angle-right fa-lg"></i>
+  </div>
+</ng-template>
+
+<ng-template #btnGroupViewChange>
+  <div
+    class="btn btn-outline-primary btn-sm"
+    (click)="viewChange.emit(CalendarView.Month)"
+    [class.active]="view === CalendarView.Month"
+  >
+    Mois
+  </div>
+  <div
+    class="btn btn-outline-primary btn-sm"
+    (click)="viewChange.emit(CalendarView.Week)"
+    [class.active]="view === CalendarView.Week"
+  >
+    Semaine
+  </div>
+  <div
+    class="btn btn-outline-primary btn-sm"
+    (click)="viewChange.emit(CalendarView.Day)"
+    [class.active]="view === CalendarView.Day"
+  >
+    Jour
+  </div>
+</ng-template>

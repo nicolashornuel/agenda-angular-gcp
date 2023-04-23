@@ -1,12 +1,25 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {CalendarEvent} from 'angular-calendar';
-import {Observable, map, take, tap} from 'rxjs';
-import {EventService} from './event.service';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { CalendarEvent } from 'angular-calendar';
+import { BehaviorSubject, Observable, map, take } from 'rxjs';
 
-interface Holiday {
-  date: string;
-  name: string;
+interface Record {
+  datasetid: string;
+  fields: Field;
+}
+interface Field {
+  annee_scolaire: string;
+  description: string;
+  end_date: string;
+  location: string;
+  start_date: string;
+  zones: string;
+}
+
+export interface Holiday {
+  description: string;
+  end_date: Date;
+  start_date: Date;
 }
 
 type CalendarEventWithMeta = CalendarEvent<{type: 'holiday'; holiday: Holiday} | {type: 'normal'}>;
@@ -15,40 +28,47 @@ type CalendarEventWithMeta = CalendarEvent<{type: 'holiday'; holiday: Holiday} |
   providedIn: 'root'
 })
 export class HolidayService {
-  private readonly HOLIDAY_API_KEY = '04ad509e-2418-49ce-8426-2e77cc5ac332';
-  private readonly COUNTRY_CODE = 'FR-OCC';
-  private readonly URL = 'https://holidayapi.com/v1/holidays';
+  // https://data.education.gouv.fr/explore/dataset/fr-en-calendrier-scolaire/api/?disjunctive.description&disjunctive.population&disjunctive.location&disjunctive.zones&disjunctive.annee_scolaire&sort=end_date&timezone=&refine.zones=Zone+C&refine.annee_scolaire=2022-2023&refine.location=Montpellier&exclude.population=%C3%89l%C3%A8ves
+  private openAPI = {
+    url: 'https://data.education.gouv.fr/api/records/1.0/search/',
+    params: {
+      dataset: 'fr-en-calendrier-scolaire',
+      'refine.zone': 'Zone C',
+      'refine.annee_scolaire': '2022-2023',
+      'refine.location': 'Montpellier',
+      'exclude.population': 'Enseignants'
+    }
+  };
 
-  constructor(private http: HttpClient, private eventService: EventService) {}
+  private readonly holidays$ = new BehaviorSubject<Holiday[]>([]);
+
+  constructor(private http: HttpClient) {}
 
   public init(): void {
     this.fetchHolidays()
       .pipe(take(1))
-      .subscribe(holidays => this.eventService.setEvents$(holidays));
+      .subscribe(holidays => (this.setHolidays$ = holidays));
   }
 
-  public fetchHolidays(): Observable<CalendarEventWithMeta[]> {
-    const params = {
-      country: this.COUNTRY_CODE,
-      year: String(new Date().getFullYear() - 1),
-      key: this.HOLIDAY_API_KEY
-    };
-    console.log(params);
-    
+  public get getHolidays$(): Observable<Holiday[]> {
+    return this.holidays$.asObservable();
+  }
+
+  public set setHolidays$(holidays: Holiday[]) {
+    this.holidays$.next([...holidays]);
+  }
+
+  public fetchHolidays(): Observable<Holiday[]> {
     return this.http
-      .get<{holidays: Holiday[]}>(this.URL, {params})
-      .pipe(map(({holidays}) => holidays.map(holiday => this.mapperHoliday(holiday))));
+      .get<{records: Record[]}>(this.openAPI.url, {params: this.openAPI.params})
+      .pipe(map(({records}) => records.map(record => this.mapperHoliday(record))));
   }
 
-  private mapperHoliday(holiday: Holiday): CalendarEventWithMeta {
+  private mapperHoliday({fields}: Record): Holiday {
     return {
-      start: new Date(holiday.date),
-      title: holiday.name,
-      allDay: true,
-      meta: {
-        type: 'holiday',
-        holiday
-      }
+      start_date: new Date(fields.start_date.substring(0,10)),
+      end_date: new Date(fields.end_date.substring(0,10)),
+      description: fields.description
     };
   }
 }
