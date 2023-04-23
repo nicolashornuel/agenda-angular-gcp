@@ -20,7 +20,7 @@ export class EventService {
     return this.events$.asObservable();
   }
 
-  public setEvents$(calendarEvents: CalendarEvent[]): void {
+  public set setEvents$(calendarEvents: CalendarEvent[]) {
     this.events = [...calendarEvents];
     this.events$.next(this.events);
   }

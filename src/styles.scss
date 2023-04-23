@@ -1,4 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
 
-
+.holiday {
+    background-color: rgba(196, 251, 200, 0.298) !important;
+}
+.cal-month-view .cal-day-badge {
+    display: none;
+}
+.cal-month-view .cal-cell-top {
+    flex: 0 !important;
+  }
