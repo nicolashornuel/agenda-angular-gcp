@@ -35,7 +35,7 @@ export class CalendarComponent implements OnInit {
       } else {
         this.activeDayIsOpen = true;
       }
-      this.viewDate = date;
+      // this.viewDate = date;
     }
   }
 
