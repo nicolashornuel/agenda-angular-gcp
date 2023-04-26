@@ -23,3 +23,9 @@ nvm ls
 ```sh
 nvm use v16.13.2
 ```
+
+firebase functions:config:set <key>=<value>
+firebase deploy --only functions
+firebase functions:config:get
+firebase functions:secrets:set SECRET_NAME=value
+https://firebase.google.com/docs/functions/config-env?hl=fr
