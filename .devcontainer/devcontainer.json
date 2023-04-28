@@ -6,8 +6,6 @@
     "ghcr.io/devcontainers-contrib/features/firebase-cli:2": {},
     "ghcr.io/dhoeric/features/google-cloud-cli:1": {}
   },
-  "forwardPorts": [4200, 49153],
-  "postCreateCommand": "bash -i -c 'ng serve --host 0.0.0.0 --poll 200'"
+  //"forwardPorts": [4200],
+  "postCreateCommand": "bash -i -c 'ng serve --disable-host-check'"
 }
-
-// https://containers.dev/implementors/json_reference/

@@ -15,6 +15,8 @@ import {PredefinedEventComponent} from './components/predefined-event/predefined
 import {registerLocaleData} from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 
+import { CoreModule } from './core/core.module';
+
 @NgModule({
   declarations: [AppComponent, HeaderComponent, CalendarComponent, PredefinedEventComponent, LayoutComponent],
   imports: [
@@ -22,7 +24,8 @@ import localeFr from '@angular/common/locales/fr';
     BrowserAnimationsModule,
     AppRoutingModule,
     CalendarModule.forRoot({provide: DateAdapter, useFactory: adapterFactory}),
-    HttpClientModule
+    HttpClientModule,
+    CoreModule
   ],
   providers: [{provide: LOCALE_ID, useValue: 'fr'}],
   bootstrap: [AppComponent]

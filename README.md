@@ -47,3 +47,5 @@ https://firebase.google.com/docs/functions/config-env?hl=fr
     }
 
 CTRL + SHIFT + P : Dev Containers: Rebuild Container
+
+https://medium.com/dev-jam/5-tips-best-practices-to-organize-your-angular-project-e900db08702e
