@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class NavbarComponent {
 
+  public items = [
+    {
+      title: 'Agenda',
+      route: 'agenda'
+    }
+  ]
+
 }

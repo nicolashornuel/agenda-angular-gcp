@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
 import { isSameDay, isSameMonth } from 'date-fns';
-import { Subject, take } from 'rxjs';
-import { DestroyService } from 'src/app/services/destroy.service';
-import { EventService } from 'src/app/services/event.service';
-import { Holiday, HolidayService } from 'src/app/services/holiday.service';
+import { Subject, take, takeUntil } from 'rxjs';
+import { EventService } from 'src/app/core/services/event.service';
+import { Holiday, HolidayService } from 'src/app/core/services/holiday.service';
+import { DestroyService } from 'src/app/shared/services/destroy.service';
 
 @Component({
   selector: 'app-calendar',
@@ -14,6 +14,7 @@ import { Holiday, HolidayService } from 'src/app/services/holiday.service';
 export class CalendarComponent implements OnInit {
   @Input() view!: CalendarView;
   @Input() viewDate!: Date;
+  @Input() isLocked!: boolean;
   public events: CalendarEvent[] = [];
   public refresh = new Subject<void>();
   public activeDayIsOpen: boolean = false;
@@ -26,7 +27,11 @@ export class CalendarComponent implements OnInit {
     private holidayService: HolidayService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.eventService.getAll().pipe(takeUntil(this.destroy$)).subscribe(events => {
+      console.log(events)
+    })
+  }
 
   public dayClicked({date, events}: {date: Date; events: CalendarEvent[]}): void {
     if (isSameMonth(date, this.viewDate)) {

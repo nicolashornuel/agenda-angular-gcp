@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { CalendarEvent, CalendarEventAction } from 'angular-calendar';
-import { colors } from 'src/app/models/colors.constant';
+import { colors } from 'src/app/shared/models/colors.constant';
 
 @Component({
   selector: 'app-predefined-event',

@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "agenda-bf245"
+  },
+  "targets": {
+    "agenda-bf245": {
+      "hosting": {
+        "agenda": [
+          "agenda-bf245"
+        ]
+      }
+    }
   }
 }

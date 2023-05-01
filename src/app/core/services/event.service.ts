@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
-import { CalendarEventTimesChangedEvent, CalendarEvent } from 'angular-calendar';
+import { CollectionReference, DocumentData, DocumentReference, Firestore, collection, collectionData, doc, docSnapshots, setDoc } from '@angular/fire/firestore';
+import { CalendarEvent, CalendarEventTimesChangedEvent } from 'angular-calendar';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HolidayService } from './holiday.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
 
-  externalEvents: CalendarEvent[] = [];
-
   events: CalendarEvent[] = [];
 
   private readonly events$ = new BehaviorSubject<CalendarEvent[]>([]);
   
-  constructor() {}
+  // https://github.com/angular/angularfire/blob/master/docs/version-7-upgrade.md
+  constructor(private firestore: Firestore) {}
 
   public get getEvents$(): Observable<CalendarEvent[]> {
     return this.events$.asObservable();
@@ -37,6 +36,17 @@ export class EventService {
     this.events.push(event);
     this.events = [...this.events];
     return this.events;
+  }
+
+  public getAll(): Observable<DocumentData[]> {
+    const collectionRef: CollectionReference<DocumentData> = collection(this.firestore, 'calendarEvent');
+    return collectionData(collectionRef);
+  }
+
+  public save(document: DocumentData): Promise<void> {
+    const collectionRef: CollectionReference<DocumentData> = collection(this.firestore, 'calendarEvent');
+    const docRef: DocumentReference<DocumentData> = doc(collectionRef)
+      return setDoc(docRef, {...document});
   }
 
 }
