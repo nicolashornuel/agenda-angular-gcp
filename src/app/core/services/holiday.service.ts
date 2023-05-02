@@ -22,8 +22,6 @@ export interface Holiday {
   start_date: Date;
 }
 
-type CalendarEventWithMeta = CalendarEvent<{type: 'holiday'; holiday: Holiday} | {type: 'normal'}>;
-
 @Injectable({
   providedIn: 'root'
 })

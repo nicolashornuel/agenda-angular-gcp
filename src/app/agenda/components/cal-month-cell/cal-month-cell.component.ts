@@ -15,7 +15,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   @Input() isLocked!: boolean;
   formGroup: FormGroup = new FormGroup({});
 
-  public events = [
+  public emptyFields = [
     {
       title: 'JOUR',
       name: 'jour',
@@ -60,23 +60,33 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes['isLocked'].isFirstChange()) {
+    if (changes['isLocked'] && !changes['isLocked'].isFirstChange()) {
       changes['isLocked'].currentValue ? this.formGroup.disable() : this.formGroup.enable();
     }
   }
 
   private buildForm(): void {
-    this.events.forEach(item => {
-      if (item.display(this.day)) this.formGroup.addControl(item.name, new FormControl(false));
+    console.log(this.day.date, this.day.events.length);
+    
+    
+    this.emptyFields.forEach(field => {
+      if (field.display(this.day)) this.formGroup.addControl(field.name, new FormControl(false));
+
+      this.day.events.forEach(dayEvent => {
+        if (dayEvent.meta == field.name) {
+          this.formGroup.addControl(field.name, new FormControl(true))
+        } 
+        //console.log(dayEvent.meta, field.name);
+      })
     });
     this.formGroup.disable();
   }
 
   public onCheck({key, value}: {key: string; value: AbstractControl}): void {    
     if (value.value) {
-      const targetEvent: {title: string; name: string} | undefined = this.events
-        .map(event => ({name: event.name, title: event.title}))
-        .find(event => event.name === key);
+      const targetEvent: {title: string; name: string} | undefined = this.emptyFields
+        .map(field => ({name: field.name, title: field.title}))
+        .find(field => field.name === key);
       if (targetEvent) {
         const newEvent: CalendarEvent = {
           start: this.day.date,
@@ -88,10 +98,10 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
           title: targetEvent!.title,
           meta: targetEvent!.name
         }
-        this.eventService.save(fireEvent).then(() => {
+        /* this.eventService.save(fireEvent).then(() => {
           this.day.events.push(newEvent);
           console.log('ok');
-        });
+        }); */
       }
     }
   }

@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
-import { isSameDay, isSameMonth } from 'date-fns';
-import { Subject, take, takeUntil } from 'rxjs';
+import { Subject, combineLatest, take, takeUntil } from 'rxjs';
 import { EventService } from 'src/app/core/services/event.service';
 import { Holiday, HolidayService } from 'src/app/core/services/holiday.service';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
@@ -9,7 +8,7 @@ import { DestroyService } from 'src/app/shared/services/destroy.service';
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss'],
+  styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent implements OnInit {
   @Input() view!: CalendarView;
@@ -21,27 +20,26 @@ export class CalendarComponent implements OnInit {
   public holidays: Holiday[] = [];
   public loading = false;
 
+
   constructor(
     private eventService: EventService,
     private destroy$: DestroyService,
-    private holidayService: HolidayService
+    private holidayService: HolidayService,
   ) {}
 
   ngOnInit(): void {
+    this.loading = true;
     this.eventService.getAll().pipe(takeUntil(this.destroy$)).subscribe(events => {
-      console.log(events)
+      this.events = [...events.map(event => {
+        return {
+          id: event.id,
+          start: new Date(event.start),
+          title: event.title,
+          meta: event.meta,
+        };
+      })];
+      this.loading = false;
     })
-  }
-
-  public dayClicked({date, events}: {date: Date; events: CalendarEvent[]}): void {
-    if (isSameMonth(date, this.viewDate)) {
-      if ((isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) || events.length === 0) {
-        this.activeDayIsOpen = false;
-      } else {
-        this.activeDayIsOpen = true;
-      }
-      // this.viewDate = date;
-    }
   }
 
   public beforeMonthViewRender({body}: {body: CalendarMonthViewDay[]}): void {
@@ -52,7 +50,6 @@ export class CalendarComponent implements OnInit {
         });
       });
     });
-
   }
 
   public eventTimesChanged(calendarEventTimesChangedEvent: CalendarEventTimesChangedEvent): void {

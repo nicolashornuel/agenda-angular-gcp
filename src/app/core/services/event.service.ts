@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CollectionReference, DocumentData, DocumentReference, Firestore, collection, collectionChanges, collectionData, deleteDoc, doc, docSnapshots, setDoc } from '@angular/fire/firestore';
 import { CalendarEvent, CalendarEventTimesChangedEvent } from 'angular-calendar';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +12,14 @@ export class EventService {
 
   private readonly events$ = new BehaviorSubject<CalendarEvent[]>([]);
 
+  private collectionRef!: CollectionReference<DocumentData>;
+
   // https://github.com/angular/angularfire/blob/master/docs/version-7-upgrade.md
   // https://github.com/javebratt/angularfire-idField/blob/main/src/app/home/home.page.ts
-  constructor(private firestore: Firestore) { }
+
+  constructor(private firestore: Firestore) {
+    this.collectionRef = collection(this.firestore, 'calendarEvent');
+  }
 
   public get getEvents$(): Observable<CalendarEvent[]> {
     return this.events$.asObservable();
@@ -40,19 +45,16 @@ export class EventService {
   }
 
   public getAll(): Observable<CalendarEvent[]> {
-    const collectionRef: CollectionReference<DocumentData> = collection(this.firestore, 'calendarEvent');
-    return collectionData(collectionRef, {idField: 'id'})  as Observable<CalendarEvent[]>;
+    return collectionData(this.collectionRef, {idField: 'id'}) as Observable<CalendarEvent[]>;
   }
 
   public save(document: DocumentData): Promise<void> {
-    const collectionRef: CollectionReference<DocumentData> = collection(this.firestore, 'calendarEvent');
-    const docRef: DocumentReference<DocumentData> = doc(collectionRef)
+    const docRef: DocumentReference<DocumentData> = doc(this.collectionRef)
     return setDoc(docRef, { ...document });
   }
 
   public delete(id: string): Promise<void> {
-    const collectionRef: CollectionReference<DocumentData> = collection(this.firestore, 'calendarEvent');
-    const docRef: DocumentReference<DocumentData> = doc(collectionRef, id);
+    const docRef: DocumentReference<DocumentData> = doc(this.collectionRef, id);
     return deleteDoc(docRef);
   }
 }
