@@ -65,23 +65,29 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * bind event into form
+   *
+   * @private
+   * @memberof CalMonthCellComponent
+   */
   private buildForm(): void {
-    console.log(this.day.date, this.day.events.length);
-    
-    
     this.emptyFields.forEach(field => {
-      if (field.display(this.day)) this.formGroup.addControl(field.name, new FormControl(false));
-
-      this.day.events.forEach(dayEvent => {
-        if (dayEvent.meta == field.name) {
-          this.formGroup.addControl(field.name, new FormControl(true))
-        } 
-        //console.log(dayEvent.meta, field.name);
-      })
+      if (field.display(this.day)) {
+        let value = false;
+        this.day.events.forEach(dayEvent => dayEvent.meta === field.name ? value = true : null)
+        this.formGroup.addControl(field.name, new FormControl(value))
+      }
     });
     this.formGroup.disable();
   }
 
+  /**
+   * save or delete onCLick checkbox
+   *
+   * @param {{key: string; value: AbstractControl}} {key, value}
+   * @memberof CalMonthCellComponent
+   */
   public onCheck({key, value}: {key: string; value: AbstractControl}): void {    
     if (value.value) {
       const targetEvent: {title: string; name: string} | undefined = this.emptyFields
