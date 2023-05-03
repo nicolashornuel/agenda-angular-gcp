@@ -29,7 +29,7 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    this.eventService.getAll().pipe(takeUntil(this.destroy$)).subscribe(events => {
+    this.eventService.getAll().pipe(take(1)).subscribe(events => {
       this.events = [...events.map(event => {
         return {
           id: event.id,

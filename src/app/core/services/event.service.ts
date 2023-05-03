@@ -48,9 +48,10 @@ export class EventService {
     return collectionData(this.collectionRef, {idField: 'id'}) as Observable<CalendarEvent[]>;
   }
 
-  public save(document: DocumentData): Promise<void> {
+  public async save(document: DocumentData): Promise<string> {
     const docRef: DocumentReference<DocumentData> = doc(this.collectionRef)
-    return setDoc(docRef, { ...document });
+    await setDoc(docRef, { ...document });
+    return docRef.id;
   }
 
   public delete(id: string): Promise<void> {
