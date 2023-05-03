@@ -115,8 +115,8 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
         title: targetEvent!.title,
         meta: targetEvent!.name
       }
-      this.eventService.save(fireEvent).then((idid) => {
-        this.day.events.push({ id, ...{id, ...newEvent }});
+      this.eventService.save(fireEvent).then((id) => {
+        this.day.events.push({id, ...newEvent });
         console.log('save ok');
       });
     }
