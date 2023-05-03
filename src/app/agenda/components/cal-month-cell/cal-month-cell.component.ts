@@ -88,27 +88,31 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
    * @param {{key: string; value: AbstractControl}} {key, value}
    * @memberof CalMonthCellComponent
    */
-  public onCheck({key, value}: {key: string; value: AbstractControl}): void {    
-    if (value.value) {
+  public onCheck({key, value}: {key: string; value: AbstractControl}): void {  
+    const event = this.day.events.find(event => event.meta === key);
+    if (event) {
+      this.eventService.delete(event.id as string).then(() => {
+        console.log('delete ok');
+      });
+    } else if (value.value) {
       const targetEvent: {title: string; name: string} | undefined = this.emptyFields
-        .map(field => ({name: field.name, title: field.title}))
-        .find(field => field.name === key);
-      if (targetEvent) {
-        const newEvent: CalendarEvent = {
-          start: this.day.date,
-          title: targetEvent!.title,
-          meta: targetEvent!.name
-        };
-        const fireEvent: DocumentData = {
-          start: this.day.date.getTime(),
-          title: targetEvent!.title,
-          meta: targetEvent!.name
-        }
-        /* this.eventService.save(fireEvent).then(() => {
-          this.day.events.push(newEvent);
-          console.log('ok');
-        }); */
+      .map(field => ({name: field.name, title: field.title}))
+      .find(field => field.name === key);
+      const newEvent: CalendarEvent = {
+        start: this.day.date,
+        title: targetEvent!.title,
+        meta: targetEvent!.name
+      };
+      const fireEvent: DocumentData = {
+        start: this.day.date.getTime(),
+        title: targetEvent!.title,
+        meta: targetEvent!.name
       }
+      this.eventService.save(fireEvent).then(() => {
+        this.day.events.push(newEvent);
+        console.log('save ok');
+      });
     }
+
   }
 }
