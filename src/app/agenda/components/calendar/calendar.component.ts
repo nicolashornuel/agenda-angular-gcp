@@ -20,7 +20,6 @@ export class CalendarComponent implements OnInit {
   public holidays: Holiday[] = [];
   public loading = false;
 
-
   constructor(
     private eventService: EventService,
     private destroy$: DestroyService,
@@ -29,15 +28,15 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    this.eventService.getAll().pipe(takeUntil(this.destroy$)).subscribe(events => {
-      this.events = [...events.map(event => {
+    this.eventService.getAll().pipe(take(1)).subscribe(events => {
+      this.events = events.map(event => {
         return {
           id: event.id,
           start: new Date(event.start),
           title: event.title,
           meta: event.meta,
         };
-      })];
+      });
       this.loading = false;
     })
   }

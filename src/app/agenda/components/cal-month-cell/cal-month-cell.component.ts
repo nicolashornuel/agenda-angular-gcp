@@ -1,8 +1,8 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { DocumentData } from '@angular/fire/firestore';
-import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
-import {CalendarEvent, CalendarMonthViewDay} from 'angular-calendar';
-import {EventService} from 'src/app/core/services/event.service';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
+import { EventService } from 'src/app/core/services/event.service';
 
 @Component({
   selector: 'app-cal-month-cell',
@@ -15,6 +15,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   @Input() isLocked!: boolean;
   formGroup: FormGroup = new FormGroup({});
 
+  public formFields: { title: string, name: string, display: (day: CalendarMonthViewDay) => boolean, id: string, value: boolean }[] = [];
   public emptyFields = [
     {
       title: 'JOUR',
@@ -53,10 +54,16 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
     }
   ];
 
-  constructor(private eventService: EventService) {}
+  constructor(private eventService: EventService) { }
 
   ngOnInit(): void {
-    this.buildForm();
+    this.emptyFields.forEach(field => {
+      let value = false;
+      this.day.events.forEach(dayEvent => dayEvent.meta === field.name ? value = true : null)
+      this.formFields.push({ id: 'id', value, ...field })
+      
+    });
+    //this.buildForm();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -75,8 +82,8 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
     this.emptyFields.forEach(field => {
       if (field.display(this.day)) {
         let value = false;
-        this.day.events.forEach(dayEvent => dayEvent.meta === field.name ? value = true : null)
-        this.formGroup.addControl(field.name, new FormControl(value))
+        this.day.events.forEach(dayEvent => dayEvent.meta === field.title ? value = true : null)
+        this.formGroup.addControl(field.title, new FormControl(value))
       }
     });
     this.formGroup.disable();
@@ -88,16 +95,16 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
    * @param {{key: string; value: AbstractControl}} {key, value}
    * @memberof CalMonthCellComponent
    */
-  public onCheck({key, value}: {key: string; value: AbstractControl}): void {  
-    const event = this.day.events.find(event => event.meta === key);
+  public onCheck({ key, value }: { key: string; value: AbstractControl }): void {
+    const event = this.day.events.find(dayEvent => dayEvent.meta === key);
     if (event) {
       this.eventService.delete(event.id as string).then(() => {
         console.log('delete ok');
       });
     } else if (value.value) {
-      const targetEvent: {title: string; name: string} | undefined = this.emptyFields
-      .map(field => ({name: field.name, title: field.title}))
-      .find(field => field.name === key);
+      const targetEvent: { title: string; name: string } | undefined = this.emptyFields
+        .map(field => ({ name: field.name, title: field.title }))
+        .find(field => field.title === key);
       const newEvent: CalendarEvent = {
         start: this.day.date,
         title: targetEvent!.title,
@@ -108,8 +115,8 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
         title: targetEvent!.title,
         meta: targetEvent!.name
       }
-      this.eventService.save(fireEvent).then(() => {
-        this.day.events.push(newEvent);
+      this.eventService.save(fireEvent).then((id) => {
+        this.day.events.push({ id, ...newEvent });
         console.log('save ok');
       });
     }
