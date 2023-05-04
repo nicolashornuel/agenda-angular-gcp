@@ -4,16 +4,12 @@
 .holiday {
   background-color: rgba(196, 251, 200, 0.298) !important;
 }
-.cal-month-view .cal-day-badge {
-  display: none;
-}
 .cal-month-view .cal-cell-top {
   flex: 0 !important;
 }
 .cal-cell {
   width: 15%;
 }
-
 .cal-month-view .cal-day-cell.cal-today {
   box-shadow: 0px 0px 5px 0px #858f8a;
   .cal-day-number {

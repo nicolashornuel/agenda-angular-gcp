@@ -12,6 +12,7 @@ import {HeaderComponent} from './components/header/header.component';
 import {LayoutComponent} from './components/layout/layout.component';
 import {PredefinedEventComponent} from './components/predefined-event/predefined-event.component';
 import {CalMonthCellComponent} from './components/cal-month-cell/cal-month-cell.component';
+import { MonthCellDirective } from './directive/month-cell.directive';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import {CalMonthCellComponent} from './components/cal-month-cell/cal-month-cell.
     HeaderComponent,
     LayoutComponent,
     PredefinedEventComponent,
-    CalMonthCellComponent
+    CalMonthCellComponent,
+    MonthCellDirective
   ],
   imports: [
     CommonModule,

@@ -61,15 +61,15 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
       let value = false;
       this.day.events.forEach(dayEvent => dayEvent.meta === field.name ? value = true : null)
       this.formFields.push({ id: 'id', value, ...field })
-      
     });
     //this.buildForm();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['isLocked'] && !changes['isLocked'].isFirstChange()) {
+    console.log(changes['day'].currentValue);
+    /* if (changes['isLocked'] && !changes['isLocked'].isFirstChange()) {
       changes['isLocked'].currentValue ? this.formGroup.disable() : this.formGroup.enable();
-    }
+    } */
   }
 
   /**

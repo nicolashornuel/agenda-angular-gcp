@@ -16,18 +16,20 @@
       </div>
     </ng-container>
   </ng-container> -->
-  <ng-container *ngFor="let field of formFields">
-    <ng-container *ngIf="field.display(day)">
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          [name]="field.name"
-          [(ngModel)]="field.value"
-          [disabled]="isLocked"
-        />
-        <label class="form-check-label">{{ field.title }}</label>
-      </div>
+    <ng-container *ngFor="let field of formFields">
+      <ng-container *ngIf="field.display(day)">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            [name]="field.name"
+            [(ngModel)]="field.value"
+            [disabled]="isLocked"
+          />
+          <label class="form-check-label">{{ field.title }}</label>
+        </div>
+      </ng-container>
     </ng-container>
-  </ng-container>
+  
+
 </div>
