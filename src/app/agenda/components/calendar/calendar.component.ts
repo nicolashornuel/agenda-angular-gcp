@@ -1,9 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
-import { Subject, combineLatest, take, takeUntil } from 'rxjs';
+import { combineLatest, take } from 'rxjs';
 import { EventService } from 'src/app/core/services/event.service';
 import { Holiday, HolidayService } from 'src/app/core/services/holiday.service';
-import { DestroyService } from 'src/app/shared/services/destroy.service';
 
 @Component({
   selector: 'app-calendar',
@@ -15,38 +14,41 @@ export class CalendarComponent implements OnInit {
   @Input() viewDate!: Date;
   @Input() isLocked!: boolean;
   public events: CalendarEvent[] = [];
-  public refresh = new Subject<void>();
-  public activeDayIsOpen: boolean = false;
-  public holidays: Holiday[] = [];
+  private holidays: Holiday[] = []
   public loading = false;
 
-  constructor(
-    private eventService: EventService,
-    private destroy$: DestroyService,
-    private holidayService: HolidayService,
-  ) {}
+  constructor( private eventService: EventService, private holidayService: HolidayService) { }
 
   ngOnInit(): void {
+    this.initializeData();
+  }
+
+  /**
+   * fetch events & holidays 
+   *
+   * @private
+   * @memberof CalendarComponent
+   */
+  private initializeData(): void {
     this.loading = true;
-    this.eventService.getAll().pipe(take(1)).subscribe(events => {
-      this.events = events.map(event => {
-        return {
-          id: event.id,
-          start: new Date(event.start),
-          title: event.title,
-          meta: event.meta,
-        };
-      });
+    combineLatest([this.eventService.getAll(), this.holidayService.getAll()])
+    .pipe(take(1)).subscribe(([events, holidays]) => {            
+      this.events = events;
+      this.holidays = holidays;
       this.loading = false;
     })
   }
 
-  public beforeMonthViewRender({body}: {body: CalendarMonthViewDay[]}): void {
-    this.holidayService.fetchHolidays().pipe(take(1)).subscribe((holidays: Holiday[]) => {
-      body.forEach((day: CalendarMonthViewDay) => {
-        holidays.forEach((holiday: Holiday) => {
-          if (day.date >= holiday.start_date && day.date <= holiday.end_date) day.cssClass = 'holiday';
-        });
+  /**
+   * bind holiday by month current
+   *
+   * @param {{ body: CalendarMonthViewDay[] }} { body }
+   * @memberof CalendarComponent
+   */
+  public beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): void {
+    body.forEach((day: CalendarMonthViewDay) => {
+      this.holidays.forEach((holiday: Holiday) => {
+        if (day.date >= holiday.start_date && day.date <= holiday.end_date) day.cssClass = 'holiday';
       });
     });
   }

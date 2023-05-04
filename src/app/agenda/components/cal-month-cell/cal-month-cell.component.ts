@@ -1,6 +1,6 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DocumentData } from '@angular/fire/firestore';
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormGroup } from '@angular/forms';
 import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
 import { EventService } from 'src/app/core/services/event.service';
 
@@ -9,47 +9,61 @@ import { EventService } from 'src/app/core/services/event.service';
   templateUrl: './cal-month-cell.component.html',
   styleUrls: ['./cal-month-cell.component.scss']
 })
-export class CalMonthCellComponent implements OnInit, OnChanges {
+export class CalMonthCellComponent implements OnInit {
   @Input() day!: CalendarMonthViewDay;
   @Input() locale!: string;
   @Input() isLocked!: boolean;
   formGroup: FormGroup = new FormGroup({});
 
-  public formFields: { title: string, name: string, display: (day: CalendarMonthViewDay) => boolean, id: string, value: boolean }[] = [];
+  public formFields: { title: string, name: string, display?: (day: CalendarMonthViewDay) => boolean, id?: string | number, value: boolean }[] = [];
   public emptyFields = [
     {
       title: 'JOUR',
       name: 'jour',
+      start: '07:00:00',
+      end: '19:00:00',
       display: (_day: CalendarMonthViewDay) => true
     },
     {
       title: 'NUIT',
       name: 'nuit',
+      start: '19:00:00',
+      end: '23:59:59',
       display: (_day: CalendarMonthViewDay) => true
     },
     {
       title: 'Nounou',
       name: 'nounou',
+      start: '8:00:00',
+      end: '16:30:00',
       display: (day: CalendarMonthViewDay) => !day.isWeekend
     },
     {
       title: 'GM',
       name: 'garderie-matin',
+      start: '07:30:00',
+      end: '09:00:00',
       display: (day: CalendarMonthViewDay) => day.day != 3 && !day.isWeekend && day.cssClass !== 'holiday'
     },
     {
       title: 'C',
       name: 'cantine',
+      start: '12:00:00',
+      end: '14:00:00',
       display: (day: CalendarMonthViewDay) => day.day != 3 && !day.isWeekend && day.cssClass !== 'holiday'
     },
     {
       title: 'GS',
       name: 'garderie-soir',
+      start: '17:00:00',
+      end: '19:00:00',
       display: (day: CalendarMonthViewDay) => day.day != 3 && !day.isWeekend && day.cssClass !== 'holiday'
     },
     {
       title: 'CLSH',
       name: 'centre-loisir',
+      start: '07:30:00',
+      end: '18:30:00',
       display: (day: CalendarMonthViewDay) => day.day == 3 || (!day.isWeekend && day.cssClass == 'holiday')
     }
   ];
@@ -57,36 +71,23 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   constructor(private eventService: EventService) { }
 
   ngOnInit(): void {
-    this.emptyFields.forEach(field => {
-      let value = false;
-      this.day.events.forEach(dayEvent => dayEvent.meta === field.name ? value = true : null)
-      this.formFields.push({ id: 'id', value, ...field })
-    });
-    //this.buildForm();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes['day'].currentValue);
-    /* if (changes['isLocked'] && !changes['isLocked'].isFirstChange()) {
-      changes['isLocked'].currentValue ? this.formGroup.disable() : this.formGroup.enable();
-    } */
+    this.initializeData();
   }
 
   /**
-   * bind event into form
+   * initialize field : display or not & checked or not
    *
    * @private
    * @memberof CalMonthCellComponent
    */
-  private buildForm(): void {
+  private initializeData(): void {
     this.emptyFields.forEach(field => {
-      if (field.display(this.day)) {
-        let value = false;
-        this.day.events.forEach(dayEvent => dayEvent.meta === field.title ? value = true : null)
-        this.formGroup.addControl(field.title, new FormControl(value))
-      }
+      let fieldToSave = { title: field.title, name: field.name, start: field.start, end: field.end }
+      let existField = this.day.events.find(dayEvent => dayEvent.meta === field.name);
+      let formField = existField != undefined ? { value: true, id: existField.id, ...fieldToSave } : { value: false, ...fieldToSave }
+      if (field.display(this.day))
+        this.formFields.push(formField);
     });
-    this.formGroup.disable();
   }
 
   /**
@@ -95,7 +96,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
    * @param {{key: string; value: AbstractControl}} {key, value}
    * @memberof CalMonthCellComponent
    */
-  public onCheck({ key, value }: { key: string; value: AbstractControl }): void {
+/*   public onCheck({ key, value }: { key: string; value: AbstractControl }): void {
     const event = this.day.events.find(dayEvent => dayEvent.meta === key);
     if (event) {
       this.eventService.delete(event.id as string).then(() => {
@@ -116,10 +117,26 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
         meta: targetEvent!.name
       }
       this.eventService.save(fireEvent).then((id) => {
-        this.day.events.push({id, ...newEvent });
+        this.day.events.push({ id, ...newEvent });
         console.log('save ok');
       });
     }
+  } */
 
+  public onCheck(formField: any) {
+    console.log(formField);
+    if (!formField.value && formField.id) {
+      this.eventService.delete(formField.id as string).then(() => {
+        console.log('delete ok');
+      });
+    } else if (formField.value && !formField.id) {
+      let fieldToSave = { title: formField.title, name: formField.name, start: formField.start, end: formField.end }
+      this.eventService.save(fieldToSave).then((id) => {
+        this.day.events.push({ id, ...fieldToSave });
+        console.log('save ok');
+      });
+    }
+    
   }
+
 }
