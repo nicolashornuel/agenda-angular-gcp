@@ -2,20 +2,6 @@
   <span class="cal-day-number">{{ day.date | calendarDate : 'monthViewDayNumber' : locale }}</span>
 </div>
 <div class="d-flex flex-column align-items-start p-2">
-  <!-- <ng-container [formGroup]="formGroup">
-    <ng-container *ngFor="let control of formGroup.controls | keyvalue">
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          [formControlName]="control.key"
-          [id]="day.date.getDate() + control.key"
-          (change)="onCheck(control)"
-        />
-        <label class="form-check-label" [for]="day.date.getDate() + control.key">{{ control.key }}</label>
-      </div>
-    </ng-container>
-  </ng-container> -->
     <ng-container *ngFor="let field of formFields">
         <div class="form-check">
           <input
@@ -24,6 +10,7 @@
             [name]="field.name"
             [(ngModel)]="field.value"
             [disabled]="isLocked"
+            (ngModelChange)="onCheck(field)"
           />
           <label class="form-check-label">{{ field.title }}</label>
         </div>

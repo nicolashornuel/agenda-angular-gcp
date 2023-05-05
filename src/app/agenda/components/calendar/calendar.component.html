@@ -4,7 +4,6 @@
         *ngSwitchCase="'month'"
         [viewDate]="viewDate"
         [events]="events"
-        [refresh]="refresh"
         (eventTimesChanged)="eventTimesChanged($event)"
         (beforeViewRender)="beforeMonthViewRender($event)"
         [cellTemplate]="customCellTemplate"
@@ -14,7 +13,6 @@
         *ngSwitchCase="'week'"
         [viewDate]="viewDate"
         [events]="events"
-        [refresh]="refresh"
         (eventTimesChanged)="eventTimesChanged($event)"
       >
       </mwl-calendar-week-view>
@@ -22,7 +20,6 @@
         *ngSwitchCase="'day'"
         [viewDate]="viewDate"
         [events]="events"
-        [refresh]="refresh"
         (eventTimesChanged)="eventTimesChanged($event)"
       >
       </mwl-calendar-day-view>

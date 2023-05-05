@@ -45,7 +45,16 @@ export class EventService {
   }
 
   public getAll(): Observable<CalendarEvent[]> {
-    return collectionData(this.collectionRef, {idField: 'id'}) as Observable<CalendarEvent[]>;
+    return collectionData(this.collectionRef, {idField: 'id'})
+    .pipe(map(events => this.mapperEvent(events as CalendarEvent[])));
+  }
+
+  private mapperEvent(events: CalendarEvent[]): CalendarEvent[] {
+    return events.map(event => {
+      const newEvent = { ...event }
+      newEvent.start = new Date(event.start);
+      return newEvent;
+    });
   }
 
   public async save(document: DocumentData): Promise<string> {

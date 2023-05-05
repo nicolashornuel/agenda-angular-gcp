@@ -43,7 +43,7 @@ export class HolidayService {
   constructor(private http: HttpClient) {}
 
   public init(): void {
-    this.fetchHolidays()
+    this.getAll()
       .pipe(take(1))
       .subscribe(holidays => (this.setHolidays$ = holidays));
   }
@@ -56,7 +56,7 @@ export class HolidayService {
     this.holidays$.next([...holidays]);
   }
 
-  public fetchHolidays(): Observable<Holiday[]> {
+  public getAll(): Observable<Holiday[]> {
     return this.http
       .get<{records: Record[]}>(this.openAPI.url, {params: this.openAPI.params})
       .pipe(map(({records}) => records.map(record => this.mapperHoliday(record))));
