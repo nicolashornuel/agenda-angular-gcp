@@ -4,6 +4,17 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
 import { EventService } from 'src/app/core/services/event.service';
 
+interface FormField<MetaType = any> {
+  id?: string | number,
+  title: string,
+  description: string,
+  start: string,
+  end?: string,
+  value: boolean,
+  meta?: MetaType;
+}
+type EmptyField = FormField<{ display: (day: CalendarMonthViewDay) => boolean }>;
+
 @Component({
   selector: 'app-cal-month-cell',
   templateUrl: './cal-month-cell.component.html',
@@ -15,56 +26,77 @@ export class CalMonthCellComponent implements OnInit {
   @Input() isLocked!: boolean;
   formGroup: FormGroup = new FormGroup({});
 
-  public formFields: { title: string, name: string, display?: (day: CalendarMonthViewDay) => boolean, id?: string | number, value: boolean }[] = [];
-  public emptyFields = [
+  public formFields: FormField[] = [];
+  public emptyFields: EmptyField[] = [
     {
       title: 'JOUR',
-      name: 'jour',
+      description: 'jour',
       start: '07:00:00',
       end: '19:00:00',
-      display: (_day: CalendarMonthViewDay) => true
+      value: false,
+      meta: {
+        display: (_day: CalendarMonthViewDay) => true
+      }
     },
     {
       title: 'NUIT',
-      name: 'nuit',
+      description: 'nuit',
       start: '19:00:00',
       end: '23:59:59',
+      value: false,
+      meta: {
       display: (_day: CalendarMonthViewDay) => true
+    }
     },
     {
       title: 'Nounou',
-      name: 'nounou',
+      description: 'nounou',
       start: '8:00:00',
       end: '16:30:00',
+      value: false,
+      meta: {
       display: (day: CalendarMonthViewDay) => !day.isWeekend
+    }
     },
     {
       title: 'GM',
-      name: 'garderie-matin',
+      description: 'garderie-matin',
       start: '07:30:00',
       end: '09:00:00',
+      value: false,
+      meta: {
       display: (day: CalendarMonthViewDay) => day.day != 3 && !day.isWeekend && day.cssClass !== 'holiday'
+    }
     },
     {
       title: 'C',
-      name: 'cantine',
+      description: 'cantine',
       start: '12:00:00',
       end: '14:00:00',
+      value: false,
+      meta: {
       display: (day: CalendarMonthViewDay) => day.day != 3 && !day.isWeekend && day.cssClass !== 'holiday'
+    }
     },
     {
       title: 'GS',
-      name: 'garderie-soir',
+      description: 'garderie-soir',
       start: '17:00:00',
       end: '19:00:00',
+      value: false,
+      meta: {
       display: (day: CalendarMonthViewDay) => day.day != 3 && !day.isWeekend && day.cssClass !== 'holiday'
+    }
     },
     {
       title: 'CLSH',
-      name: 'centre-loisir',
+      description: 'centre-loisir',
       start: '07:30:00',
       end: '18:30:00',
+      value: false,
+      meta: {
       display: (day: CalendarMonthViewDay) => day.day == 3 || (!day.isWeekend && day.cssClass == 'holiday')
+    }
     }
   ];
 
@@ -82,50 +114,31 @@ export class CalMonthCellComponent implements OnInit {
    */
   private initializeData(): void {
     this.emptyFields.forEach(field => {
-      let fieldToSave = { title: field.title, name: field.name, start: field.start, end: field.end }
-      let existField = this.day.events.find(dayEvent => dayEvent.meta === field.name);
+
+      let fieldToSave = { title: field.title, description: field.description, start: field.start, end: field.end }
+      let existField = this.day.events.find(event => event.title === field.title);
+      let formField = existField != undefined ? { value: true, id: existField.id, ...fieldToSave } : { value: false, ...fieldToSave }
+      if (field.meta!.display(this.day))
+        this.formFields.push(formField);
+
+
+      /* let fieldToSave = { title: field.title, description: field.description, start: field.start, end: field.end }
+      let existField = this.day.events.find(dayEvent => dayEvent.title === field.title);
       let formField = existField != undefined ? { value: true, id: existField.id, ...fieldToSave } : { value: false, ...fieldToSave }
       if (field.display(this.day))
-        this.formFields.push(formField);
+        this.formFields.push(formField); */
     });
   }
 
   /**
-   * save or delete onCLick checkbox
+   * onCLick checkbox to save or delete 
    *
-   * @param {{key: string; value: AbstractControl}} {key, value}
+   * @param {*} formField
    * @memberof CalMonthCellComponent
    */
-/*   public onCheck({ key, value }: { key: string; value: AbstractControl }): void {
-    const event = this.day.events.find(dayEvent => dayEvent.meta === key);
-    if (event) {
-      this.eventService.delete(event.id as string).then(() => {
-        console.log('delete ok');
-      });
-    } else if (value.value) {
-      const targetEvent: { title: string; name: string } | undefined = this.emptyFields
-        .map(field => ({ name: field.name, title: field.title }))
-        .find(field => field.title === key);
-      const newEvent: CalendarEvent = {
-        start: this.day.date,
-        title: targetEvent!.title,
-        meta: targetEvent!.name
-      };
-      const fireEvent: DocumentData = {
-        start: this.day.date.getTime(),
-        title: targetEvent!.title,
-        meta: targetEvent!.name
-      }
-      this.eventService.save(fireEvent).then((id) => {
-        this.day.events.push({ id, ...newEvent });
-        console.log('save ok');
-      });
-    }
-  } */
-
   public onCheck(formField: any) {
     console.log(formField);
-    if (!formField.value && formField.id) {
+/*     if (!formField.value && formField.id) {
       this.eventService.delete(formField.id as string).then(() => {
         console.log('delete ok');
       });
@@ -135,7 +148,7 @@ export class CalMonthCellComponent implements OnInit {
         this.day.events.push({ id, ...fieldToSave });
         console.log('save ok');
       });
-    }
+    } */
     
   }
 
