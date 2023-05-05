@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { DocumentData } from '@angular/fire/firestore';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
@@ -45,7 +45,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
     {
       title: 'GS',
       name: 'garderie-soir',
-      display: (day: CalendarMonthViewDay) => day.day != 3 && !day.isWeekend && day.cssClass !== 'holiday'
+      display: (day: CalendarMonthViewDay) => day.day != 3 && !day.isWeekend && day.cssClass != 'holiday'
     },
     {
       title: 'CLSH',
@@ -57,16 +57,22 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   constructor(private eventService: EventService) { }
 
   ngOnInit(): void {
-    this.emptyFields.forEach(field => {
-      let value = false;
-      this.day.events.forEach(dayEvent => dayEvent.meta === field.name ? value = true : null)
-      this.formFields.push({ id: 'id', value, ...field })
-    });
+
     //this.buildForm();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes['day'].currentValue);
+    console.log(changes['day']);
+    this.emptyFields.forEach(field => {      
+      const toDisplay = field.display(changes['day'].currentValue)
+      if (toDisplay) {
+        let value = false;
+        this.day.events.forEach(dayEvent => dayEvent.meta === field.name ? value = true : null)
+        this.formFields.push({ id: 'id', value, ...field })
+      }
+
+    });
     /* if (changes['isLocked'] && !changes['isLocked'].isFirstChange()) {
       changes['isLocked'].currentValue ? this.formGroup.disable() : this.formGroup.enable();
     } */
