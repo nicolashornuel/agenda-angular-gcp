@@ -1,3 +1,23 @@
-.form-check-input:checked + .form-check-label {
+.form-check-input:checked + span {
     font-weight: 700;
+}
+
+.form-check-input:disabled + span, .form-check-input[disabled] + span {
+    cursor: default;
+    opacity: .5;
+}
+
+.form-check-label, .form-check-input {
+    cursor: pointer;
+}
+
+.btn-extra {
+    position: absolute;
+    top: 18px;
+    left: 9px;
+    cursor: pointer;
+    .disabled {
+        cursor: default;
+        opacity: .5;
+    }
 }

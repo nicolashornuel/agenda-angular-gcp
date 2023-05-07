@@ -3,17 +3,22 @@
 </div>
 <div class="d-flex flex-column align-items-start p-2">
     <ng-container *ngFor="let field of formFields">
-        <div class="form-check">
-          <input
+          <div class="form-check">
+          <label class="form-check-label" appTooltip [tooltip]="field.value ? field.description.true : field.description.false">
+            <input
             class="form-check-input"
             type="checkbox"
             [(ngModel)]="field.value"
             [disabled]="isLocked"
             (ngModelChange)="onCheck(field)"
           />
-          <label class="form-check-label">{{ field.title }}</label>
+          <span>{{ field.title }}</span>
+          </label>
+
         </div>
       </ng-container>
-  
-
+</div>
+<div class="btn-extra">
+  <i class="far fa-plus-square text-primary" [ngClass]="isLocked ? 'disabled' : ''"></i>
+  <i class="fas fa-info-circle px-2 text-danger" [ngClass]="isLocked ? 'disabled' : ''"></i>
 </div>

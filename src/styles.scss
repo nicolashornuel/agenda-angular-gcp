@@ -9,6 +9,8 @@
 }
 .cal-cell {
   width: 15%;
+  cursor: default !important;
+  position: relative;
 }
 .cal-month-view .cal-day-cell.cal-today {
   box-shadow: 0px 0px 5px 0px #858f8a;

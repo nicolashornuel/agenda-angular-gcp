@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CollectionReference, DocumentData, DocumentReference, Firestore, collection, collectionChanges, collectionData, deleteDoc, doc, docSnapshots, setDoc } from '@angular/fire/firestore';
+import { CollectionReference, DocumentData, DocumentReference, Firestore, Timestamp, collection, collectionChanges, collectionData, deleteDoc, doc, docSnapshots, setDoc } from '@angular/fire/firestore';
 import { CalendarEvent, CalendarEventTimesChangedEvent } from 'angular-calendar';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 
@@ -46,14 +46,15 @@ export class EventService {
 
   public getAll(): Observable<CalendarEvent[]> {
     return collectionData(this.collectionRef, {idField: 'id'})
-    .pipe(map(events => this.mapperEvent(events as CalendarEvent[])));
+    .pipe(map(events => this.toDTO(events)));
   }
 
-  private mapperEvent(events: CalendarEvent[]): CalendarEvent[] {
+  private toDTO(events: DocumentData[]): CalendarEvent[] {
     return events.map(event => {
       const newEvent = { ...event }
-      newEvent.start = new Date(event.start);
-      return newEvent;
+      newEvent['start'] = event['start'].toDate();
+      newEvent['end'] = event['end'] ? event['end'].toDate() : undefined;
+      return newEvent as CalendarEvent;
     });
   }
 
