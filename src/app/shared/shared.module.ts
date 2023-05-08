@@ -4,11 +4,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { TooltipDirective } from './directives/tooltip.directive';
 import { TooltipComponent } from './components/tooltip/tooltip.component';
+import { PopoverDirective } from './directives/popover.directive';
 
 @NgModule({
   declarations: [
     TooltipDirective,
-    TooltipComponent
+    TooltipComponent,
+    PopoverDirective
   ],
   imports: [
     CommonModule,

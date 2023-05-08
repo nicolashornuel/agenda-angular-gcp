@@ -8,7 +8,5 @@ import { Component } from '@angular/core';
 export class TooltipComponent {
 
   tooltip: string = '';
-  left: number = 0;
-  top: number = 0;
 
 }

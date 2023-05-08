@@ -1,7 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Timestamp } from '@angular/fire/firestore';
 import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
+import { isSameDay } from 'date-fns';
 import { EventService } from 'src/app/core/services/event.service';
+import { DayClickedService } from '../../services/day-clicked.service';
+import { takeUntil } from 'rxjs';
+import { DestroyService } from 'src/app/shared/services/destroy.service';
 
 export interface EventField {
   title: string,
@@ -26,6 +30,9 @@ export class CalMonthCellComponent implements OnInit {
   @Input() day!: CalendarMonthViewDay;
   @Input() locale!: string;
   @Input() isLocked!: boolean;
+  @Input() viewDate!: Date;
+  @Output() dayClicked = new EventEmitter<any>();
+  public isActive: boolean = false;
 
   public emptyFields: EventField[] = [
     {
@@ -108,7 +115,10 @@ export class CalMonthCellComponent implements OnInit {
   ]
   public formFields: EventField[] = [];
 
-  constructor(private eventService: EventService) { }
+  constructor(
+    private eventService: EventService,
+    private dayService: DayClickedService,
+    private destroy$: DestroyService) { }
 
   ngOnInit(): void {
     this.initializeData();
@@ -126,6 +136,9 @@ export class CalMonthCellComponent implements OnInit {
       let formField: EventField = existField != undefined ? { id: existField.id as string, value: true, ...field } : { value: false, ...field };
       if (field.display && field.display(this.day)) this.formFields.push(formField);
     });
+    this.dayService.getDayClicked$.pipe(takeUntil(this.destroy$)).subscribe((date: Date) => {
+      this.isActive = isSameDay(this.day.date, date) ? true : false;
+    })
   }
 
   /**
@@ -163,6 +176,17 @@ export class CalMonthCellComponent implements OnInit {
       start: Timestamp.fromDate(new Date(this.day.date.toDateString() + ' ' + field.start)),
       end: field.end ? Timestamp.fromDate(new Date(this.day.date.toDateString() + ' ' + field.end)) : undefined,
     }
+  }
+
+  /**
+   * onclick to view extra events inside 'activeDayIsOpen' & Month view
+   *
+   * @memberof CalMonthCellComponent
+   */
+  public viewExtra(): void {
+    this.isActive
+      ? this.dayService.setDayClicked$(null)
+      : this.dayService.setDayClicked$(this.day.date);
   }
 
 }

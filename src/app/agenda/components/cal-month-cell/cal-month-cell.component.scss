@@ -1,3 +1,6 @@
+$color-btn-extra: #6c757d;
+$color-btn-extra-active: #0d6efd;
+
 .form-check-input:checked + span {
     font-weight: 700;
 }
@@ -11,13 +14,44 @@
     cursor: pointer;
 }
 
-.btn-extra {
+.btn-extra-group {
+    color: $color-btn-extra;
     position: absolute;
-    top: 18px;
+    top: 20px;
     left: 9px;
     cursor: pointer;
-    .disabled {
-        cursor: default;
-        opacity: .5;
+    font-size: 12px;
+    .btn-extra {
+        border: 1px solid;
+        height: 20px;
+        width: 20px;
+        background-color: white;
+        border-color: $color-btn-extra;
+        &:hover:not(.disabled) {
+            background-color: $color-btn-extra;
+            color: white;
+        }
+        &:active:not(.disabled) {
+            filter: brightness(90%);
+            box-shadow: 0 0 0 0.20rem rgba(13,110,253,.25);
+        }
+        &.disabled {
+            cursor: default;
+            opacity: .4;
+        }
+        &:first-child {
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+        }
+        &:last-child {
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+            margin-left: -1px;
+        }
+        &.active {
+            background-color: $color-btn-extra-active;
+            color: white;
+            border-color: $color-btn-extra-active;
+        }
     }
 }

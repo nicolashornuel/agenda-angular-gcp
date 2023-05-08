@@ -1,8 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
-import { combineLatest, take } from 'rxjs';
+import { isSameDay, isSameMonth } from 'date-fns';
+import { combineLatest, take, takeUntil } from 'rxjs';
 import { EventService } from 'src/app/core/services/event.service';
 import { Holiday, HolidayService } from 'src/app/core/services/holiday.service';
+import { DayClickedService } from '../../services/day-clicked.service';
+import { DestroyService } from 'src/app/shared/services/destroy.service';
 
 @Component({
   selector: 'app-calendar',
@@ -14,10 +17,11 @@ export class CalendarComponent implements OnInit {
   @Input() viewDate!: Date;
   @Input() isLocked!: boolean;
   public events: CalendarEvent[] = [];
-  private holidays: Holiday[] = []
+  private holidays: Holiday[] = [];
   public loading = false;
+  public activeDayIsOpen: boolean = false;
 
-  constructor( private eventService: EventService, private holidayService: HolidayService) { }
+  constructor( private eventService: EventService, private holidayService: HolidayService, private dayService: DayClickedService, private destroy$: DestroyService) { }
 
   ngOnInit(): void {
     this.initializeData();
@@ -36,6 +40,14 @@ export class CalendarComponent implements OnInit {
       this.events = events;
       this.holidays = holidays;
       this.loading = false;
+    })
+    this.dayService.getDayClicked$.pipe(takeUntil(this.destroy$)).subscribe( (date: Date | null) => {
+      if (date) {
+        if (!isSameDay(this.viewDate, date)) this.viewDate = date;
+        this.activeDayIsOpen = true;
+      } else {
+        this.activeDayIsOpen = false;
+      }
     })
   }
 
@@ -56,4 +68,5 @@ export class CalendarComponent implements OnInit {
   public eventTimesChanged(calendarEventTimesChangedEvent: CalendarEventTimesChangedEvent): void {
     this.events = this.eventService.eventTimesChanged(calendarEventTimesChangedEvent);
   }
+
 }

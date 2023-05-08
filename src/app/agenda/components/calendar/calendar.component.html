@@ -7,7 +7,8 @@
         (eventTimesChanged)="eventTimesChanged($event)"
         (beforeViewRender)="beforeMonthViewRender($event)"
         [cellTemplate]="customCellTemplate"
-      >
+        [activeDayIsOpen]="activeDayIsOpen"
+        >
       </mwl-calendar-month-view>
       <mwl-calendar-week-view
         *ngSwitchCase="'week'"
@@ -25,12 +26,7 @@
       </mwl-calendar-day-view>
     </div>
   </ng-container>
-  
-  
-
-
-
 
 <ng-template #customCellTemplate let-day="day" let-locale="locale">
-  <app-cal-month-cell [day]="day" [locale]="locale" [isLocked]="isLocked"></app-cal-month-cell>
+  <app-cal-month-cell [day]="day" [locale]="locale" [isLocked]="isLocked" [viewDate]="viewDate"></app-cal-month-cell>
 </ng-template>
