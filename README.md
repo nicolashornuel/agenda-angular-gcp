@@ -53,3 +53,5 @@ https://medium.com/dev-jam/5-tips-best-practices-to-organize-your-angular-projec
 "start": "ng serve --host 0.0.0.0 --public-host nicolashornuel-urban-winner-q5965x96xr34xp5-4200.preview.app.github.dev"
 
 "start": "ng serve --disable-host-check"
+  
+  https://firebase.google.com/docs/functions/config-env?hl=fr
