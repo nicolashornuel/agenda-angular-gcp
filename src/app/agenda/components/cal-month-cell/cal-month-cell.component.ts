@@ -6,6 +6,8 @@ import { EventService } from 'src/app/core/services/event.service';
 import { DayClickedService } from '../../services/day-clicked.service';
 import { takeUntil } from 'rxjs';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
+import { ModalService } from 'src/app/core/services/modal.service';
+import { AddExtraModalComponent } from '../add-extra-modal/add-extra-modal.component';
 
 export interface EventField {
   title: string,
@@ -118,7 +120,9 @@ export class CalMonthCellComponent implements OnInit {
   constructor(
     private eventService: EventService,
     private dayService: DayClickedService,
-    private destroy$: DestroyService) { }
+    private destroy$: DestroyService,
+    private modalService: ModalService
+    ) { }
 
   ngOnInit(): void {
     this.initializeData();
@@ -187,6 +191,10 @@ export class CalMonthCellComponent implements OnInit {
     this.isActive
       ? this.dayService.setDayClicked$(null)
       : this.dayService.setDayClicked$(this.day.date);
+  }
+
+  public addExtra(): void {
+    const modal = this.modalService.openModal(AddExtraModalComponent);
   }
 
 }

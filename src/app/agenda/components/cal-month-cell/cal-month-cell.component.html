@@ -19,7 +19,7 @@
     </ng-container>
 </div>
 <div class="btn-extra-group d-flex">
-  <div class="btn-extra d-flex justify-content-center align-items-center" [ngClass]="isLocked ? 'disabled' : ''"> 
+  <div class="btn-extra d-flex justify-content-center align-items-center" [ngClass]="isLocked ? 'disabled' : ''" (click)="addExtra()"> 
     <i class="fas fa-plus-square"></i>
   </div>
   <div class="btn-extra d-flex justify-content-center align-items-center" [ngClass]="isActive ? 'active' : ''" (click)="viewExtra()">

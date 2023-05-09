@@ -12,7 +12,7 @@ import {HeaderComponent} from './components/header/header.component';
 import {LayoutComponent} from './components/layout/layout.component';
 import {PredefinedEventComponent} from './components/predefined-event/predefined-event.component';
 import {CalMonthCellComponent} from './components/cal-month-cell/cal-month-cell.component';
-import { MonthCellDirective } from './directive/month-cell.directive';
+import { AddExtraModalComponent } from './components/add-extra-modal/add-extra-modal.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,7 @@ import { MonthCellDirective } from './directive/month-cell.directive';
     LayoutComponent,
     PredefinedEventComponent,
     CalMonthCellComponent,
-    MonthCellDirective
+    AddExtraModalComponent
   ],
   imports: [
     CommonModule,
