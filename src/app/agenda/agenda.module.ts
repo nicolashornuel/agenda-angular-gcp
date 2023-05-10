@@ -13,6 +13,7 @@ import {LayoutComponent} from './components/layout/layout.component';
 import {PredefinedEventComponent} from './components/predefined-event/predefined-event.component';
 import {CalMonthCellComponent} from './components/cal-month-cell/cal-month-cell.component';
 import { AddExtraModalComponent } from './components/add-extra-modal/add-extra-modal.component';
+import { ViewExtraComponent } from './components/view-extra/view-extra.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { AddExtraModalComponent } from './components/add-extra-modal/add-extra-m
     LayoutComponent,
     PredefinedEventComponent,
     CalMonthCellComponent,
-    AddExtraModalComponent
+    AddExtraModalComponent,
+    ViewExtraComponent
   ],
   imports: [
     CommonModule,
