@@ -2,7 +2,7 @@
 @import '../node_modules/angular-calendar/css/angular-calendar.css';
 
 .holiday {
-  background-color: rgba(196, 251, 200, 0.298) !important;
+  background-color: #f4cf9b4c;
 }
 .cal-month-view .cal-cell-top {
   flex: 0 !important;
@@ -17,6 +17,6 @@
   .cal-day-number {
     font-weight: 600;
     margin-top: 0;
-    font-size: 4em;
+    font-size: 3em;
   }
 }

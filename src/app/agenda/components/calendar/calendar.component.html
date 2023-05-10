@@ -32,7 +32,9 @@
   <app-cal-month-cell [day]="day" [locale]="locale" [isLocked]="isLocked" [viewDate]="viewDate"></app-cal-month-cell>
 </ng-template>
 
-<ng-template #viewExtra>
-  <app-view-extra *ngIf="activeDayIsOpen"></app-view-extra>
+<ng-template #viewExtra let-isOpen="isOpen">
+  <ng-container *ngIf="isOpen">
+    <app-view-extra [viewDate]="viewDate"></app-view-extra>
+  </ng-container>
 </ng-template>
 

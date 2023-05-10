@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { CalendarMonthViewDay } from 'angular-calendar';
+import { CalendarMonthViewDay, CalendarView } from 'angular-calendar';
 
 @Component({
   selector: 'app-view-extra',
@@ -8,12 +8,11 @@ import { CalendarMonthViewDay } from 'angular-calendar';
 })
 export class ViewExtraComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
-    console.log(this.viewDate);
+    //console.log(this.isOpen);
   }
   ngOnInit(): void {
 
   }
-  @Input() viewDate!: any;
-  @Input() locale!: string;
+  @Input() viewDate!: Date;
 
 }
