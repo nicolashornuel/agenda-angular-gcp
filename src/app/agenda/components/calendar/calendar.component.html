@@ -33,6 +33,6 @@
 </ng-template>
 
 <ng-template #viewExtra>
-  <app-view-extra *ngIf="activeDayIsOpen"></app-view-extra>
+  <app-view-extra *ngIf="activeDayIsOpen" [@collapse]="activeDayIsOpen ? 'open' : 'closed'"></app-view-extra>
 </ng-template>
 
