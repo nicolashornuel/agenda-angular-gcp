@@ -6,12 +6,10 @@ import { RouterModule } from '@angular/router';
 
 import { EventService } from './services/event.service';
 import { HolidayService } from './services/holiday.service';
-import { ModalDirective } from './directives/modal.directive';
 
 @NgModule({
   declarations: [
-    NavbarComponent,
-    ModalDirective
+    NavbarComponent
   ],
   imports: [
     CommonModule,

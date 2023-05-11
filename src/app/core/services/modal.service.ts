@@ -1,6 +1,5 @@
-import { ComponentRef, Injectable, ViewChild, ViewContainerRef } from '@angular/core';
+import { ComponentRef, Injectable, ViewContainerRef } from '@angular/core';
 import { Subject } from 'rxjs';
-import { ModalDirective } from '../directives/modal.directive';
 
 @Injectable({
   providedIn: 'root'
@@ -8,10 +7,9 @@ import { ModalDirective } from '../directives/modal.directive';
 export class ModalService {
   private componentRef!: ComponentRef<any>;
   private componentSubscriber!: Subject<any>;
-  @ViewChild('appModal', { read: ViewContainerRef }) container!: ViewContainerRef;
 
-  openModal(component: any, data?: any) {
-    this.componentRef = this.container.createComponent(component);
+  openModal(container: ViewContainerRef, component: any, data?: any) {
+    this.componentRef = container.createComponent(component);
     this.componentSubscriber = new Subject<any>();
     this.componentRef.instance.data = data;
     this.componentRef.instance.response.subscribe((response: any) => {

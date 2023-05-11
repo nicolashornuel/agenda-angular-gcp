@@ -4,7 +4,6 @@
         *ngSwitchCase="'month'"
         [viewDate]="viewDate"
         [events]="events"
-        (eventTimesChanged)="eventTimesChanged($event)"
         (beforeViewRender)="beforeMonthViewRender($event)"
         [cellTemplate]="customCellTemplate"
         [activeDayIsOpen]="activeDayIsOpen"

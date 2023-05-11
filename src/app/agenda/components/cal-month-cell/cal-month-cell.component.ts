@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { Timestamp } from '@angular/fire/firestore';
 import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
 import { isSameDay, isSameMonth } from 'date-fns';
 import { EventService } from 'src/app/core/services/event.service';
 import { DayClickedService } from '../../services/day-clicked.service';
-import { takeUntil } from 'rxjs';
+import { take, takeUntil } from 'rxjs';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { ModalService } from 'src/app/core/services/modal.service';
 import { AddExtraModalComponent } from '../add-extra-modal/add-extra-modal.component';
@@ -34,6 +34,8 @@ export class CalMonthCellComponent implements OnInit {
   @Input() isLocked!: boolean;
   @Input() viewDate!: Date;
   @Output() dayClicked = new EventEmitter<any>();
+  @ViewChild('modal', {read: ViewContainerRef}) target!: ViewContainerRef;
+
   public isActive: boolean = false;
 
   public emptyFields: EventField[] = [
@@ -194,7 +196,10 @@ export class CalMonthCellComponent implements OnInit {
   }
 
   public addExtra(): void {
-    const modal = this.modalService.openModal(AddExtraModalComponent);
+    const modal = this.modalService.openModal(this.target, AddExtraModalComponent, this.day);
+    modal.listenEvent().pipe(take(1)).subscribe((response: string) => {
+      if (response) console.log(response);
+    });
   }
 
   public isSameMonth(): boolean {

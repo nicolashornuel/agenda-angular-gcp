@@ -19,7 +19,7 @@ export class CalendarComponent implements OnInit {
   public events: CalendarEvent[] = [];
   private holidays: Holiday[] = [];
   public loading = false;
-  public activeDayIsOpen: boolean = false;
+  public activeDayIsOpen: boolean = true;
 
   constructor( private eventService: EventService, private holidayService: HolidayService, private dayService: DayClickedService, private destroy$: DestroyService) { }
 
