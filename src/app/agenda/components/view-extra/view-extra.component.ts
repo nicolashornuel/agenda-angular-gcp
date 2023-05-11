@@ -8,12 +8,11 @@ import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 })
 export class ViewExtraComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
-    console.log(this.viewDate);
+    //console.log(this.isOpen);
   }
   ngOnInit(): void {
 
   }
-  @Input() viewDate!: any;
-  @Input() locale!: string;
+  @Input() viewDate!: Date;
 
 }

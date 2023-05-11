@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
-import { isSameDay, isSameMonth } from 'date-fns';
+import { isSameDay } from 'date-fns';
 import { combineLatest, take, takeUntil } from 'rxjs';
 import { EventService } from 'src/app/core/services/event.service';
 import { Holiday, HolidayService } from 'src/app/core/services/holiday.service';
-import { DayClickedService } from '../../services/day-clicked.service';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { AnimationTriggerMetadata, animate, state, style, transition, trigger } from '@angular/animations';
+import { DayClickedService } from '../../services/day-clicked.service';
 
 export const collapseAnimation: AnimationTriggerMetadata = trigger('collapse', [
   state('open', style({

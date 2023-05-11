@@ -1,4 +1,4 @@
-$color-btn-extra: #6c757d;
+$color-btn-extra-disabled: #6c757d;
 $color-btn-extra-active: #0d6efd;
 
 .form-check-input:checked + span {
@@ -15,7 +15,7 @@ $color-btn-extra-active: #0d6efd;
 }
 
 .btn-extra-group {
-    color: $color-btn-extra;
+    color: $color-btn-extra-active;
     position: absolute;
     top: 20px;
     left: 9px;
@@ -24,11 +24,11 @@ $color-btn-extra-active: #0d6efd;
     .btn-extra {
         border: 1px solid;
         height: 20px;
-        width: 20px;
+        width: 24px;
         background-color: white;
-        border-color: $color-btn-extra;
+        border-color: $color-btn-extra-active;
         &:hover:not(.disabled) {
-            background-color: $color-btn-extra;
+            background-color: $color-btn-extra-active;
             color: white;
         }
         &:active:not(.disabled) {
@@ -38,6 +38,8 @@ $color-btn-extra-active: #0d6efd;
         &.disabled {
             cursor: default;
             opacity: .4;
+            border-color: $color-btn-extra-disabled;
+            color: $color-btn-extra-disabled;
         }
         &:first-child {
             border-top-left-radius: 3px;
