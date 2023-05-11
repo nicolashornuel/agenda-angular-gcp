@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Timestamp } from '@angular/fire/firestore';
 import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
-import { isSameDay } from 'date-fns';
+import { isSameDay, isSameMonth } from 'date-fns';
 import { EventService } from 'src/app/core/services/event.service';
 import { DayClickedService } from '../../services/day-clicked.service';
 import { takeUntil } from 'rxjs';
@@ -195,6 +195,10 @@ export class CalMonthCellComponent implements OnInit {
 
   public addExtra(): void {
     const modal = this.modalService.openModal(AddExtraModalComponent);
+  }
+
+  public isSameMonth(): boolean {
+    return isSameMonth(this.day.date, this.viewDate);
   }
 
 }

@@ -1,7 +1,7 @@
 <div class="cal-cell-top">
   <span class="cal-day-number">{{ day.date | calendarDate : 'monthViewDayNumber' : locale }}</span>
 </div>
-<div class="d-flex flex-column align-items-start p-2">
+<div class="d-flex flex-column align-items-start p-3">
   <ng-container *ngFor="let field of formFields">
         <div class="form-check">
         <label class="form-check-label">
@@ -18,7 +18,7 @@
       </div>
     </ng-container>
 </div>
-<div class="btn-extra-group d-flex">
+<div class="btn-extra-group d-flex" *ngIf="isSameMonth()">
   <div class="btn-extra d-flex justify-content-center align-items-center" [ngClass]="isLocked ? 'disabled' : ''" (click)="addExtra()"> 
     <i class="fas fa-plus-square"></i>
   </div>

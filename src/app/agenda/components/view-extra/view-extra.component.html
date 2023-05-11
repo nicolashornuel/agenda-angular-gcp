@@ -1,4 +1,3 @@
-<div class="view-extra-day-container">
+<div class="view-extra-day-container"  *ngIf="isOpen" [@collapse] >
     {{ viewDate | date: 'fullDate'  }}
 </div>
-<!-- {{ viewDate | calendarDate : view + 'ViewTitle' : locale }} -->

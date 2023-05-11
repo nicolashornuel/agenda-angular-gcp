@@ -1,4 +1,4 @@
-  <ng-container *ngIf="!loading">
+  <ng-container *ngIf="!loading; else spinner">
     <div [ngSwitch]="view">
       <mwl-calendar-month-view
         *ngSwitchCase="'month'"
@@ -33,8 +33,15 @@
 </ng-template>
 
 <ng-template #viewExtra let-isOpen="isOpen">
-  <ng-container *ngIf="isOpen">
-    <app-view-extra [viewDate]="viewDate" [@collapse]="isOpen ? 'open' : 'closed'"></app-view-extra>
-  </ng-container>
+    <app-view-extra [viewDate]="viewDate" [isOpen]="isOpen"></app-view-extra>
 </ng-template>
+
+<ng-template #spinner>
+  <div class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</ng-template>
+
 
