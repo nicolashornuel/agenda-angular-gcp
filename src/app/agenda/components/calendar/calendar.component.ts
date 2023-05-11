@@ -6,11 +6,26 @@ import { EventService } from 'src/app/core/services/event.service';
 import { Holiday, HolidayService } from 'src/app/core/services/holiday.service';
 import { DayClickedService } from '../../services/day-clicked.service';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
+import { AnimationTriggerMetadata, animate, state, style, transition, trigger } from '@angular/animations';
+
+export const collapseAnimation: AnimationTriggerMetadata = trigger('collapse', [
+  state('open', style({
+      height: 0
+    })
+  ),
+  state('close', style({
+      height: '*'
+    })
+  ),
+  transition('open => closed', animate('150ms ease-out')),
+  transition('closed => open', animate('150ms ease-in')),
+]);
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss']
+  styleUrls: ['./calendar.component.scss'],
+  animations: [collapseAnimation]
 })
 export class CalendarComponent implements OnInit {
   @Input() view!: CalendarView;
