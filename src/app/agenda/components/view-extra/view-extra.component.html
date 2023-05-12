@@ -1,3 +1,12 @@
-<div class="view-extra-day-container"  *ngIf="isOpen" [@collapse] >
-    {{ viewDate | date: 'fullDate'  }}
+<div class="cal-open-day-events" *ngIf="isOpen" [@collapse]>
+  <h5>{{ viewDate | date : 'fullDate' }}</h5>
+  <ng-container *ngFor="let comment of comments">
+    <div>
+      <span class="cal-event"></span>
+      <span class="fs-6 fw-light fst-italic mx-2">
+        <em>{{ comment.title }}</em>
+      </span>
+      <a (click)="comment.onClick(comment)"><i class="fas fa-fw fa-trash-alt"></i></a>
+    </div>
+  </ng-container>
 </div>

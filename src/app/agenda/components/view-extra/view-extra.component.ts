@@ -1,5 +1,8 @@
 import { AnimationTriggerMetadata, animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { CalendarEvent } from 'angular-calendar';
+import { EventService } from 'src/app/core/services/event.service';
+import { EventField } from '../cal-month-cell/cal-month-cell.component';
 
 export const collapseAnimation: AnimationTriggerMetadata = trigger('collapse', [
   state('void', style({
@@ -26,9 +29,32 @@ export const collapseAnimation: AnimationTriggerMetadata = trigger('collapse', [
   styleUrls: ['./view-extra.component.scss'],
   animations: [collapseAnimation]
 })
-export class ViewExtraComponent {
+export class ViewExtraComponent implements OnChanges {
 
   @Input() viewDate!: Date;
   @Input() isOpen!: boolean;
+  @Input() events!: CalendarEvent[];
+  public comments: any[] = [];
+
+  constructor(private eventService: EventService) { }
+
+  ngOnChanges(_changes: SimpleChanges): void {
+    if (this.events) {
+      this.comments = this.events.map((event: CalendarEvent) => {
+        return {
+          ...event,
+          onClick: async (e: CalendarEvent): Promise<void> => {
+            await this.eventService.delete(e.id as string);
+            console.log('delete ok');
+
+          },
+        } as unknown as EventField
+      })
+        .filter((eventField: EventField) => eventField.type === 'comment')
+
+    }
+
+  }
+
 
 }

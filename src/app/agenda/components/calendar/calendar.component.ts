@@ -22,14 +22,19 @@ export class CalendarComponent implements OnInit, OnChanges {
   public activeDayIsOpen: boolean = true;
   public refresh = new Subject<void>();
 
-  constructor( private eventService: EventService, private holidayService: HolidayService, private dayService: DayClickedService, private destroy$: DestroyService) { }
+  constructor(
+    private eventService: EventService,
+    private holidayService: HolidayService,
+    private dayService: DayClickedService,
+    private destroy$: DestroyService
+    ) { }
 
   ngOnInit(): void {
     this.initializeData();
   }
 
   ngOnChanges(_changes: SimpleChanges): void {
-    this.activeDayIsOpen = isSameMonth(new Date(), this.viewDate) ? true : false;
+     this.activeDayIsOpen = isSameMonth(new Date(), this.viewDate) ? true : false;
   }
 
   /**
@@ -41,17 +46,17 @@ export class CalendarComponent implements OnInit, OnChanges {
   private initializeData(): void {
     this.loading = true;
     combineLatest([this.eventService.getAll(), this.holidayService.getAll()])
-    .pipe(take(1)).subscribe(([events, holidays]) => {            
-      this.events = events;
-      this.holidays = holidays;
-      this.loading = false;
-    })
-    this.dayService.getDayClicked$.pipe(takeUntil(this.destroy$)).subscribe( (date: Date | null) => {
+      .pipe(takeUntil(this.destroy$)).subscribe(([events, holidays]) => {
+        this.events = events;
+        this.holidays = holidays;
+        this.loading = false;
+      })
+    this.dayService.getDayClicked$.pipe(takeUntil(this.destroy$)).subscribe((date: Date | null) => {
       if (date) {
         if (!isSameDay(this.viewDate, date)) this.viewDate = date;
-         this.activeDayIsOpen = true;
+        this.activeDayIsOpen = true;
       } else {
-         this.activeDayIsOpen = false;
+        this.activeDayIsOpen = false;
       }
     })
   }

@@ -7,9 +7,9 @@
         <button type="button" class="btn-close" (click)="onClose()"></button>
       </div>
       <div class="modal-body p-4">
-        <ng-container *ngFor="let event of data.events; let i = index">
-          <span class="fw-semibold">{{ event.title }}</span>
-          <span *ngIf="i < data.events.length - 1"> / </span>
+        <ng-container *ngFor="let event of events; let i = index">
+          <span class="fw-semibold">{{ event }}</span>
+          <span *ngIf="i < events.length - 1"> / </span>
         </ng-container>
         <form class="my-3">
           <label for="comment" class="form-label">Ajouter un commentaire :</label>

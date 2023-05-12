@@ -32,8 +32,8 @@
   <app-cal-month-cell [day]="day" [locale]="locale" [isLocked]="isLocked" [viewDate]="viewDate"></app-cal-month-cell>
 </ng-template>
 
-<ng-template #viewExtra let-isOpen="isOpen">
-    <app-view-extra [viewDate]="viewDate" [isOpen]="isOpen"></app-view-extra>
+<ng-template #viewExtra let-isOpen="isOpen" let-events="events">
+    <app-view-extra [viewDate]="viewDate" [isOpen]="isOpen" [events]="events"></app-view-extra>
 </ng-template>
 
 <ng-template #spinner>

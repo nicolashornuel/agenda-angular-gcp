@@ -134,6 +134,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
 
   ngOnChanges(_changes: SimpleChanges): void {
     if (isSameMonth(new Date(), this.viewDate) && isSameDay(this.day.date, this.viewDate)) this.isActive = true;
+    this.comments = this.day.events.map((dayEvent: CalendarEvent) => ({ ...dayEvent }) as unknown as EventField).filter((eventField: EventField) => eventField.type === 'comment');
   }
 
   /**
@@ -145,7 +146,6 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   private initializeData(): void {
     this.emptyFields.forEach((field: EventField) => {
       let existField: CalendarEvent | undefined = this.day.events.find((dayEvent: CalendarEvent) => dayEvent.title === field.title);
-      this.comments = this.day.events.map((dayEvent: CalendarEvent) =>  ({ ...dayEvent }) as unknown as EventField).filter( (eventField: EventField) => eventField.type === 'comment' );
       let formField: EventField = existField != undefined ? { id: existField.id as string, value: true, ...field } : { value: false, ...field };
       if (field.display && field.display(this.day)) this.formFields.push(formField);
     });
@@ -181,11 +181,11 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
    * @return {*}  {EventField}
    * @memberof CalMonthCellComponent
    */
-  private mapper(field: EventField): EventField {
+  private mapper(field: EventField): any {
     return {
       title: field.title,
       type: field.type,
-      description: field.description,
+      description: field.description.true,
       start: Timestamp.fromDate(new Date(this.day.date.toDateString() + ' ' + field.start)),
       end: field.end ? Timestamp.fromDate(new Date(this.day.date.toDateString() + ' ' + field.end)) : undefined,
     }
@@ -209,9 +209,20 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
    */
   public addExtra(): void {
     const modal = this.modalService.openModal(this.target, AddExtraModalComponent, this.day);
-    modal.listenEvent().pipe(take(1)).subscribe((response: string) => {
-      if (response) console.log(response);
-    });
+    modal.listenEvent().pipe(take(1)).subscribe(async (response: string) => {
+      if (response) {
+        const comment = {
+          id: '',
+          title: response,
+          type: 'comment',
+          description: response,
+          start: Timestamp.fromDate(new Date(this.day.date)),
+        }
+        await this.eventService.save(comment);
+        console.log('save ok');
+      }
+    })
+
   }
 
   /**
