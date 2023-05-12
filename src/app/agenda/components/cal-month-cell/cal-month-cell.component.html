@@ -24,8 +24,8 @@
   </div>
   <div class="btn-extra d-flex justify-content-center align-items-center" [ngClass]="isActive ? 'active' : ''" (click)="viewExtra()">
     <i class="fas fa-eye"></i>
-    <span *ngIf="day.events.length > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-      {{day.events.length}}
+    <span *ngIf="comments.length > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+      {{comments.length}}
     </span>
   </div>
 </div>

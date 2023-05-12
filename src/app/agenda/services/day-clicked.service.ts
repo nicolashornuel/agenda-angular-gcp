@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CalendarEvent } from 'angular-calendar';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

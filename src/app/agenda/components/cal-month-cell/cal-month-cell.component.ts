@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, ViewContainerRef } from '@angular/core';
 import { Timestamp } from '@angular/fire/firestore';
 import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
 import { isSameDay, isSameMonth } from 'date-fns';
@@ -16,7 +16,7 @@ export interface EventField {
   display?: (day: CalendarMonthViewDay) => boolean,
   start: Timestamp | string,
   end?: Timestamp | string,
-  type: 'recurrent' | 'exceptional',
+  type: 'recurrent' | 'comment',
   description: {
     true: string,
     false: string
@@ -28,13 +28,13 @@ export interface EventField {
   templateUrl: './cal-month-cell.component.html',
   styleUrls: ['./cal-month-cell.component.scss']
 })
-export class CalMonthCellComponent implements OnInit {
+export class CalMonthCellComponent implements OnInit, OnChanges {
   @Input() day!: CalendarMonthViewDay;
   @Input() locale!: string;
   @Input() isLocked!: boolean;
   @Input() viewDate!: Date;
   @Output() dayClicked = new EventEmitter<any>();
-  @ViewChild('modal', {read: ViewContainerRef}) target!: ViewContainerRef;
+  @ViewChild('modal', { read: ViewContainerRef }) target!: ViewContainerRef;
 
   public isActive: boolean = false;
 
@@ -119,15 +119,21 @@ export class CalMonthCellComponent implements OnInit {
   ]
   public formFields: EventField[] = [];
 
+  public comments: EventField[] = [];
+
   constructor(
     private eventService: EventService,
     private dayService: DayClickedService,
     private destroy$: DestroyService,
     private modalService: ModalService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.initializeData();
+  }
+
+  ngOnChanges(_changes: SimpleChanges): void {
+    if (isSameMonth(new Date(), this.viewDate) && isSameDay(this.day.date, this.viewDate)) this.isActive = true;
   }
 
   /**
@@ -139,6 +145,7 @@ export class CalMonthCellComponent implements OnInit {
   private initializeData(): void {
     this.emptyFields.forEach((field: EventField) => {
       let existField: CalendarEvent | undefined = this.day.events.find((dayEvent: CalendarEvent) => dayEvent.title === field.title);
+      this.comments = this.day.events.map((dayEvent: CalendarEvent) =>  ({ ...dayEvent }) as unknown as EventField).filter( (eventField: EventField) => eventField.type === 'comment' );
       let formField: EventField = existField != undefined ? { id: existField.id as string, value: true, ...field } : { value: false, ...field };
       if (field.display && field.display(this.day)) this.formFields.push(formField);
     });
@@ -195,6 +202,11 @@ export class CalMonthCellComponent implements OnInit {
       : this.dayService.setDayClicked$(this.day.date);
   }
 
+  /**
+   * button to open modal add comment
+   *
+   * @memberof CalMonthCellComponent
+   */
   public addExtra(): void {
     const modal = this.modalService.openModal(this.target, AddExtraModalComponent, this.day);
     modal.listenEvent().pipe(take(1)).subscribe((response: string) => {
@@ -202,6 +214,12 @@ export class CalMonthCellComponent implements OnInit {
     });
   }
 
+  /**
+   * allow to block viewExtra inside cell-day over month
+   *
+   * @return {*}  {boolean}
+   * @memberof CalMonthCellComponent
+   */
   public isSameMonth(): boolean {
     return isSameMonth(this.day.date, this.viewDate);
   }
