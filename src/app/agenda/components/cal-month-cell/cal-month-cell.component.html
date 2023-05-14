@@ -8,11 +8,11 @@
           <input
           class="form-check-input"
           type="checkbox"
-          [(ngModel)]="field.value"
+          [(ngModel)]="field.meta!.value"
           [disabled]="isLocked"
           (ngModelChange)="onCheck(field)"
         />
-        <span appTooltip [tooltip]="field.value ? field.description.true : field.description.false">{{ field.title }}</span>
+        <span appTooltip [tooltip]="field.meta!.value! ? field.meta!.description!.true : field.meta!.description!.false">{{ field.title! }}</span>
         </label>
 
       </div>

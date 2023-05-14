@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CalendarEvent } from 'angular-calendar';
 import { BehaviorSubject, Observable, map, take } from 'rxjs';
 
 interface Record {
@@ -18,8 +17,8 @@ interface Field {
 
 export interface Holiday {
   description: string;
-  end_date: Date;
-  start_date: Date;
+  end: Date;
+  start: Date;
 }
 
 @Injectable({
@@ -64,8 +63,8 @@ export class HolidayService {
 
   private mapperHoliday({fields}: Record): Holiday {
     return {
-      start_date: new Date(fields.start_date.substring(0,10)),
-      end_date: new Date(fields.end_date.substring(0,10)),
+      start: new Date(fields.start_date.substring(0,10)),
+      end: new Date(fields.end_date.substring(0,10)),
       description: fields.description
     };
   }

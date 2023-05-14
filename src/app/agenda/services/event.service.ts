@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CollectionReference, DocumentData, DocumentReference, Firestore, Timestamp, collection, collectionChanges, collectionData, deleteDoc, doc, docSnapshots, setDoc } from '@angular/fire/firestore';
 import { CalendarEvent, CalendarEventTimesChangedEvent } from 'angular-calendar';
 import { BehaviorSubject, Observable, map } from 'rxjs';
+import { CalEventDTO, CalEventEntity } from '../models/cal-event.models';
 
 @Injectable({
   providedIn: 'root'
@@ -21,20 +22,20 @@ export class EventService {
     this.collectionRef = collection(this.firestore, 'calendarEvent');
   }
 
-  public get getEvents$(): Observable<CalendarEvent[]> {
-    return this.events$.asObservable();
-  }
-
-  public set setEvents$(calendarEvents: CalendarEvent[]) {
-    this.events = [...calendarEvents];
-    this.events$.next(this.events);
-  }
-
-  public pushEvent(calendarEvent: CalendarEvent): void {
-    this.events.push(calendarEvent);
-    this.events = [...this.events];
-    this.events$.next(this.events);
-  }
+  /*   public get getEvents$(): Observable<CalendarEvent[]> {
+      return this.events$.asObservable();
+    }
+  
+    public set setEvents$(calendarEvents: CalendarEvent[]) {
+      this.events = [...calendarEvents];
+      this.events$.next(this.events);
+    }
+  
+    public pushEvent(calendarEvent: CalendarEvent): void {
+      this.events.push(calendarEvent);
+      this.events = [...this.events];
+      this.events$.next(this.events);
+    } */
 
   public eventTimesChanged({ event, newStart, allDay }: CalendarEventTimesChangedEvent): CalendarEvent[] {
     if (typeof allDay !== 'undefined') event.allDay = allDay;
@@ -44,18 +45,8 @@ export class EventService {
     return this.events;
   }
 
-  public getAll(): Observable<CalendarEvent[]> {
-    return collectionData(this.collectionRef, {idField: 'id'})
-    .pipe(map(events => this.toDTO(events)));
-  }
-
-  private toDTO(events: DocumentData[]): CalendarEvent[] {
-    return events.map(event => {
-      const newEvent = { ...event }
-      newEvent['start'] = event['start'].toDate();
-      newEvent['end'] = event['end'] ? event['end'].toDate() : undefined;
-      return newEvent as CalendarEvent;
-    });
+  public getAll(): Observable<DocumentData[]> {
+    return collectionData(this.collectionRef, { idField: 'id' });
   }
 
   public async save(document: DocumentData): Promise<string> {

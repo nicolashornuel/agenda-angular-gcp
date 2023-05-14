@@ -1,11 +1,13 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
 import { isSameDay, isSameMonth } from 'date-fns';
-import { Subject, combineLatest, take, takeUntil } from 'rxjs';
-import { EventService } from 'src/app/core/services/event.service';
-import { Holiday, HolidayService } from 'src/app/core/services/holiday.service';
+import { Subject, combineLatest, takeUntil } from 'rxjs';
+import { EventService } from 'src/app/agenda/services/event.service';
+import { Holiday, HolidayService } from 'src/app/agenda/services/holiday.service';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
+import { CalEventEntity } from '../../models/cal-event.models';
 import { DayClickedService } from '../../services/day-clicked.service';
+import { MapperService } from '../../services/mapper.service';
 
 @Component({
   selector: 'app-calendar',
@@ -26,7 +28,8 @@ export class CalendarComponent implements OnInit, OnChanges {
     private eventService: EventService,
     private holidayService: HolidayService,
     private dayService: DayClickedService,
-    private destroy$: DestroyService
+    private destroy$: DestroyService,
+    private mapper: MapperService
     ) { }
 
   ngOnInit(): void {
@@ -47,7 +50,7 @@ export class CalendarComponent implements OnInit, OnChanges {
     this.loading = true;
     combineLatest([this.eventService.getAll(), this.holidayService.getAll()])
       .pipe(takeUntil(this.destroy$)).subscribe(([events, holidays]) => {
-        this.events = events;
+        this.events = this.mapper.entitiesToDTOs(events as CalEventEntity[]);
         this.holidays = holidays;
         this.loading = false;
       })
@@ -70,7 +73,7 @@ export class CalendarComponent implements OnInit, OnChanges {
   public beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): void {
     body.forEach((day: CalendarMonthViewDay) => {
       this.holidays.forEach((holiday: Holiday) => {
-        if (day.date >= holiday.start_date && day.date <= holiday.end_date) day.cssClass = 'holiday';
+        if (day.date >= holiday.start && day.date <= holiday.end) day.cssClass = 'holiday';
       });
     });
   }

@@ -4,9 +4,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 
-import { EventService } from './services/event.service';
-import { HolidayService } from './services/holiday.service';
-
 @NgModule({
   declarations: [
     NavbarComponent
@@ -16,7 +13,6 @@ import { HolidayService } from './services/holiday.service';
     RouterModule,
     BrowserAnimationsModule
   ],
-  exports: [NavbarComponent],
-  providers: [EventService, HolidayService]
+  exports: [NavbarComponent]
 })
 export class CoreModule { }

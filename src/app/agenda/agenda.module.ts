@@ -10,20 +10,18 @@ import {SharedModule} from '../shared/shared.module';
 import {CalendarComponent} from './components/calendar/calendar.component';
 import {HeaderComponent} from './components/header/header.component';
 import {LayoutComponent} from './components/layout/layout.component';
-import {PredefinedEventComponent} from './components/predefined-event/predefined-event.component';
 import {CalMonthCellComponent} from './components/cal-month-cell/cal-month-cell.component';
-import { AddExtraModalComponent } from './components/add-extra-modal/add-extra-modal.component';
-import { ViewExtraComponent } from './components/view-extra/view-extra.component';
+import { CalMonthViewCommentComponent } from './components/cal-month-view-comment/cal-month-view-comment.component';
+import { CalMonthAddCommentComponent } from './components/cal-month-add-comment/cal-month-add-comment.component';
 
 @NgModule({
   declarations: [
     CalendarComponent,
     HeaderComponent,
     LayoutComponent,
-    PredefinedEventComponent,
     CalMonthCellComponent,
-    AddExtraModalComponent,
-    ViewExtraComponent
+    CalMonthViewCommentComponent,
+    CalMonthAddCommentComponent
   ],
   imports: [
     CommonModule,
