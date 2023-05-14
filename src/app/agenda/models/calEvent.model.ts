@@ -4,6 +4,7 @@ import { Timestamp } from '@angular/fire/firestore';
 export enum CalEventType {
   COMMENT = 'comment',
   RECURRENT = 'recurrent',
+  ANNIVERSAIRE = 'anniversaire',
   FAMILY = 'family'
 }
 

@@ -1,13 +1,13 @@
 <div class="container">
   <div class="row align-items-center header-container">
     <div class="col-md-12">
-      <app-header [(view)]="view" [(viewDate)]="viewDate" [(isLocked)]="isLocked"></app-header>
+      <app-cal-header [(view)]="view" [(viewDate)]="viewDate" [(isLocked)]="isLocked"></app-cal-header>
     </div>
   </div>
 
   <div class="row calendar-container">
     <div class="col-md-12">
-      <app-calendar [view]="view" [viewDate]="viewDate" [isLocked]="isLocked"></app-calendar>
+      <app-cal-body [view]="view" [viewDate]="viewDate" [isLocked]="isLocked"></app-cal-body>
     </div>
   </div>
 </div>

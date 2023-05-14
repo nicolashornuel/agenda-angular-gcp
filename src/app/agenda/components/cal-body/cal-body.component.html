@@ -1,4 +1,4 @@
-  <ng-container *ngIf="!loading; else spinner">
+<ng-container *ngIf="!loading; else spinner">
     <div [ngSwitch]="view">
       <mwl-calendar-month-view
         *ngSwitchCase="'month'"

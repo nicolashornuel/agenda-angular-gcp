@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CollectionReference, DocumentData, DocumentReference, Firestore, Timestamp, collection, collectionChanges, collectionData, deleteDoc, doc, docSnapshots, setDoc } from '@angular/fire/firestore';
 import { CalendarEvent, CalendarEventTimesChangedEvent } from 'angular-calendar';
 import { BehaviorSubject, Observable, map } from 'rxjs';
-import { CalEventDTO, CalEventEntity } from '../models/cal-event.models';
+import { CalEventDTO, CalEventEntity } from '../models/calEvent.model';
 
 @Injectable({
   providedIn: 'root'

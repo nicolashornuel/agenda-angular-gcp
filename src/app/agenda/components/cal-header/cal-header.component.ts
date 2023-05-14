@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CalendarView } from 'angular-calendar';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  selector: 'app-cal-header',
+  templateUrl: './cal-header.component.html',
+  styleUrls: ['./cal-header.component.scss']
 })
-export class HeaderComponent {
+export class CalHeaderComponent {
   @Input() view!: CalendarView;
 
   @Input() viewDate!: Date;
@@ -28,6 +28,5 @@ export class HeaderComponent {
     this.isLocked = !this.isLocked;
     this.isLockedChange.emit(this.isLocked)
   }
-
 
 }

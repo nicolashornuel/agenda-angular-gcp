@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Timestamp } from '@angular/fire/firestore';
-import { CalEventDTO, CalEventEntity, CalEventField, CalEventType } from '../models/cal-event.models';
+import { CalEventDTO, CalEventEntity, CalEventField, CalEventType } from '../models/calEvent.model';
 
 @Injectable({
   providedIn: 'root'

@@ -1,13 +1,16 @@
 <div class="cal-open-day-events" *ngIf="isOpen" [@collapse]>
+  <div class="d-flex justify-content-between">
     <h5>{{ viewDate | date : 'fullDate' }}</h5>
-    <ng-container *ngFor="let comment of comments">
-      <div>
-        <span class="cal-event"></span>
-        <span class="fs-6 fw-light fst-italic mx-2">
-          <em>{{ comment.title }}</em>
-        </span>
-        <a (click)="onDelete(comment)"><i class="fas fa-fw fa-trash-alt"></i></a>
-      </div>
-    </ng-container>
+    <span>{{ saintDuJour }}</span>
   </div>
-  
+
+  <ng-container *ngFor="let comment of comments">
+    <div>
+      <span class="cal-event"></span>
+      <span class="fs-6 fw-light fst-italic mx-2">
+        <em>{{ comment.title }}</em>
+      </span>
+      <a (click)="onDelete(comment)"><i class="fas fa-fw fa-trash-alt"></i></a>
+    </div>
+  </ng-container>
+</div>

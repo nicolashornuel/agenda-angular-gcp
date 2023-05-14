@@ -5,16 +5,16 @@ import { Subject, combineLatest, takeUntil } from 'rxjs';
 import { EventService } from 'src/app/agenda/services/event.service';
 import { Holiday, HolidayService } from 'src/app/agenda/services/holiday.service';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
-import { CalEventEntity } from '../../models/cal-event.models';
+import { CalEventEntity } from '../../models/calEvent.model';
 import { DayClickedService } from '../../services/day-clicked.service';
 import { MapperService } from '../../services/mapper.service';
 
 @Component({
-  selector: 'app-calendar',
-  templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss']
+  selector: 'app-cal-body',
+  templateUrl: './cal-body.component.html',
+  styleUrls: ['./cal-body.component.scss']
 })
-export class CalendarComponent implements OnInit, OnChanges {
+export class CalBodyComponent implements OnInit, OnChanges {
   @Input() view!: CalendarView;
   @Input() viewDate!: Date;
   @Input() isLocked!: boolean;

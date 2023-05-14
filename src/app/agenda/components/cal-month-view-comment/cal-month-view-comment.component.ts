@@ -1,8 +1,9 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { CalendarEvent } from 'angular-calendar';
 import { EventService } from 'src/app/agenda/services/event.service';
 import { collapseAnimation } from 'src/app/core/models/collapse-animation';
-import { CalEventDTO, CalEventType } from '../../models/cal-event.models';
+import { CalEventDTO, CalEventType } from '../../models/calEvent.model';
+import { SaintDuJourService } from '../../services/saintDuJour.service';
 
 @Component({
   selector: 'app-cal-month-view-comment',
@@ -10,16 +11,27 @@ import { CalEventDTO, CalEventType } from '../../models/cal-event.models';
   styleUrls: ['./cal-month-view-comment.component.scss'],
   animations: [collapseAnimation]
 })
-export class CalMonthViewCommentComponent implements OnChanges {
+export class CalMonthViewCommentComponent implements OnInit, OnChanges {
 
   @Input() viewDate!: Date;
   @Input() isOpen!: boolean;
   @Input() events!: CalendarEvent[];
   public comments: CalEventDTO[] = [];
+  public saintDuJour?: string;
 
-  constructor(private eventService: EventService) { }
+  constructor(private eventService: EventService, private saint: SaintDuJourService) { }
 
-  ngOnChanges(_changes: SimpleChanges): void {
+  ngOnInit(): void {
+    
+    //this.saintDuJour.getEphemerisName()
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+/*     if (!changes['events'].firstChange) {
+      this.saintDuJour = this.saint.getWithDate(this.viewDate);
+    } */
+    this.saintDuJour = this.saint.getWithDate(this.viewDate);
+
     if (this.events) {
       this.comments = this.events.filter((eventField: CalEventDTO) => eventField.meta!.type === CalEventType.COMMENT)
     }
