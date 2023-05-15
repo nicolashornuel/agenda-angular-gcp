@@ -15,7 +15,7 @@ $color-btn-extra-active: #0d6efd;
 }
 
 .btn-extra-group {
-    color: $color-btn-extra-active;
+    
     position: absolute;
     top: 25px;
     left: 15px;
@@ -27,15 +27,16 @@ $color-btn-extra-active: #0d6efd;
         width: 24px;
         background-color: white;
         border-color: $color-btn-extra-active;
-        &:hover:not(.disabled) {
+        color: $color-btn-extra-active;
+        &:hover:enabled {
             background-color: $color-btn-extra-active;
             color: white;
         }
-        &:active:not(.disabled) {
+        &:active:enabled {
             filter: brightness(90%);
             box-shadow: 0 0 0 0.20rem rgba(13,110,253,.25);
         }
-        &.disabled {
+        &[disabled] {
             cursor: default;
             opacity: .4;
             border-color: $color-btn-extra-disabled;

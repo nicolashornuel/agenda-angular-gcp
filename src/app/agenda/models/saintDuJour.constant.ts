@@ -1,4 +1,4 @@
-export const SaintDuJour = {
+export const saintDuJour = {
     january: [
         ["Jour de l'An", ""],
         ["Basile", "Saint"],

@@ -19,15 +19,15 @@
     </ng-container>
 </div>
 <div class="btn-extra-group d-flex" *ngIf="isSameMonth()">
-  <div class="btn-extra d-flex justify-content-center align-items-center" [ngClass]="isLocked ? 'disabled' : ''" (click)="addExtra()"> 
+  <button class="btn-extra d-flex justify-content-center align-items-center" [disabled]="isLocked" (click)="addExtra()"> 
     <i class="fas fa-plus-square"></i>
-  </div>
-  <div class="btn-extra d-flex justify-content-center align-items-center" [ngClass]="isActive ? 'active' : ''" (click)="viewExtra()">
+  </button>
+  <button class="btn-extra d-flex justify-content-center align-items-center" [ngClass]="isActive ? 'active' : ''" (click)="viewExtra()">
     <i class="fas fa-eye"></i>
     <span *ngIf="comments.length > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
       {{comments.length}}
     </span>
-  </div>
+  </button>
 </div>
 
 <ng-template #modal></ng-template>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SaintDuJour } from '../models/saintDuJour.constant';
+import { saintDuJour } from '../models/saintDuJour.constant';
 
 @Injectable({
   providedIn: 'root'
@@ -10,29 +10,29 @@ export class SaintDuJourService {
 
   private getMonth(month: number): any {
     if (month === 1)
-      return SaintDuJour.january;
+      return saintDuJour.january;
     if (month === 2)
-      return SaintDuJour.february;
+      return saintDuJour.february;
     if (month === 3)
-      return SaintDuJour.march;
+      return saintDuJour.march;
     if (month === 4)
-      return SaintDuJour.april;
+      return saintDuJour.april;
     if (month === 5)
-      return SaintDuJour.may;
+      return saintDuJour.may;
     if (month === 6)
-      return SaintDuJour.june;
+      return saintDuJour.june;
     if (month === 7)
-      return SaintDuJour.july;
+      return saintDuJour.july;
     if (month === 8)
-      return SaintDuJour.august;
+      return saintDuJour.august;
     if (month === 9)
-      return SaintDuJour.september;
+      return saintDuJour.september;
     if (month === 10)
-      return SaintDuJour.october;
+      return saintDuJour.october;
     if (month === 11)
-      return SaintDuJour.november;
+      return saintDuJour.november;
     if (month === 12)
-      return SaintDuJour.december;
+      return saintDuJour.december;
   }
 
   private getEphemeris(day: number, month: number): string {
