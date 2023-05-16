@@ -3,7 +3,7 @@ import { CalendarEvent } from 'angular-calendar';
 import { EventService } from 'src/app/agenda/services/event.service';
 import { collapseAnimation } from 'src/app/core/models/collapse-animation';
 import { CalEventDTO, CalEventType } from '../../models/calEvent.model';
-import { AnnivDuJourService } from '../../services/annivDuJour.service';
+import { AnnivDuJour, AnnivDuJourService } from '../../services/annivDuJour.service';
 import { SaintDuJourService } from '../../services/saintDuJour.service';
 
 @Component({
@@ -19,7 +19,7 @@ export class CalMonthViewCommentComponent implements OnChanges {
   @Input() events!: CalendarEvent[];
   public comments: CalEventDTO[] = [];
   public saintDuJour?: string;
-  public annivList?: string[] = [];
+  public annivList?: AnnivDuJour[];
 
   constructor(
     private eventService: EventService,

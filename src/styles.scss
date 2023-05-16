@@ -1,10 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 @import '../node_modules/angular-calendar/css/angular-calendar.css';
 
-$color-holiday: #f4cf9b40;
+$color-holiday: #f4cf9b70;
 
 .holiday {
-  background: repeating-linear-gradient(to top, white 4%, $color-holiday 4% 8%, white 8% 12%);
+  background: linear-gradient(to top, white 4%, $color-holiday 4% 8%, white 8% 12%);
   &::before {
     content: 'Vacance Scolaire';
     color: rgb(244 207 155);

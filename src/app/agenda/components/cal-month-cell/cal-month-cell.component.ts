@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ViewContainerRef } from '@angular/core';
 import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
 import { isSameDay, isSameMonth } from 'date-fns';
 import { take, takeUntil } from 'rxjs';
@@ -36,6 +36,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.initializeData();
+
   }
 
   ngOnChanges(_changes: SimpleChanges): void {

@@ -32,6 +32,7 @@ export class CalBodyComponent implements OnInit, OnChanges {
     private mapper: MapperService
     ) { }
 
+
   ngOnInit(): void {
     this.initializeData();
   }

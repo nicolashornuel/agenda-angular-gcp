@@ -1,3 +1,7 @@
 {
-    "editor.snippetSuggestions": "top"
+    "editor.snippetSuggestions": "top",
+    "editor.defaultFormatter": "vscode.emmet",
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    }
 }

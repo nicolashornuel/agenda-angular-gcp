@@ -13,6 +13,7 @@ import { CalMonthViewCommentComponent } from './components/cal-month-view-commen
 import { CalMonthAddCommentComponent } from './components/cal-month-add-comment/cal-month-add-comment.component';
 import { CalHeaderComponent } from './components/cal-header/cal-header.component';
 import { CalBodyComponent } from './components/cal-body/cal-body.component';
+import { ScrollTodayDirective } from './directives/scroll-today.directive';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { CalBodyComponent } from './components/cal-body/cal-body.component';
     CalMonthViewCommentComponent,
     CalMonthAddCommentComponent,
     CalHeaderComponent,
-    CalBodyComponent
+    CalBodyComponent,
+    ScrollTodayDirective
   ],
   imports: [
     CommonModule,

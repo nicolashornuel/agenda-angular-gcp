@@ -29,7 +29,7 @@
   </ng-container>
 
 <ng-template #customCellTemplate let-day="day" let-locale="locale">
-  <app-cal-month-cell [day]="day" [locale]="locale" [isLocked]="isLocked" [viewDate]="viewDate"></app-cal-month-cell>
+  <app-cal-month-cell  appScrollToday [day]="day" [locale]="locale" [isLocked]="isLocked" [viewDate]="viewDate"></app-cal-month-cell>
 </ng-template>
 
 <ng-template #viewExtra let-isOpen="isOpen" let-events="events">

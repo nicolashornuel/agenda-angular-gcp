@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { annivDuJour } from '../models/annivDuJour.constant';
-import { CalEventField } from '../models/calEvent.model';
 
 export type AnnivDuJour = {
   day: number,
@@ -14,9 +13,7 @@ export type AnnivDuJour = {
 })
 export class AnnivDuJourService {
 
-  constructor() { }
-
-  private getMonth(month: number): AnnivDuJour[] | undefined {
+  private getMonth(month: number): AnnivDuJour[] {
     if (month === 1)
       return annivDuJour.january;
     if (month === 2)
@@ -41,15 +38,14 @@ export class AnnivDuJourService {
       return annivDuJour.november;
     if (month === 12)
       return annivDuJour.december;
+    else return [];
   }
 
-  private getAnnivs(day: number, month: number): AnnivDuJour[] | undefined {
-    return this.getMonth(month)?.filter((anniv: AnnivDuJour) => {
-      anniv.day === day
-    });
+  private getAnnivs(day: number, month: number): AnnivDuJour[] {
+    return this.getMonth(month).filter((anniv: AnnivDuJour) => anniv.day === day);
   }
 
-  public getWithDate(date: Date): AnnivDuJour[] | undefined {
+  public getWithDate(date: Date): AnnivDuJour[] {
     return this.getAnnivs(date.getDate(), date.getMonth() + 1);
   }
 
