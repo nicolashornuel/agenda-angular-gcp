@@ -1,15 +1,24 @@
-import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ViewContainerRef } from '@angular/core';
-import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
-import { isSameDay, isSameMonth } from 'date-fns';
-import { take, takeUntil } from 'rxjs';
-import { EventService } from 'src/app/agenda/services/event.service';
-import { DestroyService } from 'src/app/shared/services/destroy.service';
-import { ModalService } from 'src/app/shared/services/modal.service';
-import { CalEventDTO, CalEventField, CalEventType } from '../../models/calEvent.model';
-import { DayClickedService } from '../../services/day-clicked.service';
-import { MapperService } from '../../services/mapper.service';
-import { CalMonthAddCommentComponent } from '../cal-month-add-comment/cal-month-add-comment.component';
-import { emptyFields } from '../../models/emptyFields.constant';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
+import {CalendarEvent, CalendarMonthViewDay} from 'angular-calendar';
+import {isSameDay, isSameMonth} from 'date-fns';
+import {take, takeUntil} from 'rxjs';
+import {EventService} from 'src/app/agenda/services/event.service';
+import {DestroyService} from 'src/app/shared/services/destroy.service';
+import {ModalService} from 'src/app/shared/services/modal.service';
+import {CalEventDTO, CalEventField, CalEventType} from '../../models/calEvent.model';
+import {DayClickedService} from '../../services/day-clicked.service';
+import {MapperService} from '../../services/mapper.service';
+import {CalMonthAddCommentComponent} from '../cal-month-add-comment/cal-month-add-comment.component';
+import {emptyFields} from '../../models/emptyFields.constant';
 
 @Component({
   selector: 'app-cal-month-cell',
@@ -21,7 +30,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   @Input() locale!: string;
   @Input() isLocked!: boolean;
   @Input() viewDate!: Date;
-  @ViewChild('modal', { read: ViewContainerRef }) target!: ViewContainerRef;
+  @ViewChild('modal', {read: ViewContainerRef}) target!: ViewContainerRef;
   public isActive: boolean = false;
   public formFields: CalEventField[] = [];
   public comments: CalEventDTO[] = [];
@@ -32,16 +41,17 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
     private destroy$: DestroyService,
     private modalService: ModalService,
     private mapper: MapperService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.initializeData();
-
   }
 
   ngOnChanges(_changes: SimpleChanges): void {
     if (isSameMonth(new Date(), this.viewDate) && isSameDay(this.day.date, this.viewDate)) this.isActive = true;
-    this.comments = this.day.events.map((dayEvent: CalendarEvent) => ({ ...dayEvent })).filter((eventField: CalEventDTO) => eventField.meta!.type === CalEventType.COMMENT);
+    this.comments = this.day.events
+      .map((dayEvent: CalendarEvent) => ({...dayEvent}))
+      .filter((eventField: CalEventDTO) => eventField.meta!.type === CalEventType.COMMENT);
   }
 
   /**
@@ -52,17 +62,25 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
    */
   private initializeData(): void {
     emptyFields.forEach((field: CalEventField) => {
-      let existField: CalendarEvent | undefined = this.day.events.find((dayEvent: CalendarEvent) => dayEvent.title === field.title);
-      let formField: CalEventField = existField != undefined ? { id: existField.id as string, meta: { value: true } , ...field } : { meta: { value: false } , ...field };
+      let existField: CalendarEvent | undefined = this.day.events
+        .filter((eventField: CalEventDTO) => eventField.meta!.type === CalEventType.FAMILY)
+        .find((dayEvent: CalendarEvent) => dayEvent.title === field.title);
+
+      let formField: CalEventField =
+        existField != undefined
+          ? {...field, id: existField.id as string, meta: {...field.meta, value: true}}
+          : {...field, meta: {...field.meta, value: false}};
+
       if (field.meta && field.meta.display && field.meta.display(this.day)) this.formFields.push(formField);
     });
+
     this.dayService.getDayClicked$.pipe(takeUntil(this.destroy$)).subscribe((date: Date) => {
       this.isActive = isSameDay(this.day.date, date) ? true : false;
-    })
+    });
   }
 
   /**
-   * onCLick checkbox to save or delete 
+   * onCLick checkbox to save or delete
    *
    * @param {*} formField
    * @memberof CalMonthCellComponent
@@ -74,7 +92,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
       });
     } else if (formField.meta!.value) {
       const entity = this.mapper.fieldToEntity(formField, this.day.date);
-      this.eventService.save(entity).then((id) => {
+      this.eventService.save(entity).then(id => {
         formField.id = id;
         console.log('save ok');
       });
@@ -87,9 +105,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
    * @memberof CalMonthCellComponent
    */
   public viewExtra(): void {
-    this.isActive
-      ? this.dayService.setDayClicked$(null)
-      : this.dayService.setDayClicked$(this.day.date);
+    this.isActive ? this.dayService.setDayClicked$(null) : this.dayService.setDayClicked$(this.day.date);
   }
 
   /**
@@ -99,24 +115,16 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
    */
   public addExtra(): void {
     const modal = this.modalService.openModal(this.target, CalMonthAddCommentComponent, this.day);
-    modal.listenEvent().pipe(take(1)).subscribe(async (response: string) => {
-      if (response) {
-        const entity = this.mapper.commentToEntity(response, this.day.date);
-        await this.eventService.save(entity);
-        console.log('save ok');
-      }
-    })
-
-  }
-
-  /**
-   * allow to block viewExtra inside cell-day over month
-   *
-   * @return {*}  {boolean}
-   * @memberof CalMonthCellComponent
-   */
-  public isSameMonth(): boolean {
-    return isSameMonth(this.day.date, this.viewDate);
+    modal
+      .listenEvent()
+      .pipe(take(1))
+      .subscribe(async (response: string) => {
+        if (response) {
+          const entity = this.mapper.commentToEntity(response, this.day.date);
+          await this.eventService.save(entity);
+          console.log('save ok');
+        }
+      });
   }
 
 }

@@ -24,5 +24,5 @@ export type CalEventField = Pick<CalendarEvent<Partial<{
   end: string,
   display: (day: CalendarMonthViewDay) => boolean,
   value: boolean,
-  description: { true: string, false: string }
+  description: string,
 }>>, 'id' | 'title' | 'meta'>

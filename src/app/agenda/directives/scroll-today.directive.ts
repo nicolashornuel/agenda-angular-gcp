@@ -1,26 +1,24 @@
-import { Directive, ElementRef, Input, OnInit } from '@angular/core';
-import { CalendarMonthViewDay } from 'angular-calendar';
-import { isSameDay } from 'date-fns';
+import {AfterViewInit, Directive, ElementRef, Input, OnInit} from '@angular/core';
+import {CalendarMonthViewDay} from 'angular-calendar';
+import {isSameDay} from 'date-fns';
 
 @Directive({
   selector: '[appScrollToday]'
 })
 export class ScrollTodayDirective implements OnInit {
-
   @Input() day!: CalendarMonthViewDay;
 
-  constructor(private el: ElementRef) { }
+  constructor(private el: ElementRef) {}
 
   ngOnInit(): void {
-    if (isSameDay(this.day.date, new Date()))  {
+    if (isSameDay(this.day.date, new Date())) {
       const scrollOptions = {
         behavior: 'smooth',
-        block: 'start'
+        block: 'center'
       };
-      this.el.nativeElement.scrollIntoView(scrollOptions);
-    }   
+      setTimeout(() => {
+        this.el.nativeElement.scrollIntoView(scrollOptions);
+      }, 500);
+    }
   }
-
-  
-
 }

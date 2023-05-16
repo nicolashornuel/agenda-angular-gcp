@@ -1,30 +1,27 @@
 <div class="cal-cell-top">
   <span class="cal-day-number">{{ day.date | calendarDate : 'monthViewDayNumber' : locale }}</span>
 </div>
-<div class="d-flex flex-column align-items-start p-3">
+<div class="d-flex flex-column align-items-start p-3 check-container" *ngIf="day.inMonth">
   <ng-container *ngFor="let field of formFields">
-        <div class="form-check">
-        <label class="form-check-label">
-          <input
-          class="form-check-input"
-          type="checkbox"
-          [(ngModel)]="field.meta!.value"
-          [disabled]="isLocked"
-          (ngModelChange)="onCheck(field)"
-        />
-        <span appTooltip [tooltip]="field.meta!.value! ? field.meta!.description!.true : field.meta!.description!.false">{{ field.title! }}</span>
-        </label>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="field.meta!.value" [disabled]="isLocked"
+          (ngModelChange)="onCheck(field)" />
+        <span>{{ field.title! }}</span>
+      </label>
 
-      </div>
-    </ng-container>
+    </div>
+  </ng-container>
 </div>
-<div class="btn-extra-group d-flex" *ngIf="isSameMonth()">
-  <button class="btn-extra d-flex justify-content-center align-items-center" [disabled]="isLocked" (click)="addExtra()"> 
+<div class="btn-extra-group d-flex" *ngIf="day.inMonth">
+  <button class="btn-extra d-flex justify-content-center align-items-center" [disabled]="isLocked" (click)="addExtra()">
     <i class="fas fa-plus-square"></i>
   </button>
-  <button class="btn-extra d-flex justify-content-center align-items-center" [ngClass]="isActive ? 'active' : ''" (click)="viewExtra()">
+  <button class="btn-extra d-flex justify-content-center align-items-center" [ngClass]="isActive ? 'active' : ''"
+    (click)="viewExtra()">
     <i class="fas fa-eye"></i>
-    <span *ngIf="comments.length > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+    <span *ngIf="comments.length > 0"
+      class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
       {{comments.length}}
     </span>
   </button>

@@ -9,10 +9,7 @@ export const emptyFields: CalEventField[] = [
         end: '19:00:00',
         type: CalEventType.FAMILY,
         display: (_day: CalendarMonthViewDay) => true,
-        description: {
-          true: "Emilie travaille aujourd'hui",
-          false: "Emilie ne travaille pas aujourd'hui",
-        }
+        description: "Emilie travaille ce jour"
       }
     },
     {
@@ -22,10 +19,7 @@ export const emptyFields: CalEventField[] = [
         end: '23:59:59',
         type: CalEventType.FAMILY,
         display: (_day: CalendarMonthViewDay) => true,
-        description: {
-          true: "Emilie travaille ce soir",
-          false: "Emilie ne travaille pas ce soir",
-        }
+        description: "Emilie travaille ce soir"
       }
     },
     {
@@ -35,10 +29,7 @@ export const emptyFields: CalEventField[] = [
         end: '16:30:00',
         type: CalEventType.FAMILY,
         display: (day: CalendarMonthViewDay) => !day.isWeekend,
-        description: {
-          true: "Romane va chez nounou aujourd'hui",
-          false: "Romane ne va pas chez nounou aujourd'hui",
-        }
+        description: "Romane va chez nounou aujourd'hui"
       }
     },
     {
@@ -48,10 +39,7 @@ export const emptyFields: CalEventField[] = [
         end: '09:00:00',
         type: CalEventType.FAMILY,
         display: (day: CalendarMonthViewDay) => day.day != 3 && !day.isWeekend && day.cssClass !== 'holiday',
-        description: {
-          true: "Baptiste va à la garderie ce matin",
-          false: "Baptiste ne va pas à la garderie ce matin",
-        }
+        description: "Baptiste va à la garderie ce matin"
       }
     },
     {
@@ -61,10 +49,7 @@ export const emptyFields: CalEventField[] = [
         end: '14:00:00',
         type: CalEventType.FAMILY,
         display: (day: CalendarMonthViewDay) => day.day != 3 && !day.isWeekend && day.cssClass !== 'holiday',
-        description: {
-          true: "Baptiste mange à la cantine aujourd'hui",
-          false: "Baptiste ne mange pas à la cantine aujourd'hui",
-        }
+        description: "Baptiste mange à la cantine aujourd'hui"
       }
     },
     {
@@ -74,10 +59,7 @@ export const emptyFields: CalEventField[] = [
         end: '19:00:00',
         type: CalEventType.FAMILY,
         display: (day: CalendarMonthViewDay) => day.day != 3 && !day.isWeekend && day.cssClass !== 'holiday',
-        description: {
-          true: "Baptiste va à la garderie ce soir",
-          false: "Baptiste ne va pas à la garderie ce soir",
-        }
+        description: "Baptiste va à la garderie ce soir"
       }
     },
     {
@@ -87,10 +69,7 @@ export const emptyFields: CalEventField[] = [
         end: '18:30:00',
         type: CalEventType.FAMILY,
         display: (day: CalendarMonthViewDay) => day.day == 3 || (!day.isWeekend && day.cssClass == 'holiday'),
-        description: {
-          true: "Baptiste va au centre de loisir aujourd'hui",
-          false: "Baptiste ne va pas au centre de loisir aujourd'hui",
-        }
+        description: "Baptiste va au centre de loisir aujourd'hui"
       }
     }
   ]

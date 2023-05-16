@@ -159,7 +159,7 @@ export const saintDuJour = {
         ["Germain", "Saint"],
         ["Aymar", "Saint"],
         ["Ferdinand", "Saint"],
-        ["Ferdinand", "Saint"]
+        ["Pétronille", "Sainte"]
     ],
     june: [
         ["Justin", "Saint"],
