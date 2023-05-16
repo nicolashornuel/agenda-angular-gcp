@@ -1,178 +1,159 @@
-import { CalEventField, CalEventType } from "./calEvent.model";
-
-export const annivDuJour: CalEventField[] = [
+export const annivDuJour = {
+  january: [
     {
-      title: 'Anniversaire Stéphanie PARMENTIER',
-      meta: {
-        start: '05/01'
-      }
+      day: 5,
+      title: 'Anniversaire Stéphanie PARMENTIER'
     },
     {
-      title: 'Anniversaire Adèle BUGAUD',
-      meta: {
-        start: '06/01'
-      }
+      day: 6,
+      title: 'Anniversaire Adèle BUGAUD'
     },
     {
-      title: 'Anniversaire Sophie HORNUEL',
-      meta: {
-        start: '12/01'
-      }
+      day: 12,
+      title: 'Anniversaire Sophie HORNUEL'
     },
     {
+      day: 17,
       title: 'Anniversaire Marie-Jeanne HORNUEL',
-      meta: {
-        start: '17/01/1952'
-      }
+      year: 1952
     },
     {
-      title: 'Anniversaire Marie-Madeleine BUGAUD',
-      meta: {
-        start: '19/01'
-      }
+      day: 19,
+      title: 'Anniversaire Marie-Madeleine BUGAUD'
     },
     {
-      title: 'Anniversaire Jeanot HONOREL',
-      meta: {
-        start: '27/01'
-      }
+      day: 27,
+      title: 'Anniversaire Jeanot HONOREL'
+    },
+  ],
+  february: [
+    {
+      day: 4,
+      title: 'Anniversaire Christophe HORNUEL'
     },
     {
-      title: 'Anniversaire Christophe HORNUEL',
-      meta: {
-        start: '04/02'
-      }
+      day: 25,
+      title: 'Anniversaire Vincent HORNUEL'
     },
     {
-      title: 'Anniversaire Vincent HORNUEL',
-      meta: {
-        start: '25/02'
-      }
-    },
-    {
+      day: 26,
       title: 'Anniversaire Pacome LEGRAND',
-      meta: {
-        start: '26/02/2010'
-      }
+      year: 2010
     },
     {
+      day: 27,
       title: 'Anniversaire Mathilde HORNUEL',
-      meta: {
-        start: '27/02/2004'
-      }
+      year: 2004
     },
     {
+      day: 28,
       title: 'Anniversaire Meïlya HORNUEL',
-      meta: {
-        start: '28/02/2016'
-      }
+      year: 2016
     },
+  ],
+  march: [
     {
+      day: 11,
       title: 'Anniversaire Pauline (Karine PARMENTIER)',
-      meta: {
-        start: '11/03/2011'
-      }
+      year: 2011
     },
     {
+      day: 31,
       title: 'Anniversaire ELiott HORNUEL',
-      meta: {
-        start: '31/03/2009'
-      }
+      year: 2009
     },
+  ],
+  april: [
     {
+      day: 7,
       title: 'Anniversaire de PACS',
-      meta: {
-        start: '07/04/2015'
-      }
+      year: 2015
     },
     {
+      day: 9,
       title: 'Anniversaire Florian BRUAND (BLOND)',
-      meta: {
-        start: '09/04/1981'
-      }
+      year: 1981
     },
     {
-      title: 'Anniversaire Nicolas LEGRAND',
-      meta: {
-        start: '12/04'
-      }
+      day: 12,
+      title: 'Anniversaire Nicolas LEGRAND'
     },
     {
-      title: 'Anniversaire Sébastien BRUN (TCHEP)',
-      meta: {
-        start: '29/04'
-      }
+      day: 29,
+      title: 'Anniversaire Sébastien BRUN (TCHEP)'
     },
+  ],
+  may: [
+  ],
+  june: [
     {
+      day: 14,
       title: 'Anniversaire Juline BAR',
-      meta: {
-        start: '14/06/2004'
-      }
+      year: 2004
     },
     {
+      day: 26,
       title: 'Anniversaire Noémie BAR',
-      meta: {
-        start: '26/06/2001'
-      }
+      year: 2001
+    },
+  ],
+  july: [
+    {
+      day: 11,
+      title: 'Anniversaire Béranger CAVAGNY'
     },
     {
-      title: 'Anniversaire Béranger CAVAGNY',
-      meta: {
-        start: '11/07'
-      }
+      day: 20,
+      title: 'Anniversaire Benoit DELADERRIERE'
     },
+  ],
+  august: [
     {
-      title: 'Anniversaire Benoit DELADERRIERE',
-      meta: {
-        start: '20/07'
-      }
-    },
-    {
+      day: 10,
       title: 'Anniversaire Myriam SHANINE',
-      meta: {
-        start: '10/08/1982'
-      }
+      year: 1982
     },
     {
+      day: 14,
       title: 'Anniversaire Anne HORNUEL',
-      meta: {
-        start: '14/08/1975'
-      }
+      year: 1975
     },
+  ],
+  september: [
+  ],
+  october: [
     {
+      day: 2,
       title: 'Anniversaire Joseph CAVAGNY',
-      meta: {
-        start: '02/10/2012'
-      }
+      year: 2012
     },
     {
-      title: 'Anniversaire Emilie ROUVIER',
-      meta: {
-        start: '09/10/1986'
-      }
+      day: 9,
+      title: 'Anniversaire Emilie',
+      year: 1986
     },
     {
-      title: 'Anniversaire Julien MONTEFUSCO',
-      meta: {
-        start: '20/10'
-      }
+      day: 20,
+      title: 'Anniversaire Julien MONTEFUSCO'
     },
+  ],
+  november: [
     {
+      day: 3,
       title: 'Anniversaire Aden HORNUEL',
-      meta: {
-        start: '03/11/2013'
-      }
+      year: 2013
     },
     {
+      day: 16,
       title: 'Anniversaire Rose HORNUEL',
-      meta: {
-        start: '16/11/2007'
-      }
-    },
-    {
-      title: 'Anniversaire Jacques HORNUEL',
-      meta: {
-        start: '04/12/1949'
-      }
+      year: 2007
     }
-]
+  ],
+  december: [
+    {
+      day: 4,
+      title: 'Anniversaire Jacques HORNUEL',
+      year: 1949
+    }
+  ]
+}
