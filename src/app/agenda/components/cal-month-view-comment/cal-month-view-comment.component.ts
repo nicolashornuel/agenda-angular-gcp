@@ -2,9 +2,10 @@ import { Component, Input, OnChanges, SimpleChanges, ViewChild, ViewContainerRef
 import { CalendarEvent } from 'angular-calendar';
 import { EventService } from 'src/app/agenda/services/event.service';
 import { collapseAnimation } from 'src/app/core/models/collapse-animation';
-import { CalEventDTO, CalEventType } from '../../models/calEvent.model';
+import { CalEventDTO, CalEventEntity, CalEventType } from '../../models/calEvent.model';
 import { AnnivDuJour, AnnivDuJourService } from '../../services/annivDuJour.service';
 import { SaintDuJourService } from '../../services/saintDuJour.service';
+import { MapperService } from '../../services/mapper.service';
 
 @Component({
   selector: 'app-cal-month-view-comment',
@@ -16,16 +17,18 @@ export class CalMonthViewCommentComponent implements OnChanges {
   @Input() viewDate!: Date;
   @Input() isOpen!: boolean;
   @Input() events!: CalendarEvent[];
+  @Input() isLocked!: boolean;
   @ViewChild('modal', {read: ViewContainerRef}) target!: ViewContainerRef;
   public comments: CalEventDTO[] = [];
   public saintDuJour?: string;
   public annivList?: AnnivDuJour[];
-  public isEditing: boolean = false;
+  public enableEditIndex: number | undefined | null = null;
 
   constructor(
     private eventService: EventService,
     private saint: SaintDuJourService,
-    private anniv: AnnivDuJourService
+    private anniv: AnnivDuJourService,
+    private mapper: MapperService
   ) {}
 
   ngOnChanges(_changes: SimpleChanges): void {
@@ -41,8 +44,22 @@ export class CalMonthViewCommentComponent implements OnChanges {
     console.log('delete ok');
   }
 
-  public async onEdit(comment: CalEventDTO): Promise<void> {
-    this.isEditing = !this.isEditing;
-    console.log(comment);
+  public onEdit(rowIndex: number): void {
+    this.enableEditIndex = rowIndex;
+  }
+
+  public async onUpdate(comment: CalEventDTO): Promise<void> {
+    this.disableEditMethod();
+    const entity: CalEventEntity = this.mapper.commentToEntity(comment.title, comment.start);
+    await this.eventService.update(entity, comment.id as string);
+    console.log('update ok');
+  }
+
+  public onCancel(): void {
+    this.disableEditMethod();
+  }
+
+  private disableEditMethod(): void {
+    this.enableEditIndex = null;
   }
 }

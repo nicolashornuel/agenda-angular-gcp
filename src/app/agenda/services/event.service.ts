@@ -49,10 +49,15 @@ export class EventService {
     return collectionData(this.collectionRef, { idField: 'id' });
   }
 
-  public async save(document: DocumentData): Promise<string> {
+  public async save(document: CalEventEntity): Promise<string> {
     const docRef: DocumentReference<DocumentData> = doc(this.collectionRef)
     await setDoc(docRef, { ...document });
     return docRef.id;
+  }
+
+  public async update(document: CalEventEntity, id: string): Promise<void> {
+    const docRef: DocumentReference<DocumentData> = doc(this.collectionRef, id)
+    await setDoc(docRef, { ...document });
   }
 
   public delete(id: string): Promise<void> {
