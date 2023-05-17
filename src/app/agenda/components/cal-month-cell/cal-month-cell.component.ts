@@ -1,13 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-  ViewChild,
-  ViewContainerRef
-} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ViewContainerRef} from '@angular/core';
 import {CalendarEvent, CalendarMonthViewDay} from 'angular-calendar';
 import {isSameDay, isSameMonth} from 'date-fns';
 import {take, takeUntil} from 'rxjs';
@@ -15,10 +6,10 @@ import {EventService} from 'src/app/agenda/services/event.service';
 import {DestroyService} from 'src/app/shared/services/destroy.service';
 import {ModalService} from 'src/app/shared/services/modal.service';
 import {CalEventDTO, CalEventField, CalEventType} from '../../models/calEvent.model';
+import {emptyFields} from '../../models/emptyFields.constant';
 import {DayClickedService} from '../../services/day-clicked.service';
 import {MapperService} from '../../services/mapper.service';
 import {CalMonthAddCommentComponent} from '../cal-month-add-comment/cal-month-add-comment.component';
-import {emptyFields} from '../../models/emptyFields.constant';
 
 @Component({
   selector: 'app-cal-month-cell',
@@ -126,5 +117,4 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
         }
       });
   }
-
 }

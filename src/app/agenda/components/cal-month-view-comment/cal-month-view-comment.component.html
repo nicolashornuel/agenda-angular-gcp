@@ -8,11 +8,19 @@
   <div class="d-flex justify-content-between">
     <div class="col-8">
       <ng-container *ngFor="let comment of comments">
-        <div>
+        <div class="d-flex align-items-center">
           <span class="cal-event"></span>
-          <span class="fs-6 fw-light fst-italic mx-2">
-            <em>{{ comment.title }}</em>
-          </span>
+
+          <ng-container *ngIf="!isEditing; else editing">
+            <span class="fs-6 fw-light fst-italic mx-2">
+              <em>{{ comment.title }}</em>
+            </span>
+          </ng-container>
+          <ng-template #editing>
+            <input class="comment-form-control" type="text" [(ngModel)]="comment.title"/>
+          </ng-template>
+
+          <a (click)="onEdit(comment)"><i class="fas fa-fw fa-pencil-alt"></i></a>
           <a (click)="onDelete(comment)"><i class="fas fa-fw fa-trash-alt"></i></a>
         </div>
       </ng-container>

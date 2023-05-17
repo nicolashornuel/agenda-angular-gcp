@@ -16,8 +16,6 @@ export class CalMonthAddCommentComponent implements OnInit {
   constructor(private modalService: ModalService) { }
 
   ngOnInit(): void {
-    console.log(this.data.events);
-    
     this.events = this.data.events
     .filter((event: CalEventDTO) => event.meta!.type === CalEventType.FAMILY)
     .map((event: CalEventDTO) => event.title)
