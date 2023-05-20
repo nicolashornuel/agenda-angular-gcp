@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CalendarMonthViewDay } from 'angular-calendar';
-import { ModalService } from 'src/app/shared/services/modal.service';
+import { ModalService } from '@shared/services/modal.service';
 import { CalEventDTO, CalEventType } from '../../models/calEvent.model';
 
 @Component({

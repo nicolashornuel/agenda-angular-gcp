@@ -8,7 +8,9 @@ export const emptyFields: CalEventField[] = [
         start: '07:00:00',
         end: '19:00:00',
         type: CalEventType.FAMILY,
-        display: (_day: CalendarMonthViewDay) => true,
+        //display: (_day: CalendarMonthViewDay) => true,
+        daysWhenHoliday: [0, 1, 2, 3, 4, 5, 6],
+        daysWhenNotHoliday: [0, 1, 2, 3, 4, 5, 6],
         description: "Emilie travaille ce jour"
       }
     },
@@ -18,7 +20,9 @@ export const emptyFields: CalEventField[] = [
         start: '19:00:00',
         end: '23:59:59',
         type: CalEventType.FAMILY,
-        display: (_day: CalendarMonthViewDay) => true,
+        //display: (_day: CalendarMonthViewDay) => true,
+        daysWhenHoliday: [0, 1, 2, 3, 4, 5, 6],
+        daysWhenNotHoliday: [0, 1, 2, 3, 4, 5, 6],
         description: "Emilie travaille ce soir"
       }
     },
@@ -28,7 +32,9 @@ export const emptyFields: CalEventField[] = [
         start: '8:00:00',
         end: '16:30:00',
         type: CalEventType.FAMILY,
-        display: (day: CalendarMonthViewDay) => !day.isWeekend,
+        //display: (day: CalendarMonthViewDay) => !day.isWeekend,
+        daysWhenHoliday: [1, 2, 3, 4, 5],
+        daysWhenNotHoliday: [1, 2, 3, 4, 5],
         description: "Romane va chez nounou aujourd'hui"
       }
     },
@@ -38,7 +44,9 @@ export const emptyFields: CalEventField[] = [
         start: '07:30:00',
         end: '09:00:00',
         type: CalEventType.FAMILY,
-        display: (day: CalendarMonthViewDay) => day.day != 3 && !day.isWeekend && day.cssClass !== 'holiday',
+        //display: (day: CalendarMonthViewDay) => day.day != 3 && !day.isWeekend && day.cssClass !== 'holiday',
+        daysWhenHoliday: [],
+        daysWhenNotHoliday: [1, 2, 4, 5],
         description: "Baptiste va à la garderie ce matin"
       }
     },
@@ -48,7 +56,9 @@ export const emptyFields: CalEventField[] = [
         start: '12:00:00',
         end: '14:00:00',
         type: CalEventType.FAMILY,
-        display: (day: CalendarMonthViewDay) => day.day != 3 && !day.isWeekend && day.cssClass !== 'holiday',
+        //display: (day: CalendarMonthViewDay) => day.day != 3 && !day.isWeekend && day.cssClass !== 'holiday',
+        daysWhenHoliday: [],
+        daysWhenNotHoliday: [1, 2, 4, 5],
         description: "Baptiste mange à la cantine aujourd'hui"
       }
     },
@@ -58,7 +68,9 @@ export const emptyFields: CalEventField[] = [
         start: '17:00:00',
         end: '19:00:00',
         type: CalEventType.FAMILY,
-        display: (day: CalendarMonthViewDay) => day.day != 3 && !day.isWeekend && day.cssClass !== 'holiday',
+        //display: (day: CalendarMonthViewDay) => day.day != 3 && !day.isWeekend && day.cssClass !== 'holiday',
+        daysWhenHoliday: [],
+        daysWhenNotHoliday: [1, 2, 4, 5],
         description: "Baptiste va à la garderie ce soir"
       }
     },
@@ -68,7 +80,9 @@ export const emptyFields: CalEventField[] = [
         start: '07:30:00',
         end: '18:30:00',
         type: CalEventType.FAMILY,
-        display: (day: CalendarMonthViewDay) => day.day == 3 || (!day.isWeekend && day.cssClass == 'holiday'),
+        //display: (day: CalendarMonthViewDay) => day.day == 3 || (!day.isWeekend && day.cssClass == 'holiday'),
+        daysWhenHoliday: [1, 2, 3, 4, 5],
+        daysWhenNotHoliday: [3],
         description: "Baptiste va au centre de loisir aujourd'hui"
       }
     }

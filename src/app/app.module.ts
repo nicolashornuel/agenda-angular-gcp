@@ -9,8 +9,8 @@ import { AppComponent } from './app.component';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 
-import { CoreModule } from './core/core.module';
-import { AgendaModule } from './agenda/agenda.module';
+import { CoreModule } from '@core/core.module';
+import { AgendaModule } from '@agenda/agenda.module';
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';

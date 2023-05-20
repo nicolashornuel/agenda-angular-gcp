@@ -2,9 +2,9 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
 import { isSameDay, isSameMonth } from 'date-fns';
 import { Subject, combineLatest, takeUntil } from 'rxjs';
-import { EventService } from 'src/app/agenda/services/event.service';
-import { Holiday, HolidayService } from 'src/app/agenda/services/holiday.service';
-import { DestroyService } from 'src/app/shared/services/destroy.service';
+import { EventService } from '@agenda/services/event.service';
+import { Holiday, HolidayService } from '@agenda/services/holiday.service';
+import { DestroyService } from '@shared/services/destroy.service';
 import { CalEventEntity } from '../../models/calEvent.model';
 import { DayClickedService } from '../../services/day-clicked.service';
 import { MapperService } from '../../services/mapper.service';

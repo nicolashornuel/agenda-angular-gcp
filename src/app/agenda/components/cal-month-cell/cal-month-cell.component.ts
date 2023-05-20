@@ -1,15 +1,16 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ViewContainerRef} from '@angular/core';
-import {CalendarEvent, CalendarMonthViewDay} from 'angular-calendar';
-import {isSameDay, isSameMonth} from 'date-fns';
-import {take, takeUntil} from 'rxjs';
-import {EventService} from 'src/app/agenda/services/event.service';
-import {DestroyService} from 'src/app/shared/services/destroy.service';
-import {ModalService} from 'src/app/shared/services/modal.service';
-import {CalEventDTO, CalEventField, CalEventType} from '../../models/calEvent.model';
-import {emptyFields} from '../../models/emptyFields.constant';
-import {DayClickedService} from '../../services/day-clicked.service';
-import {MapperService} from '../../services/mapper.service';
-import {CalMonthAddCommentComponent} from '../cal-month-add-comment/cal-month-add-comment.component';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ViewContainerRef } from '@angular/core';
+import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
+import { isSameDay, isSameMonth } from 'date-fns';
+import { take, takeUntil } from 'rxjs';
+import { EventService } from '@agenda/services/event.service';
+import { AlertService } from '@core/services/alert.service';
+import { DestroyService } from '@shared/services/destroy.service';
+import { CalEventDTO, CalEventField, CalEventType } from '../../models/calEvent.model';
+import { emptyFields } from '../../models/emptyFields.constant';
+import { DayClickedService } from '../../services/day-clicked.service';
+import { MapperService } from '../../services/mapper.service';
+import { CalMonthAddCommentComponent } from '../cal-month-add-comment/cal-month-add-comment.component';
+import { ModalService } from '@shared/services/modal.service';
 
 @Component({
   selector: 'app-cal-month-cell',
@@ -30,8 +31,9 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
     private eventService: EventService,
     private dayService: DayClickedService,
     private destroy$: DestroyService,
-    private modalService: ModalService,
-    private mapper: MapperService
+    private mapper: MapperService,
+    public alert: AlertService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -62,9 +64,12 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
           ? {...field, id: existField.id as string, meta: {...field.meta, value: true}}
           : {...field, meta: {...field.meta, value: false}};
 
-      if (field.meta && field.meta.display && field.meta.display(this.day)) this.formFields.push(formField);
+      if (this.day.cssClass === 'holiday' && field.meta?.daysWhenHoliday?.includes(this.day.day)) {
+        this.formFields.push(formField);
+      } else if (this.day.cssClass != 'holiday' && field.meta?.daysWhenNotHoliday?.includes(this.day.day)) {
+        this.formFields.push(formField);
+      }
     });
-
     this.dayService.getDayClicked$.pipe(takeUntil(this.destroy$)).subscribe((date: Date) => {
       this.isActive = isSameDay(this.day.date, date) ? true : false;
     });
@@ -79,13 +84,14 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   public onCheck(formField: CalEventField) {
     if (!formField.meta!.value) {
       this.eventService.delete(formField.id as string).then(() => {
-        console.log('delete ok');
+        this.alert.success('delete ok')
       });
     } else if (formField.meta!.value) {
       const entity = this.mapper.fieldToEntity(formField, this.day.date);
       this.eventService.save(entity).then(id => {
         formField.id = id;
-        console.log('save ok');
+        this.alert.success('save ok')
+
       });
     }
   }
@@ -113,7 +119,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
         if (response) {
           const entity = this.mapper.commentToEntity(response, this.day.date);
           await this.eventService.save(entity);
-          console.log('save ok');
+          this.alert.success('save ok')
         }
       });
   }

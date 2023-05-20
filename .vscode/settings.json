@@ -1,7 +1,8 @@
 {
     "editor.snippetSuggestions": "top",
     "[html]": {
-        "editor.defaultFormatter": "vscode.html-language-features"
+        //"editor.defaultFormatter": "vscode.html-language-features"
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "prettier.configPath": "prettier.config.js",
         //"editor.defaultFormatter": "vscode.emmet",

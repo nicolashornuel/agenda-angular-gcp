@@ -1,0 +1,57 @@
+@import 'variables.scss';
+
+%alert {
+    width: 400px;
+    min-height: 65px;
+    box-shadow: 0 4px 12px 0 $color-grey-90;
+    background-color: $color-grey-97;
+    margin-top: 20px;
+    cursor: pointer;
+    position: relative;
+}
+
+#insert {
+    position: fixed;
+    top: 0;
+    right: 20px;
+    z-index: 1090;
+}
+
+.alert-success {
+    @extend %alert;
+    .alert-ribbon {
+        background-color: $green;
+        width: 8px;
+    }
+}
+.alert-error {
+    @extend %alert;
+    .alert-ribbon {
+        background-color: $red;
+        width: 8px;
+    }
+}
+.alert-warning {
+    @extend %alert;
+    .alert-ribbon {
+        background-color: $orange;
+        width: 8px;
+    }
+}
+.alert-info {
+    @extend %alert;
+    .alert-ribbon {
+        background-color: $blue;
+        width: 8px;
+    }
+}
+.alert-title {
+    font-size: 14px;
+    color: $color-grey-10;
+}
+.alert-content {
+    font-size: 14px;
+    color: $color-grey-40;
+    word-break: break-all;
+    line-height: 21px;
+}

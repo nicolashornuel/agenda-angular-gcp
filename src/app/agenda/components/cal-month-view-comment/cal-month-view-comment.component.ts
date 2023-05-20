@@ -1,11 +1,12 @@
 import { Component, Input, OnChanges, SimpleChanges, ViewChild, ViewContainerRef } from '@angular/core';
 import { CalendarEvent } from 'angular-calendar';
-import { EventService } from 'src/app/agenda/services/event.service';
-import { collapseAnimation } from 'src/app/core/models/collapse-animation';
+import { EventService } from '@agenda/services/event.service';
+import { collapseAnimation } from '@core/models/collapse-animation';
 import { CalEventDTO, CalEventEntity, CalEventType } from '../../models/calEvent.model';
 import { AnnivDuJour, AnnivDuJourService } from '../../services/annivDuJour.service';
 import { SaintDuJourService } from '../../services/saintDuJour.service';
 import { MapperService } from '../../services/mapper.service';
+import { AlertService } from '@core/services/alert.service';
 
 @Component({
   selector: 'app-cal-month-view-comment',
@@ -28,7 +29,8 @@ export class CalMonthViewCommentComponent implements OnChanges {
     private eventService: EventService,
     private saint: SaintDuJourService,
     private anniv: AnnivDuJourService,
-    private mapper: MapperService
+    private mapper: MapperService,
+    private alert: AlertService
   ) {}
 
   ngOnChanges(_changes: SimpleChanges): void {
@@ -41,7 +43,7 @@ export class CalMonthViewCommentComponent implements OnChanges {
 
   public async onDelete(comment: CalEventDTO): Promise<void> {
     await this.eventService.delete(comment.id as string);
-    console.log('delete ok');
+    this.alert.success('delete ok')
   }
 
   public onEdit(rowIndex: number): void {
@@ -52,7 +54,7 @@ export class CalMonthViewCommentComponent implements OnChanges {
     this.disableEditMethod();
     const entity: CalEventEntity = this.mapper.commentToEntity(comment.title, comment.start);
     await this.eventService.update(entity, comment.id as string);
-    console.log('update ok');
+    this.alert.success('update ok')
   }
 
   public onCancel(): void {

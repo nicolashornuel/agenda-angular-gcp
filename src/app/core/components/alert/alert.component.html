@@ -1,0 +1,13 @@
+<section id="insert" class="d-flex flex-column">
+    <ng-container *ngIf="alerts.length > 0">
+      <ng-container *ngFor="let alert of alerts, let i = index">
+        <div [ngClass]="alert.styleCSS + ' d-flex'" (click)="close(i)">
+          <div class="alert-ribbon f-stretch"></div>
+            <div class="p-3">
+              <span class="alert-title">{{ alert.title }}:<span class="alert-content"> {{ alert.content }}</span></span>
+            </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </section>
+  

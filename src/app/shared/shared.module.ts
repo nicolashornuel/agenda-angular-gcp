@@ -5,12 +5,16 @@ import { FormsModule } from '@angular/forms';
 import { TooltipDirective } from './directives/tooltip.directive';
 import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { PopoverDirective } from './directives/popover.directive';
+import { TableComponent } from './components/table/table.component';
+import { TableCellComponent } from './components/table-cell/table-cell.component';
 
 @NgModule({
   declarations: [
     TooltipDirective,
     TooltipComponent,
-    PopoverDirective
+    PopoverDirective,
+    TableComponent,
+    TableCellComponent
   ],
   imports: [
     CommonModule,
@@ -20,7 +24,9 @@ import { PopoverDirective } from './directives/popover.directive';
   exports: [
     ReactiveFormsModule,
     FormsModule,
-    TooltipDirective
+    TooltipDirective,
+    TableComponent,
+    TableCellComponent
   ]
 })
 export class SharedModule { }

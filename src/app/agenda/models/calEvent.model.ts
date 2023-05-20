@@ -1,9 +1,8 @@
-import { CalendarEvent, CalendarMonthViewDay } from "angular-calendar";
 import { Timestamp } from '@angular/fire/firestore';
+import { CalendarEvent } from "angular-calendar";
 
 export enum CalEventType {
   COMMENT = 'comment',
-  RECURRENT = 'recurrent',
   ANNIVERSAIRE = 'anniversaire',
   FAMILY = 'family'
 }
@@ -22,7 +21,8 @@ export type CalEventField = Pick<CalendarEvent<Partial<{
   type: CalEventType,
   start: string,
   end: string,
-  display: (day: CalendarMonthViewDay) => boolean,
+  daysWhenHoliday: number[],
+  daysWhenNotHoliday: number[],
   value: boolean,
   description: string,
 }>>, 'id' | 'title' | 'meta'>
