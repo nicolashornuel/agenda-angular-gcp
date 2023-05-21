@@ -5,7 +5,7 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 import { AgendaRoutingModule } from './agenda-routing.module';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '@shared/shared.module';
 
 import { LayoutComponent } from './components/layout/layout.component';
 import { CalMonthCellComponent } from './components/cal-month-cell/cal-month-cell.component';

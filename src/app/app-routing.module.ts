@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { path: 'agenda', loadChildren: () => import('./agenda/agenda.module').then(m => m.AgendaModule) },
+  { path: 'memo', loadChildren: () => import('./memo/memo.module').then(m => m.MemoModule) },
   { path: '**', redirectTo: '/agenda', pathMatch: 'full' }
   ];
 

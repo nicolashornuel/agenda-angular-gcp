@@ -1,0 +1,13 @@
+<div class="form-check">
+  <label class="form-check-label">
+    <input
+      #input="ngModel"
+      class="form-check-input"
+      type="checkbox"
+      [name]="data.name"
+      [ngModel]="data.value"
+      [disabled]="data.disabled"
+      (ngModelChange)="onSave(input.value)"
+    />
+  </label>
+</div>

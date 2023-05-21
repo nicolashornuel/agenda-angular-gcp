@@ -1,9 +1,9 @@
-import {AfterViewInit, Component, ComponentRef, Input, OnDestroy, ViewChild, ViewContainerRef} from '@angular/core';
-import {NgForm} from '@angular/forms';
-import {debounceTime, distinctUntilChanged, switchMap, takeUntil, tap} from 'rxjs';
-import {ColumnSet, TableCellCustom} from '../../models/tableSet.interface';
-import {DestroyService} from '../../services/destroy.service';
-import {AlertService} from '../../../core/services/alert.service';
+import { AfterViewInit, Component, ComponentRef, Input, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs';
+import { AlertService } from '../../../core/services/alert.service';
+import { ColumnSet, FieldComponent } from '../../models/tableSet.interface';
+import { DestroyService } from '../../services/destroy.service';
 
 @Component({
   selector: 'app-table-cell',
@@ -35,10 +35,12 @@ export class TableCellComponent implements AfterViewInit, OnDestroy {
   private loadComponent(): void {
     console.log('table-cell custom');
     if (this.columnSet.renderComponent) {
-      this.childComponent = this.target.createComponent<TableCellCustom>(this.columnSet.renderComponent);
-      this.childComponent.instance.columnSet = this.columnSet;
-      this.readOnly ? (this.childComponent.instance.readOnly = this.readOnly) : null;
-      this.rowData ? (this.childComponent.instance.rowData = this.rowData) : null;
+      this.childComponent = this.target.createComponent<FieldComponent>(this.columnSet.renderComponent);
+      this.childComponent.instance.data = {
+        name: this.columnSet.key,
+        value: this.rowData[this.columnSet.key],
+        disabled: false
+      };
       this.childComponent.changeDetectorRef.detectChanges();
       this.listenComponent();
     }

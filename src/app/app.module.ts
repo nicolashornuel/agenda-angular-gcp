@@ -13,7 +13,7 @@ import { CoreModule } from '@core/core.module';
 import { AgendaModule } from '@agenda/agenda.module';
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
-import { provideFirestore,getFirestore } from '@angular/fire/firestore';
+import { provideFirestore,getFirestore, initializeFirestore, persistentLocalCache } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +24,20 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
     CoreModule,
     AgendaModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideFirestore(() => getFirestore())
+    provideFirestore(() => {
+      const firestore = getFirestore();
+
+      // https://firebase.google.com/docs/firestore/manage-data/enable-offline?hl=fr
+      
+      // This is the default behavior if no persistence is specified.
+      // initializeFirestore(firestore.app, {localCache: memoryLocalCache()});
+
+      // Defaults to single-tab persistence if no tab manager is specified.
+      //initializeFirestore(firestore.app, {localCache: persistentLocalCache(/*settings*/{})});
+
+      return firestore;
+
+    })
   ],
   providers: [{provide: LOCALE_ID, useValue: 'fr'}],
   bootstrap: [AppComponent]

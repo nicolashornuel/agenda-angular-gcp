@@ -11,6 +11,14 @@ export class NavbarComponent {
     {
       title: 'Agenda',
       route: 'agenda'
+    },
+    {
+      title: 'À faire',
+      route: 'memo/todo'
+    },
+    {
+      title: 'Course',
+      route: 'memo/courses'
     }
   ]
 

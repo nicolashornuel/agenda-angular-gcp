@@ -1,4 +1,4 @@
-import { FormArray, FormControl, NgForm, NgModel } from "@angular/forms";
+import { Directive, Injectable, Input } from "@angular/core";
 
 export interface TableSet {
     title: string,
@@ -21,27 +21,20 @@ export interface ColumnSet {
     valueSave?: (value: any) => any,
 }
 
-export interface TableCellCustom {
-    columnSet: ColumnSet,
-    rowData?: any,
-    input?: NgModel | NgForm | FormArray | FormControl,
-    inputSet?: TableInputSet,
-    isUpdating?: boolean,
-    readOnly?: boolean;
-}
+export interface FieldSet {
+    name: string,
+    value: string | boolean | number,
+    disabled: boolean,
+    options?: string[]
+  }
 
-export interface TableInputSet {
-    name: string;
-    value: string | boolean;
-    options?: string[];
-}
+@Injectable()
+export abstract class FieldComponent {
+    @Input() data!: FieldSet;
 
-export interface TableButton {
-    icon: string;
-    action: (value: any) => any,
-}
+    constructor() {}
 
-export interface  TablePopover {
-    title: string,
-    inputSets: TableInputSet[],
+    onSave(value: string | number | boolean): void {
+        console.log(value);
+    }
 }

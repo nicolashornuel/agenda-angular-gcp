@@ -9,10 +9,10 @@ $border: 1px solid hsl(0, 0%, 80%);
   height: var(--height)
 }
 
-.table {
+.table-container {
   display: table;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: 14px;
   width: 100%;
   .table-row {
     display: table-row;
