@@ -33,6 +33,12 @@ import { PriorityComponent } from './components/priority/priority.component';
     TooltipDirective,
     TableComponent,
     TableCellComponent
+  ],
+  providers: [
+    {
+       provide: 'type',
+       useValue: 'text',
+    }
   ]
 })
 export class SharedModule { }
