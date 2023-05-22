@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CheckboxComponent } from '@shared/components/checkbox/checkbox.component';
-import { InputComponent } from '@shared/components/input/input.component';
+import { InputComponent, InputTextComponent } from '@shared/components/input/input.component';
 import { PriorityComponent } from '@shared/components/priority/priority.component';
 import { TableSet } from '@shared/models/tableSet.interface';
 
@@ -30,7 +30,7 @@ export class ToDoComponent {
         title: 'Déscription',
         type: 'custom',
         visible: true,
-        renderComponent: InputComponent<{type:'number'}>
+        renderComponent: InputTextComponent
       },
       {
         key: 'priority',
