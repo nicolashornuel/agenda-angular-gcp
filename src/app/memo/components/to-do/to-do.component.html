@@ -6,7 +6,7 @@
         <div class="card-body">
           <h5 class="card-title">{{tableSet.title}}</h5>
           <p class="card-text">{{tableSet.title}}</p>
-          <a href="#" class="btn btn-primary btn-sm mb-3">+</a>
+          <button class="btn btn-primary btn-sm mb-3"  (click)="addNew()"><i class="fas fa-plus"></i></button>
           <app-table [tableSet]="tableSet"></app-table>
         </div>
       </div>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CheckboxComponent } from '@shared/components/checkbox/checkbox.component';
 import { InputCheckboxComponent, InputComponent, InputTextComponent } from '@shared/components/input/input.component';
 import { PriorityComponent } from '@shared/components/priority/priority.component';
+import { SelectComponent } from '@shared/components/select/select.component';
 import { TableSet } from '@shared/models/tableSet.interface';
 
 @Component({
@@ -20,7 +21,7 @@ export class ToDoComponent {
     columnSet: [
       {
         key: 'status',
-        title: 'Statut',
+        title: 'Résolu',
         type: 'custom',
         visible: true,
         renderComponent: InputCheckboxComponent
@@ -55,20 +56,33 @@ export class ToDoComponent {
       {
         key: 'category',
         title: 'Catégorie',
-        type: 'string',
-        visible: true
+        type: 'custom',
+        visible: true,
+        renderComponent: InputTextComponent
       }
     ],
     data: [
       {
         status: false,
         description: 'Acheter Vélo + siège enfant + barre enfant',
-        priority: 4,
+        priority: 3,
         creatingDate: '',
         updatingDate: '',
         category: 'Loisirs'
       }
     ]
   };
+
+  public addNew(): void {
+    const newItem = {
+      status: false,
+      description: '',
+      priority: 0,
+      creatingDate: '',
+      updatingDate: '',
+      category: ''
+    }
+    this.tableSet.data.push(newItem)
+  }
   
 }

@@ -10,6 +10,7 @@ import { TableCellComponent } from './components/table-cell/table-cell.component
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { InputCheckboxComponent, InputComponent, InputTextComponent } from './components/input/input.component';
 import { PriorityComponent } from './components/priority/priority.component';
+import { SelectComponent } from './components/select/select.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { PriorityComponent } from './components/priority/priority.component';
     InputComponent,
     InputTextComponent,
     InputCheckboxComponent,
-    PriorityComponent
+    PriorityComponent,
+    SelectComponent
   ],
   imports: [
     CommonModule,

@@ -1,17 +1,23 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
+import { FieldComponent, FieldSet } from '@shared/models/tableSet.interface';
 
 @Component({
   selector: 'app-priority',
   templateUrl: './priority.component.html',
   styleUrls: ['./priority.component.scss']
 })
-export class PriorityComponent {
+export class PriorityComponent implements AfterViewInit {
 
-  @Input() rating: number = 0;
-  @Input() ratingArr: number[] = [0,1,2,3,4];
+  @Input() data!: FieldSet;
+  private rating!: number;
+  public ratingArr: number[] = [0,1,2];
   @Output() ratingUpdated = new EventEmitter();
 
-  constructor() {
+  constructor() {}
+  
+  ngAfterViewInit(): void {
+    console.log(this.data); 
+    this.rating = this.data.value as number; 
   }
 
   onClick(rating:number) {    

@@ -40,7 +40,7 @@ export class TableCellComponent implements AfterViewInit, OnDestroy {
         name: this.columnSet.key,
         value: this.rowData[this.columnSet.key],
         disabled: false
-      };
+      };      
       this.childComponent.changeDetectorRef.detectChanges();
       this.listenComponent();
     }

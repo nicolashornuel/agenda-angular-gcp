@@ -7,7 +7,7 @@ export interface TableSet {
     maxiHeight?: string,
     height?: string,
     columnSet: ColumnSet[],
-    data: any,
+    data: any[],
     openDetailByClickRow?: (row: any) => string,
 }
 
@@ -19,22 +19,19 @@ export interface ColumnSet {
     width?: string,
     valuePrepare?: (value: any) => any,
     renderComponent?: any,
-    valueSave?: (value: any) => any,
+    valueSave?: (value: any) => any
 }
 
 export interface FieldSet {
     name: string,
     value: string | boolean | number,
-    disabled: boolean,
-    options?: string[]
+    disabled: boolean
   }
 
 @Injectable()
 export abstract class FieldComponent {
     @Input() data!: FieldSet;
-
     constructor() {}
-
     onSave(value: string | number | boolean): void {
         console.log(value);
     }
