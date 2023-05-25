@@ -1,28 +1,32 @@
 <section class="scrolling" [style.--maxiHeight]="tableSet.maxiHeight" [style.--height]="tableSet.height">
-    <div class="table-container">
-      <div class="table-row header">
-        <ng-container *ngFor="let column of tableSet.columnSet">
-          <app-table-cell
-            *ngIf="column.visible"
-            [isHeader]="true"
-            [columnSet]="column"
-            class="table-cell"
-            [ngClass]="tableSet.verticaltextHeader ? 'vertical' : ' '"
-          ></app-table-cell>
-        </ng-container>
-      </div>
-      <div class="table-row body" [ngClass]="tableSet.hover ? 'hover' : ''" *ngFor="let row of tableSet.data; let i = index">
-        <ng-container *ngFor="let column of tableSet.columnSet">
-          <app-table-cell
+  <div class="table-container">
+    <div class="table-row header">
+      <ng-container *ngFor="let column of tableSet.columnSet">
+        <app-table-cell
+          *ngIf="column.visible"
+          [isHeader]="true"
+          [columnSet]="column"
+          class="table-cell"
+          [ngClass]="tableSet.verticaltextHeader ? 'vertical' : ' '"
+        ></app-table-cell>
+      </ng-container>
+    </div>
+    <div
+      class="table-row body"
+      [ngClass]="tableSet.hover ? 'hover' : ''"
+      *ngFor="let row of tableSet.data; let i = index"
+    >
+      <ng-container *ngFor="let column of tableSet.columnSet">
+        <app-table-cell
           *ngIf="column.visible"
           [rowData]="tableSet.data[i]"
           [columnSet]="column"
           [parentForm]="parentForm"
           [readOnly]="readOnly"
           class="table-cell"
+          [ngStyle]="{width: column.width ?? null}"
         ></app-table-cell>
-        </ng-container>
-      </div>
+      </ng-container>
     </div>
-  </section>
-  
+  </div>
+</section>

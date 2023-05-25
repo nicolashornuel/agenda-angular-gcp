@@ -1,12 +1,9 @@
-
-      <input
-        #input="ngModel"
-        class="form-control form-control-sm border border-primary w-100"
-        [type]="type"
-        [name]="data.name"
-        [ngModel]="data.value"
-        [disabled]="data.disabled"
-        (ngModelChange)="save(input.value)"
-      />
-
-  
+<input
+  #input="ngModel"
+  [ngClass]="cssClass"
+  [type]="type"
+  [name]="data.name"
+  [ngModel]="data.value"
+  [disabled]="data.disabled"
+  (ngModelChange)="save(input.value)"
+/>

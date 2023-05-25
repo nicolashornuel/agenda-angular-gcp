@@ -1,7 +1,7 @@
 <ng-container *ngIf="isHeader; else viewData">{{ columnSet.title }}</ng-container>
 <ng-template #viewData>
-    <ng-container [ngSwitch]="columnSet.type">
+  <ng-container [ngSwitch]="columnSet.type">
     <div *ngSwitchCase="'custom'" #custom></div>
     <div *ngSwitchDefault>{{ rowData[columnSet.key] }}</div>
-    </ng-container>
+  </ng-container>
 </ng-template>

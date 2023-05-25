@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CheckboxComponent } from '@shared/components/checkbox/checkbox.component';
-import { InputComponent, InputTextComponent } from '@shared/components/input/input.component';
+import { InputCheckboxComponent, InputComponent, InputTextComponent } from '@shared/components/input/input.component';
 import { PriorityComponent } from '@shared/components/priority/priority.component';
 import { TableSet } from '@shared/models/tableSet.interface';
 
@@ -23,13 +23,14 @@ export class ToDoComponent {
         title: 'Statut',
         type: 'custom',
         visible: true,
-        renderComponent: CheckboxComponent
+        renderComponent: InputCheckboxComponent
       },
       {
         key: 'description',
         title: 'Déscription',
         type: 'custom',
         visible: true,
+        width: '40%',
         renderComponent: InputTextComponent
       },
       {
@@ -40,8 +41,14 @@ export class ToDoComponent {
         renderComponent: PriorityComponent
       },
       {
-        key: 'date',
-        title: 'Date',
+        key: 'creatingDate',
+        title: 'Date de création',
+        type: 'string',
+        visible: true
+      },
+      {
+        key: 'updatingDate',
+        title: 'Dernière mise à jour',
         type: 'string',
         visible: true
       },
@@ -57,7 +64,8 @@ export class ToDoComponent {
         status: false,
         description: 'Acheter Vélo + siège enfant + barre enfant',
         priority: 4,
-        date: '',
+        creatingDate: '',
+        updatingDate: '',
         category: 'Loisirs'
       }
     ]

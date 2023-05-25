@@ -6,7 +6,12 @@
     "paths": { 
       "@shared/*": ["app/shared/*"], 
       "@core/*": ["app/core/*"],
-      "@agenda/*": ["app/agenda/*"],
+      "@agenda/*": [
+        "app/agenda/*"
+      ],
+      "shared": [
+        "dist/shared"
+      ],
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

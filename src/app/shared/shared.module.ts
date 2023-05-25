@@ -8,7 +8,7 @@ import { PopoverDirective } from './directives/popover.directive';
 import { TableComponent } from './components/table/table.component';
 import { TableCellComponent } from './components/table-cell/table-cell.component';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
-import { InputComponent, InputTextComponent } from './components/input/input.component';
+import { InputCheckboxComponent, InputComponent, InputTextComponent } from './components/input/input.component';
 import { PriorityComponent } from './components/priority/priority.component';
 
 @NgModule({
@@ -21,6 +21,7 @@ import { PriorityComponent } from './components/priority/priority.component';
     CheckboxComponent,
     InputComponent,
     InputTextComponent,
+    InputCheckboxComponent,
     PriorityComponent
   ],
   imports: [

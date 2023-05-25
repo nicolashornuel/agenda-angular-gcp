@@ -1,4 +1,4 @@
-import { Directive, Injectable, Input } from "@angular/core";
+import { Injectable, Input } from "@angular/core";
 
 export interface TableSet {
     title: string,
@@ -16,6 +16,7 @@ export interface ColumnSet {
     title: string,
     type: 'custom' | 'string',
     visible: boolean,
+    width?: string,
     valuePrepare?: (value: any) => any,
     renderComponent?: any,
     valueSave?: (value: any) => any,

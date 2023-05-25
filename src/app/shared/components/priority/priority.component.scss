@@ -1,0 +1,12 @@
+@import 'variables.scss';
+
+.rates {
+    width: 18px;
+    display: inline-block;
+    .fa-solid {
+        color: $gold;
+    }
+    .fa-regular {
+        color: $color-grey-80;
+    }
+}

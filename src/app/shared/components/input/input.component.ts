@@ -8,8 +8,9 @@ import {Subject, debounceTime, distinctUntilChanged} from 'rxjs';
   styleUrls: ['./input.component.scss']
 })
 export class InputComponent {
-  @Input() type: string = 'text';
+  @Input() type!: string;
   @Input() data!: FieldSet;
+  @Input() cssClass!: string;
   @Output() onSave = new EventEmitter<any>();
   private debouncer: Subject<string | number | boolean> = new Subject<string | number | boolean>();
 
@@ -23,9 +24,20 @@ export class InputComponent {
 }
 
 @Component({
-  template: `<app-input [type]="'text'" [data]="data" (onSave)="onSave($event)"></app-input>`
+  template: `<app-input [type]="'text'" [cssClass]="cssClass" [data]="data" (onSave)="onSave($event)"></app-input>`
 })
 export class InputTextComponent extends FieldComponent {
+  cssClass = 'form-control form-control-sm border border-primary w-100';
+  constructor() {
+    super();
+  }
+}
+
+@Component({
+  template: `<app-input [type]="'checkbox'" [cssClass]="cssClass" [data]="data" (onSave)="onSave($event)"></app-input>`
+})
+export class InputCheckboxComponent extends FieldComponent {
+  cssClass = 'form-check-input';
   constructor() {
     super();
   }
