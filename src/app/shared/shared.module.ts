@@ -16,6 +16,8 @@ import { TooltipDirective } from './directives/tooltip.directive';
 import { AlertComponent } from './components/alert/alert.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
+import { ModalComponent } from './components/modal/modal.component';
+import { ModalDirective } from './directives/modal.directive';
 
 const sharedComponents = [
   TableComponent,
@@ -48,7 +50,9 @@ const sharedDirectives = [
 @NgModule({
   declarations: [
     sharedComponents,
-    sharedDirectives
+    sharedDirectives,
+    ModalComponent,
+    ModalDirective
   ],
   imports: [
     CommonModule,

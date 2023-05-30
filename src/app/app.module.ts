@@ -12,7 +12,6 @@ import localeFr from '@angular/common/locales/fr';
 import { AgendaModule } from '@agenda/agenda.module';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { CoreModule } from '@core/core.module';
 import { HomeModule } from './home/home.module';
 import { environment } from '../environments/environment';
 
