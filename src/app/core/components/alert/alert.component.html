@@ -1,4 +1,4 @@
-<section id="insert" class="d-flex flex-column">
+<section id="insert" class="col">
     <ng-container *ngIf="alerts.length > 0">
       <ng-container *ngFor="let alert of alerts, let i = index">
         <div [ngClass]="alert.styleCSS + ' d-flex'" (click)="close(i)">

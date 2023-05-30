@@ -9,11 +9,11 @@ import { AppComponent } from './app.component';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 
-import { CoreModule } from '@core/core.module';
 import { AgendaModule } from '@agenda/agenda.module';
-import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { CoreModule } from '@core/core.module';
 import { environment } from '../environments/environment';
-import { provideFirestore,getFirestore, initializeFirestore, persistentLocalCache } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [AppComponent],

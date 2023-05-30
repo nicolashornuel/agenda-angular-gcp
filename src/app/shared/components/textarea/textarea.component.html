@@ -1,0 +1,9 @@
+<textarea
+  class="form-control"
+  rows="3"
+  #input="ngModel"
+  [name]="data.name"
+  [ngModel]="data.value"
+  [disabled]="data.disabled"
+  (ngModelChange)="onSave(input.value)"
+></textarea>

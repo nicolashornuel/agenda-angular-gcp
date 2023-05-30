@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
-import { FieldComponent, FieldSet } from '@shared/models/tableSet.interface';
+import { FieldSet } from '@shared/models/tableSet.interface';
 
 @Component({
   selector: 'app-priority',
@@ -16,7 +16,6 @@ export class PriorityComponent implements AfterViewInit {
   constructor() {}
   
   ngAfterViewInit(): void {
-    console.log(this.data); 
     this.rating = this.data.value as number; 
   }
 

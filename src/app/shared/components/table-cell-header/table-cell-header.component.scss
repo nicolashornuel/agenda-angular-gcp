@@ -1,0 +1,8 @@
+.sortable {
+  .hidden {
+    visibility: hidden;
+  }
+  &:hover .hidden {
+    visibility: visible;
+  }
+}

@@ -3,11 +3,12 @@
 %alert {
     width: 400px;
     min-height: 65px;
-    box-shadow: 0 4px 12px 0 $color-grey-90;
-    background-color: $color-grey-97;
+    box-shadow: 0 .5rem 1rem 0 $grey-60;
+    background-color: $grey-97;
     margin-top: 20px;
     cursor: pointer;
     position: relative;
+    border-radius: .25rem;
 }
 
 #insert {
@@ -47,11 +48,11 @@
 }
 .alert-title {
     font-size: 14px;
-    color: $color-grey-10;
+    color: $grey-10;
 }
 .alert-content {
     font-size: 14px;
-    color: $color-grey-40;
+    color: $grey-40;
     word-break: break-all;
     line-height: 21px;
 }

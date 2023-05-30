@@ -13,7 +13,6 @@ import { DestroyService } from '../../services/destroy.service';
 })
 export class TableCellComponent implements AfterViewInit, OnDestroy {
   @Input() columnSet!: ColumnSet;
-  @Input() isHeader?: boolean;
   @Input() rowData?: any;
   @Input() parentForm?: NgForm;
   @Input() readOnly?: boolean;
@@ -23,7 +22,7 @@ export class TableCellComponent implements AfterViewInit, OnDestroy {
   constructor(private destroy$: DestroyService, public alert: AlertService) {}
 
   ngAfterViewInit(): void {
-    if (!this.isHeader && this.columnSet.type === 'custom') this.loadComponent();
+    if (this.columnSet.type === 'custom') this.loadComponent();
   }
 
   ngOnDestroy(): void {
@@ -34,33 +33,28 @@ export class TableCellComponent implements AfterViewInit, OnDestroy {
 
   private loadComponent(): void {
     console.log('table-cell custom');
-    if (this.columnSet.renderComponent) {      
-      this.childComponent = this.target.createComponent<FieldComponent>(this.columnSet.renderComponent);
-      this.childComponent.instance.data = {
-        name: this.columnSet.key,
-        value: this.rowData[this.columnSet.key],
-        disabled: false
-      };      
+    if (this.columnSet.render) {      
+      this.childComponent = this.target.createComponent<FieldComponent>(this.columnSet.render.component);
+      this.childComponent.instance.data = this.columnSet.render.valuePrepare(this.rowData, this.columnSet);
       this.childComponent.changeDetectorRef.detectChanges();
       this.listenComponent();
     }
   }
 
   private listenComponent(): void {
-    if (this.parentForm && this.childComponent.instance.input) {
-      this.childComponent.instance.input.statusChanges
+    console.log(this.childComponent.instance);
+    
+    if (this.childComponent.instance.output) {
+      this.childComponent.instance.output
         .pipe(
-          switchMap(() => this.childComponent.instance.input.valueChanges),
           debounceTime(1000),
           distinctUntilChanged(),
           takeUntil(this.destroy$)
         )
         .subscribe(async (value: string) => {
           this.rowData[this.columnSet.key] = value;
-          if (this.columnSet.valueSave) {
-            this.childComponent.instance.isUpdating = true;
-            await this.columnSet.valueSave(this.rowData);
-            this.childComponent.instance.isUpdating = false;
+          if (this.columnSet.render) {
+            await this.columnSet.render.valueSave(this.rowData);
             this.alert.success(`Save Success`);
           }
         });

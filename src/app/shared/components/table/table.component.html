@@ -2,13 +2,13 @@
   <div class="table-container">
     <div class="table-row header">
       <ng-container *ngFor="let column of tableSet.columnSet">
-        <app-table-cell
-          *ngIf="column.visible"
-          [isHeader]="true"
-          [columnSet]="column"
+        <app-table-cell-header
           class="table-cell"
           [ngClass]="tableSet.verticaltextHeader ? 'vertical' : ' '"
-        ></app-table-cell>
+          *ngIf="column.visible"
+          [tableSet]="tableSet"
+          [columnSet]="column"
+        ></app-table-cell-header>
       </ng-container>
     </div>
     <div

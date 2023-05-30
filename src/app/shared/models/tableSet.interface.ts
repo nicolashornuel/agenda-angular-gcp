@@ -1,4 +1,5 @@
-import { Injectable, Input } from "@angular/core";
+import { Injectable, Input, Output } from "@angular/core";
+import { BehaviorSubject, Subject } from "rxjs";
 
 export interface TableSet {
     title: string,
@@ -8,6 +9,7 @@ export interface TableSet {
     height?: string,
     columnSet: ColumnSet[],
     data: any[],
+    emptyRow: any,
     openDetailByClickRow?: (row: any) => string,
 }
 
@@ -17,9 +19,11 @@ export interface ColumnSet {
     type: 'custom' | 'string',
     visible: boolean,
     width?: string,
-    valuePrepare?: (value: any) => any,
-    renderComponent?: any,
-    valueSave?: (value: any) => any
+    render?: {
+        component: any,
+        valuePrepare: (row: any, col: ColumnSet) => FieldSet | any,
+        valueSave: (value: any) => any
+    }
 }
 
 export interface FieldSet {
@@ -31,8 +35,19 @@ export interface FieldSet {
 @Injectable()
 export abstract class FieldComponent {
     @Input() data!: FieldSet;
+    @Output() output = new Subject<string | number | boolean>();
     constructor() {}
     onSave(value: string | number | boolean): void {
-        console.log(value);
+        this.output.next(value);
     }
+}
+
+export class RenderFieldSet {
+  public static valuePrepare(row: any, col: ColumnSet): FieldSet {
+    return {
+      name: col.key,
+      value: row[col.key],
+      disabled: false
+    }
+}
 }

@@ -1,0 +1,63 @@
+@for $number from 1 through 10 {
+  .gap-#{$number} {
+    gap: $number * 5px;
+  }
+}
+
+@for $number from 0 through 10 {
+  .pt-#{$number} {
+    padding-top: $number * 5px;
+  }
+  .pb-#{$number} {
+    padding-bottom: $number * 5px;
+  }
+  .pr-#{$number} {
+    padding-right: $number * 5px;
+  }
+  .pl-#{$number} {
+    padding-left: $number * 5px;
+  }
+  .px-#{$number} {
+    padding-right: $number * 5px;
+    padding-left: $number * 5px;
+  }
+  .py-#{$number} {
+    padding-top: $number * 5px;
+    padding-bottom: $number * 5px;
+  }
+  .p-#{$number} {
+    padding-top: $number * 5px;
+    padding-bottom: $number * 5px;
+    padding-right: $number * 5px;
+    padding-left: $number * 5px;
+  }
+}
+
+@for $number from 0 through 10 {
+  .mt-#{$number} {
+    margin-top: $number * 5px;
+  }
+  .mb-#{$number} {
+    margin-bottom: $number * 5px;
+  }
+  .mr-#{$number} {
+    margin-right: $number * 5px;
+  }
+  .ml-#{$number} {
+    margin-left: $number * 5px;
+  }
+  .mx-#{$number} {
+    margin-right: $number * 5px;
+    margin-left: $number * 5px;
+  }
+  .my-#{$number} {
+    margin-top: $number * 5px;
+    margin-bottom: $number * 5px;
+  }
+  .m-#{$number} {
+    margin-top: $number * 5px;
+    margin-bottom: $number * 5px;
+    margin-right: $number * 5px;
+    margin-left: $number * 5px;
+  }
+}

@@ -6,7 +6,9 @@
         <div class="card-body">
           <h5 class="card-title">{{tableSet.title}}</h5>
           <p class="card-text">{{tableSet.title}}</p>
-          <button class="btn btn-primary btn-sm mb-3"  (click)="addNew()"><i class="fas fa-plus"></i></button>
+          <div class="d-flex justify-content-end">
+            <app-button icon="fas fa-plus" size="small" (click)="addNew()"></app-button>
+          </div>
           <app-table [tableSet]="tableSet"></app-table>
         </div>
       </div>

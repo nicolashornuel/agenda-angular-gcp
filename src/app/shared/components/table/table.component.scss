@@ -1,12 +1,12 @@
-$border: 1px solid hsl(0, 0%, 80%);
+@import 'variables.scss';
 
 .scrolling {
   width: 100%;
   overflow-x: auto;
-  border: $border;
+  border: 1px solid $grey-80;
   border-radius: 4px;
   max-height: var(--maxiHeight);
-  height: var(--height)
+  height: var(--height);
 }
 
 .table-container {
@@ -23,14 +23,14 @@ $border: 1px solid hsl(0, 0%, 80%);
       vertical-align: middle;
     }
     &:nth-child(2n) {
-      background-color: hsl(0, 0%, 97%);
+      background-color: $grey-97;
     }
   }
   .header {
-    background-color: hsl(0, 0%, 80%);
+    background-color: $grey-80;
     font-weight: bold;
-    border-bottom: $border;
-    pointer-events: none;
+    border-bottom: 1px solid $grey-80;
+    cursor: pointer;
     .vertical {
       writing-mode: vertical-lr;
       transform: rotate(180deg);
@@ -38,19 +38,19 @@ $border: 1px solid hsl(0, 0%, 80%);
     }
   }
   .body {
-    background-color: hsl(0, 0%, 100%);
-    border-bottom: $border;
+    background-color: $grey-100;
+    border-bottom: 1px solid $grey-80;
   }
   .hover:hover {
-    background-color: hsl(0, 0%, 95%);
+    background-color: $grey-95;
     color: var(--text-primary-color);
     position: relative;
     cursor: pointer;
     &:after {
       content: '';
       position: absolute;
-      border-top: 1px solid hsl(0, 0%, 15%);
-      border-bottom: 1px solid hsl(0, 0%, 15%);
+      border-top: 1px solid $grey-15;
+      border-bottom: 1px solid $grey-15;
       top: 0;
       right: 0;
       width: 100%;
