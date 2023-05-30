@@ -13,6 +13,9 @@ import { TextareaComponent } from './components/textarea/textarea.component';
 import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { PopoverDirective } from './directives/popover.directive';
 import { TooltipDirective } from './directives/tooltip.directive';
+import { AlertComponent } from './components/alert/alert.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { RouterModule } from '@angular/router';
 
 const sharedComponents = [
   TableComponent,
@@ -25,26 +28,36 @@ const sharedComponents = [
   TextareaComponent,
   ButtonComponent,
   SpinnerComponent,
-  TableCellHeaderComponent
+  TableCellHeaderComponent,
+  AlertComponent,
+  TooltipComponent,
+  NavbarComponent
+]
+
+const sharedModules = [
+  ReactiveFormsModule,
+  FormsModule,
+  RouterModule
+]
+
+const sharedDirectives = [
+  TooltipDirective,
+  PopoverDirective
 ]
 
 @NgModule({
   declarations: [
-    TooltipDirective,
-    TooltipComponent,
-    PopoverDirective,
     sharedComponents,
+    sharedDirectives
   ],
   imports: [
     CommonModule,
-    ReactiveFormsModule,
-    FormsModule
+    sharedModules
   ],
   exports: [
-    ReactiveFormsModule,
-    FormsModule,
-    TooltipDirective,
-    sharedComponents
+    sharedComponents,
+    sharedModules,
+    sharedDirectives
   ]
 })
 export class SharedModule { }

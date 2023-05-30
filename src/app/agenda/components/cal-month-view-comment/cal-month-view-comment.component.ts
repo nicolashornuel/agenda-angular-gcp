@@ -1,12 +1,12 @@
 import { Component, Input, OnChanges, SimpleChanges, ViewChild, ViewContainerRef } from '@angular/core';
 import { CalendarEvent } from 'angular-calendar';
 import { EventService } from '@agenda/services/event.service';
-import { collapseAnimation } from '@core/models/collapse-animation';
+import { collapseAnimation } from '@shared/models/collapse-animation.constant';
 import { CalEventDTO, CalEventEntity, CalEventType } from '../../models/calEvent.model';
 import { AnnivDuJour, AnnivDuJourService } from '../../services/annivDuJour.service';
 import { SaintDuJourService } from '../../services/saintDuJour.service';
 import { MapperService } from '../../services/mapper.service';
-import { AlertService } from '@core/services/alert.service';
+import { AlertService } from '@shared/services/alert.service';
 
 @Component({
   selector: 'app-cal-month-view-comment',

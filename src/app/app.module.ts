@@ -13,6 +13,7 @@ import { AgendaModule } from '@agenda/agenda.module';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { CoreModule } from '@core/core.module';
+import { HomeModule } from './home/home.module';
 import { environment } from '../environments/environment';
 
 @NgModule({
@@ -21,7 +22,7 @@ import { environment } from '../environments/environment';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    CoreModule,
+    HomeModule,
     AgendaModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => {

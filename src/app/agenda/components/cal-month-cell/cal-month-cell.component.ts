@@ -3,7 +3,7 @@ import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
 import { isSameDay, isSameMonth } from 'date-fns';
 import { take, takeUntil } from 'rxjs';
 import { EventService } from '@agenda/services/event.service';
-import { AlertService } from '@core/services/alert.service';
+import { AlertService } from '@shared/services/alert.service';
 import { DestroyService } from '@shared/services/destroy.service';
 import { CalEventDTO, CalEventField, CalEventType } from '../../models/calEvent.model';
 import { emptyFields } from '../../models/emptyFields.constant';

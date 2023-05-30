@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs';
-import { Alert } from '../../models/alert.interface';
-import { AlertService } from '../../services/alert.service';
-import { DestroyService } from '../../../shared/services/destroy.service';
+import { Alert } from '@shared/models/alert.interface';
+import { AlertService } from '@shared/services/alert.service';
+import { DestroyService } from '@shared/services/destroy.service';
 
 @Component({
   selector: 'app-alert',

@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ComponentRef, Input, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs';
-import { AlertService } from '../../../core/services/alert.service';
+import { AlertService } from '../../services/alert.service';
 import { ColumnSet, FieldComponent } from '../../models/tableSet.interface';
 import { DestroyService } from '../../services/destroy.service';
 
