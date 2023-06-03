@@ -18,6 +18,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { ModalComponent } from './components/modal/modal.component';
 import { ModalDirective } from './directives/modal.directive';
+import { PopoverComponent } from './components/popover/popover.component';
 
 const sharedComponents = [
   TableComponent,
@@ -33,7 +34,8 @@ const sharedComponents = [
   TableCellHeaderComponent,
   AlertComponent,
   TooltipComponent,
-  NavbarComponent
+  NavbarComponent,
+  PopoverComponent
 ]
 
 const sharedModules = [
