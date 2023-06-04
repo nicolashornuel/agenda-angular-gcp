@@ -21,7 +21,7 @@ export class AlertComponent implements OnInit {
       this.alerts.push(alert);
       if (alert.title === 'Success') {
         setTimeout(() => {
-          //this.close(this.alerts.length -1);
+          this.close(this.alerts.length -1);
         }, 1500);
       }
     });
