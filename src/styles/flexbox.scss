@@ -23,16 +23,20 @@
   justify-content: flex-start;
   align-items: center;
 }
+.row-start-end {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
 .row-between-center {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-
-.row-start-between {
+.row-between-start {
   display: flex;
-  align-items: flex-start;
   justify-content: space-between;
+  align-items: flex-start;
 }
 
 .col-center-center {
@@ -65,8 +69,11 @@
 .f-grow {
   flex-grow: 1;
 }
-.f-stretch {
+.self-stretch {
   align-self: stretch;
+}
+.self-center {
+  align-self: center;
 }
 
 $columns: 12; // number of columns in the grid system

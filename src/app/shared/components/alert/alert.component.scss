@@ -3,12 +3,17 @@
 %alert {
     width: 400px;
     min-height: 65px;
-    box-shadow: 0 .5rem 1rem 0 $grey-60;
+    box-shadow: $box-shadow;
     background-color: $grey-97;
     margin-top: 20px;
-    cursor: pointer;
     position: relative;
-    border-radius: .25rem;
+    border-radius: $border-radius;
+}
+
+%ribbon {
+    width: 8px;
+    border-top-left-radius: $border-radius;
+    border-bottom-left-radius: $border-radius;
 }
 
 #insert {
@@ -22,28 +27,28 @@
     @extend %alert;
     .alert-ribbon {
         background-color: $green;
-        width: 8px;
+        @extend %ribbon;
     }
 }
 .alert-error {
     @extend %alert;
     .alert-ribbon {
         background-color: $red;
-        width: 8px;
+        @extend %ribbon;
     }
 }
 .alert-warning {
     @extend %alert;
     .alert-ribbon {
         background-color: $orange;
-        width: 8px;
+        @extend %ribbon;
     }
 }
 .alert-info {
     @extend %alert;
     .alert-ribbon {
         background-color: $blue;
-        width: 8px;
+        @extend %ribbon;
     }
 }
 .alert-title {
@@ -55,4 +60,11 @@
     color: $grey-40;
     word-break: break-all;
     line-height: 21px;
+}
+.close-btn {
+    cursor: pointer;
+    opacity: .5;
+    &:hover {
+        opacity: 1;
+    }
 }

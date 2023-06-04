@@ -8,9 +8,7 @@
           <p class="card-text">{{ tableSet.title }}</p>
           <div class="d-flex justify-content-end">
             <app-button icon="fas fa-plus" size="small" (click)="addNew()"></app-button>
-            <button >
-              <span [appPopover]="templateRef">popover</span>
-            </button>
+            <app-button icon="fas fa-columns" size="small" [appPopover]="templateRef"></app-button>
           </div>
           <app-table [tableSet]="tableSet"></app-table>
         </div>
@@ -19,8 +17,11 @@
   </div>
 </div>
 
+
 <ng-template #templateRef>
-  <app-popover>
-    <span>Hello2, Popover!</span>
-  </app-popover>
+    <h6>{{ popover.title }}</h6>
+    <hr />
+    <div *ngFor="let data of popover.fieldSets">
+      <app-input-checkbox [data]="data" (output)="onSave($event)"></app-input-checkbox>
+    </div>
 </ng-template>

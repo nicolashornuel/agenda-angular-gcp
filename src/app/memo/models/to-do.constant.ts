@@ -1,7 +1,6 @@
-import {InputCheckboxComponent, InputTextComponent} from '@shared/components/input/input.component';
-import {PriorityComponent} from '@shared/components/priority/priority.component';
-import {TextareaComponent} from '@shared/components/textarea/textarea.component';
-import {TableSet, ColumnSet, RenderFieldSet} from '@shared/models/tableSet.interface';
+import { InputCheckboxComponent, InputTextComponent } from '@shared/components/input/input.component';
+import { PriorityComponent } from '@shared/components/priority/priority.component';
+import { ColumnSet, RenderFieldSet, TableSet } from '@shared/models/tableSet.interface';
 
 const columnToDo: ColumnSet[] = [
   {

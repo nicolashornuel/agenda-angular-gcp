@@ -15,7 +15,7 @@ export class InputComponent {
   private debouncer: Subject<string | number | boolean> = new Subject<string | number | boolean>();
 
   constructor() {
-    this.debouncer.pipe(debounceTime(1000), distinctUntilChanged()).subscribe(value => this.onSave.emit(value));
+    this.debouncer.pipe(debounceTime(500), distinctUntilChanged()).subscribe(value => this.onSave.emit(value));
   }
 
   save(value: string | number | boolean): void {
@@ -24,21 +24,36 @@ export class InputComponent {
 }
 
 @Component({
+  selector: 'app-input-text',
   template: `<app-input [type]="'text'" [cssClass]="cssClass" [data]="data" (onSave)="onSave($event)"></app-input>`
 })
 export class InputTextComponent extends FieldComponent {
-  cssClass = 'form-control form-control-sm border border-primary w-100';
+  //cssClass = 'form-control form-control-sm border border-primary w-100';
+  cssClass = 'comment-form-control w-100';
+
   constructor() {
     super();
   }
 }
 
 @Component({
+  selector: 'app-input-checkbox',
   template: `<app-input [type]="'checkbox'" [cssClass]="cssClass" [data]="data" (onSave)="onSave($event)"></app-input>`
 })
-export class InputCheckboxComponent extends FieldComponent {
-  cssClass = 'form-check-input';
-  constructor() {
-    super();
+export class InputCheckboxComponent {
+  @Input() data!: FieldSet;
+  @Output() output = new Subject<FieldSet>();
+  cssClass = '';
+  constructor() {}
+
+  public onSave(value: string | number | boolean): void {
+    const fieldSet = {
+      name: this.data.name,
+      value,
+      disabled: this.data.disabled
+    }
+      this.output.next(fieldSet);
+      this.data = fieldSet;
+
   }
 }

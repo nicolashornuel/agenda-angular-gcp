@@ -1,30 +1,42 @@
-import { ComponentRef, Directive, HostListener, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
+import {
+  Directive,
+  HostListener,
+  Input,
+  OnDestroy,
+  TemplateRef,
+  ViewContainerRef
+} from '@angular/core';
 import { PopoverComponent } from '@shared/components/popover/popover.component';
 
 @Directive({
   selector: '[appPopover]'
 })
 export class PopoverDirective implements OnDestroy {
-  @Input() appPopover!: TemplateRef<any>
-  private childComponent!: ComponentRef<any>;
+  @Input() appPopover!: TemplateRef<any>;
   private isDisplay: boolean = false;
 
-  @HostListener('click', ['$event'])
-  onClick(event: Event): void {
-    this.el.createEmbeddedView(this.appPopover);
-    //this.childComponent = this.el.createComponent(PopoverComponent, {projectableNodes: [[this.appPopover as HTMLElement]]});
+  @HostListener('click')
+  onClick(): void {
+    if (this.isDisplay) {
+      this.isDisplay = !this.isDisplay;
+      this.destroy();
+    } else {
+      const {height, width, x, y} = this.vcRef.element.nativeElement.getBoundingClientRect();
+      const position = {top: `${y + height}px`, left: `${x + width / 2}px`}
+      const child = this.vcRef.createComponent(PopoverComponent);
+      child.instance.position = position;
+      child.instance.template = this.appPopover;
+      this.isDisplay = !this.isDisplay;
+    }
   }
 
-  constructor(private el: ViewContainerRef) { }
+  constructor(private vcRef: ViewContainerRef) {}
 
   ngOnDestroy(): void {
     this.destroy();
   }
 
   destroy(): void {
-    if (this.childComponent) {
-      this.childComponent.destroy();
-    }
+    this.vcRef.clear();
   }
-
 }

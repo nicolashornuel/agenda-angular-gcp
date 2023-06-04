@@ -42,8 +42,6 @@ export class TableCellComponent implements AfterViewInit, OnDestroy {
   }
 
   private listenComponent(): void {
-    console.log(this.childComponent.instance);
-    
     if (this.childComponent.instance.output) {
       this.childComponent.instance.output
         .pipe(

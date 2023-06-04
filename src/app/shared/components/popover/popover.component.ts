@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, TemplateRef } from '@angular/core';
 
 @Component({
   selector: 'app-popover',
@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./popover.component.scss']
 })
 export class PopoverComponent {
+
+  @Input() position!: { top: string; left: string; };
+  @Input() template!: TemplateRef<any>;
 
 }

@@ -38,3 +38,17 @@ $grey-97: hsl(0, 0%,  97%);
 $grey-98: hsl(0, 0%,  98%);
 $grey-99: hsl(0, 0%,  99%);
 $grey-100: hsl(0, 0%,  100%);
+
+// box-sadow popover, modal, alert.
+$box-shadow: 0 .5rem .5rem 0 hsl(0deg 0% 0% / 40%);
+%box-shadow-active {
+    filter: brightness(90%);
+    box-shadow: 0 0 0 .2rem rgba(13, 110, 253, 0.25);
+}
+
+
+// z-index.
+$z-index-popover: 1000;
+
+// border-radius.
+$border-radius: .25rem;
