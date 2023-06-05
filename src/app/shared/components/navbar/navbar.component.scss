@@ -1,0 +1,30 @@
+@import 'variables.scss';
+
+nav {
+  background-color: $blue;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: $z-index-navbar;
+  padding: 8px 12px;
+  ul {
+    list-style: none;
+    margin-bottom: 0;
+  }
+  a {
+    text-decoration: none;
+    display: block;
+    color: $grey-100;
+    opacity: .6;
+    &:hover {
+      opacity: .8;
+    }
+    &.active {
+      opacity: 1;
+    }
+  }
+  i {
+    color: $grey-100;
+  }
+}
