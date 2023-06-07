@@ -19,6 +19,8 @@ import { RouterModule } from '@angular/router';
 import { ModalComponent } from './components/modal/modal.component';
 import { ModalDirective } from './directives/modal.directive';
 import { PopoverComponent } from './components/popover/popover.component';
+import { AbstractNgModelComponent } from './abstracts/ng-model.component';
+import { AbstractInputComponent } from './abstracts/input.component';
 
 const sharedComponents = [
   TableComponent,
@@ -54,7 +56,9 @@ const sharedDirectives = [
     sharedComponents,
     sharedDirectives,
     ModalComponent,
-    ModalDirective
+    ModalDirective,
+    AbstractNgModelComponent,
+    AbstractInputComponent
   ],
   imports: [
     CommonModule,
