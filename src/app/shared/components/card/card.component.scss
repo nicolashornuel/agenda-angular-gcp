@@ -1,0 +1,12 @@
+@import 'variables.scss';
+
+.card-container {
+    background-color: $grey-100;
+    border-radius: .25rem;
+    * {
+        padding: 1rem 1.5rem;
+    }
+    .header {
+        border-bottom: 1px solid $grey-90;
+    }
+}

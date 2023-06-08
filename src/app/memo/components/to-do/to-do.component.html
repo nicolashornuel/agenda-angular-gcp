@@ -1,27 +1,17 @@
 <app-layout>
-  <div class="row">
-    <div class="col">
-      <div class="card">
-        <h5 class="card-header">{{ tableSet.title }}</h5>
-        <div class="card-body">
-          <h5 class="card-title">{{ tableSet.title }}</h5>
-          <p class="card-text">{{ tableSet.title }}</p>
-          <div class="d-flex justify-content-end">
-            <app-button icon="fas fa-plus" size="small" (click)="addNew()"></app-button>
-            <app-button icon="fas fa-columns" size="small" [appPopover]="templateRef"></app-button>
-          </div>
-          <app-table [tableSet]="tableSet"></app-table>
-        </div>
-      </div>
+  <app-card [title]="tableSet.title">
+    <div class="d-flex justify-content-end">
+      <app-button icon="fas fa-plus" size="small" (click)="addNew()"></app-button>
+      <app-button icon="fas fa-columns" size="small" [appPopover]="templateRef"></app-button>
     </div>
-  </div>
+    <app-table [tableSet]="tableSet"></app-table>
+  </app-card>
 </app-layout>
 
-
 <ng-template #templateRef>
-    <h6>{{ popover.title }}</h6>
-    <hr />
-    <div *ngFor="let data of popover.fieldSets">
-      <app-input-checkbox [data]="data" (output)="onSave($event)"></app-input-checkbox>
-    </div>
+  <h6>{{ popover.title }}</h6>
+  <hr />
+  <div *ngFor="let data of popover.fieldSets">
+    <app-input-checkbox [data]="data" (output)="onSave($event)"></app-input-checkbox>
+  </div>
 </ng-template>

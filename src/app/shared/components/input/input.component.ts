@@ -49,3 +49,4 @@ export class InputCheckboxComponent implements FieldComponent, OnInit {
     this.debouncer.next(value);
   }
 }
+

@@ -24,6 +24,7 @@ import { TooltipDirective } from './directives/tooltip.directive';
 import { AbstractNgModelComponent } from './abstracts/ng-model.component';
 import { AbstractInputComponent } from './abstracts/input.component';
 import { LayoutComponent } from './components/layout/layout.component';
+import { CardComponent } from './components/card/card.component';
 
 const sharedComponents = [
   TableComponent,
@@ -44,7 +45,8 @@ const sharedComponents = [
   TableCheckboxComponent,
   LayoutComponent,
   AbstractNgModelComponent,
-  AbstractInputComponent
+  AbstractInputComponent,
+  CardComponent
 ]
 
 const sharedModules = [
