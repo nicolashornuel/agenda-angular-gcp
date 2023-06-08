@@ -1,0 +1,8 @@
+<input
+  #input="ngModel"
+  type="text"
+  [name]="data.name"
+  [ngModel]="data.value"
+  [disabled]="data.disabled"
+  (ngModelChange)="onSave(input.value)"
+/>

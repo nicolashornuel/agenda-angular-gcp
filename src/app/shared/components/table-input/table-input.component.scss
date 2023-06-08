@@ -1,0 +1,17 @@
+@import "variables.scss";
+
+input[type=text] {
+    width: 100%;
+    padding: 0 8px;
+    background-color: transparent;
+    outline: none;
+    min-height: calc(1.5em + 0.5rem + 2px);
+    border: 1px solid $green;
+    border-radius: 0.25rem;
+    &:hover, &:focus {
+        border: 1px solid $blue;
+    }
+    &:active {
+        @extend %box-shadow-active;
+    }
+}

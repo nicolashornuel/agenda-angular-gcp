@@ -1,5 +1,6 @@
-import { InputCheckboxComponent, InputTextComponent } from '@shared/components/input/input.component';
 import { PriorityComponent } from '@shared/components/priority/priority.component';
+import { TableCheckboxComponent } from '@shared/components/table-checkbox/table-checkbox.component';
+import { TableInputComponent } from '@shared/components/table-input/table-input.component';
 import { ColumnSet, RenderFieldSet, TableSet } from '@shared/models/tableSet.interface';
 
 const columnToDo: ColumnSet[] = [
@@ -9,7 +10,7 @@ const columnToDo: ColumnSet[] = [
     type: 'custom',
     visible: true,
     render: {
-      component: InputCheckboxComponent,
+      component: TableCheckboxComponent,
       valuePrepare: (row: any, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col),
       valueSave: (value: any) => null
     }
@@ -21,7 +22,7 @@ const columnToDo: ColumnSet[] = [
     visible: true,
     width: '40%',
     render: {
-      component: InputTextComponent,
+      component: TableInputComponent,
       valuePrepare: (row: any, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col),
       valueSave: (value: any) => null
     }
@@ -55,7 +56,7 @@ const columnToDo: ColumnSet[] = [
     type: 'custom',
     visible: true,
     render: {
-      component: InputTextComponent,
+      component: TableInputComponent,
       valuePrepare: (row: any, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col),
       valueSave: (value: any) => null
     }

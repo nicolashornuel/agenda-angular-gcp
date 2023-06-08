@@ -1,13 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FieldComponent, FieldSet } from '@shared/models/tableSet.interface';
-import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FieldComponent, FieldSet} from '@shared/models/tableSet.interface';
+import {Subject, debounceTime, distinctUntilChanged} from 'rxjs';
 
 @Component({
-  selector: 'app-textarea',
-  templateUrl: './textarea.component.html',
-  styleUrls: ['./textarea.component.scss']
+  selector: 'app-table-checkbox',
+  templateUrl: './table-checkbox.component.html',
+  styleUrls: ['./table-checkbox.component.scss']
 })
-export class TextareaComponent implements FieldComponent, OnInit {
+export class TableCheckboxComponent implements FieldComponent, OnInit {
   @Input() data!: FieldSet;
   @Output() output = new EventEmitter<FieldSet>();
   private debouncer = new Subject<string | number | boolean>();

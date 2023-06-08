@@ -10,7 +10,6 @@
 <ng-template #default>
   <input
     #input="ngModel"
-    [ngClass]="cssClass"
     [type]="type"
     [name]="data.name"
     [ngModel]="data.value"
@@ -23,7 +22,6 @@
   <label class="row-start-end">
     <input
       #input="ngModel"
-      [ngClass]="cssClass"
       type="checkbox"
       [name]="data.name"
       [ngModel]="data.value"

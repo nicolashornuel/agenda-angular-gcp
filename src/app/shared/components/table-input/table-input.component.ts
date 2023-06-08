@@ -3,11 +3,11 @@ import { FieldComponent, FieldSet } from '@shared/models/tableSet.interface';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
-  selector: 'app-textarea',
-  templateUrl: './textarea.component.html',
-  styleUrls: ['./textarea.component.scss']
+  selector: 'app-table-input',
+  templateUrl: './table-input.component.html',
+  styleUrls: ['./table-input.component.scss']
 })
-export class TextareaComponent implements FieldComponent, OnInit {
+export class TableInputComponent implements FieldComponent, OnInit {
   @Input() data!: FieldSet;
   @Output() output = new EventEmitter<FieldSet>();
   private debouncer = new Subject<string | number | boolean>();
