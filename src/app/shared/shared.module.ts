@@ -21,6 +21,7 @@ import { ModalDirective } from './directives/modal.directive';
 import { PopoverComponent } from './components/popover/popover.component';
 import { AbstractNgModelComponent } from './abstracts/ng-model.component';
 import { AbstractInputComponent } from './abstracts/input.component';
+import { LayoutComponent } from './components/layout/layout.component';
 
 const sharedComponents = [
   TableComponent,
@@ -37,7 +38,8 @@ const sharedComponents = [
   AlertComponent,
   TooltipComponent,
   NavbarComponent,
-  PopoverComponent
+  PopoverComponent,
+  LayoutComponent
 ]
 
 const sharedModules = [
@@ -58,7 +60,7 @@ const sharedDirectives = [
     ModalComponent,
     ModalDirective,
     AbstractNgModelComponent,
-    AbstractInputComponent
+    AbstractInputComponent,
   ],
   imports: [
     CommonModule,
