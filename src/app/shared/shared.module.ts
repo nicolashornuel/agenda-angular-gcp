@@ -21,6 +21,9 @@ import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { ModalDirective } from './directives/modal.directive';
 import { PopoverDirective } from './directives/popover.directive';
 import { TooltipDirective } from './directives/tooltip.directive';
+import { AbstractNgModelComponent } from './abstracts/ng-model.component';
+import { AbstractInputComponent } from './abstracts/input.component';
+import { LayoutComponent } from './components/layout/layout.component';
 
 const sharedComponents = [
   TableComponent,
@@ -38,7 +41,10 @@ const sharedComponents = [
   NavbarComponent,
   PopoverComponent,
   TableInputComponent,
-  TableCheckboxComponent
+  TableCheckboxComponent,
+  LayoutComponent,
+  AbstractNgModelComponent,
+  AbstractInputComponent
 ]
 
 const sharedModules = [
