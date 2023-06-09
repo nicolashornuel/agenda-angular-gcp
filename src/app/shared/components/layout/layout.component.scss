@@ -1,8 +1,6 @@
 @import 'variables.scss';
 
-$top: 56px + 32px;
-
 .background {
   background-color: $grey-95;
-  padding: $top 0;
+  padding: 88px 0 32px 0;
 }
