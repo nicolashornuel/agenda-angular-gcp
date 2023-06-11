@@ -25,6 +25,10 @@ import { AbstractNgModelComponent } from './abstracts/ng-model.component';
 import { AbstractInputComponent } from './abstracts/input.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { CardComponent } from './components/card/card.component';
+import { ButtonGroupComponent } from './components/button-group/button-group.component';
+import { InputTextWithLabelComponent } from './components/input-text-with-label/input-text-with-label.component';
+import { InputCheckboxWithLabelComponent } from './components/input-checkbox-with-label/input-checkbox-with-label.component';
+import { InputTextareaWithLabelComponent } from './components/input-textarea-with-label/input-textarea-with-label.component';
 
 const sharedComponents = [
   TableComponent,
@@ -46,7 +50,11 @@ const sharedComponents = [
   LayoutComponent,
   AbstractNgModelComponent,
   AbstractInputComponent,
-  CardComponent
+  CardComponent,
+  ButtonGroupComponent,
+  InputTextWithLabelComponent,
+  InputCheckboxWithLabelComponent,
+  InputTextareaWithLabelComponent
 ]
 
 const sharedModules = [

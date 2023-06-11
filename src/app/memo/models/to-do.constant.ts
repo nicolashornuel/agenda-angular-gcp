@@ -87,8 +87,7 @@ export const tableToDo: TableSet = {
   title: 'À faire',
   verticaltextHeader: false,
   hover: false,
-  maxiHeight: '600px',
-  height: '600px',
+  height: 'calc(100vh - 240px)',
   columnSet: columnToDo,
   data: dataToDo,
   emptyRow: emptyRow

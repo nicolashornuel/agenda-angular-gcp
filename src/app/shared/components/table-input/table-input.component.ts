@@ -1,32 +1,25 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FieldComponent, FieldSet } from '@shared/models/tableSet.interface';
-import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { Component, Input, forwardRef } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { AbstractInputComponent } from '@shared/abstracts/input.component';
+import { FieldSet } from '@shared/models/tableSet.interface';
 
 @Component({
   selector: 'app-table-input',
   templateUrl: './table-input.component.html',
-  styleUrls: ['./table-input.component.scss']
+  styleUrls: ['./table-input.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => TableInputComponent),
+      multi: true
+    }
+  ]
 })
-export class TableInputComponent implements FieldComponent, OnInit {
+export class TableInputComponent extends AbstractInputComponent {
   @Input() data!: FieldSet;
-  @Output() output = new EventEmitter<FieldSet>();
-  private debouncer = new Subject<string | number | boolean>();
 
-  constructor() {}
-
-  ngOnInit(): void {
-    this.debouncer.pipe(debounceTime(500), distinctUntilChanged()).subscribe(value => {
-      const fieldSet = {
-        name: this.data.name,
-        value,
-        disabled: this.data.disabled
-      };
-      this.data = fieldSet;
-      this.output.emit(fieldSet);
-    });
+  constructor() {
+    super();
   }
 
-  onSave(value: string | number | boolean): void {
-    this.debouncer.next(value);
-  }
 }

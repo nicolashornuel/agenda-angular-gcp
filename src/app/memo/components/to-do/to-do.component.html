@@ -1,8 +1,16 @@
 <app-layout>
   <app-card [title]="tableSet.title">
-    <div class="d-flex justify-content-end">
-      <app-button icon="fas fa-plus" size="small" (click)="addNew()"></app-button>
-      <app-button icon="fas fa-columns" size="small" [appPopover]="templateRef"></app-button>
+    <div class="row-end-center mb-3">
+      <app-input-text-with-label
+        class="col-4 mr-3"
+        label="Filtre"
+        ngModel
+        (ngModelChange)="applyFilter($event)"
+      ></app-input-text-with-label>
+      <app-button-group class="row-end-center" size="small">
+        <button (click)="addNew()"><i class="fas fa-plus"></i></button>
+        <button><i class="fas fa-columns" [appPopover]="templateRef"></i></button>
+      </app-button-group>
     </div>
     <app-table [tableSet]="tableSet"></app-table>
   </app-card>
@@ -12,6 +20,6 @@
   <h6>{{ popover.title }}</h6>
   <hr />
   <div *ngFor="let data of popover.fieldSets">
-    <app-input-checkbox [data]="data" (output)="onSave($event)"></app-input-checkbox>
+    <app-input-checkbox-with-label [data]="data" (onBlur)="onSave(data)"></app-input-checkbox-with-label>
   </div>
 </ng-template>

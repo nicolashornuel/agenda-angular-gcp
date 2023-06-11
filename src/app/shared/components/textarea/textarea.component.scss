@@ -1,0 +1,17 @@
+@import "variables.scss";
+
+textarea {
+    padding: 0 8px;
+    //background-color: transparent;
+    background-color: $grey-97;
+    outline: none;
+    min-height: 24px;
+    border: 1px solid $green;
+    border-radius: 0.25rem;
+    &:hover, &:focus {
+        border: 1px solid $blue;
+    }
+    &:active {
+        @extend %box-shadow-active;
+    }
+}

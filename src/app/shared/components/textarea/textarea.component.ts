@@ -1,32 +1,17 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FieldComponent, FieldSet } from '@shared/models/tableSet.interface';
-import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { Component, Input } from '@angular/core';
+import { AbstractInputComponent } from '@shared/abstracts/input.component';
+import { FieldSet } from '@shared/models/tableSet.interface';
 
 @Component({
   selector: 'app-textarea',
   templateUrl: './textarea.component.html',
   styleUrls: ['./textarea.component.scss']
 })
-export class TextareaComponent implements FieldComponent, OnInit {
+export class TextareaComponent extends AbstractInputComponent {
   @Input() data!: FieldSet;
-  @Output() output = new EventEmitter<FieldSet>();
-  private debouncer = new Subject<string | number | boolean>();
 
-  constructor() {}
-
-  ngOnInit(): void {
-    this.debouncer.pipe(debounceTime(500), distinctUntilChanged()).subscribe(value => {
-      const fieldSet = {
-        name: this.data.name,
-        value,
-        disabled: this.data.disabled
-      };
-      this.data = fieldSet;
-      this.output.emit(fieldSet);
-    });
+  constructor() {
+    super();
   }
 
-  onSave(value: string | number | boolean): void {
-    this.debouncer.next(value);
-  }
 }

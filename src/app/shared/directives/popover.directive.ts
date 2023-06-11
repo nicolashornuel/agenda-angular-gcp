@@ -25,7 +25,7 @@ export class PopoverDirective implements OnDestroy {
       const position = {top: `${y + height}px`, left: `${x + width / 2}px`}
       const child = this.vcRef.createComponent(PopoverComponent);
       child.instance.position = position;
-      child.instance.template = this.appPopover;
+      child.instance.template = this.appPopover!;
       this.isDisplay = !this.isDisplay;
     }
   }

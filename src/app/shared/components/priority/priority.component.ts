@@ -1,30 +1,39 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, forwardRef } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { AbstractInputComponent } from '@shared/abstracts/input.component';
 import { FieldSet } from '@shared/models/tableSet.interface';
 
 @Component({
   selector: 'app-priority',
   templateUrl: './priority.component.html',
-  styleUrls: ['./priority.component.scss']
+  styleUrls: ['./priority.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => PriorityComponent),
+      multi: true
+    }
+  ]
 })
-export class PriorityComponent implements AfterViewInit {
+export class PriorityComponent extends AbstractInputComponent implements AfterViewInit {
 
   @Input() data!: FieldSet;
-  private rating!: number;
   public ratingArr: number[] = [0,1,2];
-  @Output() ratingUpdated = new EventEmitter();
 
-  constructor() {}
+  constructor(private cdRef:ChangeDetectorRef) {
+    super();
+  }
   
   ngAfterViewInit(): void {
-    this.rating = this.data.value as number; 
+    this.cdRef.detectChanges();
   }
 
   onClick(rating:number) {    
-    this.rating = rating;
-    this.ratingUpdated.emit(rating);
+    this.data.value = rating;    
+    this.onBlur.next()
   }
 
   showIcon(index:number) {    
-    return this.rating >= index + 1 ? 'fa-solid fa-star' : 'fa-regular fa-star';
+    return this.data.value as number >= index + 1 ? 'fa-solid fa-star' : 'fa-regular fa-star';
   }
 }

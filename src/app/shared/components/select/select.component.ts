@@ -19,7 +19,8 @@ export class SelectComponent implements FieldComponent, OnInit {
       const fieldSet = {
         name: this.data.name,
         value,
-        disabled: this.data.disabled
+        disabled: this.data.disabled,
+        required: this.data.required
       };
       this.data = fieldSet;
       this.output.emit(fieldSet);

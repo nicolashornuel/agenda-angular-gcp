@@ -1,8 +1,8 @@
 <input
-  #input="ngModel"
-  type="text"
-  [name]="data.name"
-  [ngModel]="data.value"
-  [disabled]="data.disabled"
-  (ngModelChange)="onSave(input.value)"
+  [type]="type"
+  [readonly]="data.disabled"
+  [required]="data.required"
+  (blur)="onBlur.next()"
+  (focus)="onFocus.next()"
+  [(ngModel)]="data.value"
 />

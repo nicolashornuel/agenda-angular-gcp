@@ -3,10 +3,12 @@
 .card-container {
     background-color: $grey-100;
     border-radius: .25rem;
-    * {
-        padding: 1rem 1.5rem;
+    .card-content {
+        padding: 1rem;
     }
     .header {
         border-bottom: 1px solid $grey-90;
+        padding: 1rem;
+        margin: 0;
     }
 }

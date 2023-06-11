@@ -7,6 +7,6 @@ import { Component, Input } from '@angular/core';
 })
 export class ButtonComponent {
   @Input() icon?: string;
-  @Input() size?: string;
+  @Input() size?: 'tiny' | 'small' | 'regular';
 
 }

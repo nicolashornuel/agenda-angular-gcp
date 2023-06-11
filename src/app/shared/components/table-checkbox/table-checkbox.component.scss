@@ -17,4 +17,7 @@ input[type=checkbox]{
     & + span {
         white-space: nowrap;
     }
+    &:active {
+        @extend %box-shadow-active;
+    }
 }

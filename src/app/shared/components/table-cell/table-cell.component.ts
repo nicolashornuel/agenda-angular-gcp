@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ComponentRef, Input, OnDestroy, ViewChild, Vi
 import { NgForm } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs';
 import { AlertService } from '../../services/alert.service';
-import { ColumnSet, FieldComponent } from '../../models/tableSet.interface';
+import { ColumnSet, FieldComponent, FieldSet } from '../../models/tableSet.interface';
 import { DestroyService } from '../../services/destroy.service';
 
 @Component({
@@ -42,6 +42,19 @@ export class TableCellComponent implements AfterViewInit, OnDestroy {
   }
 
   private listenComponent(): void {
+
+    if (this.childComponent.instance.onBlur) {
+      this.childComponent.instance.onBlur.pipe(takeUntil(this.destroy$))
+        .subscribe(async () => {       
+          const fieldSet = this.childComponent.instance.data as FieldSet;
+          this.rowData[this.columnSet.key] = fieldSet.value;
+          if (this.columnSet.render) {
+            const response = await this.columnSet.render.valueSave(this.rowData);
+            this.alert.success(`Save ${response ? JSON.stringify(response) : '' }`);
+          }
+        });
+    }
+
     if (this.childComponent.instance.output) {
       this.childComponent.instance.output
         .pipe(
@@ -49,7 +62,7 @@ export class TableCellComponent implements AfterViewInit, OnDestroy {
           distinctUntilChanged(),
           takeUntil(this.destroy$)
         )
-        .subscribe(async (value: string) => {
+        .subscribe(async (value: string) => {  
           this.rowData[this.columnSet.key] = value;
           if (this.columnSet.render) {
             await this.columnSet.render.valueSave(this.rowData);

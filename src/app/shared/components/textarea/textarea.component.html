@@ -1,9 +1,16 @@
-<textarea
-  class="form-control"
-  rows="3"
-  #input="ngModel"
-  [name]="data.name"
-  [ngModel]="data.value"
-  [disabled]="data.disabled"
-  (ngModelChange)="onSave(input.value)"
-></textarea>
+<!-- <textarea
+  [readonly]="data.disabled"
+  [required]="data.required"
+  (blur)="onBlur.next()"
+  (focus)="onFocus.next()"
+  [(ngModel)]="data.value"
+  ></textarea>
+ -->
+
+ <textarea
+ [readonly]="data.disabled"
+ [required]="data.required"
+ (blur)="onBlur.next()"
+ (focus)="onFocus.next()"
+ [(ngModel)]="data.value"
+  ></textarea>

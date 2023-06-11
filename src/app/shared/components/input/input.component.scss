@@ -2,9 +2,10 @@
 
 .comment-form-control {
     padding: 0 8px;
-    background-color: transparent;
+    //background-color: transparent;
+    background-color: $grey-97;
     outline: none;
-    min-height: calc(1.5em + 0.5rem + 2px);
+    min-height: 24px;
     border: 1px solid $green;
     border-radius: 0.25rem;
     &:hover, &:focus {

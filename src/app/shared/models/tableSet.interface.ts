@@ -30,6 +30,7 @@ export interface FieldSet {
   name: string;
   value: string | boolean | number;
   disabled: boolean;
+  required: boolean;
 }
 
 export interface FieldComponent {
@@ -38,22 +39,13 @@ export interface FieldComponent {
   onSave: (value: string | number | boolean) => void;
 }
 
-/* @Injectable()
-export abstract class FieldComponent {
-    @Input() data!: FieldSet;
-    @Output() output = new Subject<string | number | boolean>();
-    constructor() {}
-    onSave(value: string | number | boolean): void {
-        this.output.next(value);
-    }
-} */
-
 export class RenderFieldSet {
   public static valuePrepare(row: any, col: ColumnSet): FieldSet {
     return {
       name: col.key,
       value: row[col.key],
-      disabled: false
+      disabled: false,
+      required: true
     };
   }
 }
