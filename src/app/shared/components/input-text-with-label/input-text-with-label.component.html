@@ -1,0 +1,14 @@
+<label>
+  <input
+    [type]="type"
+    placeholder=" "
+    [readonly]="inputReadonly"
+    [required]="inputRequired"
+    (blur)="onBlur.next()"
+    (focus)="onFocus.next()"
+    [(ngModel)]="value"
+  />
+  <span>
+    {{ label + asterix }}
+  </span>
+</label>

@@ -1,0 +1,10 @@
+
+    <app-textarea
+    [readonly]="data.disabled"
+    [required]="data.required"
+    (blur)="onBlur.next()"
+    (focus)="onFocus.next()"
+    [(ngModel)]="data.value"
+    [name]="data.name"
+    ngDefaultControl
+    ></app-textarea>

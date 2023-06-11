@@ -1,0 +1,45 @@
+@import "variables.scss";
+
+%show-text {
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1rem;
+    padding:.25rem 0;
+    height: 24px;
+}
+
+textarea {
+    padding: 0 8px;
+    //background-color: transparent;
+    background-color: $grey-97;
+    outline: none;
+    border: 1px solid $green;
+    border-radius: 0.25rem;
+    @extend %show-text;
+    &:hover, &:focus {
+        border: 1px solid $blue;
+    }
+    &:active {
+        @extend %box-shadow-active;
+    }
+}
+label {
+    width: 100%;
+    position: relative;
+    span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: .5;
+        @extend %show-text;
+        transition: all 250ms ease-in-out;
+        pointer-events: none;
+    }
+    textarea:active + span, input:focus + span, textarea:not(:placeholder-shown) + span {
+        transform: translateY(-50%);
+        font-size: 10px;
+        color: $blue;
+        padding: 0;
+        opacity: 1;
+    }
+}
