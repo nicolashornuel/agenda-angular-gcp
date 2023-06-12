@@ -1,5 +1,8 @@
+@import 'variables.scss';
+
 .modal {
     display:block;
+    z-index: $z-index-modal;
 }
 .modal-content {
     background-color: #f0f0f0;
@@ -12,5 +15,5 @@
     height:100%;
     background-color: black;
     opacity: .4;
-    z-index: 1054;
+    z-index: $z-index-modal-backdrop;
 }

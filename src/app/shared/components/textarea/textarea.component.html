@@ -1,15 +1,6 @@
-<!-- <textarea
-  [readonly]="data.disabled"
-  [required]="data.required"
-  (blur)="onBlur.next()"
-  (focus)="onFocus.next()"
-  [(ngModel)]="data.value"
-  ></textarea>
- -->
-
- <textarea
- [readonly]="data.disabled"
- [required]="data.required"
+<textarea
+ [readonly]="inputReadonly"
+ [required]="inputRequired"
  (blur)="onBlur.next()"
  (focus)="onFocus.next()"
  [(ngModel)]="data.value"

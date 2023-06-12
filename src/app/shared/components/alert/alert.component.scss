@@ -20,7 +20,7 @@
     position: fixed;
     top: 0;
     right: 20px;
-    z-index: 1090;
+    z-index: $z-index-alert;
 }
 
 .alert-success {

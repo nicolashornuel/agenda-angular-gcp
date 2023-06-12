@@ -48,8 +48,12 @@ $box-shadow: 0 .5rem .5rem 0 $grey-40;
 
 
 // z-index.
-$z-index-popover: 1000;
 $z-index-navbar: 1030;
+$z-index-modal-backdrop: 1050;
+$z-index-modal: 1055;
+$z-index-popover: 1070;
+$z-index-alert: 1090;
+
 
 // border-radius.
 $border-radius: .25rem;

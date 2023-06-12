@@ -9,7 +9,7 @@
       ></app-input-text-with-label>
       <app-button-group class="row-end-center" size="small">
         <button (click)="addNew()"><i class="fas fa-plus"></i></button>
-        <button><i class="fas fa-columns" [appPopover]="templateRef"></i></button>
+        <button [appPopover]="templateRef"><i class="fas fa-columns"></i></button>
       </app-button-group>
     </div>
     <app-table [tableSet]="tableSet"></app-table>

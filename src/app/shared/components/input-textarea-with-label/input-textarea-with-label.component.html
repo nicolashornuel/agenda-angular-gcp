@@ -1,10 +1,14 @@
-
-    <app-textarea
-    [readonly]="data.disabled"
-    [required]="data.required"
+<label>
+  <textarea
+    placeholder=" "
+    rows="3"
+    [readonly]="inputReadonly"
+    [required]="inputRequired"
     (blur)="onBlur.next()"
     (focus)="onFocus.next()"
     [(ngModel)]="data.value"
-    [name]="data.name"
-    ngDefaultControl
-    ></app-textarea>
+  ></textarea>
+  <span>
+    {{ data.name + asterix }}
+  </span>
+</label>

@@ -54,7 +54,8 @@ const sharedComponents = [
   ButtonGroupComponent,
   InputTextWithLabelComponent,
   InputCheckboxWithLabelComponent,
-  InputTextareaWithLabelComponent
+  InputTextareaWithLabelComponent,
+  TextareaComponent
 ]
 
 const sharedModules = [

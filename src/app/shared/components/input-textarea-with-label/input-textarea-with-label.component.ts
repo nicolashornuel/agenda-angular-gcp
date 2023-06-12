@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, forwardRef } from '@angular/core';
+import { Component, Input, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractInputComponent } from '@shared/abstracts/input.component';
 import { FieldSet } from '@shared/models/tableSet.interface';
@@ -15,14 +15,10 @@ import { FieldSet } from '@shared/models/tableSet.interface';
     }
   ]
 })
-export class InputTextareaWithLabelComponent extends AbstractInputComponent implements OnInit {
-  ngOnInit(): void {
-    console.log(this.data);
-    
-  }
-
+export class InputTextareaWithLabelComponent extends AbstractInputComponent {
   @Input() data!: FieldSet;
 
-
-
+  get asterix(): string {
+    return this.inputRequired ? ' *' : '';
+  }
 }
