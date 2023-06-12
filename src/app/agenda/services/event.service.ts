@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { CollectionReference, DocumentData, DocumentReference, Firestore, Timestamp, collection, collectionChanges, collectionData, deleteDoc, doc, docSnapshots, setDoc } from '@angular/fire/firestore';
+import { CollectionReference, DocumentData, DocumentReference, Firestore, collection, collectionData, deleteDoc, doc, setDoc } from '@angular/fire/firestore';
 import { CalendarEvent, CalendarEventTimesChangedEvent } from 'angular-calendar';
-import { BehaviorSubject, Observable, map } from 'rxjs';
-import { CalEventDTO, CalEventEntity } from '../models/calEvent.model';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { CalEventEntity } from '../models/calEvent.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,21 +21,6 @@ export class EventService {
   constructor(private firestore: Firestore) {
     this.collectionRef = collection(this.firestore, 'calendarEvent');
   }
-
-  /*   public get getEvents$(): Observable<CalendarEvent[]> {
-      return this.events$.asObservable();
-    }
-  
-    public set setEvents$(calendarEvents: CalendarEvent[]) {
-      this.events = [...calendarEvents];
-      this.events$.next(this.events);
-    }
-  
-    public pushEvent(calendarEvent: CalendarEvent): void {
-      this.events.push(calendarEvent);
-      this.events = [...this.events];
-      this.events$.next(this.events);
-    } */
 
   public eventTimesChanged({ event, newStart, allDay }: CalendarEventTimesChangedEvent): CalendarEvent[] {
     if (typeof allDay !== 'undefined') event.allDay = allDay;

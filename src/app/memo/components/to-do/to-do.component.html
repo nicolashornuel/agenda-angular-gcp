@@ -20,6 +20,6 @@
   <h6>{{ popover.title }}</h6>
   <hr />
   <div *ngFor="let data of popover.fieldSets">
-    <app-input-checkbox-with-label [data]="data" (onBlur)="onSave(data)"></app-input-checkbox-with-label>
+    <app-input-checkbox-with-label [data]="data" (onBlur)="onShowColumn(data)"></app-input-checkbox-with-label>
   </div>
 </ng-template>

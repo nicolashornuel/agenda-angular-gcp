@@ -9,20 +9,20 @@ export interface TableSet {
   height?: string;
   columnSet: ColumnSet[];
   data: any[];
-  emptyRow: any;
   openDetailByClickRow?: (row: any) => string;
 }
 
 export interface ColumnSet {
   key: string;
   title: string;
-  type: 'custom' | 'string';
+  type: 'custom' | 'string' | 'html';
   visible: boolean;
   width?: string;
+  innerHTML?: (row: any, col: ColumnSet) => string;
   render?: {
     component: any;
     valuePrepare: (row: any, col: ColumnSet) => FieldSet | any;
-    valueSave: (value: any) => any;
+    valueSave: (row: any) => any;
   };
 }
 

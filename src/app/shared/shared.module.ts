@@ -2,9 +2,17 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { AbstractInputComponent } from './abstracts/input.component';
+import { AbstractNgModelComponent } from './abstracts/ng-model.component';
 import { AlertComponent } from './components/alert/alert.component';
+import { ButtonGroupComponent } from './components/button-group/button-group.component';
 import { ButtonComponent } from './components/button/button.component';
+import { CardComponent } from './components/card/card.component';
+import { InputCheckboxWithLabelComponent } from './components/input-checkbox-with-label/input-checkbox-with-label.component';
+import { InputTextWithLabelComponent } from './components/input-text-with-label/input-text-with-label.component';
+import { InputTextareaWithLabelComponent } from './components/input-textarea-with-label/input-textarea-with-label.component';
 import { InputCheckboxComponent, InputComponent } from './components/input/input.component';
+import { LayoutComponent } from './components/layout/layout.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { PopoverComponent } from './components/popover/popover.component';
@@ -21,14 +29,6 @@ import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { ModalDirective } from './directives/modal.directive';
 import { PopoverDirective } from './directives/popover.directive';
 import { TooltipDirective } from './directives/tooltip.directive';
-import { AbstractNgModelComponent } from './abstracts/ng-model.component';
-import { AbstractInputComponent } from './abstracts/input.component';
-import { LayoutComponent } from './components/layout/layout.component';
-import { CardComponent } from './components/card/card.component';
-import { ButtonGroupComponent } from './components/button-group/button-group.component';
-import { InputTextWithLabelComponent } from './components/input-text-with-label/input-text-with-label.component';
-import { InputCheckboxWithLabelComponent } from './components/input-checkbox-with-label/input-checkbox-with-label.component';
-import { InputTextareaWithLabelComponent } from './components/input-textarea-with-label/input-textarea-with-label.component';
 
 const sharedComponents = [
   TableComponent,
