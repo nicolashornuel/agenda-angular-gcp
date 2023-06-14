@@ -21,4 +21,9 @@ export class InputCheckboxWithLabelComponent extends AbstractInputComponent {
   get asterix(): string {
     return this.inputRequired ? ' *' : '';
   }
+
+  public log(value: string) {
+    console.log(value);
+    
+  }
 }

@@ -20,12 +20,12 @@ export class ToDoComponent implements OnInit {
     height: 'calc(100vh - 240px)',
     columnSet: [
       {
-        key: 'isResolved',
-        title: 'Résolu',
+        key: 'category',
+        title: 'Catégorie',
         type: 'custom',
         visible: true,
         render: {
-          component: TableCheckboxComponent,
+          component: TableInputComponent,
           valuePrepare: (row: toDoDTO, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col),
           valueSave: (row: toDoDTO) => this.save(row)
         }
@@ -65,15 +65,16 @@ export class ToDoComponent implements OnInit {
         title: 'Dernière mise à jour',
         type: 'html',
         visible: true,
+        width: '15%',
         innerHTML: (row: any, col: ColumnSet) => `<div>${this.formatDate(row[col.key])}</div>`
       },
       {
-        key: 'category',
-        title: 'Catégorie',
+        key: 'isResolved',
+        title: 'Résolu',
         type: 'custom',
         visible: true,
         render: {
-          component: TableInputComponent,
+          component: TableCheckboxComponent,
           valuePrepare: (row: toDoDTO, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col),
           valueSave: (row: toDoDTO) => this.save(row)
         }
@@ -136,8 +137,15 @@ export class ToDoComponent implements OnInit {
   }
 
   private formatDate(date: Date): string {
-    //const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
-    return date ? date.toLocaleDateString("fr-FR") : '';
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'short',
+      day: '2-digit',
+      month: 'short',
+      year: '2-digit',
+      hour: "2-digit",
+      minute: "2-digit"
+  };
+    return date ? date.toLocaleDateString("fr-FR", options) : '';
   }
 
   public save(item: toDoDTO): void {
