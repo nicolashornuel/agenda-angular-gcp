@@ -46,7 +46,7 @@ export class TableCellComponent implements AfterViewInit, OnDestroy {
     if (this.childComponent.instance.onBlur) {
       this.childComponent.instance.onBlur.pipe(takeUntil(this.destroy$))
         .subscribe(async () => {       
-          const fieldSet = this.childComponent.instance.data as FieldSet;
+          const fieldSet = this.childComponent.instance.data as FieldSet; 
           this.rowData[this.columnSet.key] = fieldSet.value;
           if (this.columnSet.render) {
             const response = await this.columnSet.render.valueSave(this.rowData);

@@ -1,8 +1,8 @@
 <input
-  #input="ngModel"
   type="checkbox"
-  [name]="data.name"
-  [ngModel]="data.value"
-  [disabled]="data.disabled"
-  (ngModelChange)="onSave(input.value)"
+  [readonly]="data.disabled"
+  [required]="data.required"
+  (blur)="onBlur.next()"
+  (focus)="onFocus.next()"
+  [(ngModel)]="data.value"
 />

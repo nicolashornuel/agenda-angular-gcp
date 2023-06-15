@@ -1,33 +1,25 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FieldComponent, FieldSet} from '@shared/models/tableSet.interface';
-import {Subject, debounceTime, distinctUntilChanged} from 'rxjs';
+import { Component, Input, forwardRef } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { AbstractInputComponent } from '@shared/abstracts/input.component';
+import { FieldSet } from '@shared/models/tableSet.interface';
 
 @Component({
   selector: 'app-table-checkbox',
   templateUrl: './table-checkbox.component.html',
-  styleUrls: ['./table-checkbox.component.scss']
+  styleUrls: ['./table-checkbox.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => TableCheckboxComponent),
+      multi: true
+    }
+  ]
 })
-export class TableCheckboxComponent implements FieldComponent, OnInit {
+export class TableCheckboxComponent extends AbstractInputComponent {
   @Input() data!: FieldSet;
-  @Output() output = new EventEmitter<FieldSet>();
-  private debouncer = new Subject<string | number | boolean>();
 
-  constructor() {}
-
-  ngOnInit(): void {
-    this.debouncer.pipe(debounceTime(500), distinctUntilChanged()).subscribe(value => {
-      const fieldSet = {
-        name: this.data.name,
-        value,
-        disabled: this.data.disabled,
-        required: this.data.required
-      };
-      this.data = fieldSet;
-      this.output.emit(fieldSet);
-    });
+  constructor() {
+    super();
   }
 
-  onSave(value: string | number | boolean): void {
-    this.debouncer.next(value);
-  }
 }

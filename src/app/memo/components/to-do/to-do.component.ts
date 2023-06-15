@@ -1,11 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {Timestamp} from '@angular/fire/firestore';
-import {PriorityComponent} from '@shared/components/priority/priority.component';
-import {TableCheckboxComponent} from '@shared/components/table-checkbox/table-checkbox.component';
-import {TableInputComponent} from '@shared/components/table-input/table-input.component';
-import {ColumnSet, FieldSet, RenderFieldSet, TableSet} from '@shared/models/tableSet.interface';
-import {toDoDTO, toDoEntity} from 'app/memo/models/to-do.model';
-import {TodoService} from 'app/memo/service/todo.service';
+import { Component, OnInit } from '@angular/core';
+import { PriorityComponent } from '@shared/components/priority/priority.component';
+import { TableCheckboxComponent } from '@shared/components/table-checkbox/table-checkbox.component';
+import { TableInputComponent } from '@shared/components/table-input/table-input.component';
+import { ColumnSet, FieldSet, RenderFieldSet, TableSet } from '@shared/models/tableSet.interface';
+import { DestroyService } from '@shared/services/destroy.service';
+import { UtilService } from '@shared/services/util.service';
+import { toDoDTO } from 'app/memo/models/to-do.model';
+import { TodoService } from 'app/memo/service/todo.service';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-to-do',
@@ -58,7 +60,7 @@ export class ToDoComponent implements OnInit {
         title: 'Date de création',
         type: 'html',
         visible: true,
-        innerHTML: (row: any, col: ColumnSet) => `<div>${this.formatDate(row[col.key])}</div>`
+        innerHTML: (row: any, col: ColumnSet) => `<div>${this.util.formatDate(row[col.key])}</div>`
       },
       {
         key: 'updatingDate',
@@ -66,7 +68,7 @@ export class ToDoComponent implements OnInit {
         type: 'html',
         visible: true,
         width: '15%',
-        innerHTML: (row: any, col: ColumnSet) => `<div>${this.formatDate(row[col.key])}</div>`
+        innerHTML: (row: any, col: ColumnSet) => `<div>${this.util.formatDate(row[col.key])}</div>`
       },
       {
         key: 'isResolved',
@@ -93,22 +95,18 @@ export class ToDoComponent implements OnInit {
       };
     })
   };
+  private dataSource!: toDoDTO[];
 
-  private data: toDoDTO[] = [
-    {
-      isResolved: false,
-      description: 'Acheter Vélo + siège enfant + barre enfant',
-      priority: 3,
-      creatingDate: new Date(),
-      updatingDate: undefined,
-      category: 'Loisirs'
-    }
-  ];
-
-  constructor(private toDoService: TodoService) {}
+  constructor(private toDoService: TodoService, private util: UtilService, private destroy$: DestroyService) {}
 
   ngOnInit(): void {
-    this.tableSet.data = this.data;
+    this.toDoService
+      .getAll()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((toDoDTOList: toDoDTO[]) => {
+        this.dataSource = toDoDTOList;
+        this.tableSet.data = this.dataSource;
+      });
   }
 
   public addNew(): void {
@@ -131,34 +129,14 @@ export class ToDoComponent implements OnInit {
   public applyFilter(keyword: string): void {
     keyword != ''
       ? (this.tableSet.data = [
-          ...this.data.filter((data: toDoDTO) => data.description.includes(keyword) || data.category.includes(keyword))
+          ...this.dataSource.filter(
+            (data: toDoDTO) => data.description.includes(keyword) || data.category.includes(keyword)
+          )
         ])
-      : (this.tableSet.data = [...this.data]);
+      : (this.tableSet.data = [...this.dataSource]);
   }
 
-  private formatDate(date: Date): string {
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: 'short',
-      day: '2-digit',
-      month: 'short',
-      year: '2-digit',
-      hour: "2-digit",
-      minute: "2-digit"
-  };
-    return date ? date.toLocaleDateString("fr-FR", options) : '';
-  }
-
-  public save(item: toDoDTO): void {
-    const entity: toDoEntity = {
-      isResolved: item.isResolved,
-      description: item.description,
-      priority: item.priority,
-      creatingDate: item.id ? Timestamp.fromDate(new Date(item.creatingDate)) : Timestamp.fromDate(new Date()),
-      updatingDate: item.id ? Timestamp.fromDate(new Date()) : undefined,
-      category: item.category
-    };
-    console.log(item);
-    console.log(entity);
-    //this.toDoService.save()
+  public async save(toDoDTO: toDoDTO): Promise<void> {
+    toDoDTO.id ? await this.toDoService.update(toDoDTO) : await this.toDoService.save(toDoDTO);
   }
 }
