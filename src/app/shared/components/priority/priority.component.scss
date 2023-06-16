@@ -4,6 +4,11 @@
     width: 18px;
     display: inline-block;
     cursor: pointer;
+/*     &:hover div:nth-child($i) i::before {
+        content: "\f005";
+        color: $gold;
+        font-weight: 900;
+    } */
     .fa-solid {
         color: $gold;
     }
