@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { PriorityComponent } from '@shared/components/priority/priority.component';
-import { TableCheckboxComponent } from '@shared/components/table-checkbox/table-checkbox.component';
-import { TableInputComponent } from '@shared/components/table-input/table-input.component';
-import { ColumnSet, FieldSet, RenderFieldSet, TableSet } from '@shared/models/tableSet.interface';
-import { DestroyService } from '@shared/services/destroy.service';
-import { UtilService } from '@shared/services/util.service';
-import { toDoDTO } from 'app/memo/models/to-do.model';
-import { TodoService } from 'app/memo/service/todo.service';
-import { takeUntil } from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {PriorityComponent} from '@shared/components/priority/priority.component';
+import {TableCheckboxComponent} from '@shared/components/table-checkbox/table-checkbox.component';
+import {TableInputComponent} from '@shared/components/table-input/table-input.component';
+import {ColumnSet, FieldSet, RenderFieldSet, TableSet} from '@shared/models/tableSet.interface';
+import {DestroyService} from '@shared/services/destroy.service';
+import {UtilService} from '@shared/services/util.service';
+import {toDoDTO} from 'app/memo/models/to-do.model';
+import {TodoService} from 'app/memo/service/todo.service';
+import {takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-to-do',
@@ -97,11 +97,21 @@ export class ToDoComponent implements OnInit {
   };
   private dataSource!: toDoDTO[];
 
-  public enableEditIndex: number | undefined | null = null;
+  public enableEditIndex: number | null = null;
 
   constructor(private toDoService: TodoService, private util: UtilService, private destroy$: DestroyService) {}
 
   ngOnInit(): void {
+    this.initializeList();
+  }
+
+  /**
+   * GET all
+   *
+   * @private
+   * @memberof ToDoComponent
+   */
+  private initializeList(): void {
     this.toDoService
       .getAll()
       .pipe(takeUntil(this.destroy$))
@@ -111,6 +121,11 @@ export class ToDoComponent implements OnInit {
       });
   }
 
+  /**
+   * ADD new empty
+   *
+   * @memberof ToDoComponent
+   */
   public addNew(): void {
     const newItem = {
       isResolved: false,
@@ -124,11 +139,23 @@ export class ToDoComponent implements OnInit {
     this.enableEditIndex = 0;
   }
 
-  public onShowColumn(fieldSet: FieldSet) {
-    this.tableSet.columnSet.find((columnSet: ColumnSet) => columnSet.title === fieldSet.name)!.visible =
-      fieldSet.value as boolean;
+  /**
+   * DISPLAY column
+   *
+   * @param {boolean} value
+   * @param {*} fieldSet
+   * @memberof ToDoComponent
+   */
+  public onShowColumn(value: boolean, fieldSet: FieldSet) {
+    this.tableSet.columnSet.find((columnSet: ColumnSet) => columnSet.title === fieldSet.name)!.visible = value;
   }
 
+  /**
+   * FILTER by keyword
+   *
+   * @param {string} keyword
+   * @memberof ToDoComponent
+   */
   public applyFilter(keyword: string): void {
     keyword != ''
       ? (this.tableSet.data = [
@@ -139,10 +166,36 @@ export class ToDoComponent implements OnInit {
       : (this.tableSet.data = [...this.dataSource]);
   }
 
+  /**
+   * FILTER by isNotResolved
+   *
+   * @param {boolean} value
+   * @memberof ToDoComponent
+   */
+  public filterByNoResolved(value: boolean): void {
+    value
+      ? (this.tableSet.data = [...this.dataSource.filter((data: toDoDTO) => data.isResolved === false)])
+      : (this.tableSet.data = [...this.dataSource]);
+  }
+
+  /**
+   * SAVE one
+   *
+   * @param {toDoDTO} toDoDTO
+   * @return {*}  {Promise<void>}
+   * @memberof ToDoComponent
+   */
   public async save(toDoDTO: toDoDTO): Promise<void> {
     toDoDTO.id ? await this.toDoService.update(toDoDTO) : await this.toDoService.save(toDoDTO);
   }
 
+  /**
+   * DELETE one
+   *
+   * @param {string} id
+   * @return {*}  {Promise<void>}
+   * @memberof ToDoComponent
+   */
   public async delete(id: string): Promise<void> {
     await this.toDoService.delete(id);
   }

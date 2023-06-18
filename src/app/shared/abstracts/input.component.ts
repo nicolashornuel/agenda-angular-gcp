@@ -3,7 +3,7 @@ import { AbstractNgModelComponent } from './ng-model.component';
 import { NgForm, NgModel } from '@angular/forms';
 
 @Component({ template: '' })
-export class AbstractInputComponent extends AbstractNgModelComponent<string>  implements AfterViewInit {
+export class AbstractInputComponent extends AbstractNgModelComponent<string | boolean>  implements AfterViewInit {
     @Input()
     readonly: boolean = false;
   
@@ -32,7 +32,7 @@ export class AbstractInputComponent extends AbstractNgModelComponent<string>  im
 
     @Input() parentForm?: NgForm;
     @ViewChild(NgModel) ngModel!: NgModel;
-    @Output() onModelChange = new EventEmitter<void>();
+    @Output() onModelChange = new EventEmitter<any>();
 
     ngAfterViewInit(): void {
       if (this.parentForm)

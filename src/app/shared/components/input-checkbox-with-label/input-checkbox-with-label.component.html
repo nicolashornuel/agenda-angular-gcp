@@ -1,14 +1,12 @@
 <label class="row-start-end">
     <input
       type="checkbox"
-      [name]="data.name"
-      [readonly]="data.disabled"
-      [required]="data.required"
+      [readonly]="inputReadonly"
+      [required]="inputRequired"
       (blur)="onBlur.next()"
       (focus)="onFocus.next()"
-      [(ngModel)]="data.value"
-      (ngModelChange)="onModelChange.next()"
+      [(ngModel)]="value"
+      (ngModelChange)="onModelChange.next($event)"
     />
-    <span class="ml-2">{{ data.name + asterix }}</span>
+    <span class="ml-2">{{ label + asterix }}</span>
   </label>
-

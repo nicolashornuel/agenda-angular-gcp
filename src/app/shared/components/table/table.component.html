@@ -11,8 +11,7 @@
         ></app-table-cell-header>
       </ng-container>
       <ng-container *ngIf="tableSet.actions">
-        <div class="table-cell">Actions      {{enableEditIndex}}
-        </div>
+        <div class="table-cell">Actions</div>
       </ng-container>
     </div>
     <form
@@ -37,7 +36,7 @@
           <div class="row-center-center">
             <ng-container *ngIf="enableEditIndex !== i; else edit">
               <app-button icon="fas fa-pencil-alt" size="tiny" (click)="enableEditMethod(i)"></app-button>
-              <app-button icon="fas fa-trash-alt" size="tiny" (click)="onDelete(tableSet.data[i])"></app-button>
+              <app-button icon="fas fa-trash-alt" size="tiny" (click)="onDelete(i)"></app-button>
             </ng-container>
             <ng-template #edit>
               <app-button icon="fas fa-times" size="tiny" (click)="onCancel(f, tableSet.data[i])"></app-button>
