@@ -20,6 +20,10 @@ export class ToDoComponent implements OnInit {
     verticaltextHeader: false,
     hover: false,
     height: 'calc(100vh - 240px)',
+    actions: {
+      save: (row: toDoDTO) => this.save(row),
+      delete: (id: string) => this.delete(id)
+    },
     columnSet: [
       {
         key: 'category',
@@ -28,8 +32,7 @@ export class ToDoComponent implements OnInit {
         visible: true,
         render: {
           component: TableInputComponent,
-          valuePrepare: (row: toDoDTO, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col),
-          valueSave: (row: toDoDTO) => this.save(row)
+          valuePrepare: (row: toDoDTO, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col)
         }
       },
       {
@@ -40,8 +43,7 @@ export class ToDoComponent implements OnInit {
         width: '40%',
         render: {
           component: TableInputComponent,
-          valuePrepare: (row: toDoDTO, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col),
-          valueSave: (row: toDoDTO) => this.save(row)
+          valuePrepare: (row: toDoDTO, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col)
         }
       },
       {
@@ -51,8 +53,7 @@ export class ToDoComponent implements OnInit {
         visible: true,
         render: {
           component: PriorityComponent,
-          valuePrepare: (row: toDoDTO, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col),
-          valueSave: (row: toDoDTO) => this.save(row)
+          valuePrepare: (row: toDoDTO, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col)
         }
       },
       {
@@ -60,7 +61,7 @@ export class ToDoComponent implements OnInit {
         title: 'Date de création',
         type: 'html',
         visible: true,
-        innerHTML: (row: any, col: ColumnSet) => `<div>${this.util.formatDate(row[col.key])}</div>`
+        innerHTML: (row: any, col: ColumnSet) => `<div class="txt-nowrap">${this.util.formatDate(row[col.key])}</div>`
       },
       {
         key: 'updatingDate',
@@ -68,7 +69,7 @@ export class ToDoComponent implements OnInit {
         type: 'html',
         visible: true,
         width: '15%',
-        innerHTML: (row: any, col: ColumnSet) => `<div>${this.util.formatDate(row[col.key])}</div>`
+        innerHTML: (row: any, col: ColumnSet) => `<div class="txt-nowrap">${this.util.formatDate(row[col.key])}</div>`
       },
       {
         key: 'isResolved',
@@ -77,8 +78,7 @@ export class ToDoComponent implements OnInit {
         visible: true,
         render: {
           component: TableCheckboxComponent,
-          valuePrepare: (row: toDoDTO, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col),
-          valueSave: (row: toDoDTO) => this.save(row)
+          valuePrepare: (row: toDoDTO, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col)
         }
       }
     ],
@@ -96,6 +96,8 @@ export class ToDoComponent implements OnInit {
     })
   };
   private dataSource!: toDoDTO[];
+
+  public enableEditIndex: number | undefined | null = null;
 
   constructor(private toDoService: TodoService, private util: UtilService, private destroy$: DestroyService) {}
 
@@ -119,6 +121,7 @@ export class ToDoComponent implements OnInit {
       category: ''
     };
     this.tableSet.data.unshift(newItem);
+    this.enableEditIndex = 0;
   }
 
   public onShowColumn(fieldSet: FieldSet) {
@@ -138,5 +141,9 @@ export class ToDoComponent implements OnInit {
 
   public async save(toDoDTO: toDoDTO): Promise<void> {
     toDoDTO.id ? await this.toDoService.update(toDoDTO) : await this.toDoService.save(toDoDTO);
+  }
+
+  public async delete(id: string): Promise<void> {
+    await this.toDoService.delete(id);
   }
 }

@@ -8,6 +8,7 @@ input[type=checkbox]{
     border: 1px solid $green;
     appearance: none;
     border-radius: 0.25em;
+    cursor: pointer;
 
     &:checked {
         background-color: $green;
@@ -19,5 +20,17 @@ input[type=checkbox]{
     }
     &:active {
         @extend %box-shadow-active;
+    }
+
+    &[readonly] {
+        background-color: $grey-95;
+        border-color: $grey-90;
+        cursor: default;
+        pointer-events: none;
+    }
+
+    &[readonly]:checked {
+        background-color: $grey-80;
+        border-color: $grey-70;
     }
 }

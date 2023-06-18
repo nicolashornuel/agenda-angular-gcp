@@ -1,8 +1,21 @@
+<input
+  type="number"
+  min="0"
+  max="3"
+  ngModel
+  [name]="data.name"
+  [readonly]="inputReadonly"
+  [required]="inputRequired"
+  (blur)="onBlur.next()"
+  (focus)="onFocus.next()"
+  [(ngModel)]="data.value"
+/>
 <div
   class="rates"
   *ngFor="let ratingId of ratingArr; index as i"
   (click)="onClick(i + 1)"
-  (mouseover)="onPreview(i + 1)"
+  (mouseenter)="onPreview(i + 1)"
+  (mouseleave)="onPreview(i + 1)"
 >
   <i #star [ngClass]="showIcon(i)"></i>
 </div>

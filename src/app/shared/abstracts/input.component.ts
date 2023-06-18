@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { AbstractNgModelComponent } from './ng-model.component';
+import { NgForm, NgModel } from '@angular/forms';
 
 @Component({ template: '' })
-export class AbstractInputComponent extends AbstractNgModelComponent<string> {
+export class AbstractInputComponent extends AbstractNgModelComponent<string>  implements AfterViewInit {
     @Input()
     readonly: boolean = false;
   
@@ -27,5 +28,14 @@ export class AbstractInputComponent extends AbstractNgModelComponent<string> {
   
     get inputRequired(): boolean {
       return this.required || typeof this.required !== 'boolean';
+    }
+
+    @Input() parentForm?: NgForm;
+    @ViewChild(NgModel) ngModel!: NgModel;
+    @Output() onModelChange = new EventEmitter<void>();
+
+    ngAfterViewInit(): void {
+      if (this.parentForm)
+      this.parentForm.addControl(this.ngModel);
     }
 }

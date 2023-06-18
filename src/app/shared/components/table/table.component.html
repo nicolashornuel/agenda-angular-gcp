@@ -10,23 +10,42 @@
           [columnSet]="column"
         ></app-table-cell-header>
       </ng-container>
+      <ng-container *ngIf="tableSet.actions">
+        <div class="table-cell">Actions      {{enableEditIndex}}
+        </div>
+      </ng-container>
     </div>
-    <div
+    <form
+      #f="ngForm"
       class="table-row body"
       [ngClass]="tableSet.hover ? 'hover' : ''"
       *ngFor="let row of tableSet.data; let i = index"
     >
       <ng-container *ngFor="let column of tableSet.columnSet">
         <app-table-cell
+          class="table-cell"
+          [ngStyle]="{width: column.width ?? null}"
           *ngIf="column.visible"
           [rowData]="tableSet.data[i]"
           [columnSet]="column"
-          [parentForm]="parentForm"
-          [readOnly]="readOnly"
-          class="table-cell"
-          [ngStyle]="{width: column.width ?? null}"
+          [readonly]="enableEditIndex !== i"
+          [parentForm]="f"
         ></app-table-cell>
       </ng-container>
-    </div>
+      <ng-container *ngIf="tableSet.actions">
+        <div class="table-cell">
+          <div class="row-center-center">
+            <ng-container *ngIf="enableEditIndex !== i; else edit">
+              <app-button icon="fas fa-pencil-alt" size="tiny" (click)="enableEditMethod(i)"></app-button>
+              <app-button icon="fas fa-trash-alt" size="tiny" (click)="onDelete(tableSet.data[i])"></app-button>
+            </ng-container>
+            <ng-template #edit>
+              <app-button icon="fas fa-times" size="tiny" (click)="onCancel(f, tableSet.data[i])"></app-button>
+              <app-button icon="fas fa-save" size="tiny" (click)="onSave(f, tableSet.data[i])"></app-button>
+            </ng-template>
+          </div>
+        </div>
+      </ng-container>
+    </form>
   </div>
 </section>

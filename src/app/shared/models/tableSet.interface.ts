@@ -1,5 +1,5 @@
-import {EventEmitter, Injectable, Input, OnInit, Output} from '@angular/core';
-import {BehaviorSubject, Subject} from 'rxjs';
+import { EventEmitter } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 export interface TableSet {
   title: string;
@@ -9,6 +9,10 @@ export interface TableSet {
   height?: string;
   columnSet: ColumnSet[];
   data: any[];
+  actions?: {
+    save: (row: any) => Promise<any>;
+    delete: (id: string) => Promise<any>;
+  };
   openDetailByClickRow?: (row: any) => string;
 }
 
@@ -22,7 +26,7 @@ export interface ColumnSet {
   render?: {
     component: any;
     valuePrepare: (row: any, col: ColumnSet) => FieldSet | any;
-    valueSave: (row: any) => any;
+    valueSave?: (row: any) => any;
   };
 }
 
@@ -31,6 +35,7 @@ export interface FieldSet {
   value: string | boolean | number;
   disabled: boolean;
   required: boolean;
+  parentForm?: NgForm;
 }
 
 export interface FieldComponent {
@@ -44,7 +49,7 @@ export class RenderFieldSet {
     return {
       name: col.key,
       value: row[col.key],
-      disabled: false,
+      disabled: true,
       required: true
     };
   }

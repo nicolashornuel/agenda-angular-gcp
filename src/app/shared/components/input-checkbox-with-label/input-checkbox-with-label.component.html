@@ -7,7 +7,7 @@
       (blur)="onBlur.next()"
       (focus)="onFocus.next()"
       [(ngModel)]="data.value"
-      (ngModelChange)="log('ngModelChange')"
+      (ngModelChange)="onModelChange.next()"
     />
     <span class="ml-2">{{ data.name + asterix }}</span>
   </label>

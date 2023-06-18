@@ -16,7 +16,13 @@ input[type=text] {
     &:hover, &:focus {
         border: 1px solid $blue;
     }
-    &:active {
+    &:active:not([readonly]) {
         @extend %box-shadow-active;
+    }
+    &[readonly] {
+        cursor: default;
+        border-color: $grey-80;
+       // background: transparent;
+        color: $grey-10;
     }
 }

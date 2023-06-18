@@ -4,15 +4,25 @@
     width: 18px;
     display: inline-block;
     cursor: pointer;
-/*     &:hover div:nth-child($i) i::before {
-        content: "\f005";
-        color: $gold;
-        font-weight: 900;
-    } */
     .fa-solid {
         color: $gold;
     }
     .fa-regular {
         color: $grey-80;
+        &.hover {
+            color: $gold;
+        }
     }
+}
+
+input[type=number] {
+   position: absolute;
+   z-index: -1;
+   &:focus-visible ~ .rates {
+    box-shadow: $box-shadow;
+   }
+
+   &[readonly] ~ .rates {
+    pointer-events: none;
+   }
 }

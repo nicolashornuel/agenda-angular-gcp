@@ -1,7 +1,9 @@
 <input
   type="text"
-  [readonly]="data.disabled"
-  [required]="data.required"
+  ngModel
+  [name]="data.name"
+  [readonly]="inputReadonly"
+  [required]="inputRequired"
   (blur)="onBlur.next()"
   (focus)="onFocus.next()"
   [(ngModel)]="data.value"

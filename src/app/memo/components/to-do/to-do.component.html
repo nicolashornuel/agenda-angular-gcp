@@ -12,7 +12,7 @@
         <button [appPopover]="templateRef"><i class="fas fa-columns"></i></button>
       </app-button-group>
     </div>
-    <app-table [tableSet]="tableSet"></app-table>
+    <app-table [tableSet]="tableSet" [enableEditIndex]="enableEditIndex"></app-table>
   </app-card>
 </app-layout>
 
@@ -20,6 +20,6 @@
   <h6>{{ popover.title }}</h6>
   <hr />
   <div *ngFor="let data of popover.fieldSets">
-    <app-input-checkbox-with-label [data]="data" (onBlur)="onShowColumn(data)"></app-input-checkbox-with-label>
+    <app-input-checkbox-with-label [data]="data" (onModelChange)="onShowColumn(data)"></app-input-checkbox-with-label>
   </div>
 </ng-template>

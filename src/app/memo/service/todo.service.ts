@@ -7,6 +7,7 @@ import {
   Timestamp,
   collection,
   collectionData,
+  deleteDoc,
   doc,
   setDoc
 } from '@angular/fire/firestore';
@@ -41,6 +42,11 @@ export class TodoService {
     const toDoEntity: toDoEntity = this.dtoToEntity(toDoDTO);
     const docRef: DocumentReference<DocumentData> = doc(this.collectionRef, toDoDTO.id);
     await setDoc(docRef, {...toDoEntity});
+  }
+
+  public delete(id: string): Promise<void> {
+    const docRef: DocumentReference<DocumentData> = doc(this.collectionRef, id);
+    return deleteDoc(docRef);
   }
 
   private entitiesToDTOs(toDoEntities: toDoEntity[]): toDoDTO[] {
