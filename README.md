@@ -55,3 +55,9 @@ https://medium.com/dev-jam/5-tips-best-practices-to-organize-your-angular-projec
 "start": "ng serve --disable-host-check"
   
   https://firebase.google.com/docs/functions/config-env?hl=fr
+
+## @angular/fire
+https://firebaseopensource.com/projects/angular/angularfire2
+https://www.npmjs.com/package/@angular/fire
+https://github.com/angular/angularfire
+https://firebase.google.com/docs/auth/web/firebaseui?hl=fr&authuser=0

@@ -11,6 +11,7 @@ import localeFr from '@angular/common/locales/fr';
 
 import { AgendaModule } from '@agenda/agenda.module';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { HomeModule } from './home/home.module';
 import { environment } from '../environments/environment';
@@ -24,6 +25,7 @@ import { environment } from '../environments/environment';
     HomeModule,
     AgendaModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
     provideFirestore(() => {
       const firestore = getFirestore();
 
