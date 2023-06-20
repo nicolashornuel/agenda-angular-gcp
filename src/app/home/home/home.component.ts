@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from 'app/core/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -21,5 +22,11 @@ export class HomeComponent {
       route: 'memo/courses'
     }
   ]
+
+  constructor(public auth: AuthService) {}
+
+  public signOut(): void {
+    this.auth.signOut();
+  }
 
 }

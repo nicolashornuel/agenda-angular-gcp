@@ -1,10 +1,13 @@
 <nav>
-  <div class="row-start-center container">
-    <div><i class="fas fa-calendar-check fa-lg"></i></div>
-    <ul class="row-start-center">
-      <li *ngFor="let item of items">
-        <a class="p-2" [routerLink]="item.route" [routerLinkActive]="'active'">{{ item.title }}</a>
-      </li>
-    </ul>
+  <div class="row-between-center container">
+    <div class="row-start-center">
+      <div><i class="fas fa-calendar-check fa-lg"></i></div>
+      <ul class="row-start-center">
+        <li *ngFor="let item of items">
+          <a class="p-2" [routerLink]="item.route" [routerLinkActive]="'active'">{{ item.title }}</a>
+        </li>
+      </ul>
+    </div>
+    <app-button size="regular" (click)="signOut.next()">Déconnexion</app-button>
   </div>
 </nav>

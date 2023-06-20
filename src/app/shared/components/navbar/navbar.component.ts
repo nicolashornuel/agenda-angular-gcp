@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
@@ -10,4 +10,6 @@ export class NavbarComponent {
     title: string;
     route: string;
   }[] = [];
+  @Output() signOut = new EventEmitter<void>();
+  
 }
