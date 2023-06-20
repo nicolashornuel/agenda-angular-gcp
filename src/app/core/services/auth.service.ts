@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {
   Auth,
   GoogleAuthProvider,
-  User,
   UserCredential,
+  UserInfo,
   signInAnonymously,
   signInWithPopup,
   signOut
@@ -36,7 +36,7 @@ export class AuthService {
   ) {}
 
   public get getUserLoggedIn$(): Observable<boolean> {
-    const logStored: User | undefined = this.storage.getLocalItem(this.KEY_STORAGE_USER);
+    const logStored: UserInfo | undefined = this.storage.getLocalItem(this.KEY_STORAGE_USER);
     return logStored && logStored.uid ? of(true) : this.isLoggedIn$.asObservable();
   }
 
@@ -67,7 +67,12 @@ export class AuthService {
   }
 
   private async goodAccess(user: UserCredential): Promise<void> {
+    //const userInfo: UserInfo = await this.userService.saveOne(user);
     const exist = await this.checkUser(user.user.uid);
+    console.log(user.user.uid);
+    console.log(exist);
+    
+    
     if (exist) {
       this.storage.setLocalItem(this.KEY_STORAGE_USER, JSON.stringify(user.user));
       this.isLoggedIn$.next(true);

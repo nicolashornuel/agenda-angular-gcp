@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import { User } from '@angular/fire/auth';
+import { Injectable } from '@angular/core';
+import { UserCredential, UserInfo } from '@angular/fire/auth';
 import {
   CollectionReference,
   DocumentReference,
@@ -7,28 +7,56 @@ import {
   collection,
   doc,
   getDoc,
-  setDoc
+  getDocs,
+  query,
+  setDoc,
+  where
 } from '@angular/fire/firestore';
+
+export interface User {
+  displayName: string | null;
+  email: string | null;
+  phoneNumber: string | null;
+  photoURL: string | null;
+  providerId: string;
+  uid: string;
+}
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private collectionRef!: CollectionReference<User>;
+  private collectionRef!: CollectionReference<UserInfo>;
 
   constructor(private firestore: Firestore) {
-    this.collectionRef = collection(this.firestore, 'user') as CollectionReference<User>;
+    this.collectionRef = collection(this.firestore, 'user') as CollectionReference<UserInfo>;
   }
 
-  public async getOne(userId: string): Promise<User | undefined> {
-    const docRef: DocumentReference<User> = doc(this.collectionRef, userId);
-    const res = await getDoc<User>(docRef);
+  public async getOne(uid: string): Promise<UserInfo | undefined> {
+    const docRef: DocumentReference<UserInfo> = doc(this.collectionRef);
+    const q = query(this.collectionRef, where("uid", "==", uid))
+    getDocs<UserInfo>(q);
+    const res = await getDoc<UserInfo>(docRef);
     return res.data();
   }
 
-  public async saveOne(user: User): Promise<string> {
-    const docRef: DocumentReference<User> = doc(this.collectionRef);
-    await setDoc(docRef, {...user});
-    return docRef.id;
+  public async saveOne(userCredential: UserCredential): Promise<UserInfo> {
+    const userInfo: UserInfo = this.mapper(userCredential);
+    const docRef: DocumentReference<UserInfo> = doc(this.collectionRef);
+    await setDoc(docRef, {...userInfo});
+    return userInfo;
+  }
+
+  private mapper(userCredential: UserCredential): UserInfo {
+    const user: User = userCredential.user;
+    return {
+      displayName: user.displayName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      photoURL: user.photoURL,
+      providerId: user.providerId,
+      uid: user.uid
+    }
   }
 }
