@@ -4,7 +4,6 @@ import {
   GoogleAuthProvider,
   UserCredential,
   UserInfo,
-  signInAnonymously,
   signInWithPopup,
   signOut
 } from '@angular/fire/auth';
@@ -36,16 +35,9 @@ export class AuthService {
   ) {}
 
   public get getUserLoggedIn$(): Observable<boolean> {
-    const logStored: UserInfo | undefined = this.storage.getLocalItem(this.KEY_STORAGE_USER);
-    return logStored && logStored.uid ? of(true) : this.isLoggedIn$.asObservable();
-  }
-
-  public signInAnonymously(): Promise<void> {
-    //user(this.auth).subscribe(res => console.log(res));
-    return signInAnonymously(this.auth).then(
-      response => this.goodAccess(response),
-      error => this.badAccess(error)
-    );
+    const userStored: string = this.storage.getLocalItem(this.KEY_STORAGE_USER);
+    const userInfo: UserInfo | undefined = JSON.parse(userStored)
+    return userInfo && userInfo.uid ? of(true) : this.isLoggedIn$.asObservable();
   }
 
   public signInWithPopup(): Promise<void> {
@@ -69,10 +61,6 @@ export class AuthService {
   private async goodAccess(user: UserCredential): Promise<void> {
     //const userInfo: UserInfo = await this.userService.saveOne(user);
     const exist = await this.checkUser(user.user.uid);
-    console.log(user.user.uid);
-    console.log(exist);
-    
-    
     if (exist) {
       this.storage.setLocalItem(this.KEY_STORAGE_USER, JSON.stringify(user.user));
       this.isLoggedIn$.next(true);

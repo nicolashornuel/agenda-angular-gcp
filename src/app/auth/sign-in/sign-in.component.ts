@@ -32,12 +32,6 @@ export class SignInComponent implements OnInit {
     });
   }
 
-  public async signIn() {
-    this.isLoading = true;
-    await this.auth.signInAnonymously();
-    this.isLoading = false;
-  }
-
   public async loginWithGoogle(): Promise<void> {
     this.isLoading = true;
     await this.auth.signInWithPopup();

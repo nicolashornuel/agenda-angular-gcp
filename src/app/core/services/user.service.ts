@@ -4,6 +4,8 @@ import {
   CollectionReference,
   DocumentReference,
   Firestore,
+  QueryDocumentSnapshot,
+  QuerySnapshot,
   collection,
   doc,
   getDoc,
@@ -34,11 +36,11 @@ export class UserService {
   }
 
   public async getOne(uid: string): Promise<UserInfo | undefined> {
-    const docRef: DocumentReference<UserInfo> = doc(this.collectionRef);
-    const q = query(this.collectionRef, where("uid", "==", uid))
-    getDocs<UserInfo>(q);
-    const res = await getDoc<UserInfo>(docRef);
-    return res.data();
+    const q = query(this.collectionRef, where("uid", "==", uid));
+    const res: QuerySnapshot<UserInfo> = await getDocs<UserInfo>(q);
+    let userInfo: UserInfo | undefined = undefined;
+    res.forEach( (doc: QueryDocumentSnapshot<UserInfo>) => userInfo = doc.data());
+    return userInfo;
   }
 
   public async saveOne(userCredential: UserCredential): Promise<UserInfo> {
