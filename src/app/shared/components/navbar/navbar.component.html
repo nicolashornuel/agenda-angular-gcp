@@ -8,6 +8,11 @@
         </li>
       </ul>
     </div>
-    <app-button size="regular" (click)="signOut.next()">Déconnexion</app-button>
+    <div class="row-center-center gap-3">
+      <app-button outline size="regular" (click)="signOut.next()">Déconnexion</app-button>
+      <ng-container *ngIf="userImg">
+          <img [src]="userImg" class="user-img">
+      </ng-container>
+    </div>
   </div>
 </nav>
