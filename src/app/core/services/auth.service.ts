@@ -24,6 +24,7 @@ export class AuthService {
 
   private readonly KEY_STORAGE_USER = 'user';
   private readonly isLoggedIn$ = new BehaviorSubject<boolean>(false);
+  public isLoggedIn = false;
   private readonly provider = new GoogleAuthProvider();
 
   constructor(
@@ -35,9 +36,9 @@ export class AuthService {
   ) {}
 
   public get getUserLoggedIn$(): Observable<boolean> {
-    const userStored: string = this.storage.getLocalItem(this.KEY_STORAGE_USER);
-    const userInfo: UserInfo | undefined = JSON.parse(userStored)
-    return userInfo && userInfo.uid ? of(true) : this.isLoggedIn$.asObservable();
+    const userStored: UserInfo | undefined = this.storage.getLocalItem(this.KEY_STORAGE_USER);
+    this.isLoggedIn = userStored && userStored.uid ? true : false;
+    return userStored && userStored.uid ? of(true) : this.isLoggedIn$.asObservable();
   }
 
   public signInWithPopup(): Promise<void> {
@@ -62,7 +63,7 @@ export class AuthService {
     const userInfo: UserInfo = await this.userService.saveOne(user);
     const exist = await this.checkUser(user.user.uid);
     if (exist) {
-      this.storage.setLocalItem(this.KEY_STORAGE_USER, JSON.stringify(user.user));
+      this.storage.setLocalItem(this.KEY_STORAGE_USER, user.user);
       this.isLoggedIn$.next(true);
       this.alert.success('Authentifié');
       this.router.navigate(['/agenda']);

@@ -2,7 +2,7 @@ $color-btn-extra-disabled: #6c757d;
 $color-btn-extra-active: #0d6efd;
 @import 'variables.scss';
 
-.tiny.btn-extra {
+.tiny button {
     height: 20px;
     width: 20px;
     font-size: 16px;
@@ -22,18 +22,11 @@ $color-btn-extra-active: #0d6efd;
     min-width: 31px;
 }
 
-.btn-extra {
+%btn {
   cursor: pointer;
   font-size: 12px;
   border: 1px solid;
-  background-color: white;
-  border-color: $blue;
-  color: $blue;
-  &:hover:enabled {
-    background-color: $blue-hover;
-    border-color: $blue-hover;
-    color: white;
-  }
+  border-radius: $border-radius;
   &:active:enabled {
     @extend %box-shadow-active;
   }
@@ -43,18 +36,30 @@ $color-btn-extra-active: #0d6efd;
     border-color: $disabled-color;
     color: $disabled-color;
   }
-  &:first-child {
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-  }
-  &:last-child {
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-    margin-left: -1px;
+}
+@mixin colorBtn($bg, $border, $color) {
+  background-color: $bg;
+  border-color: $border;
+  color: $color;
+}
+
+.appearance-outline button {
+  @extend %btn;
+  @include colorBtn(transparent, $grey-100, $grey-100);
+  &:hover:enabled {
+    @include colorBtn($blue-hover, $grey-100, $grey-100);
   }
   &.active {
-    background-color: $blue-active;
-    color: white;
-    border-color: $blue-active;
+    @include colorBtn($blue-active, $grey-100, $blue-active);
+  }
+}
+.appearance-filled button {
+  @extend %btn;
+  @include colorBtn($grey-100, $blue, $blue);
+  &:hover:enabled {
+    @include colorBtn($blue-hover, $blue-hover, $grey-100);
+  }
+  &.active {
+    @include colorBtn($blue-active, $grey-100, $blue-active);
   }
 }

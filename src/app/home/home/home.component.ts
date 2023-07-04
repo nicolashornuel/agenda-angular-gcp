@@ -25,8 +25,4 @@ export class HomeComponent {
 
   constructor(public auth: AuthService) {}
 
-  public signOut(): void {
-    this.auth.signOut();
-  }
-
 }

@@ -1,0 +1,15 @@
+@import 'variables.scss';
+
+.login-google {
+    border: none;
+    background-color: #e04932;
+    color: $grey-100;
+    height: 31px;
+    cursor: pointer;
+    font-size: 12px;
+    border-radius: 3px;
+    &:hover:enabled {
+      background-color: $blue-hover;
+    }
+  }
+  

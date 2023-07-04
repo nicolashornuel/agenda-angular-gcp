@@ -10,16 +10,16 @@ export class StorageService {
 
   setLocalItem(key: string, value: any): boolean {
     if (this.isStorageAvailable() && window.localStorage) {
-      window.localStorage.setItem(key, value);
+      window.localStorage.setItem(key, JSON.stringify(value));
       return true;
     }
     return false;
   }
 
-  getLocalItem(key: string): any | null {
+  getLocalItem(key: string): any | undefined {
     if (this.isStorageAvailable() && window.localStorage) {
       let value = window.localStorage.getItem(key);
-      return value;
+      return value ? JSON.parse(value) : undefined;;
     }
     return null;
   }
