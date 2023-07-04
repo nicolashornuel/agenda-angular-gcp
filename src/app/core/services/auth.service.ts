@@ -60,7 +60,7 @@ export class AuthService {
   }
 
   private async goodAccess(user: UserCredential): Promise<void> {
-    const userInfo: UserInfo = await this.userService.saveOne(user);
+    //const userInfo: UserInfo = await this.userService.saveOne(user);
     const exist = await this.checkUser(user.user.uid);
     if (exist) {
       this.storage.setLocalItem(this.KEY_STORAGE_USER, user.user);
