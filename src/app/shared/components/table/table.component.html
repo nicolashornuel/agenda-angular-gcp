@@ -1,10 +1,9 @@
 <section class="scrolling" [style.--maxiHeight]="tableSet.maxiHeight" [style.--height]="tableSet.height">
   <div class="table-container">
-    <div class="table-row header">
+    <div class="table-row header" [ngClass]="tableSet.verticaltextHeader ? 'vertical' : ' '">
       <ng-container *ngFor="let column of tableSet.columnSet">
         <app-table-cell-header
           class="table-cell"
-          [ngClass]="tableSet.verticaltextHeader ? 'vertical' : ' '"
           *ngIf="column.visible"
           [tableSet]="tableSet"
           [columnSet]="column"

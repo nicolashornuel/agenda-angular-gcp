@@ -26,14 +26,17 @@
     }
   }
   .header {
-    background-color: $grey-80;
-    font-weight: bold;
-    border-bottom: 1px solid $grey-80;
-    cursor: pointer;
-    .vertical {
+    &.vertical .table-cell  {
       writing-mode: vertical-lr;
       transform: rotate(180deg);
       vertical-align: middle;
+    }
+    .table-cell {
+      background-color: $grey-80;
+      font-weight: bold;
+      cursor: pointer;
+      position: sticky;
+      top: 0;
     }
   }
   .body {
