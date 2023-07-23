@@ -2,53 +2,35 @@ $color-btn-extra-disabled: #6c757d;
 $color-btn-extra-active: #0d6efd;
 @import 'variables.scss';
 
-.tiny {
+app-button-group button[size=tiny] {
+    padding: 0;
     height: 20px;
-    min-width: 24px;
+    width: 24px;
 }
-.small {
+app-button-group button[size=small] {
     height: 24px;
     min-width: 24px;
 }
-.regular {
+app-button-group button[size=regular] {
     height: 31px;
     min-width: 31px;
 }
 
-.group-container > button {
-    cursor: pointer;
-    font-size: 12px;
-    border: 1px solid;
-    background-color: white;
-    border-color: $blue;
-    color: $blue;
-    &:hover:enabled {
-      background-color: $blue-hover;
-      border-color: $blue-hover;
-      color: white;
+
+app-button-group [appButton] {
+      &:first-child:not(:last-child) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      &:last-child:not(:first-child) {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+      &:not(:first-child):not(:last-child) {
+        border-radius: 0;
+      }
+      &:not(:first-child) {
+        margin-left: -1px;
+      }
     }
-    &:active:enabled {
-      @extend %box-shadow-active;
-    }
-    &[disabled] {
-      cursor: default;
-      opacity: 0.4;
-      border-color: $disabled-color;
-      color: $disabled-color;
-    }
-    &:first-child {
-      border-top-left-radius: 3px;
-      border-bottom-left-radius: 3px;
-    }
-    &:last-of-type {
-      border-top-right-radius: 3px;
-      border-bottom-right-radius: 3px;
-      margin-left: -1px;
-    }
-    &.active {
-      background-color: $blue-active;
-      color: white;
-      border-color: $blue-active;
-    }
-}
 

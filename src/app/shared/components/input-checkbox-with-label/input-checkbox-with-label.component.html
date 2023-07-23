@@ -1,4 +1,4 @@
-<label class="row-start-end">
+  <div class="row-start-end">
     <input
       type="checkbox"
       [readonly]="inputReadonly"
@@ -8,5 +8,5 @@
       [(ngModel)]="value"
       (ngModelChange)="onModelChange.next($event)"
     />
-    <span class="ml-2">{{ label + asterix }}</span>
-  </label>
+    <label class="ml-2">{{ label + asterix }}</label>
+  </div>

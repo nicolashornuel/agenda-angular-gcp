@@ -1,39 +1,60 @@
 <div class="cal-open-day-events" *ngIf="isOpen" [@collapse]>
-
-  <div class="d-flex justify-content-between">
+  <div class="row-between-center">
     <h5>{{ viewDate | date : 'fullDate' }}</h5>
     <span class="opacity-50">{{ saintDuJour }}</span>
   </div>
 
-  <div class="d-flex justify-content-between">
+  <div class="row-start-center">
     <div class="col-8">
       <ng-container *ngFor="let comment of comments; let rowIndex = index">
-        <div class="d-flex align-items-center m-2">
-          <span class="cal-event mx-2 "></span>
+        <div class="row-start-center m-2">
+          <span class="cal-event mx-2"></span>
           <ng-container *ngIf="enableEditIndex != rowIndex || isLocked; else editing">
-            <span class="fs-6 fw-light fst-italic"><em>{{ comment.title }}</em></span>
-            <button class="btn btn-outline-secondary btn-sm text-light mx-2" (click)="onEdit(rowIndex)" [disabled]="isLocked" ><i class="fas fa-fw fa-pencil-alt"></i></button>
-            <button class="btn btn-outline-secondary btn-sm text-light" (click)="onDelete(comment)" [disabled]="isLocked" ><i class="fas fa-fw fa-trash-alt"></i></button>
+            <span class="fw-light fst-italic mr-3"
+              ><em>{{ comment.title }}</em></span
+            >
+            <app-button-group class="mx-3">
+              <button appButton ghost size="tiny" color="light" (click)="onEdit(rowIndex)" [disabled]="isLocked">
+                <i class="fas fa-pencil-alt"></i>
+              </button>
+              <button appButton ghost size="tiny" color="light" (click)="onDelete(comment)" [disabled]="isLocked">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </app-button-group>
           </ng-container>
           <ng-template #editing>
-            <input class="comment-form-control border border-primary text-light w-100" type="text" #input [ngModel]="comment.title"/>
-            <button class="btn btn-outline-primary btn-sm text-light mx-2" (click)="onCancel()"><i class="fas fa-fw fa-times-circle"></i></button>
-            <button class="btn btn-outline-primary btn-sm text-light" (click)="comment.title = input.value; onUpdate(comment)"><i class="fas fa-fw fa-save"></i></button>
+            <app-input-text-with-label
+              class="mr-3"
+              #input="ngModel"
+              [(ngModel)]="comment.title"
+              label="commentaire"
+            ></app-input-text-with-label>
+            <app-button-group class="mx-3">
+              <button appButton ghost size="tiny" color="light" (click)="onCancel()">
+                <i class="fas fa-times-circle"></i>
+              </button>
+              <button
+                appButton
+                ghost
+                size="tiny"
+                color="light"
+                (click)="onUpdate(comment)"
+              >
+                <i class="fas fa-save"></i>
+              </button>
+            </app-button-group>
           </ng-template>
-
-
         </div>
       </ng-container>
     </div>
     <div class="col-4 opacity-50">
       <ng-container *ngFor="let anniv of annivList">
-        <div class="d-flex justify-content-end">
-          <span class="fs-6 fw-light fst-italic">
+        <div class="row-end-center">
+          <span class="fw-light fst-italic">
             <em>{{ anniv.title }}</em>
           </span>
         </div>
       </ng-container>
     </div>
   </div>
-
 </div>

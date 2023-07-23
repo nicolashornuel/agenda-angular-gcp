@@ -5,17 +5,19 @@
         class="col-4 mr-3"
         label="Filtre"
         ngModel
+        [readonly]="enableEditIndex != undefined ? true : false"
         (ngModelChange)="applyFilter($event)"
       ></app-input-text-with-label>
       <app-input-checkbox-with-label
         class="col-4 mr-3"
         label="Seulement les non-résolus"
         [value]="false"
+        [readonly]="enableEditIndex != undefined ? true : false"
         (onModelChange)="filterByNoResolved($event)"
       ></app-input-checkbox-with-label>
-      <app-button-group class="row-end-center" size="small">
-        <button (click)="addNew()"><i class="fas fa-plus"></i></button>
-        <button [appPopover]="templateRef"><i class="fas fa-columns"></i></button>
+      <app-button-group class="row-end-center">
+        <button appButton outline size="small" (click)="addNew()"><i class="fas fa-plus"></i></button>
+        <button appButton outline size="small" [appPopover]="templateRef"><i class="fas fa-columns"></i></button>
       </app-button-group>
     </div>
     <app-table [tableSet]="tableSet" [(enableEditIndex)]="enableEditIndex"></app-table>

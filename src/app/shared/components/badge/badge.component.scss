@@ -1,0 +1,39 @@
+@import 'variables.scss';
+
+.badge-content {
+    border-radius: 50%;
+    transform: translate(-50%,-50%);
+    left: 100%;
+    top: 0;
+    position: absolute;
+    padding: .35em .65em;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+%white-txt {
+    color: $grey-100;
+}
+
+.blue .badge-content {
+    background-color: $blue;
+    @extend %white-txt;
+}
+.green .badge-content {
+    background-color: $green;
+    @extend %white-txt;
+}
+.orange .badge-content {
+    background-color: $orange;
+    @extend %white-txt;
+}
+.red .badge-content {
+    background-color: $red;
+    @extend %white-txt;
+}
+.light .badge-content {
+    background-color: transparent;
+    border: 1px solid $grey-100;
+    color: $grey-100;
+}

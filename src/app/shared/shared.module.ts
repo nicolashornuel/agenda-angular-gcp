@@ -6,7 +6,6 @@ import { AbstractInputComponent } from './abstracts/input.component';
 import { AbstractNgModelComponent } from './abstracts/ng-model.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { ButtonGroupComponent } from './components/button-group/button-group.component';
-import { ButtonComponent } from './components/button/button.component';
 import { CardComponent } from './components/card/card.component';
 import { InputCheckboxWithLabelComponent } from './components/input-checkbox-with-label/input-checkbox-with-label.component';
 import { InputTextWithLabelComponent } from './components/input-text-with-label/input-text-with-label.component';
@@ -29,6 +28,8 @@ import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { ModalDirective } from './directives/modal.directive';
 import { PopoverDirective } from './directives/popover.directive';
 import { TooltipDirective } from './directives/tooltip.directive';
+import { BadgeComponent } from './components/badge/badge.component';
+import { ButtonDirective } from './directives/button.directive';
 
 const sharedComponents = [
   TableComponent,
@@ -38,7 +39,6 @@ const sharedComponents = [
   PriorityComponent,
   SelectComponent,
   TextareaComponent,
-  ButtonComponent,
   SpinnerComponent,
   TableCellHeaderComponent,
   AlertComponent,
@@ -55,7 +55,9 @@ const sharedComponents = [
   InputTextWithLabelComponent,
   InputCheckboxWithLabelComponent,
   InputTextareaWithLabelComponent,
-  TextareaComponent
+  TextareaComponent,
+  ModalComponent,
+  BadgeComponent
 ]
 
 const sharedModules = [
@@ -66,15 +68,15 @@ const sharedModules = [
 
 const sharedDirectives = [
   TooltipDirective,
-  PopoverDirective
+  PopoverDirective,
+  ModalDirective,
+  ButtonDirective
 ]
 
 @NgModule({
   declarations: [
     sharedComponents,
-    sharedDirectives,
-    ModalComponent,
-    ModalDirective
+    sharedDirectives
   ],
   imports: [
     CommonModule,

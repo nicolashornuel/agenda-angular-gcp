@@ -7,6 +7,7 @@
           *ngIf="column.visible"
           [tableSet]="tableSet"
           [columnSet]="column"
+          [isEditing]="enableEditIndex != undefined ? true : false"
         ></app-table-cell-header>
       </ng-container>
       <ng-container *ngIf="tableSet.actions">
@@ -34,12 +35,12 @@
         <div class="table-cell">
           <div class="row-center-center">
             <ng-container *ngIf="enableEditIndex !== i; else edit">
-              <app-button icon="fas fa-pencil-alt" size="tiny" (click)="enableEditMethod(i)"></app-button>
-              <app-button icon="fas fa-trash-alt" size="tiny" (click)="onDelete(i)"></app-button>
+              <button appButton ghost size="tiny" (click)="enableEditMethod(i)"><i class="fas fa-pencil-alt"></i></button>
+              <button appButton ghost size="tiny" (click)="onDelete(i)"><i class="fas fa-trash-alt"></i></button>
             </ng-container>
             <ng-template #edit>
-              <app-button icon="fas fa-times" size="tiny" (click)="onCancel(f, tableSet.data[i])"></app-button>
-              <app-button icon="fas fa-save" size="tiny" (click)="onSave(f, tableSet.data[i])"></app-button>
+              <button appButton ghost size="tiny" (click)="onCancel(f, tableSet.data[i])"><i class="fas fa-times"></i></button>
+              <button appButton ghost size="tiny" (click)="onSave(f, tableSet.data[i])"><i class="fas fa-save"></i></button>
             </ng-template>
           </div>
         </div>

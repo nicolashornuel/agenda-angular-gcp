@@ -1,62 +1,14 @@
-$color-btn-extra-disabled: #6c757d;
-$color-btn-extra-active: #0d6efd;
-
 .check-container {
     min-height: 188px;
 }
-.form-check-input:checked + span {
-    font-weight: 700;
-}
 
-.form-check-input:disabled + span, .form-check-input[disabled] + span {
-    cursor: default;
-    opacity: .5;
-}
-
-.form-check-label, .form-check-input {
-    cursor: pointer;
-}
-
-.btn-extra-group {
+.btn-container {
     position: absolute;
     top: 25px;
     left: 15px;
     cursor: pointer;
     font-size: 12px;
-    .btn-extra {
-        border: 1px solid;
-        height: 20px;
-        width: 24px;
-        background-color: white;
-        border-color: $color-btn-extra-active;
-        color: $color-btn-extra-active;
-        &:hover:enabled {
-            background-color: $color-btn-extra-active;
-            color: white;
-        }
-        &:active:enabled {
-            filter: brightness(90%);
-            box-shadow: 0 0 0 0.20rem rgba(13,110,253,.25);
-        }
-        &[disabled] {
-            cursor: default;
-            opacity: .4;
-            border-color: $color-btn-extra-disabled;
-            color: $color-btn-extra-disabled;
-        }
-        &:first-child {
-            border-top-left-radius: 3px;
-            border-bottom-left-radius: 3px;
-        }
-        &:last-child {
-            border-top-right-radius: 3px;
-            border-bottom-right-radius: 3px;
-            margin-left: -1px;
-        }
-        &.active {
-            background-color: $color-btn-extra-active;
-            color: white;
-            border-color: $color-btn-extra-active;
-        }
+    button:last-child {
+        position: relative; 
     }
 }

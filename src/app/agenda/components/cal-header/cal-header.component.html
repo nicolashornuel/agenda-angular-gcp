@@ -1,70 +1,52 @@
 <div class="row text-center">
-    <div class="col-6 row-start-center">
-      <h3 class="text-danger text-uppercase mb-0">{{ viewDate | calendarDate : view + 'ViewTitle' : locale }}</h3>
-    </div>
-    <div class="col-6 row-end-center">
-      <div class="btn-group mx-3">
-        <ng-container [ngTemplateOutlet]="btnGroupViewDateChange"></ng-container>
-      </div>
-      <div class="btn-group mx-3">
-        <ng-container [ngTemplateOutlet]="btnGroupViewChange"></ng-container>
-      </div>
-      <div (click)="onToggleLock()" class="btn btn-sm" [ngClass]="isLocked ? 'btn-warning' : 'btn-outline-danger'">
-        <i class="fas" [ngClass]="isLocked ? 'fa-lock' : 'fa-unlock'"></i>
-      </div>
-    </div>
+  <div class="col-6 row-start-center">
+    <h3 class="title mb-0">{{ viewDate | calendarDate : view + 'ViewTitle' : locale }}</h3>
   </div>
-  
-  <ng-template #btnGroupViewDateChange>
-    <div
-      class="btn btn-outline-primary btn-sm"
+  <div class="col-6 row-end-center">
+    <ng-container [ngTemplateOutlet]="btnGroupViewDateChange"></ng-container>
+    <ng-container [ngTemplateOutlet]="btnGroupViewChange"></ng-container>
+    <button appButton (click)="onToggleLock()"><i [ngClass]="isLocked ? 'fas fa-lock' : 'fas fa-unlock'"></i></button>
+  </div>
+</div>
+
+<ng-template #btnGroupViewDateChange>
+  <app-button-group class="mx-3">
+    <button
+      appButton
+      outline
       mwlCalendarPreviousView
       [view]="view"
       [(viewDate)]="viewDate"
       (viewDateChange)="viewDateChange.next(viewDate)"
     >
       <i class="fas fa-angle-left fa-lg"></i>
-    </div>
-    <div
-      class="btn btn-outline-secondary btn-sm"
-      mwlCalendarToday
-      [(viewDate)]="viewDate"
-      (viewDateChange)="viewDateChange.next(viewDate)"
-    >
+    </button>
+    <button appButton outline mwlCalendarToday [(viewDate)]="viewDate" (viewDateChange)="viewDateChange.next(viewDate)">
       Aujourd'hui
-    </div>
-    <div
-      class="btn btn-outline-primary btn-sm"
+    </button>
+    <button
+      appButton
+      outline
       mwlCalendarNextView
       [view]="view"
       [(viewDate)]="viewDate"
       (viewDateChange)="viewDateChange.next(viewDate)"
     >
       <i class="fas fa-angle-right fa-lg"></i>
-    </div>
-  </ng-template>
-  
-  <ng-template #btnGroupViewChange>
-    <div
-      class="btn btn-outline-primary btn-sm"
-      (click)="viewChange.emit(CalendarView.Month)"
-      [class.active]="view === CalendarView.Month"
-    >
+    </button>
+  </app-button-group>
+</ng-template>
+
+<ng-template #btnGroupViewChange>
+  <app-button-group class="mx-3">
+    <button appButton outline (click)="viewChange.emit(CalendarView.Month)" [class.active]="view === CalendarView.Month">
       Mois
-    </div>
-    <div
-      class="btn btn-outline-primary btn-sm"
-      (click)="viewChange.emit(CalendarView.Week)"
-      [class.active]="view === CalendarView.Week"
-    >
+    </button>
+    <button appButton outline (click)="viewChange.emit(CalendarView.Week)" [class.active]="view === CalendarView.Week">
       Semaine
-    </div>
-    <div
-      class="btn btn-outline-primary btn-sm"
-      (click)="viewChange.emit(CalendarView.Day)"
-      [class.active]="view === CalendarView.Day"
-    >
+    </button>
+    <button appButton outline (click)="viewChange.emit(CalendarView.Day)" [class.active]="view === CalendarView.Day">
       Jour
-    </div>
-  </ng-template>
-  
+    </button>
+  </app-button-group>
+</ng-template>

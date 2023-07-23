@@ -1,14 +1,14 @@
 <label>
   <textarea
     placeholder=" "
-    rows="3"
+    [rows]="rows"
     [readonly]="inputReadonly"
     [required]="inputRequired"
     (blur)="onBlur.next()"
     (focus)="onFocus.next()"
-    [(ngModel)]="data.value"
+    [(ngModel)]="value"
   ></textarea>
   <span>
-    {{ data.name + asterix }}
+    {{ label + asterix }}
   </span>
 </label>

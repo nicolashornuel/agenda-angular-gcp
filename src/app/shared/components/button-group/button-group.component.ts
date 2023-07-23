@@ -7,5 +7,5 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None
 })
 export class ButtonGroupComponent {
-  @Input() size?: 'tiny' | 'small' | 'regular';
+  @Input() size: 'tiny' | 'small' | 'regular' = 'regular';
 }

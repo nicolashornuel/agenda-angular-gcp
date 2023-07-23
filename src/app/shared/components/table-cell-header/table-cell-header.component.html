@@ -1,4 +1,13 @@
-<div class="sortable row-start-center" (click)="sort()">
-  <span class="mr-2 ellipsis">{{ columnSet.title }}</span>
-  <i [ngClass]="sortClass"></i>
-</div>
+<ng-container *ngIf="isEditing; else sortable">
+  <div class="unsortable row-start-center">
+    <span class="mr-2 ellipsis">{{ columnSet.title }}</span>
+    <i [ngClass]="sortClass"></i>
+  </div>
+</ng-container>
+
+<ng-template #sortable>
+  <div class="sortable row-start-center" (click)="sort()">
+    <span class="mr-2 ellipsis">{{ columnSet.title }}</span>
+    <i [ngClass]="sortClass"></i>
+  </div>
+</ng-template>

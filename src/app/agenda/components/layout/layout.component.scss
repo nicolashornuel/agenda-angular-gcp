@@ -11,18 +11,3 @@ $height-header: 60px;
     margin-top: $height-header;
     margin-bottom: $height-header;
 }
-.cal-header {
-    position: sticky;
-    top: 120px;
-    background-color: #fff;
-    border-bottom: 1px solid #e1e1;
-    z-index: 1;
-    &:before {
-        content:'';
-        width: 100%;
-        height: 4px;
-        background-color: white;
-        position:absolute;
-        top: -4px
-    }
-}

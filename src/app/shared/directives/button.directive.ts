@@ -1,18 +1,22 @@
-import {Component, HostBinding, Input, ViewEncapsulation} from '@angular/core';
+import { Directive, HostBinding, Input } from '@angular/core';
+import { Appearances, Colors, Sizes } from '@shared/models/button.type';
 
-@Component({
-  selector: 'app-button',
-  templateUrl: './button.component.html',
-  styleUrls: ['./button.component.scss'],
-  encapsulation: ViewEncapsulation.None
+@Directive({
+  selector: '[appButton]'
 })
-export class ButtonComponent {
-  @Input() icon?: string;
-  @Input() size?: string;
-  @Input() status?: string = 'primary'
+export class ButtonDirective {
 
-  private appearance: 'outline' | 'filled' = 'filled';
+  @Input() icon?: string;
+  @Input() size: Sizes = 'regular';
+  @Input() color: Colors = 'blue';
+
+  private appearance: Appearances = 'filled';
   private _fullWidth: boolean = false;
+
+  @HostBinding('class')
+  get additionalClasses() {
+    return `color-${this.color} ${this.size}`;
+}
 
   @Input()
   @HostBinding('class.appearance-filled')
@@ -30,6 +34,15 @@ export class ButtonComponent {
   }
   get outline(): boolean {
     return this.appearance === 'outline';
+  }
+
+  @Input()
+  @HostBinding('class.appearance-ghost')
+  set ghost(_value: any) {
+    this.appearance = 'ghost';
+  }
+  get ghost(): boolean {
+    return this.appearance === 'ghost';
   }
 
   @Input()

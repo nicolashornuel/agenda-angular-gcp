@@ -47,28 +47,26 @@
 .col-center-center {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
-
-.col-center-between {
+.col-between-center {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: space-between;
-}
-
-.col-center-start {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
 }
-.col-stretch-start {
+.col-start-center {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
   justify-content: flex-start;
+  align-items: center;
+}
+.col-start-stretch {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
 }
 
 .f-grow {

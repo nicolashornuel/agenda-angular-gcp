@@ -1,0 +1,154 @@
+@use 'sass:map';
+@import 'variables.scss';
+$colors: (
+  button-outline-blue-background-color: transparent,
+  button-outline-blue-border-color: $blue,
+  button-outline-blue-text-color: $blue,
+  button-outline-blue-hover-background-color: $blue-hover,
+  button-outline-blue-hover-border-color: $blue-hover,
+  button-outline-blue-hover-text-color: $grey-100,
+  button-outline-blue-active-background-color: $blue-active,
+  button-outline-blue-active-border-color: $blue-active,
+  button-outline-blue-active-text-color: $grey-100,
+  
+  button-outline-green-background-color: transparent,
+  button-outline-green-border-color: $green,
+  button-outline-green-text-color: $green,
+  button-outline-green-hover-background-color: $green-hover,
+  button-outline-green-hover-border-color: $green-hover,
+  button-outline-green-hover-text-color: $grey-100,
+  button-outline-green-active-background-color: $green-active,
+  button-outline-green-active-border-color: $grey-100,
+  button-outline-green-active-text-color: $green-active,
+
+  button-outline-light-background-color: $transparent-default-bg,
+  button-outline-light-border-color: $grey-100,
+  button-outline-light-text-color: $grey-100,
+  button-outline-light-hover-background-color: $transparent-hover-bg,
+  button-outline-light-hover-border-color: $grey-100,
+  button-outline-light-hover-text-color: $grey-100,
+  button-outline-light-active-background-color: $transparent-active-bg,
+  button-outline-light-active-border-color: $grey-100,
+  button-outline-light-active-text-color: $grey-100,
+
+  button-ghost-blue-text-color: $blue,
+  button-ghost-blue-hover-background-color: $transparent-default-bg,
+  button-ghost-blue-hover-border-color: transparent,
+  button-ghost-blue-hover-text-color: $blue-hover,
+  button-ghost-blue-active-background-color: $transparent-active-bg,
+  button-ghost-blue-active-border-color: transparent,
+  button-ghost-blue-active-text-color: $blue-active,
+
+  button-ghost-light-text-color: $grey-100,
+  button-ghost-light-hover-background-color: $transparent-default-bg,
+  button-ghost-light-hover-border-color: transparent,
+  button-ghost-light-hover-text-color: $grey-95,
+  button-ghost-light-active-background-color: $transparent-active-bg,
+  button-ghost-light-active-border-color: transparent,
+  button-ghost-light-active-text-color: $grey-97,
+
+  button-filled-blue-background-color: $blue,
+  button-filled-blue-border-color: $blue,
+  button-filled-blue-text-color: $grey-100,
+  button-filled-blue-hover-background-color: $blue-hover,
+  button-filled-blue-hover-border-color: $blue-hover,
+  button-filled-blue-active-background-color: $blue-active,
+  button-filled-blue-active-border-color: $blue-active
+);
+
+.tiny {
+    padding: 0;
+    height: 20px;
+    min-width: 24px;
+}
+.small {
+    height: 24px;
+    min-width: 24px;
+}
+.regular {
+    height: 31px;
+    min-width: 31px;
+}
+
+
+%btn {
+  cursor: pointer;
+  font-size: 12px;
+  border: 1px solid;
+  border-radius: $border-radius;
+  &:active:enabled {
+    @extend %box-shadow-active;
+  }
+  &[disabled] {
+    cursor: default;
+    opacity: 0.4;
+    background-color: $transparent-disabled-bg;
+    border-color: $transparent-disabled-border;
+    color: $transparent-disabled-text;
+  }
+}
+
+
+@function get-theme($key) {
+  $value: map.get($colors, $key);
+  @return $value;
+}
+
+@each $color in ('blue','green','orange','red', 'light') {
+  .appearance-filled.color-#{$color} {
+    @extend %btn;
+    background-color: get-theme(button-filled-#{$color}-background-color);
+    border-color: get-theme(button-filled-#{$color}-border-color);
+    color: get-theme(button-filled-#{$color}-text-color);
+
+    &:hover:enabled {
+      background-color: get-theme(button-filled-#{$color}-hover-background-color);
+      border-color: get-theme(button-filled-#{$color}-hover-border-color);
+    }
+
+    &:active:enabled, &.active:enabled {
+      background-color: get-theme(button-filled-#{$color}-active-background-color);
+      border-color: get-theme(button-filled-#{$color}-active-border-color);
+    }
+  }
+
+
+  .appearance-outline.color-#{$color} {
+    @extend %btn;
+    background-color: get-theme(button-outline-#{$color}-background-color);
+    border-color: get-theme(button-outline-#{$color}-border-color);
+    color: get-theme(button-outline-#{$color}-text-color);
+
+    &:hover:enabled {
+      background-color: get-theme(button-outline-#{$color}-hover-background-color);
+      border-color: get-theme(button-outline-#{$color}-hover-border-color);
+      color: get-theme(button-outline-#{$color}-hover-text-color);
+    }
+
+    &:active:enabled, &.active:enabled {
+      background-color: get-theme(button-outline-#{$color}-active-background-color);
+      border-color: get-theme(button-outline-#{$color}-active-border-color);
+      color: get-theme(button-outline-#{$color}-active-text-color);
+    }
+  }
+
+  .appearance-ghost.color-#{$color} {
+    @extend %btn;
+    background-color: transparent;
+    border-color: transparent;
+    color: get-theme(button-ghost-#{$color}-text-color);
+
+    &:hover:enabled {
+      background-color: get-theme(button-ghost-#{$color}-hover-background-color);
+      border-color: get-theme(button-ghost-#{$color}-hover-border-color);
+      color: get-theme(button-ghost-#{$color}-hover-text-color);
+    }
+
+    &:active:enabled, &.active:enabled {
+      background-color: get-theme(button-ghost-#{$color}-active-background-color);
+      border-color: get-theme(button-ghost-#{$color}-active-border-color);
+      color: get-theme(button-ghost-#{$color}-active-text-color);
+    }
+  }
+}
+

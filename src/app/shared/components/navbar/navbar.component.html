@@ -9,7 +9,7 @@
       </ul>
     </div>
     <div class="row-center-center gap-3">
-      <app-button outline size="regular" (click)="signOut.next()">Déconnexion</app-button>
+      <button appButton outline size="regular" color="light" (click)="signOut.next()">Déconnexion</button>
       <ng-container *ngIf="userImg">
           <img [src]="userImg" class="user-img">
       </ng-container>

@@ -13,6 +13,7 @@ import {takeUntil} from 'rxjs';
 export class TableCellHeaderComponent implements AfterViewInit {
   @Input() tableSet!: TableSet;
   @Input() columnSet!: ColumnSet;
+  @Input() isEditing!: boolean;
   public colSorted?: ColSorted;
   public sortClass = 'fas fa-sort hidden';
 

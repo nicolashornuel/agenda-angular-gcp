@@ -1,7 +1,6 @@
 import { Component, Input, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractInputComponent } from '@shared/abstracts/input.component';
-import { FieldSet } from '@shared/models/tableSet.interface';
 
 @Component({
   selector: 'app-input-textarea-with-label',
@@ -16,7 +15,10 @@ import { FieldSet } from '@shared/models/tableSet.interface';
   ]
 })
 export class InputTextareaWithLabelComponent extends AbstractInputComponent {
-  @Input() data!: FieldSet;
+  @Input()
+  label: string = '';
+  @Input()
+  rows: string = "3";
 
   get asterix(): string {
     return this.inputRequired ? ' *' : '';
