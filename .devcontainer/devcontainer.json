@@ -5,5 +5,13 @@
     "ghcr.io/devcontainers-contrib/features/angular-cli:2": {},
     "ghcr.io/devcontainers-contrib/features/firebase-cli:2": {},
     "ghcr.io/dhoeric/features/google-cloud-cli:1": {}
-  }
+  },
+  "customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			// Set *default* container specific settings.json values on container create.
+			"settings": {},
+			"extensions": [],
+		}
+}
 }

@@ -81,7 +81,8 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
    * @param {*} formField
    * @memberof CalMonthCellComponent
    */
-  public onCheck(formField: CalEventField) {
+  public onCheck(value: boolean, formField: CalEventField) {
+    formField.meta!.value = value;
     if (!formField.meta!.value) {
       this.eventService.delete(formField.id as string).then(() => {
         this.alert.success('delete ok')
