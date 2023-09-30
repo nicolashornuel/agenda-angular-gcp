@@ -7,5 +7,6 @@ export const environment = {
     authDomain: 'agenda-bf245.firebaseapp.com',
     messagingSenderId: '1076193011248',
   },
-  production: true
+  production: true,
+  url_backend: 'https://agenda-backend-blfd6t66sq-od.a.run.app'
 };

@@ -38,6 +38,7 @@ export class CalBodyComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(_changes: SimpleChanges): void {
+    console.log(this.viewDate);
      this.activeDayIsOpen = isSameMonth(new Date(), this.viewDate) ? true : false;
   }
 

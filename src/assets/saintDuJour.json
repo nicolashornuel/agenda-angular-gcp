@@ -1,5 +1,5 @@
-export const saintDuJour = {
-    january: [
+{
+    "january": [
         ["Jour de l'An", ""],
         ["Basile", "Saint"],
         ["Geneviève", "Sainte"],
@@ -32,7 +32,7 @@ export const saintDuJour = {
         ["Martine", "Sainte"],
         ["Marcelle", "Sainte"]
     ],
-    february: [
+    "february": [
         ["Ella", "Sainte"],
         ["Fête de la Présention", ""],
         ["Blaise", "Saint"],
@@ -63,7 +63,7 @@ export const saintDuJour = {
         ["Romain", "Saint"],
         ["Auguste", "Saint"]
     ],
-    march: [
+    "march": [
         ["Aubin", "Saint"],
         ["Charles le Bon", "Saint"],
         ["Guénolé", "Saint"],
@@ -96,7 +96,7 @@ export const saintDuJour = {
         ["Amédée", "Saint"],
         ["Benjamin", "Saint"]
     ],
-    april: [
+    "april": [
         ["Hugues", "Saint"],
         ["Sandrine", "Sainte"],
         ["Richard", "Saint"],
@@ -128,7 +128,7 @@ export const saintDuJour = {
         ["Catherine de Sienne", "Sainte"],
         ["Robert", "Saint"]
     ],
-    may: [
+    "may": [
         ["Fête du travail", ""],
         ["Boris", "Saint"],
         ["Philippe", "Saint"],
@@ -161,7 +161,7 @@ export const saintDuJour = {
         ["Ferdinand", "Saint"],
         ["Pétronille", "Sainte"]
     ],
-    june: [
+    "june": [
         ["Justin", "Saint"],
         ["Blandine", "Sainte"],
         ["Kévin", "Saint"],
@@ -193,7 +193,7 @@ export const saintDuJour = {
         ["Pierre", "Saint"],
         ["Martial", "Saint"]
     ],
-    july: [
+    "july": [
         ["Thierry", "Saint"],
         ["Martinien", "Saint"],
         ["Thomas", "Saint"],
@@ -226,7 +226,7 @@ export const saintDuJour = {
         ["Juliette", "Sainte"],
         ["Ignace de Loyola", "Saint"]
     ],
-    august: [
+    "august": [
         ["Alphonse", "Saint"],
         ["Julien Eymard", "Saint"],
         ["Lydie", "Sainte"],
@@ -259,7 +259,7 @@ export const saintDuJour = {
         ["Fiacre", "Saint"],
         ["Aristide", "Saint"]
     ],
-    september: [
+    "september": [
         ["Gilles", "Saint"],
         ["Ingrid", "Sainte"],
         ["Grégoire", "Saint"],
@@ -291,7 +291,7 @@ export const saintDuJour = {
         ["Michel", "Saint"],
         ["Jérôme", "Saint"]
     ],
-    october: [
+    "october": [
         ["Thérèse de l'Enfant Jésus", "Sainte"],
         ["Léger", "Saint"],
         ["Gérard", "Saint"],
@@ -324,7 +324,7 @@ export const saintDuJour = {
         ["Bienvenue", "Sainte"],
         ["Quentin", "Saint"]
     ],
-    november: [
+    "november": [
         ["Toussaint", ""],
         ["Fête des défunts", ""],
         ["Hubert", "Saint"],
@@ -356,7 +356,7 @@ export const saintDuJour = {
         ["Saturnin", "Saint"],
         ["André", "Saint"]
     ],
-    december: [
+    "december": [
         ["Florence", "Sainte"],
         ["Viviane", "Sainte"],
         ["François-Xavier", "Saint"],
@@ -390,4 +390,3 @@ export const saintDuJour = {
         ["Sylvestre", "Saint"]
     ]
 }
-

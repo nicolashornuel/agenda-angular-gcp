@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, map, take } from 'rxjs';
+import { BehaviorSubject, Observable, map, take, tap } from 'rxjs';
 
 interface Record {
   datasetid: string;
@@ -31,34 +31,21 @@ export class HolidayService {
     params: {
       dataset: 'fr-en-calendrier-scolaire',
       'refine.zone': 'Zone C',
-      'refine.annee_scolaire': '2022-2023',
       'refine.location': 'Montpellier',
-      'exclude.population': 'Enseignants'
+      'exclude.population': 'Enseignants',
+      'refine.start_date': new Date().getFullYear()
     }
   };
 
-  private readonly holidays$ = new BehaviorSubject<Holiday[]>([]);
-
   constructor(private http: HttpClient) {}
-
-  public init(): void {
-    this.getAll()
-      .pipe(take(1))
-      .subscribe(holidays => (this.setHolidays$ = holidays));
-  }
-
-  public get getHolidays$(): Observable<Holiday[]> {
-    return this.holidays$.asObservable();
-  }
-
-  public set setHolidays$(holidays: Holiday[]) {
-    this.holidays$.next([...holidays]);
-  }
 
   public getAll(): Observable<Holiday[]> {
     return this.http
       .get<{records: Record[]}>(this.openAPI.url, {params: this.openAPI.params})
-      .pipe(map(({records}) => records.map(record => this.mapperHoliday(record))));
+      .pipe(
+        map(({records}) => 
+      records.map(record => this.mapperHoliday(record)))
+      );
   }
 
   private mapperHoliday({fields}: Record): Holiday {

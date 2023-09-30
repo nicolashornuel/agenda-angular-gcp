@@ -33,8 +33,8 @@ export class CalMonthViewCommentComponent implements OnChanges {
     private alert: AlertService
   ) {}
 
-  ngOnChanges(_changes: SimpleChanges): void {
-    this.saintDuJour = this.saint.getWithDate(this.viewDate);
+  async ngOnChanges(_changes: SimpleChanges): Promise<void> {
+    this.saintDuJour = await this.saint.getWithDate(this.viewDate);
     this.annivList = this.anniv.getWithDate(this.viewDate);
     if (this.events) {
       this.comments = this.events.filter((eventField: CalEventDTO) => eventField.meta!.type === CalEventType.COMMENT);

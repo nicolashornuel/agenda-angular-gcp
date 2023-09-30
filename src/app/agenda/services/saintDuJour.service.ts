@@ -1,38 +1,46 @@
 import { Injectable } from '@angular/core';
-import { saintDuJour } from '../models/saintDuJour.constant';
+import { HttpClient } from '@angular/common/http';
+import { Observable, firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SaintDuJourService {
 
-  constructor() { }
+  private readonly MOCK_JSON_PATH: string = './assets/saintDuJour.json';
+  private saintDuJour: any;
+
+  constructor(private http: HttpClient) { }
+
+  private getJSON(): Observable<any> {
+    return this.http.get(this.MOCK_JSON_PATH);
+  }
 
   private getMonth(month: number): any {
     if (month === 1)
-      return saintDuJour.january;
+      return this.saintDuJour.january;
     if (month === 2)
-      return saintDuJour.february;
+      return this.saintDuJour.february;
     if (month === 3)
-      return saintDuJour.march;
+      return this.saintDuJour.march;
     if (month === 4)
-      return saintDuJour.april;
+      return this.saintDuJour.april;
     if (month === 5)
-      return saintDuJour.may;
+      return this.saintDuJour.may;
     if (month === 6)
-      return saintDuJour.june;
+      return this.saintDuJour.june;
     if (month === 7)
-      return saintDuJour.july;
+      return this.saintDuJour.july;
     if (month === 8)
-      return saintDuJour.august;
+      return this.saintDuJour.august;
     if (month === 9)
-      return saintDuJour.september;
+      return this.saintDuJour.september;
     if (month === 10)
-      return saintDuJour.october;
+      return this.saintDuJour.october;
     if (month === 11)
-      return saintDuJour.november;
+      return this.saintDuJour.november;
     if (month === 12)
-      return saintDuJour.december;
+      return this.saintDuJour.december;
   }
 
   private getEphemeris(day: number, month: number): string {
@@ -42,7 +50,8 @@ export class SaintDuJourService {
       prefix + ' ' + this.getMonth(month)[day - 1][0];
   }
 
-  public getWithDate(date: Date): string {
+  public async getWithDate(date: Date): Promise<string> {
+    this.saintDuJour = await firstValueFrom(this.getJSON());
     return this.getEphemeris(date.getDate(), date.getMonth() + 1);
   }
 
