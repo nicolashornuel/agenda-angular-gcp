@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserCredential, UserInfo } from '@angular/fire/auth';
 import {
@@ -30,7 +31,7 @@ export interface User {
 export class UserService {
   private collectionRef!: CollectionReference<UserInfo>;
 
-  constructor(private firestore: Firestore) {
+  constructor(private firestore: Firestore, private http: HttpClient) {
     this.collectionRef = collection(this.firestore, 'user') as CollectionReference<UserInfo>;
   }
 
