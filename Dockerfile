@@ -1,5 +1,5 @@
 FROM nginx:alpine
-COPY ./dist/agenda/ /usr/share/nginx/html
+COPY ./dist/agenda-angular-gcp/ /usr/share/nginx/html
 EXPOSE 80
 #FROM --platform=linux/amd64 image:tag
 #linux/amd64, linux/arm64, or darwin/amd64

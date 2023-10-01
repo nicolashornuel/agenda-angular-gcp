@@ -10,8 +10,8 @@ export interface TableSet {
   columnSet: ColumnSet[];
   data: any[];
   actions?: {
-    save: (row: any) => Promise<any>;
-    delete: (id: string) => Promise<any>;
+    save: (row: any) => any;
+    delete: (id: string) => any;
   };
   openDetailByClickRow?: (row: any) => string;
 }

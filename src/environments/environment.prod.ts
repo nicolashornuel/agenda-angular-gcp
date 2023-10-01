@@ -8,5 +8,5 @@ export const environment = {
     messagingSenderId: '1076193011248',
   },
   production: true,
-  url_backend: 'https://agenda-backend-blfd6t66sq-od.a.run.app'
+  urlBackEnd: 'https://agenda-backend-blfd6t66sq-od.a.run.app'
 };

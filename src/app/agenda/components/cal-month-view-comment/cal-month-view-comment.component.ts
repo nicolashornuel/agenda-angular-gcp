@@ -1,12 +1,12 @@
-import { Component, Input, OnChanges, SimpleChanges, ViewChild, ViewContainerRef } from '@angular/core';
-import { CalendarEvent } from 'angular-calendar';
-import { EventService } from '@agenda/services/event.service';
-import { collapseAnimation } from '@shared/models/triggerAnimation.constant';
-import { CalEventDTO, CalEventEntity, CalEventType } from '../../models/calEvent.model';
-import { AnnivDuJour, AnnivDuJourService } from '../../services/annivDuJour.service';
-import { SaintDuJourService } from '../../services/saintDuJour.service';
-import { MapperService } from '../../services/mapper.service';
-import { AlertService } from '@shared/services/alert.service';
+import {EventService} from '@agenda/services/event.service';
+import {Component, Input, OnChanges, SimpleChanges, ViewChild, ViewContainerRef} from '@angular/core';
+import {collapseAnimation} from '@shared/models/triggerAnimation.constant';
+import {AlertService} from '@shared/services/alert.service';
+import {CalendarEvent} from 'angular-calendar';
+import {CalEventType} from '../../models/calEvent.model';
+import {AnnivDuJour, AnnivDuJourService} from '../../services/annivDuJour.service';
+import {SaintDuJourService} from '../../services/saintDuJour.service';
+import {take} from 'rxjs';
 
 @Component({
   selector: 'app-cal-month-view-comment',
@@ -20,7 +20,7 @@ export class CalMonthViewCommentComponent implements OnChanges {
   @Input() events!: CalendarEvent[];
   @Input() isLocked!: boolean;
   @ViewChild('modal', {read: ViewContainerRef}) target!: ViewContainerRef;
-  public comments: CalEventDTO[] = [];
+  public comments: CalendarEvent[] = [];
   public saintDuJour?: string;
   public annivList?: AnnivDuJour[];
   public enableEditIndex: number | undefined | null = null;
@@ -29,7 +29,6 @@ export class CalMonthViewCommentComponent implements OnChanges {
     private eventService: EventService,
     private saint: SaintDuJourService,
     private anniv: AnnivDuJourService,
-    private mapper: MapperService,
     private alert: AlertService
   ) {}
 
@@ -37,24 +36,25 @@ export class CalMonthViewCommentComponent implements OnChanges {
     this.saintDuJour = await this.saint.getWithDate(this.viewDate);
     this.annivList = this.anniv.getWithDate(this.viewDate);
     if (this.events) {
-      this.comments = this.events.filter((eventField: CalEventDTO) => eventField.meta!.type === CalEventType.COMMENT);
+      this.comments = this.events.filter((eventField: CalendarEvent) => eventField.meta!.type === CalEventType.COMMENT);
     }
   }
 
-  public async onDelete(comment: CalEventDTO): Promise<void> {
-    await this.eventService.delete(comment.id as string);
-    this.alert.success('delete ok')
+  public onDelete(comment: CalendarEvent): void {
+    this.eventService.delete(comment.id as string).pipe(take(1)).subscribe(() => this.alert.success('delete ok'));
   }
 
   public onEdit(rowIndex: number): void {
     this.enableEditIndex = rowIndex;
   }
 
-  public async onUpdate(comment: CalEventDTO): Promise<void> {
+  public onUpdate(comment: CalendarEvent): void {
     this.disableEditMethod();
-    const entity: CalEventEntity = this.mapper.commentToEntity(comment.title, comment.start);
-    await this.eventService.update(entity, comment.id as string);
-    this.alert.success('update ok')
+    const calendarEvent: CalendarEvent = this.eventService.commentToEntity(comment.title, comment.start);
+    this.eventService
+      .update(calendarEvent)
+      .pipe(take(1))
+      .subscribe(() => this.alert.success('update ok'));
   }
 
   public onCancel(): void {

@@ -5,7 +5,7 @@ import {TableInputComponent} from '@shared/components/table-input/table-input.co
 import {ColumnSet, FieldSet, RenderFieldSet, TableSet} from '@shared/models/tableSet.interface';
 import {DestroyService} from '@shared/services/destroy.service';
 import {UtilService} from '@shared/services/util.service';
-import {toDoDTO} from 'app/memo/models/to-do.model';
+import {toDoEntity} from 'app/memo/models/to-do.model';
 import {TodoService} from 'app/memo/service/todo.service';
 import {takeUntil} from 'rxjs';
 
@@ -21,7 +21,7 @@ export class ToDoComponent implements OnInit {
     hover: false,
     height: 'calc(100vh - 240px)',
     actions: {
-      save: (row: toDoDTO) => this.save(row),
+      save: (row: toDoEntity) => this.save(row),
       delete: (id: string) => this.delete(id)
     },
     columnSet: [
@@ -32,7 +32,7 @@ export class ToDoComponent implements OnInit {
         visible: true,
         render: {
           component: TableInputComponent,
-          valuePrepare: (row: toDoDTO, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col)
+          valuePrepare: (row: toDoEntity, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col)
         }
       },
       {
@@ -43,7 +43,7 @@ export class ToDoComponent implements OnInit {
         width: '40%',
         render: {
           component: TableInputComponent,
-          valuePrepare: (row: toDoDTO, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col)
+          valuePrepare: (row: toDoEntity, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col)
         }
       },
       {
@@ -53,7 +53,7 @@ export class ToDoComponent implements OnInit {
         visible: true,
         render: {
           component: PriorityComponent,
-          valuePrepare: (row: toDoDTO, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col)
+          valuePrepare: (row: toDoEntity, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col)
         }
       },
       {
@@ -78,7 +78,7 @@ export class ToDoComponent implements OnInit {
         visible: true,
         render: {
           component: TableCheckboxComponent,
-          valuePrepare: (row: toDoDTO, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col)
+          valuePrepare: (row: toDoEntity, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col)
         }
       }
     ],
@@ -95,7 +95,7 @@ export class ToDoComponent implements OnInit {
       };
     })
   };
-  private dataSource!: toDoDTO[];
+  private dataSource!: toDoEntity[];
 
   public enableEditIndex: number | null = null;
 
@@ -113,10 +113,10 @@ export class ToDoComponent implements OnInit {
    */
   private initializeList(): void {
     this.toDoService
-      .getAll()
+      .getList()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((toDoDTOList: toDoDTO[]) => {
-        this.dataSource = toDoDTOList;
+      .subscribe((toDoEntityList: toDoEntity[]) => {
+        this.dataSource = toDoEntityList;
         this.tableSet.data = this.dataSource;
       });
   }
@@ -160,7 +160,7 @@ export class ToDoComponent implements OnInit {
     keyword != ''
       ? (this.tableSet.data = [
           ...this.dataSource.filter(
-            (data: toDoDTO) => data.description.includes(keyword) || data.category.includes(keyword)
+            (data: toDoEntity) => data.description.includes(keyword) || data.category.includes(keyword)
           )
         ])
       : (this.tableSet.data = [...this.dataSource]);
@@ -174,19 +174,19 @@ export class ToDoComponent implements OnInit {
    */
   public filterByNoResolved(value: boolean): void {
     value
-      ? (this.tableSet.data = [...this.dataSource.filter((data: toDoDTO) => data.isResolved === false)])
+      ? (this.tableSet.data = [...this.dataSource.filter((data: toDoEntity) => data.isResolved === false)])
       : (this.tableSet.data = [...this.dataSource]);
   }
 
   /**
    * SAVE one
    *
-   * @param {toDoDTO} toDoDTO
+   * @param {toDoEntity} toDoEntity
    * @return {*}  {Promise<void>}
    * @memberof ToDoComponent
    */
-  public async save(toDoDTO: toDoDTO): Promise<void> {
-    toDoDTO.id ? await this.toDoService.update(toDoDTO) : await this.toDoService.save(toDoDTO);
+  public save(toDoEntity: toDoEntity): void {
+    toDoEntity.id ? this.toDoService.update(toDoEntity) : this.toDoService.create(toDoEntity);
   }
 
   /**
@@ -196,7 +196,7 @@ export class ToDoComponent implements OnInit {
    * @return {*}  {Promise<void>}
    * @memberof ToDoComponent
    */
-  public async delete(id: string): Promise<void> {
-    await this.toDoService.delete(id);
+  public delete(id: string): void {
+    this.toDoService.delete(id);
   }
 }

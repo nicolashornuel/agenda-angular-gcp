@@ -9,10 +9,11 @@ import {
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { AlertService } from '@shared/services/alert.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, take } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { StorageService } from './storage.service';
 import { UserService } from './user.service';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -60,25 +61,21 @@ export class AuthService {
   }
 
   private async goodAccess(user: UserCredential): Promise<void> {
-    //const userInfo: UserInfo = await this.userService.saveOne(user);
-    const exist = await this.checkUser(user.user.uid);
-    if (exist) {
-      this.storage.setLocalItem(this.KEY_STORAGE_USER, user.user);
-      this.isLoggedIn$.next(true);
-      this.alert.success('Authentifié');
-      this.router.navigate(['/agenda']);
-    } else {
-      this.isLoggedIn$.next(false);
-      this.alert.warning('Non autorisé');
-    }
+    this.userService.getOne(user.user.uid).pipe(take(1)).subscribe((user: User) => {
+      if (user) {
+        this.storage.setLocalItem(this.KEY_STORAGE_USER, user);
+        this.isLoggedIn$.next(true);
+        this.alert.success('Authentifié');
+        this.router.navigate(['/agenda']);
+      } else {
+        this.isLoggedIn$.next(false);
+        this.alert.warning('Non autorisé');
+      }
+    });
   }
 
   private badAccess(error: any): void {
     this.alert.error(error.message);
   }
 
-  private async checkUser(uid: string): Promise<boolean> {
-    const userSaved = await this.userService.getOne(uid);
-    return userSaved ? true : false;
-  }
 }

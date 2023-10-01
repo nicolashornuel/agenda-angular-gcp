@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "agenda": {
+    "agenda-angular-gcp": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -18,7 +18,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/agenda",
+            "outputPath": "dist/agenda-angular-gcp",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -76,10 +76,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "agenda:build:production"
+              "browserTarget": "agenda-angular-gcp:build:production"
             },
             "development": {
-              "browserTarget": "agenda:build:development"
+              "browserTarget": "agenda-angular-gcp:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -87,7 +87,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "agenda:build"
+            "browserTarget": "agenda-angular-gcp:build"
           }
         },
         "test": {
@@ -107,16 +107,6 @@
               "src/styles.scss"
             ],
             "scripts": []
-          }
-        },
-        "deploy": {
-          "builder": "@angular/fire:deploy",
-          "options": {
-            "prerender": false,
-            "ssr": false,
-            "browserTarget": "agenda:build:production",
-            "firebaseProject": "agenda-bf245",
-            "firebaseHostingSite": "agenda-bf245"
           }
         }
       }

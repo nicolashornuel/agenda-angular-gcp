@@ -1,16 +1,15 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ViewContainerRef } from '@angular/core';
-import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
-import { isSameDay, isSameMonth } from 'date-fns';
-import { take, takeUntil } from 'rxjs';
-import { EventService } from '@agenda/services/event.service';
-import { AlertService } from '@shared/services/alert.service';
-import { DestroyService } from '@shared/services/destroy.service';
-import { CalEventDTO, CalEventField, CalEventType } from '../../models/calEvent.model';
-import { emptyFields } from '../../models/emptyFields.constant';
-import { DayClickedService } from '../../services/day-clicked.service';
-import { MapperService } from '../../services/mapper.service';
-import { CalMonthAddCommentComponent } from '../cal-month-add-comment/cal-month-add-comment.component';
-import { ModalService } from '@shared/services/modal.service';
+import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ViewContainerRef} from '@angular/core';
+import {CalendarEvent, CalendarMonthViewDay} from 'angular-calendar';
+import {isSameDay, isSameMonth} from 'date-fns';
+import {take, takeUntil} from 'rxjs';
+import {EventService} from '@agenda/services/event.service';
+import {AlertService} from '@shared/services/alert.service';
+import {DestroyService} from '@shared/services/destroy.service';
+import {CalEventField, CalEventType} from '../../models/calEvent.model';
+import {emptyFields} from '../../models/emptyFields.constant';
+import {DayClickedService} from '../../services/day-clicked.service';
+import {CalMonthAddCommentComponent} from '../cal-month-add-comment/cal-month-add-comment.component';
+import {ModalService} from '@shared/services/modal.service';
 
 @Component({
   selector: 'app-cal-month-cell',
@@ -25,13 +24,12 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   @ViewChild('modal', {read: ViewContainerRef}) target!: ViewContainerRef;
   public isActive: boolean = false;
   public formFields: CalEventField[] = [];
-  public comments: CalEventDTO[] = [];
+  public comments: CalendarEvent[] = [];
 
   constructor(
     private eventService: EventService,
     private dayService: DayClickedService,
     private destroy$: DestroyService,
-    private mapper: MapperService,
     public alert: AlertService,
     private modalService: ModalService
   ) {}
@@ -44,7 +42,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
     if (isSameMonth(new Date(), this.viewDate) && isSameDay(this.day.date, this.viewDate)) this.isActive = true;
     this.comments = this.day.events
       .map((dayEvent: CalendarEvent) => ({...dayEvent}))
-      .filter((eventField: CalEventDTO) => eventField.meta!.type === CalEventType.COMMENT);
+      .filter((eventField: CalendarEvent) => eventField.meta!.type === CalEventType.COMMENT);
   }
 
   /**
@@ -56,7 +54,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   private initializeData(): void {
     emptyFields.forEach((field: CalEventField) => {
       let existField: CalendarEvent | undefined = this.day.events
-        .filter((eventField: CalEventDTO) => eventField.meta!.type === CalEventType.FAMILY)
+        .filter((eventField: CalendarEvent) => eventField.meta!.type === CalEventType.FAMILY)
         .find((dayEvent: CalendarEvent) => dayEvent.title === field.title);
 
       let formField: CalEventField =
@@ -81,19 +79,24 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
    * @param {*} formField
    * @memberof CalMonthCellComponent
    */
-  public onCheck(value: boolean, formField: CalEventField) {
+  public onCheck(value: boolean, formField: CalEventField): void {
     formField.meta!.value = value;
     if (!formField.meta!.value) {
-      this.eventService.delete(formField.id as string).then(() => {
-        this.alert.success('delete ok')
-      });
+      this.eventService
+        .delete(formField.id as string)
+        .pipe(take(1))
+        .subscribe(() => {
+          this.alert.success('delete ok');
+        });
     } else if (formField.meta!.value) {
-      const entity = this.mapper.fieldToEntity(formField, this.day.date);
-      this.eventService.save(entity).then(id => {
-        formField.id = id;
-        this.alert.success('save ok')
-
-      });
+      const calEventEntity = this.eventService.fieldToEntity(formField, this.day.date);
+      this.eventService
+        .create(calEventEntity)
+        .pipe(take(1))
+        .subscribe(calEventEntity => {
+          formField.id = calEventEntity.id;
+          this.alert.success('save ok');
+        });
     }
   }
 
@@ -116,11 +119,13 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
     modal
       .listenEvent()
       .pipe(take(1))
-      .subscribe(async (response: string) => {
+      .subscribe((response: string) => {
         if (response) {
-          const entity = this.mapper.commentToEntity(response, this.day.date);
-          await this.eventService.save(entity);
-          this.alert.success('save ok')
+          const calendarEvent = this.eventService.commentToEntity(response, this.day.date);
+          this.eventService
+            .create(calendarEvent)
+            .pipe(take(1))
+            .subscribe(() => this.alert.success('save ok'));
         }
       });
   }
