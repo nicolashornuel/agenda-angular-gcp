@@ -2,8 +2,6 @@ import { CalEventDTO, CalEventEntity, CalEventField } from '@models/calEvent.mod
 import { Timestamp } from 'firebase-admin/firestore';
 
 function toDTO(event: CalEventEntity): CalEventDTO {
-    console.log(event);
-    
         const newEvent: CalEventDTO = {
             ...event,
             start: (event.meta!.start as Timestamp).toDate()

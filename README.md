@@ -75,6 +75,11 @@ cd functions && npm run build:watch (tsc --watch)
 cd functions && npm run serve (npm run build && firebase emulators:start --only functions)
 ```
 ```sh
+gcloud auth application-default login
+```
+https://googleapis.dev/nodejs/firestore/latest/index.html
+
+```sh
 firebase deploy --only functions
 firebase deploy --only functions:onCallGetAllEvent
 ```
