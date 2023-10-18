@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import {
-  Auth,
+import {   getAuth,
   GoogleAuthProvider,
   UserCredential,
   UserInfo,
   signInWithPopup,
-  signOut
-} from '@angular/fire/auth';
+  signOut } from "firebase/auth"
 import { Router } from '@angular/router';
 import { AlertService } from '@shared/services/alert.service';
 import { Observable, of } from 'rxjs';
@@ -26,9 +24,10 @@ export class AuthService {
   private readonly isLoggedIn$ = new BehaviorSubject<boolean>(false);
   public isLoggedIn = false;
   private readonly provider = new GoogleAuthProvider();
+  private readonly auth = getAuth();
+
 
   constructor(
-    private readonly auth: Auth,
     private storage: StorageService,
     private alert: AlertService,
     private router: Router,
@@ -60,7 +59,6 @@ export class AuthService {
   }
 
   private async goodAccess(user: UserCredential): Promise<void> {
-    //const userInfo: UserInfo = await this.userService.saveOne(user);
     const exist = await this.checkUser(user.user.uid);
     if (exist) {
       this.storage.setLocalItem(this.KEY_STORAGE_USER, user.user);
@@ -79,6 +77,6 @@ export class AuthService {
 
   private async checkUser(uid: string): Promise<boolean> {
     const userSaved = await this.userService.getOne(uid);
-    return userSaved ? true : false;
+    return userSaved.data.data.id ? true : false;
   }
 }

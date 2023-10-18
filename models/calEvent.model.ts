@@ -1,5 +1,5 @@
-import { Timestamp } from '@angular/fire/firestore';
 import { CalendarEvent } from "angular-calendar";
+import { Timestamp } from '@firebase/firestore';
 
 export enum CalEventType {
   COMMENT = 'comment',
@@ -9,8 +9,8 @@ export enum CalEventType {
 
 export type CalEventEntity = Pick<CalendarEvent<{
   type: CalEventType,
-  start: Timestamp,
-  end?: Timestamp,
+  start: number | Object | Date | Timestamp,
+  end?: number | Object | Date | Timestamp,
 }>, 'id' | 'title' | 'meta'>
 
 export type CalEventDTO = CalendarEvent<Partial<{

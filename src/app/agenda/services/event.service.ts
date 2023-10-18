@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { CollectionReference, DocumentData, DocumentReference, Firestore, collection, collectionData, deleteDoc, doc, setDoc } from '@angular/fire/firestore';
 import { CalendarEvent, CalendarEventTimesChangedEvent } from 'angular-calendar';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { CalEventEntity } from '../models/calEvent.model';
+import { getFunctions, httpsCallable, connectFunctionsEmulator, Functions } from "firebase/functions";
+import { BehaviorSubject } from 'rxjs';
+import { CalEventEntity } from '@models/calEvent.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +14,11 @@ export class EventService {
 
   private readonly events$ = new BehaviorSubject<CalendarEvent[]>([]);
 
-  private collectionRef!: CollectionReference<DocumentData>;
+  private functions: Functions;
 
-  // https://github.com/angular/angularfire/blob/master/docs/version-7-upgrade.md
-  // https://github.com/javebratt/angularfire-idField/blob/main/src/app/home/home.page.ts
-
-  constructor(private firestore: Firestore) {
-    this.collectionRef = collection(this.firestore, 'calendarEvent');
+  constructor() {
+    this.functions = getFunctions();
+    //connectFunctionsEmulator(this.functions, "127.0.0.1", 5001);
   }
 
   public eventTimesChanged({ event, newStart, allDay }: CalendarEventTimesChangedEvent): CalendarEvent[] {
@@ -29,24 +28,20 @@ export class EventService {
     this.events = [...this.events];
     return this.events;
   }
-
-  public getAll(): Observable<DocumentData[]> {
-    return collectionData(this.collectionRef, { idField: 'id' });
+  public async getAll(): Promise<any> {
+    const onCallFunction = httpsCallable(this.functions, 'onCallGetAllEvent');
+    return onCallFunction();
   }
-
   public async save(document: CalEventEntity): Promise<string> {
-    const docRef: DocumentReference<DocumentData> = doc(this.collectionRef)
-    await setDoc(docRef, { ...document });
-    return docRef.id;
+    const onCallFunction = httpsCallable(this.functions, 'onCallCreateOneEvent');
+    return onCallFunction(document) as unknown as string;
   }
-
   public async update(document: CalEventEntity, id: string): Promise<void> {
-    const docRef: DocumentReference<DocumentData> = doc(this.collectionRef, id)
-    await setDoc(docRef, { ...document });
+    const onCallFunction = httpsCallable(this.functions, 'onCallUpdateOneEvent');
+    return onCallFunction({ id, document }) as unknown as void;
   }
-
-  public delete(id: string): Promise<void> {
-    const docRef: DocumentReference<DocumentData> = doc(this.collectionRef, id);
-    return deleteDoc(docRef);
+  public async delete(id: string): Promise<void> {
+    const onCallFunction = httpsCallable(this.functions, 'onCallDeleteOneEvent');
+    return onCallFunction(id) as unknown as void;
   }
 }

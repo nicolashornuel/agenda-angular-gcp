@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { annivDuJour } from '../models/annivDuJour.constant';
+import { annivDuJour } from '../../../../models/annivDuJour.constant';
 
 export type AnnivDuJour = {
   day: number,

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CalendarMonthViewDay } from 'angular-calendar';
 import { ModalService } from '@shared/services/modal.service';
-import { CalEventDTO, CalEventType } from '../../models/calEvent.model';
+import { CalEventDTO, CalEventType } from '../../../../../models/calEvent.model';
 
 @Component({
   selector: 'app-cal-month-add-comment',

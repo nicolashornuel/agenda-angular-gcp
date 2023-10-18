@@ -1,19 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserCredential, UserInfo } from '@angular/fire/auth';
-import {
-  CollectionReference,
-  DocumentReference,
-  Firestore,
-  QueryDocumentSnapshot,
-  QuerySnapshot,
-  collection,
-  doc,
-  getDocs,
-  query,
-  setDoc,
-  where
-} from '@angular/fire/firestore';
+import { getFunctions, httpsCallable } from "firebase/functions";
 
 export interface User {
   displayName: string | null;
@@ -24,41 +10,17 @@ export interface User {
   uid: string;
 }
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private collectionRef!: CollectionReference<UserInfo>;
+  private functions = getFunctions();
 
-  constructor(private firestore: Firestore, private http: HttpClient) {
-    this.collectionRef = collection(this.firestore, 'user') as CollectionReference<UserInfo>;
+  constructor() { }
+
+  public async getOne(uid: string): Promise<any> {
+    const onCallFunction = httpsCallable(this.functions, 'onCallGetOneUser');
+    return onCallFunction(uid);
   }
 
-  public async getOne(uid: string): Promise<UserInfo | undefined> {
-    const q = query(this.collectionRef, where("uid", "==", uid));
-    const res: QuerySnapshot<UserInfo> = await getDocs<UserInfo>(q);
-    let userInfo: UserInfo | undefined = undefined;
-    res.forEach( (doc: QueryDocumentSnapshot<UserInfo>) => userInfo = doc.data());
-    return userInfo;
-  }
-
-  public async saveOne(userCredential: UserCredential): Promise<UserInfo> {
-    const userInfo: UserInfo = this.mapper(userCredential);
-    const docRef: DocumentReference<UserInfo> = doc(this.collectionRef);
-    await setDoc(docRef, {...userInfo});
-    return userInfo;
-  }
-
-  private mapper(userCredential: UserCredential): UserInfo {
-    const user: User = userCredential.user;
-    return {
-      displayName: user.displayName,
-      email: user.email,
-      phoneNumber: user.phoneNumber,
-      photoURL: user.photoURL,
-      providerId: user.providerId,
-      uid: user.uid
-    }
-  }
 }

@@ -5,7 +5,7 @@ import { Subject, combineLatest, takeUntil } from 'rxjs';
 import { EventService } from '@agenda/services/event.service';
 import { Holiday, HolidayService } from '@agenda/services/holiday.service';
 import { DestroyService } from '@shared/services/destroy.service';
-import { CalEventEntity } from '../../models/calEvent.model';
+import { CalEventEntity } from '@models/calEvent.model';
 import { DayClickedService } from '../../services/day-clicked.service';
 import { MapperService } from '../../services/mapper.service';
 
@@ -51,8 +51,11 @@ export class CalBodyComponent implements OnInit, OnChanges {
   private initializeData(): void {
     this.loading = true;
     combineLatest([this.eventService.getAll(), this.holidayService.getAll()])
-      .pipe(takeUntil(this.destroy$)).subscribe(([events, holidays]) => {
-        this.events = this.mapper.entitiesToDTOs(events as CalEventEntity[]);
+      .pipe(takeUntil(this.destroy$)).subscribe(([{data}, holidays]) => {
+        this.events = this.mapper.entitiesToDTOs(data as CalEventEntity[]);
+        console.log(this.events);
+        
+        this.events = data;
         this.holidays = holidays;
         this.loading = false;
       })

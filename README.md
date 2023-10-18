@@ -61,3 +61,27 @@ https://firebaseopensource.com/projects/angular/angularfire2
 https://www.npmjs.com/package/@angular/fire
 https://github.com/angular/angularfire
 https://firebase.google.com/docs/auth/web/firebaseui?hl=fr&authuser=0
+
+## firebase/Authentication
+
+https://console.firebase.google.com/u/0/project/agenda-bf245/authentication/settings
+add domain : http://127.0.0.1/ to enable local devcontainer
+
+## firebase/Functions
+```sh
+cd functions
+npm run build
+firebase emulators:start --only functions
+firebase deploy --only functions
+firebase deploy --only functions:onCallGetAllEvent
+```
+
+## Typescript to share data-model
+tsconfig.json : 
+{ "compilerOptions":
+  { "paths": 
+    { 
+      "@models/*": ["../models/*"]
+      }
+  }
+}
