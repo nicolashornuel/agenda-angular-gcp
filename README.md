@@ -69,9 +69,12 @@ add domain : http://127.0.0.1/ to enable local devcontainer
 
 ## firebase/Functions
 ```sh
-cd functions
-npm run build
-firebase emulators:start --only functions
+cd functions && npm run build:watch (tsc --watch)
+```
+```sh
+cd functions && npm run serve (npm run build && firebase emulators:start --only functions)
+```
+```sh
 firebase deploy --only functions
 firebase deploy --only functions:onCallGetAllEvent
 ```
