@@ -76,8 +76,14 @@ cd functions && npm run serve (npm run build && firebase emulators:start --only 
 ```
 ```sh
 gcloud auth application-default login
+gcloud auth print-identity-token
 ```
+and get token into /home/node/.config/firebase
 https://googleapis.dev/nodejs/firestore/latest/index.html
+
+https://glowing-sniffle-p6j57p657qqcrg99-5001.app.github.dev/agenda-bf245/us-central1/onRequest
+https://docs.github.com/en/codespaces/developing-in-codespaces/forwarding-ports-in-your-codespace
+echo $GITHUB_TOKEN
 
 ```sh
 firebase deploy --only functions

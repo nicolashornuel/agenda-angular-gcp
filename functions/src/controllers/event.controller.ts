@@ -8,7 +8,7 @@ import { tryCatch } from '../services/tryCatch.service';
 const collection: string = 'calendarEvent';
 
 export const onCallGetAllEvent = onCall(opts, req => tryCatch(req, async () => {
-    const { data } = await getAll(req, collection);
+    const data  = await getAll(req, collection);
     console.log(data);
     return toDTOs(data as CalEventEntity[]);
 }));
