@@ -76,7 +76,7 @@ export class AuthService {
   }
 
   private async checkUser(uid: string): Promise<boolean> {
-    const userSaved = await this.userService.getOne(uid);
-    return userSaved.data.data.id ? true : false;
+    const userSaved = await this.userService.findByField('uid', uid);
+    return userSaved.data[0].id ? true : false;
   }
 }

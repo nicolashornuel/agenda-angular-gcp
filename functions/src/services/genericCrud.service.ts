@@ -1,28 +1,51 @@
-import { CollectionReference, DocumentData, DocumentSnapshot, QuerySnapshot, WriteResult, getFirestore } from 'firebase-admin/firestore';
+import { CollectionReference, DocumentData, DocumentSnapshot, QueryDocumentSnapshot, QuerySnapshot, WriteResult, getFirestore } from 'firebase-admin/firestore';
 import { CallableRequest } from 'firebase-functions/v2/https';
 
 function getFirestoreCollection(name: string): CollectionReference<DocumentData> {
   return getFirestore().collection(name);
 }
 
-async function getAll(_req: CallableRequest, name: string): Promise<any> {
-  const query: QuerySnapshot<DocumentData> = await getFirestoreCollection(name).get();
-  return query.docs.map( (doc: DocumentSnapshot) => ({ ...doc.data(), id: doc.id }));
+async function getAll(req: CallableRequest<DocumentData>): Promise<any> {
+  const query: QuerySnapshot<DocumentData> = await getFirestoreCollection(req.data.collection).get();
+  return query.docs.map((doc: DocumentSnapshot) => ({ ...doc.data(), id: doc.id }));
 }
 
-async function createOne(req: CallableRequest<DocumentData>, name: string): Promise<string> {
-  const docRef = await getFirestoreCollection(name).add(req.data);
+async function createOne(req: CallableRequest<DocumentData>): Promise<string> {
+  const docRef = await getFirestoreCollection(req.data.collection).add(req.data.document);
   return docRef.id;
 }
 
-async function updateOne(req: CallableRequest<DocumentData>, name: string): Promise<WriteResult> {
+async function updateOne(req: CallableRequest<DocumentData>): Promise<WriteResult> {
   const document: Omit<DocumentData, "id"> = req.data.document;
-  return getFirestoreCollection(name).doc(req.data.id).update(document);
+  return getFirestoreCollection(req.data.collection).doc(req.data.id).update(document);
 }
 
-async function deleteOne(req: CallableRequest<string>, name: string): Promise<WriteResult> {
-  return getFirestoreCollection(name).doc(req.data).delete();
+async function deleteOne(req: CallableRequest<DocumentData>): Promise<WriteResult> {
+  return getFirestoreCollection(req.data.collection).doc(req.data.id).delete();
 }
 
-export { createOne, deleteOne, getAll, getFirestoreCollection, updateOne };
+async function findByField(req: CallableRequest<DocumentData>): Promise<any> {
+  const snapshot: QuerySnapshot<DocumentData> = await getFirestoreCollection(req.data.collection).where(req.data.key, '==', req.data.value).get();
+  if (!snapshot.empty) {
+    const docs: QueryDocumentSnapshot<DocumentData>[] = snapshot.docs;
+    return docs.map((doc: DocumentSnapshot) => ({ ...doc.data(), id: doc.id }));
+  } else {
+    return []
+  }
+}
+
+async function findByDateRange(req: CallableRequest<DocumentData>): Promise<any> {
+  const snapshot: QuerySnapshot<DocumentData> = await getFirestoreCollection(req.data.collection)
+    .where(req.data.key, '>=', new Date(req.data.startAt))
+    .where(req.data.key, '<=', new Date(req.data.endAt))
+    .get();
+  if (!snapshot.empty) {
+    const docs: QueryDocumentSnapshot<DocumentData>[] = snapshot.docs;
+    return docs.map((doc: DocumentSnapshot) => ({ ...doc.data(), id: doc.id }));
+  } else {
+    return []
+  }
+}
+
+export { createOne, deleteOne, findByField, getAll, getFirestoreCollection, updateOne, findByDateRange };
 

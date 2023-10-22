@@ -4,7 +4,6 @@
   "compilerOptions": {
     "baseUrl": "src",
     "paths": { 
-      "@models/*": ["../models/*"], 
       "@shared/*": ["app/shared/*"], 
       "@agenda/*": [
         "app/agenda/*"

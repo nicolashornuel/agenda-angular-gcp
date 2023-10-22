@@ -74,6 +74,7 @@ cd functions && npm run build:watch (tsc --watch)
 ```sh
 cd functions && npm run serve (npm run build && firebase emulators:start --only functions)
 ```
+to test with postman and codespace github : 
 ```sh
 gcloud auth application-default login
 gcloud auth print-identity-token

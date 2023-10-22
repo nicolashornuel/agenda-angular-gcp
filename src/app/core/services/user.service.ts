@@ -1,5 +1,18 @@
 import { Injectable } from '@angular/core';
-import { getFunctions, httpsCallable } from "firebase/functions";
+import { AbstractCrudService } from './abstractCrud.service';
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UserService extends AbstractCrudService  {
+
+  constructor() {
+    super('user');
+   }
+
+}
+
 
 export interface User {
   displayName: string | null;
@@ -8,19 +21,4 @@ export interface User {
   photoURL: string | null;
   providerId: string;
   uid: string;
-}
-
-@Injectable({
-  providedIn: 'root'
-})
-export class UserService {
-  private functions = getFunctions();
-
-  constructor() { }
-
-  public async getOne(uid: string): Promise<any> {
-    const onCallFunction = httpsCallable(this.functions, 'onCallGetOneUser');
-    return onCallFunction(uid);
-  }
-
 }
