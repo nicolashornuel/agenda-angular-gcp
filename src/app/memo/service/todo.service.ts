@@ -1,59 +1,40 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
-  CollectionReference,
-  DocumentData,
-  DocumentReference,
-  Firestore,
-  Timestamp,
-  collection,
-  collectionData,
-  deleteDoc,
-  doc,
-  setDoc
+  Timestamp
 } from '@angular/fire/firestore';
-import {toDoDTO, toDoEntity} from '../models/to-do.model';
-import {Observable, map, of} from 'rxjs';
+import { AbstractCrudService } from 'app/core/services/abstractCrud.service';
+import { toDoDTO, toDoEntity } from '../models/to-do.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TodoService {
-  private collectionRef!: CollectionReference<toDoEntity>;
+export class TodoService extends AbstractCrudService {
 
-  constructor(private firestore: Firestore) {
-    this.collectionRef = collection(this.firestore, 'todoList') as CollectionReference<toDoEntity>;
+  constructor() {
+    super('todoList');
   }
 
-  public getAll(): Observable<toDoDTO[]> {
-    return collectionData<toDoEntity>(this.collectionRef, {idField: 'id'}).pipe(
-      map(toDoEntities => this.entitiesToDTOs(toDoEntities))
-    );
+  public async getAllwithMapping(): Promise<toDoDTO[]> {
+    const { data } = await this.getAll();
+    return this.entitiesToDTOs(data as toDoEntity[]);
   }
 
-  public async save(toDoDTO: toDoDTO): Promise<string> {
+  public async saveWithMapping(toDoDTO: toDoDTO): Promise<string> {
     const toDoEntity: toDoEntity = this.dtoToEntity(toDoDTO);
-    const docRef: DocumentReference<DocumentData> = doc(this.collectionRef);
-    toDoEntity.id = docRef.id;
-    await setDoc(docRef, {...toDoEntity});
-    return docRef.id;
+    return this.save(toDoEntity);
   }
 
-  public async update(toDoDTO: toDoDTO): Promise<void> {
+  public async updateWithMapping(toDoDTO: toDoDTO): Promise<void> {
     const toDoEntity: toDoEntity = this.dtoToEntity(toDoDTO);
-    const docRef: DocumentReference<DocumentData> = doc(this.collectionRef, toDoDTO.id);
-    await setDoc(docRef, {...toDoEntity});
+    return this.update(toDoEntity, toDoEntity.id!);
   }
 
-  public delete(id: string): Promise<void> {
-    const docRef: DocumentReference<DocumentData> = doc(this.collectionRef, id);
-    return deleteDoc(docRef);
-  }
 
   private entitiesToDTOs(toDoEntities: toDoEntity[]): toDoDTO[] {
     return toDoEntities.map((toDoEntity: toDoEntity) => ({
       ...toDoEntity,
-      creatingDate: toDoEntity.creatingDate.toDate(),
-      updatingDate: toDoEntity.updatingDate ? toDoEntity.updatingDate.toDate() : undefined
+      creatingDate: this.toDate(toDoEntity.creatingDate),
+      updatingDate: toDoEntity.updatingDate ? this.toDate(toDoEntity.updatingDate) : undefined
     }));
   }
 
@@ -71,4 +52,5 @@ export class TodoService {
     }
     return toDoEntity;
   }
+
 }

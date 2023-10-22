@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges, ViewChild, ViewContainerRef
 import { CalendarEvent } from 'angular-calendar';
 import { EventService } from '@agenda/services/event.service';
 import { collapseAnimation } from '@shared/models/triggerAnimation.constant';
-import { CalEventDTO, CalEventEntity, CalEventType } from '../../../../../models/calEvent.model';
+import { CalEventDTO, CalEventEntity, CalEventType } from '../../models/calEvent.model';
 import { AnnivDuJour, AnnivDuJourService } from '../../services/annivDuJour.service';
 import { SaintDuJourService } from '../../services/saintDuJour.service';
 import { AlertService } from '@shared/services/alert.service';
