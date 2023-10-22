@@ -61,3 +61,42 @@ https://firebaseopensource.com/projects/angular/angularfire2
 https://www.npmjs.com/package/@angular/fire
 https://github.com/angular/angularfire
 https://firebase.google.com/docs/auth/web/firebaseui?hl=fr&authuser=0
+
+## firebase/Authentication
+
+https://console.firebase.google.com/u/0/project/agenda-bf245/authentication/settings
+add domain : http://127.0.0.1/ to enable local devcontainer
+
+## firebase/Functions
+```sh
+cd functions && npm run build:watch (tsc --watch)
+```
+```sh
+cd functions && npm run serve (npm run build && firebase emulators:start --only functions)
+```
+to test with postman and codespace github : 
+```sh
+gcloud auth application-default login
+gcloud auth print-identity-token
+```
+and get token into /home/node/.config/firebase
+https://googleapis.dev/nodejs/firestore/latest/index.html
+
+https://glowing-sniffle-p6j57p657qqcrg99-5001.app.github.dev/agenda-bf245/us-central1/onRequest
+https://docs.github.com/en/codespaces/developing-in-codespaces/forwarding-ports-in-your-codespace
+echo $GITHUB_TOKEN
+
+```sh
+firebase deploy --only functions
+firebase deploy --only functions:onCallGetAllEvent
+```
+
+## Typescript to share data-model
+tsconfig.json : 
+{ "compilerOptions":
+  { "paths": 
+    { 
+      "@models/*": ["../models/*"]
+      }
+  }
+}

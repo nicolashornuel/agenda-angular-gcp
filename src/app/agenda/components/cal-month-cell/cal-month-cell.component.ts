@@ -5,10 +5,9 @@ import { take, takeUntil } from 'rxjs';
 import { EventService } from '@agenda/services/event.service';
 import { AlertService } from '@shared/services/alert.service';
 import { DestroyService } from '@shared/services/destroy.service';
-import { CalEventDTO, CalEventField, CalEventType } from '../../models/calEvent.model';
-import { emptyFields } from '../../models/emptyFields.constant';
+import { CalEventDTO, CalEventEntity, CalEventField, CalEventType } from '@agenda/models/calEvent.model';
+import { emptyFields } from '@agenda/models/emptyFields.constant';
 import { DayClickedService } from '../../services/day-clicked.service';
-import { MapperService } from '../../services/mapper.service';
 import { CalMonthAddCommentComponent } from '../cal-month-add-comment/cal-month-add-comment.component';
 import { ModalService } from '@shared/services/modal.service';
 
@@ -31,7 +30,6 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
     private eventService: EventService,
     private dayService: DayClickedService,
     private destroy$: DestroyService,
-    private mapper: MapperService,
     public alert: AlertService,
     private modalService: ModalService
   ) {}
@@ -88,7 +86,14 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
         this.alert.success('delete ok')
       });
     } else if (formField.meta!.value) {
-      const entity = this.mapper.fieldToEntity(formField, this.day.date);
+      const entity = {
+        title: formField.title!,
+        meta: {
+            type: formField.meta!.type!,
+            start: new Date(this.day.date.toDateString() + ' ' + formField.meta!.start).getTime(),
+            end: formField.meta!.end ? new Date(this.day.date.toDateString() + ' ' + formField.meta!.end).getTime() : undefined,
+        }
+    }
       this.eventService.save(entity).then(id => {
         formField.id = id;
         this.alert.success('save ok')
@@ -118,7 +123,13 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
       .pipe(take(1))
       .subscribe(async (response: string) => {
         if (response) {
-          const entity = this.mapper.commentToEntity(response, this.day.date);
+          const entity: CalEventEntity = {
+            title: response,
+            meta: {
+              type: CalEventType.COMMENT,
+              start: this.day.date.getTime()
+            }
+          }
           await this.eventService.save(entity);
           this.alert.success('save ok')
         }

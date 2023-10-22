@@ -1,20 +1,18 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { EventService } from '@agenda/services/event.service';
+import { Holiday, HolidayService } from '@agenda/services/holiday.service';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { DestroyService } from '@shared/services/destroy.service';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
 import { isSameDay, isSameMonth } from 'date-fns';
 import { Subject, combineLatest, takeUntil } from 'rxjs';
-import { EventService } from '@agenda/services/event.service';
-import { Holiday, HolidayService } from '@agenda/services/holiday.service';
-import { DestroyService } from '@shared/services/destroy.service';
-import { CalEventEntity } from '../../models/calEvent.model';
 import { DayClickedService } from '../../services/day-clicked.service';
-import { MapperService } from '../../services/mapper.service';
 
 @Component({
   selector: 'app-cal-body',
   templateUrl: './cal-body.component.html',
   styleUrls: ['./cal-body.component.scss']
 })
-export class CalBodyComponent implements OnInit, OnChanges {
+export class CalBodyComponent implements OnChanges {
   @Input() view!: CalendarView;
   @Input() viewDate!: Date;
   @Input() isLocked!: boolean;
@@ -28,18 +26,12 @@ export class CalBodyComponent implements OnInit, OnChanges {
     private eventService: EventService,
     private holidayService: HolidayService,
     private dayService: DayClickedService,
-    private destroy$: DestroyService,
-    private mapper: MapperService
-    ) { }
+    private destroy$: DestroyService) { }
 
-
-  ngOnInit(): void {
-    this.initializeData();
-  }
 
   ngOnChanges(_changes: SimpleChanges): void {
-    console.log(this.viewDate);
-     this.activeDayIsOpen = isSameMonth(new Date(), this.viewDate) ? true : false;
+    this.initializeData();
+    this.activeDayIsOpen = isSameMonth(new Date(), this.viewDate) ? true : false;
   }
 
   /**
@@ -50,9 +42,9 @@ export class CalBodyComponent implements OnInit, OnChanges {
    */
   private initializeData(): void {
     this.loading = true;
-    combineLatest([this.eventService.getAll(), this.holidayService.getAll()])
+    combineLatest([this.eventService.getCurrentList(this.viewDate), this.holidayService.getAll()])
       .pipe(takeUntil(this.destroy$)).subscribe(([events, holidays]) => {
-        this.events = this.mapper.entitiesToDTOs(events as CalEventEntity[]);
+        this.events = events;
         this.holidays = holidays;
         this.loading = false;
       })

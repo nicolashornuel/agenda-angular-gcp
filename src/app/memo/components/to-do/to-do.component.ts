@@ -113,9 +113,8 @@ export class ToDoComponent implements OnInit {
    */
   private initializeList(): void {
     this.toDoService
-      .getAll()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((toDoDTOList: toDoDTO[]) => {
+      .getAllwithMapping()
+      .then((toDoDTOList: toDoDTO[]) => {
         this.dataSource = toDoDTOList;
         this.tableSet.data = this.dataSource;
       });
@@ -186,7 +185,7 @@ export class ToDoComponent implements OnInit {
    * @memberof ToDoComponent
    */
   public async save(toDoDTO: toDoDTO): Promise<void> {
-    toDoDTO.id ? await this.toDoService.update(toDoDTO) : await this.toDoService.save(toDoDTO);
+    toDoDTO.id ? await this.toDoService.updateWithMapping(toDoDTO) : await this.toDoService.saveWithMapping(toDoDTO);
   }
 
   /**

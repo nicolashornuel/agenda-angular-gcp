@@ -5,7 +5,6 @@ import { collapseAnimation } from '@shared/models/triggerAnimation.constant';
 import { CalEventDTO, CalEventEntity, CalEventType } from '../../models/calEvent.model';
 import { AnnivDuJour, AnnivDuJourService } from '../../services/annivDuJour.service';
 import { SaintDuJourService } from '../../services/saintDuJour.service';
-import { MapperService } from '../../services/mapper.service';
 import { AlertService } from '@shared/services/alert.service';
 
 @Component({
@@ -19,7 +18,7 @@ export class CalMonthViewCommentComponent implements OnChanges {
   @Input() isOpen!: boolean;
   @Input() events!: CalendarEvent[];
   @Input() isLocked!: boolean;
-  @ViewChild('modal', {read: ViewContainerRef}) target!: ViewContainerRef;
+  @ViewChild('modal', { read: ViewContainerRef }) target!: ViewContainerRef;
   public comments: CalEventDTO[] = [];
   public saintDuJour?: string;
   public annivList?: AnnivDuJour[];
@@ -29,9 +28,8 @@ export class CalMonthViewCommentComponent implements OnChanges {
     private eventService: EventService,
     private saint: SaintDuJourService,
     private anniv: AnnivDuJourService,
-    private mapper: MapperService,
     private alert: AlertService
-  ) {}
+  ) { }
 
   async ngOnChanges(_changes: SimpleChanges): Promise<void> {
     this.saintDuJour = await this.saint.getWithDate(this.viewDate);
@@ -52,7 +50,13 @@ export class CalMonthViewCommentComponent implements OnChanges {
 
   public async onUpdate(comment: CalEventDTO): Promise<void> {
     this.disableEditMethod();
-    const entity: CalEventEntity = this.mapper.commentToEntity(comment.title, comment.start);
+    const entity: CalEventEntity = {
+      title: comment.title,
+      meta: {
+        type: CalEventType.COMMENT,
+        start: comment.start.getTime()
+      }
+    }
     await this.eventService.update(entity, comment.id as string);
     this.alert.success('update ok')
   }

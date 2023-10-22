@@ -1,25 +1,20 @@
 import { Injectable } from '@angular/core';
-import { CollectionReference, DocumentData, DocumentReference, Firestore, collection, collectionData, deleteDoc, doc, setDoc } from '@angular/fire/firestore';
 import { CalendarEvent, CalendarEventTimesChangedEvent } from 'angular-calendar';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { CalEventEntity } from '../models/calEvent.model';
+import { AbstractCrudService } from 'app/core/services/abstractCrud.service';
+import { CalEventDTO, CalEventEntity, CalEventField, CalEventType } from '@agenda/models/calEvent.model';
+import { Timestamp } from '@firebase/firestore';
+import { endOfMonth, startOfMonth } from 'date-fns';
+
 
 @Injectable({
   providedIn: 'root'
 })
-export class EventService {
+export class EventService extends AbstractCrudService {
 
   events: CalendarEvent[] = [];
 
-  private readonly events$ = new BehaviorSubject<CalendarEvent[]>([]);
-
-  private collectionRef!: CollectionReference<DocumentData>;
-
-  // https://github.com/angular/angularfire/blob/master/docs/version-7-upgrade.md
-  // https://github.com/javebratt/angularfire-idField/blob/main/src/app/home/home.page.ts
-
-  constructor(private firestore: Firestore) {
-    this.collectionRef = collection(this.firestore, 'calendarEvent');
+  constructor() {
+    super('calendarEvent');
   }
 
   public eventTimesChanged({ event, newStart, allDay }: CalendarEventTimesChangedEvent): CalendarEvent[] {
@@ -30,23 +25,54 @@ export class EventService {
     return this.events;
   }
 
-  public getAll(): Observable<DocumentData[]> {
-    return collectionData(this.collectionRef, { idField: 'id' });
+  public async getCurrentList(date: Date): Promise<any> {
+    const { startAt, endAt } = this.getTimestampRangeOfMonth(date);
+    const { data } = await this.findByDateRange('meta.start', startAt, endAt);
+    return this.entitiesToDTOs(data as CalEventEntity[]);
   }
 
-  public async save(document: CalEventEntity): Promise<string> {
-    const docRef: DocumentReference<DocumentData> = doc(this.collectionRef)
-    await setDoc(docRef, { ...document });
-    return docRef.id;
+  private entitiesToDTOs(events: CalEventEntity[]): CalEventDTO[] {
+    return events.map(event => {
+      const newEvent: CalEventDTO = {
+        id: event.id,
+        title: event.title,
+        start: this.toDate(event.meta!.start),
+        meta: {
+          type: event.meta?.type
+        }
+      }
+      if (event.meta?.end) newEvent.end = this.toDate(event.meta!.end);
+      return newEvent;
+    })
   }
 
-  public async update(document: CalEventEntity, id: string): Promise<void> {
-    const docRef: DocumentReference<DocumentData> = doc(this.collectionRef, id)
-    await setDoc(docRef, { ...document });
+  private fieldToEntity(event: CalEventField, date: Date): CalEventEntity {
+    return {
+      title: event.title!,
+      meta: {
+        type: event.meta!.type!,
+        start: Timestamp.fromDate(new Date(date.toDateString() + ' ' + event.meta!.start)),
+        end: event.meta!.end ? Timestamp.fromDate(new Date(date.toDateString() + ' ' + event.meta!.end)) : undefined,
+      }
+    }
   }
 
-  public delete(id: string): Promise<void> {
-    const docRef: DocumentReference<DocumentData> = doc(this.collectionRef, id);
-    return deleteDoc(docRef);
+  private commentToEntity(value: string, date: Date): CalEventEntity {
+    return {
+      title: value,
+      meta: {
+        type: CalEventType.COMMENT,
+        start: Timestamp.fromDate(date)
+      }
+    }
   }
+
+
+  private getTimestampRangeOfMonth(date: Date): { startAt: number; endAt: number; } {
+    const startAt = startOfMonth(date).getTime();
+    const endAt = endOfMonth(date).getTime();
+    return { startAt, endAt }
+  }
+
 }
+
