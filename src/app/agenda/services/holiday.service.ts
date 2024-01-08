@@ -30,7 +30,7 @@ export class HolidayService {
     url: 'https://data.education.gouv.fr/api/records/1.0/search/',
     params: {
       dataset: 'fr-en-calendrier-scolaire',
-      'refine.zone': 'Zone C',
+      'refine.zones': 'Zone C',
       'refine.location': 'Montpellier',
       'exclude.population': 'Enseignants',
       'refine.start_date': new Date().getFullYear()
@@ -39,7 +39,9 @@ export class HolidayService {
 
   constructor(private http: HttpClient) {}
 
-  public getAll(): Observable<Holiday[]> {
+  public getByYear(date: Date): Observable<Holiday[]> {
+    const year = date.getMonth() == 0 ? date.getFullYear() - 1 : date.getFullYear();
+    this.openAPI.params['refine.start_date'] = year;
     return this.http
       .get<{records: Record[]}>(this.openAPI.url, {params: this.openAPI.params})
       .pipe(

@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
 import { isSameDay, isSameMonth } from 'date-fns';
-import { Subject, combineLatest, takeUntil } from 'rxjs';
+import { Subject, combineLatest, take, takeUntil } from 'rxjs';
 import { EventService } from '@agenda/services/event.service';
 import { Holiday, HolidayService } from '@agenda/services/holiday.service';
 import { DestroyService } from '@shared/services/destroy.service';
@@ -38,7 +38,7 @@ export class CalBodyComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(_changes: SimpleChanges): void {
-    console.log(this.viewDate);
+    this.holidayService.getByYear(this.viewDate).pipe(take(1)).subscribe(holidays => this.holidays = holidays);
      this.activeDayIsOpen = isSameMonth(new Date(), this.viewDate) ? true : false;
   }
 
@@ -50,7 +50,7 @@ export class CalBodyComponent implements OnInit, OnChanges {
    */
   private initializeData(): void {
     this.loading = true;
-    combineLatest([this.eventService.getAll(), this.holidayService.getAll()])
+    combineLatest([this.eventService.getAll(), this.holidayService.getByYear(this.viewDate)])
       .pipe(takeUntil(this.destroy$)).subscribe(([events, holidays]) => {
         this.events = this.mapper.entitiesToDTOs(events as CalEventEntity[]);
         this.holidays = holidays;
