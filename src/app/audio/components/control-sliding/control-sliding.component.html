@@ -1,0 +1,23 @@
+<div class="container row-center-center">
+  <div class="range-slider col-between-center">
+    <div class="col-center-center">
+      <span class="scope">{{ value | number : format }}</span>
+      <button class="btn-control" (click)="onIncrease()" tabindex="-1">+</button>
+    </div>
+
+    <input
+      class="vertical"
+      type="range"
+      [max]="max"
+      [min]="min"
+      [step]="step"
+      [(ngModel)]="value"
+      (ngModelChange)="valueChange.emit(value)"
+    />
+
+    <div class="col-center-center">
+      <button class="btn-control" (click)="onDecreases()" tabindex="-1">-</button>
+      <span class="scope">{{ name }}</span>
+    </div>
+  </div>
+</div>

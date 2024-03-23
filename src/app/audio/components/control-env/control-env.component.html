@@ -1,0 +1,43 @@
+<fieldset>
+  <legend>Enveloppe</legend>
+  <div class="row-around-center pb-1">
+    <app-control-pot
+      name="attack"
+      [min]="0"
+      [max]="1"
+      [step]="0.05"
+      [(value)]="envParam.attack"
+      (valueChange)="setEnvParam$(envParam)"
+    ></app-control-pot>
+    <app-control-pot
+      name="release"
+      [min]="0"
+      [max]="1"
+      [step]="0.05"
+      [(value)]="envParam.release"
+      (valueChange)="setEnvParam$(envParam)"
+    ></app-control-pot>
+    <app-control-pot
+      name="sustain"
+      [min]="0"
+      [max]="1"
+      [step]="0.1"
+      [(value)]="envParam.sustain"
+      (valueChange)="setEnvParam$(envParam)"
+    ></app-control-pot>
+  </div>
+
+  <div class="canvas-container" [style.--height]="GEO.h + 'px'" [style.--width]="GEO.w + 'px'">
+    <span class="scalling-legend attack">Attack</span>
+    <span class="scalling-legend release">Release</span>
+    <span class="scalling-legend sustain">Sustain</span>
+    <canvas #scalling id="scalling"> </canvas>
+    <canvas
+      id="control"
+      #canvas
+      (mousedown)="onEventStart($event)"
+      (mousemove)="onEventMove($event)"
+    >
+    </canvas>
+  </div>
+</fieldset>

@@ -1,0 +1,9 @@
+@import 'variables.scss';
+
+$color-primary: $orange;
+$color-dark: $grey-40;
+
+canvas {
+    background-color: $color-dark;
+    color: $color-primary;
+  }

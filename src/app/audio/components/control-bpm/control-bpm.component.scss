@@ -1,0 +1,18 @@
+input[type='number'] {
+    padding: 0;
+    font-size: 36px;
+    outline: none;
+    border-width: 0;
+    border-bottom: 1px solid grey;
+}
+
+.bpm {
+    position: relative;
+    &:before {
+        content: "BPM";
+        position: absolute;
+        bottom: 0px;
+        font-size: 10px;
+        opacity: .3;
+      }
+}

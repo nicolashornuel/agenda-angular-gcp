@@ -1,0 +1,16 @@
+<div class="col-between-start h-100">
+  <button class="btn-outline" (click)="resetParam()">Reset</button>
+  <div class="row-between-stretch eq-slider-container">
+    <ng-container *ngFor="let eq of eqs">
+      <app-control-sliding
+        class="col-1"
+        [min]="-30"
+        [max]="30"
+        [step]="1"
+        [(value)]="eq.gain.value"
+        format="1.0-0"
+        [name]="eq.frequency.value | truncateFreq"
+      ></app-control-sliding>
+    </ng-container>
+  </div>
+</div>

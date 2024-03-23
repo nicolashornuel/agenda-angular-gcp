@@ -1,0 +1,22 @@
+@import 'variables.scss';
+
+$color-primary: $green;
+$color-dark: $grey-40;
+$color-light: $grey-97;
+
+input[type="checkbox"] {
+  height: 30px;
+  width: 30px;
+  border: 1px solid $color-dark;
+  margin: 2px;
+  appearance: none;
+}
+input[type="checkbox"] {
+  &:checked {
+    background: radial-gradient(circle at center, $green, $green-active)
+  }
+  &.active {
+   background-color: $grey-80;
+  }
+}
+

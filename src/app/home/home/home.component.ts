@@ -20,6 +20,10 @@ export class HomeComponent {
     {
       title: 'Course',
       route: 'memo/courses'
+    },
+    {
+      title: 'Audio',
+      route: 'audio'
     }
   ]
 

@@ -1,0 +1,7 @@
+<div class="toggle-container row-center-center gap-2" (click)="input.click()" [style.--rotate]="rotate + 'deg'">
+  <input #input type="checkbox" [(ngModel)]="value" (ngModelChange)="valueChange.emit(value)" />
+  <div class="bar">
+    <div class="cursor" [ngClass]="mono ? 'mono' : ''"></div>
+  </div>
+  <label *ngIf="label">{{ label }}</label>
+</div>

@@ -1,0 +1,3 @@
+<select class="select" (change)="selectedChange.emit(selected)" [(ngModel)]="selected">
+  <option *ngFor="let item of items" [value]="item" [selected]="item == selected">{{ item }}</option>
+</select>

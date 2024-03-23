@@ -1,0 +1,14 @@
+@import 'variables.scss';
+
+$color-primary: $green;
+$color-dark: $grey-40;
+$color-light: $grey-97;
+$box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.32);
+$min-height: 250px;
+
+.eq-slider-container {
+  width: 400px;
+  background-color: $color-dark;
+  border-radius: 4px;
+  padding: 0 10px;
+}

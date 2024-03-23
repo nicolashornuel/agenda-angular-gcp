@@ -1,0 +1,20 @@
+<app-toggle
+  class="d-block mb-2"
+  [(value)]="padParam.isPersist!"
+  (valueChange)="onPersistChange()"
+  [mono]="true"
+  label="Persist"
+></app-toggle>
+
+<div class="canvas-container">
+  <span class="scalling-legend x">{{ padParam.libelleX }}</span>
+  <span class="scalling-legend y">{{ padParam.libelleY }}</span>
+  <canvas #scalling id="scalling"> </canvas>
+  <canvas
+    id="control"
+    #canvas
+    (mousedown)="onEventStart($event)"
+    (mousemove)="onEventMove($event)"
+  >
+  </canvas>
+</div>

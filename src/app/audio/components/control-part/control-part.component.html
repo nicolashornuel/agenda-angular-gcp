@@ -1,0 +1,10 @@
+<section class="row">
+  <ng-container *ngFor="let time of part">
+    <input
+      type="checkbox"
+      [ngClass]="current === time.index ? 'active' : ''"
+      [(ngModel)]="time.checked"
+      (ngModelChange)="onSequenceChange(time)"
+    />
+  </ng-container>
+</section>

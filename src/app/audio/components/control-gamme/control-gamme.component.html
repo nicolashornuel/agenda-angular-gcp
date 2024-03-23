@@ -1,0 +1,8 @@
+<section class="row">
+  <div *ngFor="let notes of part; index as i" class="col-start-center" [ngClass]="current === i ? 'active' : ''">
+    <span>{{ i + 1 }}</span>
+    <ng-container *ngFor="let note of notes">
+      <input type="checkbox" [(ngModel)]="note.checked" (ngModelChange)="onSequenceChange(note, i)" />
+    </ng-container>
+  </div>
+</section>

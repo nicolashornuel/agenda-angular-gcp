@@ -1,0 +1,13 @@
+<div class="row-evenly-center pb-1 bpm" *ngIf="bpm">
+    <app-control-pot
+      name="bpm"
+      [min]="0"
+      [max]="200"
+      [step]="1"
+      [(value)]="bpm"
+      (valueChange)="onBpmChange()"
+    ></app-control-pot>
+    <input type="number" min="0" max="200" step="1" [(ngModel)]="bpm" />
+  </div>
+
+  <button class="btn-outline" (click)="isRunning = ! isRunning">{{isRunning ? 'Stop' : 'Run'}}</button>

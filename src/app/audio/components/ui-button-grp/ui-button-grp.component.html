@@ -1,0 +1,17 @@
+<div class="btn-grp-container">
+    <button
+      class="btn-outline"
+      *ngFor="let item of items"
+      [value]="item"
+      (click)="onClick(item)"
+      [ngClass]="selected == item ? 'active' : ''"
+    >
+      <ng-container *ngIf="icon; else noIcon">
+        <i>{{item}}</i>
+      </ng-container>
+  
+      <ng-template #noIcon>{{ item }}</ng-template>
+      
+    </button>
+  </div>
+  

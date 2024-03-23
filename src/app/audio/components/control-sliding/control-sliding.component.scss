@@ -1,0 +1,54 @@
+@import 'variables.scss';
+
+
+$box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.32);
+$space-regular: 12px;
+$min-height: calc(250px - 2 * #{$space-regular});
+
+.container {
+  background-color: $color-dark;
+  border-radius: 4px;
+  .range-slider {
+    min-height: $min-height;
+    width: 0px;
+    padding-top: $space-regular;
+    padding-bottom: $space-regular;
+    .scope {
+      color: $color-light;
+      font-size: 12px;
+      line-height: 12px;
+    }
+    .btn-control {
+      color: $color-primary;
+      height: 30px;
+      line-height: 30px;
+      opacity: .7;
+    }
+  }
+}
+
+input[type='range'] {
+  appearance: none;
+  margin: 10px 0;
+  background: transparent;
+  &.vertical {
+    min-width: calc(#{$min-height} - 90px);
+    transform: rotateZ(-90deg);
+    margin-top: 12px;
+  }
+  &::-webkit-slider-runnable-track {
+    height: 6px;
+    cursor: pointer;
+    background: $color-light;
+    border-radius: 3px;
+  }
+  &::-webkit-slider-thumb {
+    box-shadow: $box-shadow;
+    height: 20px;
+    width: 20px;
+    border-radius: 10px;
+    background: $color-primary;
+    -webkit-appearance: none;
+    margin-top: -7px;
+  }
+}

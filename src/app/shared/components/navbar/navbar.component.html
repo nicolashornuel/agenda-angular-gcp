@@ -2,9 +2,9 @@
   <div class="row-between-center container">
     <div class="row-start-center">
       <div><i class="fas fa-calendar-check fa-lg"></i></div>
-      <ul class="row-start-center">
+      <ul class="row-start-center nav-items">
         <li *ngFor="let item of items">
-          <a class="p-2" [routerLink]="item.route" [routerLinkActive]="'active'">{{ item.title }}</a>
+          <a class="px-2" [routerLink]="item.route" [routerLinkActive]="'active'">{{ item.title }}</a>
         </li>
       </ul>
     </div>

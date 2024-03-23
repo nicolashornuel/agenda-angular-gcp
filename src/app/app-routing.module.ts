@@ -6,6 +6,7 @@ const routes: Routes = [
   {path: 'sign-in', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)},
   {path: 'agenda', loadChildren: () => import('./agenda/agenda.module').then(m => m.AgendaModule), canMatch: [authGuard]},
   {path: 'memo', loadChildren: () => import('./memo/memo.module').then(m => m.MemoModule), canMatch: [authGuard]},
+  { path: 'audio', loadChildren: () => import('./audio/audio.module').then(m => m.AudioModule) },
   {path: '**', redirectTo: '/sign-in', pathMatch: 'full'},
   {path: ' ', redirectTo: '/sign-in', pathMatch: 'full'}
 ];
