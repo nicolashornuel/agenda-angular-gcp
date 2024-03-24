@@ -26,7 +26,16 @@ input[type=checkbox]{
         pointer-events: none;
 
         ~ label {
-            opacity: .5;
+            opacity: .1;
+        }
+    }
+
+    &[readonly]:checked {
+        background-color: $grey-80;
+        border-color: $grey-70;
+
+        ~ label {
+            opacity: .9;
         }
     }
 }

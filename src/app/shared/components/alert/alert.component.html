@@ -1,7 +1,7 @@
 <section id="insert" class="col">
   <ng-container *ngIf="alerts.length > 0">
     <ng-container *ngFor="let alert of alerts; let i = index">
-      <div [ngClass]="alert.styleCSS + ' d-flex'" @showAlert>
+      <div [ngClass]="alert.styleCSS + ' row'" @showAlert>
         <div class="alert-ribbon"></div>
         <div class="p-3 f-grow self-center">
           <span class="alert-title"

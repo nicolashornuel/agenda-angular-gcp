@@ -88,6 +88,14 @@ $colors: (
   }
 }
 
+button.icon {
+  border-radius: 50%;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
 
 @function get-theme($key) {
   $value: map.get($colors, $key);
