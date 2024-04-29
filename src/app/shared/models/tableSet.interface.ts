@@ -13,7 +13,7 @@ export interface TableSet {
     save: (row: any) => Promise<any>;
     delete: (id: string) => Promise<any>;
   };
-  openDetailByClickRow?: (row: any) => string;
+  openDetailByClickRow?: (row: any) => string | void;
 }
 
 export interface ColumnSet {

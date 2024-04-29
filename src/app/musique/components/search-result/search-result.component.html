@@ -1,0 +1,61 @@
+<ng-container *ngIf="!loading; else spinner">
+
+  <div class="carousel light" *ngIf="discogs.length > 0">
+    <div class="container">
+      <img class="logo mb-3" alt="logo Discogs" src="assets/discogs-simplified.svg" />
+      <div class="margin-flow">
+        <div class="row-flow">
+          <div *ngFor="let discog of discogs" class="column-elt">
+            <div class="discogs-img-container row-center-center">
+              <img [src]="discog.thumb" />
+            </div>
+            <p>
+              <span *ngIf="discog.title" class="label">Titre : </span>{{ discog.title }}
+              <span *ngIf="discog.year" class="label">Année : </span>{{ discog.year }}
+              <span *ngIf="discog.year" class="label">Pays : </span>{{ discog.country }}
+              <span *ngIf="discog.style" class="label">Style : </span>{{ discog.style }}
+              <span *ngIf="discog.label" class="label">Label : </span>{{ discog.label }}
+              <span *ngIf="discog.format" class="label">Support : </span>{{ discog.format?.slice(0, 50) }}
+              <span *ngIf="discog.format" class="label">Genre : </span>{{ discog.genre?.slice(0, 50) }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="carousel light" *ngIf="extractWiki">
+    <div class="container">
+      <div class="row-between-center">
+        <img class="logo mb-3" alt="logo Discogs" src="assets/Wikipedia.svg" />
+      </div>
+      <div class="col-start-stretch gap-2"> 
+        <span>{{ extractWiki }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="carousel" *ngIf="videos.length > 0">
+    <div class="container">
+      <div class="row-between-center">
+        <img class="logo mb-3" alt="logo Youtube" src="../../../assets/youtube.svg" />
+      </div>
+
+      <div class="row-between-stretch f-wrap card-youtube-container">
+            <app-card *ngFor="let video of videos" [title]="video.channelTitle">
+              <p>{{ video.publishedAt }}</p>
+              <div class="iframe-container">
+                <iframe class="responsive-iframe" [src]="video.sanitized" allowfullscreen frameborder="0">
+                </iframe>
+              </div>
+              <p>{{ video.title }}</p>
+              <p class="f-grow word-break">{{ video.description }}</p>
+            </app-card>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #spinner>
+  <app-spinner></app-spinner>
+</ng-template>

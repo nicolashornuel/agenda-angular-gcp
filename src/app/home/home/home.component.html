@@ -1,3 +1,4 @@
 <app-navbar [items]="items" (signOut)="auth.signOut()"  *ngIf="auth.getUserLoggedIn$ | async"></app-navbar>
 <app-alert></app-alert>
-<article id="modal"></article>
+<app-popover></app-popover>
+<app-modal></app-modal>

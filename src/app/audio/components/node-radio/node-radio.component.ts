@@ -12,13 +12,18 @@ export class NodeRadioComponent implements AfterViewInit {
   private source!: MediaElementAudioSourceNode;
   public gainRadio!: GainNode;
   public isPlaying: boolean = false;
-  public radioList: string[] = ['Bassdrive', 'Trancetechnique UK'];
-  public radioStream = {
-    'Bassdrive': 'http://chi.bassdrive.co/;stream/1',
-    'Trancetechnique UK': 'http://51.89.195.240:8034/stream'
-  };
+  public radioList = [
+    {
+      id: 'Bassdrive',
+      url: 'http://chi.bassdrive.co/;stream/1'
+    },
+    {
+      id: 'Trancetechnique UK',
+      url: 'http://51.89.195.240:8034/stream'
+    }
+  ]
 
-  public radioSelected: string = this.radioList[0];
+  public radioSelected = this.radioList[0];
 
   constructor() {}
 
@@ -40,4 +45,5 @@ export class NodeRadioComponent implements AfterViewInit {
     this.isPlaying = !this.isPlaying;
     this.isPlaying ? this.audio.nativeElement.play() : this.audio.nativeElement.pause();
   }
+
 }

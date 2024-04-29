@@ -1,4 +1,4 @@
-<div class="modal">
+<!-- <div class="modal">
   <div class="modal-dialog row-center-center">
     <div class="modal-content">
       <div class="modal-header row-between-center">
@@ -11,4 +11,22 @@
     </div>
   </div>
 </div>
-<div class="backdrop"></div>
+<div class="backdrop"></div> -->
+
+
+<ng-container *ngIf="param">
+    <div class="modal">
+      <div class="modal-dialog row-center-center">
+        <div class="modal-content">
+          <div class="modal-header row-between-center">
+            <h5 class="modal-title">{{ title }}</h5>
+            <button type="button" class="btn-close" (click)="onClose()"></button>
+          </div>
+          <div class="modal-body p-4">
+            <ng-container *ngTemplateOutlet="param.template; context: param.context"></ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="backdrop"></div>
+</ng-container>

@@ -81,9 +81,9 @@ $colors: (
   }
   &[disabled] {
     cursor: default;
-    opacity: 0.4;
+    //opacity: 0.4;
     background-color: $transparent-disabled-bg;
-    border-color: $transparent-disabled-border;
+    //border-color: $transparent-disabled-border;
     color: $transparent-disabled-text;
   }
 }

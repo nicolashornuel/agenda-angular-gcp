@@ -29,6 +29,7 @@ import { PopoverComponent } from './components/ui-popover/ui-popover.component';
 import { UiToggleComponent } from './components/ui-toggle/ui-toggle.component';
 import { UiButtonGrpComponent } from './components/ui-button-grp/ui-button-grp.component';
 import { NodeDelayComponent } from './components/node-delay/node-delay.component';
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,7 @@ import { NodeDelayComponent } from './components/node-delay/node-delay.component
     UiButtonGrpComponent,
     NodeDelayComponent
   ],
-  imports: [CommonModule, AudioRoutingModule, FormsModule],
+  imports: [CommonModule, AudioRoutingModule, FormsModule, SharedModule],
   exports: [PageAudioComponent]
 })
 export class AudioModule {}

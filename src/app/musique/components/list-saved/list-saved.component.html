@@ -1,0 +1,15 @@
+<ng-container *ngIf="!loading; else spinner">
+    <section class="container my-3">
+        <app-card [title]="tableSet.title">
+            <app-table [tableSet]="tableSet"></app-table>
+          </app-card>
+    </section>
+</ng-container>
+
+<ng-template #spinner>
+    <app-spinner></app-spinner>
+</ng-template>
+
+<ng-template #modal let-video>
+    <app-watch-modal [input]="video"></app-watch-modal>
+</ng-template>

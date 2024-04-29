@@ -1,13 +1,23 @@
-import { Component, Input, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { PopoverParam } from '@shared/models/popoverParam.interface';
+import { DestroyService } from '@shared/services/destroy.service';
+import { PopoverService } from '@shared/services/popover.service';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-popover',
   templateUrl: './popover.component.html',
   styleUrls: ['./popover.component.scss']
 })
-export class PopoverComponent {
+export class PopoverComponent implements OnInit {
+  param: PopoverParam | null | undefined;
 
-  @Input() position!: { top: string; left: string; };
-  @Input() template!: TemplateRef<any>;
+  constructor(private popoverService: PopoverService, private destroy$: DestroyService) {}
 
+  ngOnInit(): void {
+    this.popoverService.get$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((param) => (this.param = param));
+  }
 }
+

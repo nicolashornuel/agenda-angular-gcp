@@ -25,11 +25,12 @@ import { TableInputComponent } from './components/table-input/table-input.compon
 import { TableComponent } from './components/table/table.component';
 import { TextareaComponent } from './components/textarea/textarea.component';
 import { TooltipComponent } from './components/tooltip/tooltip.component';
-import { ModalDirective } from './directives/modal.directive';
 import { PopoverDirective } from './directives/popover.directive';
 import { TooltipDirective } from './directives/tooltip.directive';
 import { BadgeComponent } from './components/badge/badge.component';
 import { ButtonDirective } from './directives/button.directive';
+import { IconComponent } from './components/icon/icon.component';
+import { RightBarComponent } from './components/right-bar/right-bar.component';
 
 const sharedComponents = [
   TableComponent,
@@ -57,10 +58,13 @@ const sharedComponents = [
   InputTextareaWithLabelComponent,
   TextareaComponent,
   ModalComponent,
-  BadgeComponent
+  BadgeComponent,
+  IconComponent,
+  RightBarComponent
 ]
 
 const sharedModules = [
+  CommonModule,
   ReactiveFormsModule,
   FormsModule,
   RouterModule
@@ -69,7 +73,6 @@ const sharedModules = [
 const sharedDirectives = [
   TooltipDirective,
   PopoverDirective,
-  ModalDirective,
   ButtonDirective
 ]
 
@@ -79,7 +82,6 @@ const sharedDirectives = [
     sharedDirectives
   ],
   imports: [
-    CommonModule,
     sharedModules
   ],
   exports: [

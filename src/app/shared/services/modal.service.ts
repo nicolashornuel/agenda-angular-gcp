@@ -1,10 +1,13 @@
 import { ComponentRef, Injectable, ViewContainerRef } from '@angular/core';
+import { ObservableService } from '@shared/abstracts/observable.abstract';
+import { ModalParam } from '@shared/models/modalParam.interface';
 import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ModalService {
+export class ModalService extends ObservableService<ModalParam>  {
+
   private componentRef!: ComponentRef<any>;
   private componentSubscriber!: Subject<any>;
 

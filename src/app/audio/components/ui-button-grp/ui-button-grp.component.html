@@ -7,7 +7,7 @@
       [ngClass]="selected == item ? 'active' : ''"
     >
       <ng-container *ngIf="icon; else noIcon">
-        <i>{{item}}</i>
+        <app-icon [path]="item"></app-icon>
       </ng-container>
   
       <ng-template #noIcon>{{ item }}</ng-template>

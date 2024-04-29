@@ -24,6 +24,10 @@ export class HomeComponent {
     {
       title: 'Audio',
       route: 'audio'
+    },
+    {
+      title: 'Musique',
+      route: 'musique'
     }
   ]
 

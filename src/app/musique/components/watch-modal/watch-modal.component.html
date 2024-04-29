@@ -1,0 +1,23 @@
+
+
+    <ng-container *ngIf="input">
+        <h3>{{ input.videoId }}</h3>
+        <h3>{{ input.categorie }}</h3>
+        <h3>{{ input.channelTitle }}</h3>
+        <p>{{ input.publishedAt }}</p>
+        <div class="iframe-container">
+          <iframe class="responsive-iframe" [src]="src" allowfullscreen frameborder="0">
+          </iframe>
+        </div>
+        <p>{{ input.title }}</p>
+        <p class="f-grow word-break">{{ input.description }}</p>
+        <app-priority [data]="rating"></app-priority>
+    </ng-container>
+ <!--    
+   
+    
+    
+    
+    categorie: element.categorie,
+    extractWiki: element.extractWiki,
+    rating: element.rating -->

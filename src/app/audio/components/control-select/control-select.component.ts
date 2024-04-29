@@ -6,7 +6,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./control-select.component.scss']
 })
 export class ControlSelectComponent {
-  @Input() items!: string[];
-  @Input() selected!: string;
-  @Output() selectedChange = new EventEmitter<string>();
+  @Input() items!: any[];
+  @Input() selected!: any;
+  @Output() selectedChange = new EventEmitter<any>();
 }

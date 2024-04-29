@@ -1,18 +1,16 @@
 import {
   AfterViewChecked,
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
   QueryList,
-  ViewChild,
   ViewChildren,
   forwardRef
 } from '@angular/core';
-import {NG_VALUE_ACCESSOR, NgForm, NgModel} from '@angular/forms';
-import {AbstractInputComponent} from '@shared/abstracts/input.component';
-import {FieldSet} from '@shared/models/tableSet.interface';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { AbstractInputComponent } from '@shared/abstracts/input.component';
+import { FieldSet } from '@shared/models/tableSet.interface';
 
 @Component({
   selector: 'app-priority',
@@ -39,11 +37,15 @@ export class PriorityComponent extends AbstractInputComponent implements AfterVi
   }
 
   onClick(rating: number): void {
+    console.log('click');
+    
     this.data.value = this.data.value == 1 && rating == 1 ? 0 : rating;
     this.onBlur.next();
   }
 
   onPreview(rating: number): void {
+    console.log('preview');
+
     for (let i = 0; i < rating; i++) {
       this.starList.get(i)?.nativeElement.classList.toggle('hover');
     }
