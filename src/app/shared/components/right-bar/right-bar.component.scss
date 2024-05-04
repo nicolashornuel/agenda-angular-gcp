@@ -6,7 +6,7 @@ $padding-tab-content: 30px;
 $height-tab-content: 204px;
 $height-tab: 60px;
 $width-tab: 30px;
-$width-open: $width-tab + $width-tab-content;
+$width-open: calc($width-tab + var(--width));
 $width-closed: $width-tab + 10px;
 $radius: 7px;
 $bg-color: $blue;
@@ -46,11 +46,12 @@ $bg-color: $blue;
     }
   }
   .tab-content {
-    width: $width-tab-content;
+    width: var(--width);
     height: calc(100vh - $height-navbar);
     padding: $padding-tab-content;
     border-left: 10px solid $bg-color;
     background-color: $grey-95;
+   overflow-x: auto;
   }
 }
 

@@ -31,6 +31,9 @@ import { BadgeComponent } from './components/badge/badge.component';
 import { ButtonDirective } from './directives/button.directive';
 import { IconComponent } from './components/icon/icon.component';
 import { RightBarComponent } from './components/right-bar/right-bar.component';
+import { InputSuggestionComponent } from './components/input-suggestion/input-suggestion.component';
+import { InputToggleComponent } from './components/input-toggle/input-toggle.component';
+import { InputSliderComponent } from './components/input-slider/input-slider.component';
 
 const sharedComponents = [
   TableComponent,
@@ -60,7 +63,10 @@ const sharedComponents = [
   ModalComponent,
   BadgeComponent,
   IconComponent,
-  RightBarComponent
+  RightBarComponent,
+  InputSuggestionComponent,
+  InputToggleComponent,
+  InputSliderComponent
 ]
 
 const sharedModules = [

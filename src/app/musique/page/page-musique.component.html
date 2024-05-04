@@ -23,7 +23,7 @@
 </div>
 
 <div class="body-container">
-  <app-radio-player></app-radio-player>
+  <app-audio-handler></app-audio-handler>
   <app-list-saved *ngIf="tabSelected === -1; else searchTab"></app-list-saved>
   <ng-template #searchTab>
     <app-search-result [keyword]="keywords[tabSelected]"></app-search-result>

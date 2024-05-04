@@ -1,19 +1,29 @@
-import { ComponentRef, Directive, HostListener, Input, OnChanges, OnDestroy, SimpleChanges, ViewContainerRef } from '@angular/core';
+import {
+  ComponentRef,
+  Directive,
+  HostListener,
+  Input,
+  OnDestroy,
+  ViewContainerRef
+} from '@angular/core';
 import { TooltipComponent } from '../components/tooltip/tooltip.component';
 
 @Directive({
   selector: '[appTooltip]'
 })
-export class TooltipDirective implements OnDestroy, OnChanges {
-
-  @Input() tooltip!: string;
+export class TooltipDirective implements OnDestroy {
+  @Input() appTooltip!: string;
 
   private childComponent!: ComponentRef<any>;
 
   @HostListener('mouseenter')
   onMouseEnter(): void {
     this.childComponent = this.el.createComponent<TooltipComponent>(TooltipComponent);
-    this.setTooltip();
+    const {height, width, x, y} = this.el.element.nativeElement.getBoundingClientRect();
+    this.childComponent.instance.param = {
+      position: {top: `${y + height}px`, left: `${x + width / 2}px`},
+      content: this.appTooltip
+    };
   }
 
   @HostListener('mouseleave')
@@ -21,10 +31,6 @@ export class TooltipDirective implements OnDestroy, OnChanges {
     this.destroy();
   }
   constructor(private el: ViewContainerRef) {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (!changes['tooltip'].firstChange) this.setTooltip();
-  }
 
   ngOnDestroy(): void {
     this.destroy();
@@ -35,10 +41,4 @@ export class TooltipDirective implements OnDestroy, OnChanges {
       this.childComponent.destroy();
     }
   }
-
-  private setTooltip(): void {
-    this.childComponent.instance.tooltip = this.tooltip;
-  }
-  
-
 }

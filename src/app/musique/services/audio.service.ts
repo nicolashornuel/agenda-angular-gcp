@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubjectService, SubjectService } from '@shared/abstracts/observable.abstract';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AudioService {
+export class AudioService extends SubjectService<HTMLMediaElement> {
 
   private isPlaying$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private source$: Subject<HTMLMediaElement> = new Subject<HTMLMediaElement>();
-
-  constructor() { }
 
   public get getIsPlaying$(): Observable<boolean> {
     return this.isPlaying$.asObservable();
@@ -19,12 +17,13 @@ export class AudioService {
     this.isPlaying$.next(isPlaying);
   }
 
-  public get getSource$(): Observable<HTMLMediaElement> {
-    return this.source$.asObservable();
-  }
+}
 
-  public setSource$(source: HTMLMediaElement): void {
-    this.source$.next(source);
+@Injectable({
+  providedIn: 'root'
+})
+export class AudioGainService extends BehaviorSubjectService<number> {
+  constructor() {
+    super(0.03);
   }
-
 }

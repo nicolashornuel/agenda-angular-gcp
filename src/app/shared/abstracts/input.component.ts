@@ -38,4 +38,10 @@ export class AbstractInputComponent extends AbstractNgModelComponent implements 
       if (this.parentForm)
       this.parentForm.addControl(this.ngModel);
     }
+    @Input()
+    label: string = '';
+  
+    get asterix(): string {
+      return this.inputRequired ? ' *' : '';
+    }
 }

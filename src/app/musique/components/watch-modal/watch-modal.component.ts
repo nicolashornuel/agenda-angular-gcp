@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Component, EventEmitter, Input, OnInit } from '@angular/core';
+import { SafeResourceUrl } from '@angular/platform-browser';
 import { Modal } from '@shared/models/modalParam.interface';
 import { FieldSet } from '@shared/models/tableSet.interface';
+import { VideoController } from 'app/musique/abstracts/videoController.abstract';
 import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
 
 @Component({
@@ -9,22 +10,40 @@ import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
   templateUrl: './watch-modal.component.html',
   styleUrls: ['./watch-modal.component.scss']
 })
-export class WatchModalComponent implements Modal, OnInit {
+export class WatchModalComponent extends VideoController implements Modal, OnInit {
   @Input() input!: VideoGAPI;
   output!: EventEmitter<any>;
 
-  src: any;
+  src!: SafeResourceUrl;
   rating!: FieldSet;
-  constructor(private _sanitizer: DomSanitizer) {}
+  categorie!: FieldSet;
+  categories!: Set<string>;
 
-  ngOnInit(): void {
-    this.src = this._sanitizer.bypassSecurityTrustResourceUrl(this.input.src)
+  async ngOnInit(): Promise<void> {
+    this.src = this.sanitizeUrl(this.input.src);
     this.rating = {
-        name: 'rating',
-        value: this.input.rating,
-        disabled: false,
-        required: false
-      }
+      name: 'rating',
+      value: this.input.rating,
+      disabled: false,
+      required: false
+    }
+    this.categories = await this.getCategories();
+    this.categorie = {
+      name: 'categorie',
+      value: this.input.categorie,
+      disabled: false,
+      required: false
+    }
+    }
+
+    public updateCategorie(event: any): void {
+      console.log(event);
+      
+    }
+
+    public onDelete(): void {
+      this.deleteVideo(this.input);
+      
     }
 
 }

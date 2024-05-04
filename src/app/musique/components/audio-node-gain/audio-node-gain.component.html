@@ -1,0 +1,8 @@
+<app-audio-control-pot
+name="volume"
+[min]="0"
+[max]="1"
+[step]="0.03"
+[(value)]="gainNode.gain.value"
+(valueChange)="valueChange($event)"
+></app-audio-control-pot>

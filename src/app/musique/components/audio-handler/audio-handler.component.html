@@ -1,0 +1,55 @@
+<app-right-bar width="632px">
+
+    <fieldset>
+      <legend>Analyzer</legend>
+      <div class="row-between-center">
+        <app-audio-node-analyser-wave [source]="gainNode" [context]="audioCtx"></app-audio-node-analyser-wave>
+        <app-audio-node-analyser-bars [source]="gainNode" [context]="audioCtx"></app-audio-node-analyser-bars>
+      </div>
+    </fieldset>
+
+  <app-radio-player></app-radio-player>
+
+  <fieldset class="main-container">
+    <legend>Main</legend>
+    <div class="row-between-center">
+      <app-audio-node-radio [source]="gainNode" [context]="audioCtx"></app-audio-node-radio>
+      <div class="row-between-center gap-3">
+        <app-audio-node-gain [source]="gainNode"></app-audio-node-gain>
+        <app-audio-node-distortion [source]="gainNode" [context]="audioCtx"></app-audio-node-distortion>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Eq</legend>
+    <app-audio-control-equ [source]="gainNode" [context]="audioCtx"></app-audio-control-equ>
+  </fieldset>
+
+  <fieldset>
+    <legend>Effect</legend>
+    <div class="col">
+
+        <app-button-group>
+          <button appButton outline *ngFor="let effect of effectList" (click)="onSelectRadio(effect)" [ngClass]="effectSelected == effect ? 'active' : ''">
+            {{effect}}
+          </button>
+        </app-button-group>
+
+      <ng-container [ngSwitch]="effectSelected">
+        <ng-container *ngSwitchCase="'highpass'">
+          <app-audio-node-filter [source]="gainNode" [context]="audioCtx" type="highpass"></app-audio-node-filter>
+        </ng-container>
+        <ng-container *ngSwitchCase="'lowpass'">
+          <app-audio-node-filter [source]="gainNode" [context]="audioCtx" type="lowpass"></app-audio-node-filter>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Reverb'">
+          <app-audio-node-reverb [source]="gainNode" [context]="audioCtx"></app-audio-node-reverb>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Delay'">
+          <app-audio-node-delay [source]="gainNode" [context]="audioCtx"></app-audio-node-delay>
+        </ng-container>
+      </ng-container>
+    </div>
+  </fieldset>
+</app-right-bar>

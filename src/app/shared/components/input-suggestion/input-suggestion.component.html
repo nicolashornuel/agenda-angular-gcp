@@ -1,0 +1,18 @@
+<div class="input-text-container">
+  <input
+    type="text"
+    placeholder=" "
+    [readonly]="inputReadonly"
+    [required]="inputRequired"
+    (blur)="onBlur.next()"
+    (focus)="onFocus.next()"
+    [(ngModel)]="value"
+    list="id-options"
+  />
+  <label>
+    {{ label + asterix }}
+  </label>
+  <datalist id="id-options">
+    <option *ngFor="let option of options" [value]="option">{{ option }}</option>
+  </datalist>
+</div>

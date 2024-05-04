@@ -1,0 +1,27 @@
+<div class="rotator col-center-center" [ngClass]="disabled ? 'disabled':''">
+    <h3 class="item-label">{{ name ? name : "" }}</h3>
+    <input
+    type="range"
+    [min]="min"
+    [max]="max"
+    [step]="step"
+    [disabled]="disabled!"
+    [(ngModel)]="value"
+    (ngModelChange)="setPositionFromInput()"
+  />
+    <div class="knob-container">
+      <div class="value-indicator"></div>
+      <div class="value-indicator"></div>
+      <div class="value-indicator"></div>
+      <div class="value-indicator"></div>
+      <div class="value-indicator"></div>
+      <div class="value-indicator"></div>
+      <div class="box-shadow"></div>
+      <div
+        #knob
+        class="knob"
+        (mousedown)="onEventStart($event)"
+      ></div>
+    </div>
+  </div>
+  

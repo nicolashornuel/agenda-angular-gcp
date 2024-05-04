@@ -133,7 +133,7 @@ export class RadioPlayerComponent implements AfterViewInit {
     timer(500).subscribe(() => (this.audio.nativeElement.volume = 0.1));
     this.audioService.getIsPlaying$.pipe(takeUntil(this.destroy$)).subscribe((isPlaying: boolean) => {
       this.isPlaying = isPlaying;
-      if (this.isPlaying) this.audioService.setSource$(this.audio.nativeElement);
+      if (this.isPlaying) this.audioService.set$(this.audio.nativeElement);
       this.isPlaying ? this.audio.nativeElement.play() : this.audio.nativeElement.pause();
     });
   }

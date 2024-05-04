@@ -34,7 +34,7 @@ export class YoutubeService {
     this.params.q = keyword;
     return this.http.get(this.url, {params: this.params}).pipe(
       map((response: any) =>
-        response.items.map((item: any) => {
+        response.items.map((item: any) => {          
           return {
             videoId: item.id.videoId,
             publishedAt: new Date(item.snippet.publishedAt).toLocaleDateString(),

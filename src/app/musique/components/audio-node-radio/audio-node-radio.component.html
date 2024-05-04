@@ -1,0 +1,18 @@
+<section class="row-between-center" *ngIf="gainRadio">
+  <div class="row gap-2">
+    <app-select [options]="radioList" [(selected)]="radioSelected" (selectedChange)="onSelectedChange($event)"></app-select>
+    <button appButton (click)="onTooglePlay()">
+      <app-icon [path]="isPlaying ? 'pause' : 'play'"></app-icon>
+    </button>
+  </div>
+</section>
+
+<audio
+  #audio
+  style="display: none"
+  [src]="radioSelected.url"
+  preload="auto"
+  controls="true"
+  autoplay="true"
+  crossorigin="anonymous"
+></audio>

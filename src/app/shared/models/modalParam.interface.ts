@@ -8,6 +8,7 @@ export interface Modal {
 import { TemplateRef } from '@angular/core';
 
 export interface ModalParam {
+  title: string,
   context: any;
   template: TemplateRef<any>;
 }

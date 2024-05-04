@@ -26,7 +26,7 @@ import { FieldSet } from '@shared/models/tableSet.interface';
 })
 export class PriorityComponent extends AbstractInputComponent implements AfterViewChecked {
   @Input() data!: FieldSet;
-  public ratingArr: number[] = [0, 1, 2];
+  @Input() ratingArr: number[] = [0, 1, 2, 3, 4];
   @ViewChildren('star') starList!: QueryList<ElementRef>;
 
   constructor(private cdRef: ChangeDetectorRef) {
@@ -37,16 +37,12 @@ export class PriorityComponent extends AbstractInputComponent implements AfterVi
   }
 
   onClick(rating: number): void {
-    console.log('click');
-    
     this.data.value = this.data.value == 1 && rating == 1 ? 0 : rating;
     this.onBlur.next();
   }
 
   onPreview(rating: number): void {
-    console.log('preview');
-
-    for (let i = 0; i < rating; i++) {
+for (let i = 0; i < rating; i++) {
       this.starList.get(i)?.nativeElement.classList.toggle('hover');
     }
   }

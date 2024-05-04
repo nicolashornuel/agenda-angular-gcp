@@ -1,0 +1,39 @@
+@import 'variables.scss';
+
+.toggle-container {
+  transform: rotate(var(--rotate));
+  .bar {
+    position: relative;
+    width: 36px;
+    height: 14px;
+    border-radius: 8px;
+    background-color: $grey-80;
+  }
+  .cursor {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: -3px;
+    left: 0;
+    transition: transform 80ms linear;
+    background-color: $green;
+    border-radius: 50%;
+    box-shadow: $box-shadow;
+  }
+
+  input[type='checkbox'] {
+    display: none;
+    &:checked ~ .bar .cursor {
+      transform: translate3d(16px, 0, 0);
+    }
+    &:not(:checked) ~ label {
+      opacity: 0.7;
+    }
+    &:not(:checked) ~ .bar .cursor {
+      transform: translate3d(0, 0, 0);
+      &.mono {
+        background-color: $grey-100;
+      }
+    }
+  }
+}

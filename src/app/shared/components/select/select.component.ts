@@ -1,33 +1,32 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FieldComponent, FieldSet } from '@shared/models/tableSet.interface';
-import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { AbstractInputComponent } from '@shared/abstracts/input.component';
 
 @Component({
   selector: 'app-select',
   templateUrl: './select.component.html',
-  styleUrls: ['./select.component.scss']
+  styleUrls: ['./select.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => SelectComponent),
+      multi: true
+    }
+  ]
 })
-export class SelectComponent implements FieldComponent, OnInit {
-  @Input() data!: FieldSet;
-  @Output() output = new EventEmitter<FieldSet>();
-  private debouncer = new Subject<string | number | boolean>();
+export class SelectComponent  extends AbstractInputComponent {
 
-  constructor() {}
+  public selectOpened: boolean = false;
+  public optionSelected: string = '';
 
-  ngOnInit(): void {
-    this.debouncer.pipe(debounceTime(500), distinctUntilChanged()).subscribe(value => {
-      const fieldSet = {
-        name: this.data.name,
-        value,
-        disabled: this.data.disabled,
-        required: this.data.required
-      };
-      this.data = fieldSet;
-      this.output.emit(fieldSet);
-    });
+  public selectOption(option: string): void {
+    this.value = option; 
+    this.selectedChange.emit(option);   
   }
 
-  onSave(value: string | number | boolean): void {
-    this.debouncer.next(value);
-  }
+
+  @Input() options!: any[];
+  @Input() selected!: any;
+  @Output() selectedChange = new EventEmitter<any>();
 }
+

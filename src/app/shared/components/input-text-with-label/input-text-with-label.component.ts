@@ -15,10 +15,5 @@ import {AbstractInputComponent} from '@shared/abstracts/input.component';
   ]
 })
 export class InputTextWithLabelComponent extends AbstractInputComponent {
-  @Input()
-  label: string = '';
 
-  get asterix(): string {
-    return this.inputRequired ? ' *' : '';
-  }
 }

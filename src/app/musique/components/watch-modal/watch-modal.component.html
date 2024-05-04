@@ -1,23 +1,27 @@
-
-
-    <ng-container *ngIf="input">
-        <h3>{{ input.videoId }}</h3>
-        <h3>{{ input.categorie }}</h3>
-        <h3>{{ input.channelTitle }}</h3>
-        <p>{{ input.publishedAt }}</p>
-        <div class="iframe-container">
-          <iframe class="responsive-iframe" [src]="src" allowfullscreen frameborder="0">
-          </iframe>
-        </div>
-        <p>{{ input.title }}</p>
-        <p class="f-grow word-break">{{ input.description }}</p>
-        <app-priority [data]="rating"></app-priority>
-    </ng-container>
- <!--    
-   
-    
-    
-    
-    categorie: element.categorie,
-    extractWiki: element.extractWiki,
-    rating: element.rating -->
+<ng-container *ngIf="input">
+  <h3 class="mb-3">{{ input.title }}</h3>
+  <div class="iframe-container">
+    <iframe class="responsive-iframe" [src]="src" allowfullscreen frameborder="0"> </iframe>
+  </div>
+  <p class="f-grow word-break">{{ input.description }}</p>
+  <div class="row-between-center">
+    <app-priority [data]="rating"></app-priority>
+    <app-input-suggestion
+      class="col-3"
+      [options]="categories"
+      label="Catégories favorites existantes"
+      [ngModel]="input.categorie"
+      (ngModelChange)="updateCategorie($event)"
+    >
+    </app-input-suggestion>
+  </div>
+  <div *ngIf="input.extractWiki" class="mt-3">
+    <img
+      [appTooltip]="input.extractWiki"
+      src="assets/Wikipedia.svg"
+      alt="logo Wikipedia"
+      width="100px"
+    />
+  </div>
+  <button appButton (click)="onDelete()">Supprimer</button>
+</ng-container>
