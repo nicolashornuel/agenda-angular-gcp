@@ -1,7 +1,6 @@
 import {Component, TemplateRef} from '@angular/core';
-import {Modal, ModalParam} from '@shared/models/modalParam.interface';
 import {AlertService} from '@shared/services/alert.service';
-import {ModalService} from '@shared/services/modal.service';
+import {ModalService, Modal, ModalParam} from '@shared/services/modal.service';
 import {Observable, lastValueFrom, map, take, takeUntil} from 'rxjs';
 import {VideoGAPI} from '../models/videoGAPI.interface';
 import {VideoService} from '../services/video.service';

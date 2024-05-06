@@ -27,3 +27,12 @@ export class AudioGainService extends BehaviorSubjectService<number> {
     super(0.03);
   }
 }
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PersistEffectService extends BehaviorSubjectService<boolean> {
+  constructor() {
+    super(false);
+  }
+}

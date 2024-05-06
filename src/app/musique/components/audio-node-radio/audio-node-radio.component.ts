@@ -12,21 +12,18 @@ export class AudioNodeRadioComponent implements AfterViewInit {
   @Input('context') audioCtx!: AudioContext;
   @Input('source') gainNode!: GainNode;
   @ViewChild('audio') audio!: ElementRef;
+  @ViewChild('popover') popoverBtn!: ElementRef;
   private source!: MediaElementAudioSourceNode;
   public gainRadio!: GainNode;
   public isPlaying: boolean = false;
   public radioList = [
     {
       id: 'FIP',
-      url: 'https://icecast.radiofrance.fr/fip-midfi.mp3?id=openapi' //"?id=radiofrance
+      url: 'https://icecast.radiofrance.fr/fip-midfi.mp3?id=openapi'
     },
     {
       id: 'Bassdrive',
       url: 'http://chi.bassdrive.co/;stream/1'
-    },
-    {
-      id: 'Trancetechnique UK',
-      url: 'http://51.89.195.240:8034/stream'
     }
   ];
 
@@ -48,5 +45,8 @@ export class AudioNodeRadioComponent implements AfterViewInit {
 
   onSelectedChange(event: any): void {
     console.log(event);
+  }
+  onClosePopover(): void {
+    this.popoverBtn.nativeElement.click();
   }
 }

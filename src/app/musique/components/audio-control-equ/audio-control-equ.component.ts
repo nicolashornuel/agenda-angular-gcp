@@ -11,6 +11,8 @@ export class AudioControlEquComponent implements AfterViewInit {
   @Input('source') audioNode!: GainNode;
   public eqs: BiquadFilterNode[] = [];
   private freqs = [32, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];
+  public equList: any;
+  public equSelected: any;
 
   ngAfterViewInit(): void {
     this.initNode();
@@ -36,15 +38,15 @@ export class AudioControlEquComponent implements AfterViewInit {
     this.eqs[this.eqs.length - 1].connect(this.audioNode.context.destination);
   }
 
-  disconnectNode(): void {
-    for (let i = 0; i < this.eqs.length; i++) {
-      this.eqs[i].disconnect();
-    }
-    this.resetParam();
+  public onReset(): void {
+    this.eqs.forEach(eq => eq.gain.value = 0);
+  }
+  public onSave(): void {
+    console.log(this.equSelected);
   }
 
-  resetParam(): void {
-    this.eqs.forEach(eq => eq.gain.value = 0);
+  public onSelect(equSelected: any): void {
+    this.equSelected = equSelected;
   }
 
 }

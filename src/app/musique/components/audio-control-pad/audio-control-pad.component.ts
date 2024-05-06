@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { DestroyService } from '@shared/services/destroy.service';
-import { CanvasService, PAD_MAX, PadParam, Position } from 'app/musique/services/canvas.service';
+import { PAD_MAX, PadParam, Position } from 'app/musique/abstracts/audioController.abstract';
+import { PersistEffectService } from 'app/musique/services/audio.service';
+import { CanvasService } from 'app/musique/services/canvas.service';
 import { takeUntil } from 'rxjs';
 
 @Component({
@@ -21,19 +23,25 @@ export class AudioControlPadComponent  implements AfterViewInit {
   @HostListener('window:touchend')
   onClick(): void {
     this.isMoving = false;
-    if (!this.padParam.isPersist) {
-      this.canvasService.clearCanvas(this.canvas);
-      this.padParam.onEventEnd!();
-    }
+    if (!this.padParam.isPersist)
+      this.clear();
   }
   
   private currentPosition: Position = { x: 0, y: PAD_MAX };
 
-  constructor(private canvasService: CanvasService, private destroy$: DestroyService) { }
+  constructor(private canvasService: CanvasService, private destroy$: DestroyService, public persistService: PersistEffectService) { }
 
   ngAfterViewInit(): void {
     this.initCanvas();
     if (this.padParam.subValue$) this.listen();
+    this.persistService.get$.pipe(takeUntil(this.destroy$)).subscribe(isPersist => {
+      this.padParam.isPersist = isPersist;
+      if (!isPersist)  this.clear()});
+  }
+
+  clear(): void {
+    this.canvasService.clearCanvas(this.canvas);
+    this.padParam.onEventEnd!();
   }
 
   private listen(): void {

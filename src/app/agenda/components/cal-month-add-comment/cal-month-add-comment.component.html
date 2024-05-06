@@ -1,18 +1,19 @@
-  <app-modal [title]="data.date | date : 'fullDate'" (close)="onClose()">
-    <ng-container *ngFor="let event of events; let i = index">
-      <span class="fw-semibold">{{ event }}</span>
-      <span *ngIf="i < events.length - 1"> / </span>
-    </ng-container>
-      <app-input-textarea-with-label 
-      class="my-3 d-block"
-      #input="ngModel"
-      ngModel 
-      rows="5"
-      label="Ajouter un commentaire">
-      </app-input-textarea-with-label>
-    <div class="row-end-center gap-2">
-      <button appButton outline size="regular" color="blue" (click)="onClose()">Annuler</button>
-      <button appButton outline size="regular" color="green" (click)="onSave(input.value)" [disabled]="input.dirty ? false : true">Enregistrer</button>
-    </div>
-  </app-modal>
-  
+<ng-container *ngFor="let event of events; let i = index">
+  <span class="fw-semibold">{{ event }}</span>
+  <span *ngIf="i < events.length - 1"> / </span>
+</ng-container>
+<app-input-textarea-with-label class="my-3 d-block" #input="ngModel" ngModel rows="5" label="Ajouter un commentaire">
+</app-input-textarea-with-label>
+<div class="row-end-center gap-2">
+  <button appButton outline size="regular" color="blue" (click)="onClose()">Annuler</button>
+  <button
+    appButton
+    outline
+    size="regular"
+    color="green"
+    (click)="onSave(input.value)"
+    [disabled]="input.dirty ? false : true"
+  >
+    Enregistrer
+  </button>
+</div>

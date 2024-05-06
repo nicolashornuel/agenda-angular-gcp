@@ -1,14 +1,11 @@
 <app-right-bar width="632px">
-
-    <fieldset>
-      <legend>Analyzer</legend>
-      <div class="row-between-center">
-        <app-audio-node-analyser-wave [source]="gainNode" [context]="audioCtx"></app-audio-node-analyser-wave>
-        <app-audio-node-analyser-bars [source]="gainNode" [context]="audioCtx"></app-audio-node-analyser-bars>
-      </div>
-    </fieldset>
-
-  <app-radio-player></app-radio-player>
+  <fieldset>
+    <legend>Analyzer</legend>
+    <div class="row-between-center">
+      <app-audio-node-analyser-wave [source]="gainNode" [context]="audioCtx"></app-audio-node-analyser-wave>
+      <app-audio-node-analyser-bars [source]="gainNode" [context]="audioCtx"></app-audio-node-analyser-bars>
+    </div>
+  </fieldset>
 
   <fieldset class="main-container">
     <legend>Main</legend>
@@ -29,13 +26,20 @@
   <fieldset>
     <legend>Effect</legend>
     <div class="col">
-
+      <section class="row-between-center mb-3 gap-3">
         <app-button-group>
-          <button appButton outline *ngFor="let effect of effectList" (click)="onSelectRadio(effect)" [ngClass]="effectSelected == effect ? 'active' : ''">
-            {{effect}}
+          <button
+            appButton
+            outline
+            *ngFor="let effect of effectList"
+            (click)="onSelectEffect(effect)"
+            [ngClass]="effectSelected == effect ? 'active' : ''"
+          >
+            {{ effect }}
           </button>
         </app-button-group>
-
+        <app-input-toggle [value]="isPersist" (valueChange)="onPersistChange($event)" [mono]="true" label="Persist"></app-input-toggle>
+      </section>
       <ng-container [ngSwitch]="effectSelected">
         <ng-container *ngSwitchCase="'highpass'">
           <app-audio-node-filter [source]="gainNode" [context]="audioCtx" type="highpass"></app-audio-node-filter>

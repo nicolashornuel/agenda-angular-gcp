@@ -1,37 +1,19 @@
-import { ComponentRef, Injectable, ViewContainerRef } from '@angular/core';
+import { EventEmitter, Injectable, TemplateRef } from '@angular/core';
 import { SubjectService } from '@shared/abstracts/observable.abstract';
-import { ModalParam } from '@shared/models/modalParam.interface';
-import { Subject } from 'rxjs';
+
+export interface Modal {
+  input: any;
+  output: EventEmitter<any>;
+}
+
+export interface ModalParam {
+  title: string,
+  context: any;
+  template: TemplateRef<any>;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class ModalService extends SubjectService<ModalParam>  {
-
-  private componentRef!: ComponentRef<any>;
-  private componentSubscriber!: Subject<any>;
-
-  openModal(container: ViewContainerRef, component: any, data?: any) {
-    this.componentRef = container.createComponent(component);
-    this.componentSubscriber = new Subject<any>();
-    this.componentRef.instance.data = data;
-    this.componentRef.instance.response.subscribe((response: any) => {
-      this.componentSubscriber.next(response);
-      this.closeModal();
-    });
-    return this;
-  }
-
-  closeModal() {
-    this.componentSubscriber.complete();
-    this.componentRef.destroy();
-  }
-
-  listenEvent() {
-    return this.componentSubscriber.asObservable();
-  }
-
-  bindData(data: any) {
-    this.componentRef.instance.data = data;
-  }
 }

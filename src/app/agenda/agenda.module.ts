@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
@@ -30,6 +30,7 @@ import { ScrollTodayDirective } from './directives/scroll-today.directive';
     AgendaRoutingModule,
     SharedModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
-  ]
+  ],
+  providers: [DatePipe]
 })
 export class AgendaModule { }

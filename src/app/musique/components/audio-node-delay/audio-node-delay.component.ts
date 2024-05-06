@@ -1,41 +1,35 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
-import { PadControlable, PadParam, Position, normalizeValueFromX, normalizeValueFromY, normalizeYFromValue } from 'app/musique/services/canvas.service';
+import { Component } from '@angular/core';
+import { AudioController, PadParam, Position } from 'app/musique/abstracts/audioController.abstract';
 
 @Component({
   selector: 'app-audio-node-delay',
   templateUrl: './audio-node-delay.component.html',
   styleUrls: ['./audio-node-delay.component.scss']
 })
-export class AudioNodeDelayComponent implements AfterViewInit, PadControlable {
-  @Input('context') audioCtx!: AudioContext;
-  @Input('source') audioNode!: AudioNode;
+export class AudioNodeDelayComponent extends AudioController {
+
   private delayNode!: DelayNode;
   private feedback!: GainNode;
-
-  padParam: PadParam = {
+  override padParam: PadParam = {
     libelleX: 'feedback',
     libelleY: 'delayTime',
     isPersist: false,
-    updatePosition: ({ x }, value: number) => ({ x, y: normalizeYFromValue(value, 0, 1) }),
+    updatePosition: ({ x }, value: number) => ({ x, y: this.normalizeYFromValue(value, 0, 1) }),
     onEventStart: () => {},
     onEventMove: (position: Position) => {
       this.connectNode();
-      this.feedback.gain.value = normalizeValueFromX(position.x, 0, 1);
-      this.delayNode.delayTime.value = normalizeValueFromY(position.y, 0, 1);
+      this.feedback.gain.value = this.normalizeValueFromX(position.x, 0, 1);
+      this.delayNode.delayTime.value = this.normalizeValueFromY(position.y, 0, 1);
     },
     onEventEnd: () => this.disconnectNode()
   };
 
-  ngAfterViewInit(): void {
-    this.initNode();
-  }
-
-  initNode(): void {
+  override initNode(): void {
     this.delayNode = new DelayNode(this.audioCtx);
     this.feedback = new GainNode(this.audioCtx);
   }
 
-  connectNode(): void {
+  override connectNode(): void {
     this.delayNode.delayTime.cancelScheduledValues(this.audioCtx.currentTime);
     this.audioNode.connect(this.delayNode);
     this.delayNode.connect(this.feedback);
@@ -43,18 +37,11 @@ export class AudioNodeDelayComponent implements AfterViewInit, PadControlable {
     this.delayNode.connect(this.audioCtx.destination);
   }
 
-  disconnectNode(): void {
+  override disconnectNode(): void {
     this.delayNode.disconnect();
     this.feedback.disconnect();
-    this.resetParam();
-  }
-
-  resetParam(): void {
     this.feedback.gain.value = 0;
     this.delayNode.delayTime.value = 1;
   }
 
-  onPersistChange(event: any): void {
-    if (!event.checked) this.disconnectNode();
   }
-}

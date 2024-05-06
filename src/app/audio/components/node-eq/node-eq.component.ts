@@ -34,7 +34,7 @@ export class NodeEqComponent implements AfterViewInit, AudioNodeElement {
     for (let i = 1; i < this.eqs.length; i++) {
       this.eqs[i - 1].connect(this.eqs[i]);
     }
-    this.eqs[this.eqs.length - 1].connect(this.audioCtx.destination);
+    this.eqs[this.eqs.length - 1].connect(this.audioNode.context.destination);
   }
 
   disconnectNode(): void {

@@ -5,7 +5,6 @@ import { musiqueRoutingModule } from './musique-routing.module';
 import { PageMusiqueComponent } from './page/page-musique.component';
 import { SharedModule } from '@shared/shared.module';
 import { SearchResultComponent } from './components/search-result/search-result.component';
-import { RadioPlayerComponent } from './components/radio-player/radio-player.component';
 import { GraphQLModule } from '../graphql.module';
 import { RssFluxComponent } from './components/rss-flux/rss-flux.component';
 import { ListSavedComponent } from './components/list-saved/list-saved.component';
@@ -23,12 +22,12 @@ import { AudioNodeFilterComponent } from './components/audio-node-filter/audio-n
 import { AudioNodeDelayComponent } from './components/audio-node-delay/audio-node-delay.component';
 import { AudioNodeDistortionComponent } from './components/audio-node-distortion/audio-node-distortion.component';
 import { AudioNodeRadioComponent } from './components/audio-node-radio/audio-node-radio.component';
+import { RadioHistoryComponent } from './components/radio-history/radio-history.component';
 
 @NgModule({
   declarations: [
     PageMusiqueComponent,
     SearchResultComponent,
-    RadioPlayerComponent,
     RssFluxComponent,
     ListSavedComponent,
     WatchModalComponent,
@@ -44,7 +43,8 @@ import { AudioNodeRadioComponent } from './components/audio-node-radio/audio-nod
     AudioNodeFilterComponent,
     AudioNodeDelayComponent,
     AudioNodeDistortionComponent,
-    AudioNodeRadioComponent
+    AudioNodeRadioComponent,
+    RadioHistoryComponent
   ],
   imports: [
     CommonModule,

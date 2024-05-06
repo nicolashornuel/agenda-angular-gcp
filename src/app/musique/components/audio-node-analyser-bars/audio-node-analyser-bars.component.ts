@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { PAD_MAX } from 'app/musique/services/canvas.service';
+import { PAD_MAX } from 'app/musique/abstracts/audioController.abstract';
 
 
 @Component({

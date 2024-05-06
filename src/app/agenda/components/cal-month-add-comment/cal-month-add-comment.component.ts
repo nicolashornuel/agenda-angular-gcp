@@ -9,23 +9,24 @@ import { CalEventDTO, CalEventType } from '../../models/calEvent.model';
   styleUrls: ['./cal-month-add-comment.component.scss']
 })
 export class CalMonthAddCommentComponent implements OnInit {
-  @Input() data!: CalendarMonthViewDay;
-  @Output() response = new EventEmitter<string>();
+  @Input() input!: CalendarMonthViewDay;
+  @Output() output = new EventEmitter<string>();
   public events: string[] = [];
 
   constructor(private modalService: ModalService) { }
 
   ngOnInit(): void {
-    this.events = this.data.events
+    this.events = this.input.events
     .filter((event: CalEventDTO) => event.meta!.type === CalEventType.FAMILY)
     .map((event: CalEventDTO) => event.title)
   }
 
   public onClose(): void {
-    this.modalService.closeModal();
+    this.modalService.set$(undefined);
   }
 
   public onSave(value: string): void {
-    this.response.emit(value);
+    this.output.emit(value);
+    this.modalService.set$(undefined);
   }
 }

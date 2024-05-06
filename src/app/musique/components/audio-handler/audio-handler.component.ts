@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { DestroyService } from '@shared/services/destroy.service';
-import { AudioGainService } from 'app/musique/services/audio.service';
-import { takeUntil } from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {DestroyService} from '@shared/services/destroy.service';
+import {AudioGainService, PersistEffectService} from 'app/musique/services/audio.service';
+import {combineLatest, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-audio-handler',
@@ -11,26 +11,34 @@ import { takeUntil } from 'rxjs';
 export class AudioHandlerComponent implements OnInit {
   public audioCtx!: AudioContext;
   public gainNode!: GainNode;
-
-/*   public effectList = new Set(['highpass', 'lowpass', 'Reverb', 'Delay']);
-  public effectSelected = 'highpass'; */
   public effectList: string[] = ['highpass', 'lowpass', 'Reverb', 'Delay'];
   public effectSelected: string = this.effectList[0];
+  public isPersist: boolean = false;
 
   constructor(
     private gainService: AudioGainService,
+    private persistService: PersistEffectService,
     private destroy$: DestroyService
   ) {}
 
   ngOnInit(): void {
     this.audioCtx = new AudioContext();
     this.gainNode = this.audioCtx.createGain();
-    this.gainService.get$.pipe(takeUntil(this.destroy$))
-      .subscribe(value => (this.gainNode.gain.value = value));
+    combineLatest([this.gainService.get$, this.persistService.get$])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(values => {
+        this.gainNode.gain.value = values[0];
+        this.isPersist = values[1];
+      });
   }
 
-  onSelectRadio(effectSelected: string) {
-    this.effectSelected = effectSelected; 
+  onSelectEffect(effectSelected: string) {
+    this.effectSelected = effectSelected;
+    this.onPersistChange(false);
   }
 
+  onPersistChange(event: boolean): void {
+    this.isPersist = event;
+    this.persistService.set$(this.isPersist);
+  }
 }

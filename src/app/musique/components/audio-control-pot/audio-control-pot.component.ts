@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { Position } from 'app/musique/services/canvas.service';
+import { Position } from 'app/musique/abstracts/audioController.abstract';
 
 
 @Component({

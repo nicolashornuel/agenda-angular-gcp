@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { PriorityComponent } from '@shared/components/priority/priority.component';
-import { Modal } from '@shared/models/modalParam.interface';
 import { ColumnSet, RenderFieldSet, TableSet } from '@shared/models/tableSet.interface';
+import { Modal } from '@shared/services/modal.service';
 import { VideoController } from 'app/musique/abstracts/videoController.abstract';
 import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
 

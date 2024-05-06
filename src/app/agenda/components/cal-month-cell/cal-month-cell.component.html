@@ -10,7 +10,7 @@
     <app-input-checkbox-with-label
       [label]="field.title"
       [value]="field.meta!.value!"
-      (onModelChange)="onCheck($event, field)"
+      (onModelChange)="onCheckChange($event, field)"
       [readonly]="isLocked"
     ></app-input-checkbox-with-label>
   </ng-container>
@@ -18,13 +18,15 @@
 
 <ng-container *ngIf="day.inMonth">
   <app-button-group class="btn-container">
-    <button appButton outline size="tiny" [disabled]="isLocked" (click)="addExtra()">
+    <button appButton outline size="tiny" [disabled]="isLocked" (click)="onOpenModal(modal)">
       <i class="fas fa-plus-square"></i>
     </button>
-    <button appButton outline size="tiny" [ngClass]="isActive ? 'active' : ''" (click)="viewExtra()">
+    <button appButton outline size="tiny" [ngClass]="isActive ? 'active' : ''" (click)="onDisplayComment()">
       <i class="fas fa-eye"></i> <app-badge *ngIf="comments.length > 0" [text]="comments.length"></app-badge>
     </button>
   </app-button-group>
 </ng-container>
 
-<ng-template #modal></ng-template>
+<ng-template #modal let-input>
+  <app-cal-month-add-comment [input]="input" (output)="onAddComment($event)"></app-cal-month-add-comment>
+</ng-template>

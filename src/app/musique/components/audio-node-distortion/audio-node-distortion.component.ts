@@ -16,27 +16,8 @@ export class AudioNodeDistortionComponent implements AfterViewInit {
   constructor() { }
 
   ngAfterViewInit(): void {
-    this.initNode();
-    this.connectNode();
-  }
-
-  initNode(): void {
     this.distortion = this.audioCtx.createWaveShaper();
-    console.log(this.distortion);
-  }
-
-  connectNode() {
-    this.audioNode.connect(this.distortion);
-    this.distortion.connect(this.audioNode.context.destination);
-  }
-
-  disconnectNode(): void {
-    this.distortion.disconnect(0);
-    this.resetParam();
-  }
-
-  resetParam(): void {
-    this.distortion.curve = null;
+    this.audioNode.connect(this.distortion).connect(this.audioNode.context.destination);
   }
 
   onChange(value: number): void {
