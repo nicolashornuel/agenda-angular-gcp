@@ -1,4 +1,4 @@
-<section class="row-between-center" *ngIf="gainRadio">
+<section class="row-between-center">
   <div class="row gap-2">
     <app-select
       [options]="radioList"
@@ -9,14 +9,14 @@
       <button appButton outline (click)="onTooglePlay()">
         <app-icon [path]="isPlaying ? 'pause' : 'play'"></app-icon>
       </button>
-      <button #popover appButton outline [appPopover]="radioHistory" [disabled]="radioSelected.id != 'FIP'">
+      <button #popover appButton outline [appPopover]="radioHistory" [disabled]="radioSelected.name != 'FIP'">
         <app-icon path="history"></app-icon>
       </button>
     </app-button-group>
   </div>
 </section>
 
-<audio #audio [src]="radioSelected.url" preload="auto" controls autoplay style="display: none" crossorigin="anonymous">
+<audio #audio [src]="radioSelected.value" preload="auto" controls autoplay style="display: none" crossorigin="anonymous">
   <source type="audio/mpeg" />
 </audio>
 

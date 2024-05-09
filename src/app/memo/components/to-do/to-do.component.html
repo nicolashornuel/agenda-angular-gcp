@@ -1,13 +1,13 @@
 <app-layout>
   <app-card [title]="tableSet.title">
     <div class="row-end-center mb-3">
-      <app-input-text-with-label
+      <app-input-text
         class="col-4 mr-3"
         label="Filtre"
         ngModel
         [readonly]="enableEditIndex != undefined ? true : false"
         (ngModelChange)="applyFilter($event)"
-      ></app-input-text-with-label>
+      ></app-input-text>
       <app-input-checkbox-with-label
         class="col-4 mr-3"
         label="Seulement les non-résolus"

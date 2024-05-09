@@ -3,7 +3,7 @@ import {NG_VALUE_ACCESSOR} from '@angular/forms';
 import {AbstractInputComponent} from '@shared/abstracts/input.component';
 
 @Component({
-  selector: 'app-input-text-with-label',
+  selector: 'app-input-text',
   templateUrl: './input-text-with-label.component.html',
   styleUrls: ['./input-text-with-label.component.scss'],
   providers: [

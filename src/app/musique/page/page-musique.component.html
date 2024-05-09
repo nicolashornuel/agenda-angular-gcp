@@ -1,13 +1,13 @@
 <div class="header-container">
   <div class="row-end-center py-4 container">
-    <app-input-text-with-label
+    <app-input-text
       class="col-4"
       label="Rechercher"
       ngModel
       #box
       (keyup.enter)="onSearch(box.value)"
       name="q"
-    ></app-input-text-with-label>
+    ></app-input-text>
   </div>
 
   <div class="nav-tabs container">

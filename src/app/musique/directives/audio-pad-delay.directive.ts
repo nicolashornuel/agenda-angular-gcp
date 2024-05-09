@@ -1,12 +1,10 @@
-import { Component } from '@angular/core';
-import { AudioController, PadParam, Position } from 'app/musique/abstracts/audioController.abstract';
+import { Directive } from '@angular/core';
+import { AudioNodePad, PadParam, Position } from './audioDirective.abstract';
 
-@Component({
-  selector: 'app-audio-node-delay',
-  templateUrl: './audio-node-delay.component.html',
-  styleUrls: ['./audio-node-delay.component.scss']
+@Directive({
+  selector: '[audioPadDelay]'
 })
-export class AudioNodeDelayComponent extends AudioController {
+export class AudioPadDelayDirective extends AudioNodePad {
 
   private delayNode!: DelayNode;
   private feedback!: GainNode;
@@ -31,7 +29,7 @@ export class AudioNodeDelayComponent extends AudioController {
 
   override connectNode(): void {
     this.delayNode.delayTime.cancelScheduledValues(this.audioCtx.currentTime);
-    this.audioNode.connect(this.delayNode);
+    this.sourceNode.connect(this.delayNode);
     this.delayNode.connect(this.feedback);
     this.feedback.connect(this.delayNode);
     this.delayNode.connect(this.audioCtx.destination);

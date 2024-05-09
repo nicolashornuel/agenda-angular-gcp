@@ -25,7 +25,7 @@ export class SelectComponent  extends AbstractInputComponent {
   }
 
 
-  @Input() options!: any[];
+  @Input() options!: {name: string, value: any}[];
   @Input() selected!: any;
   @Output() selectedChange = new EventEmitter<any>();
 }

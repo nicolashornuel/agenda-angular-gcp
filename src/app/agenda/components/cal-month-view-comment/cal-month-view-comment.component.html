@@ -23,12 +23,12 @@
             </app-button-group>
           </ng-container>
           <ng-template #editing>
-            <app-input-text-with-label
+            <app-input-text
               class="mr-3"
               #input="ngModel"
               [(ngModel)]="comment.title"
               label="commentaire"
-            ></app-input-text-with-label>
+            ></app-input-text>
             <app-button-group class="mx-3">
               <button appButton ghost size="tiny" color="light" (click)="onCancel()">
                 <i class="fas fa-times-circle"></i>

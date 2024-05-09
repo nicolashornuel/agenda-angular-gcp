@@ -1,12 +1,10 @@
-import { Component } from '@angular/core';
-import { AudioController, PAD_MAX, PadParam, Position } from 'app/musique/abstracts/audioController.abstract';
+import { Directive } from '@angular/core';
+import { AudioNodePad, PAD_MAX, PadParam, Position } from './audioDirective.abstract';
 
-@Component({
-  selector: 'app-audio-node-reverb',
-  templateUrl: './audio-node-reverb.component.html',
-  styleUrls: ['./audio-node-reverb.component.scss']
+@Directive({
+  selector: '[audioPadReverb]'
 })
-export class AudioNodeReverbComponent extends AudioController {
+export class AudioPadReverbDirective extends AudioNodePad {
 
   private convolver!: ConvolverNode;
   private gainConvolver!: GainNode;
@@ -22,28 +20,26 @@ export class AudioNodeReverbComponent extends AudioController {
     updatePosition: ({ x }, value: number) => ({ x, y: PAD_MAX - (Math.floor(value * 100) / 100) * PAD_MAX }),
     onEventStart: () => {
       this.isStarting = true;
-      this.gainValueBkp = this.audioNode.gain.value;
+      this.gainValueBkp = this.sourceNode.gain.value;
       this.connectNode();
     },
     onEventMove: (position: Position) => {
       if (!this.padParam.isPersist) this.connectNode();
       this.gainConvolver.gain.value = position.x / 20;
-      this.audioNode.gain.value = Math.ceil(((PAD_MAX - position.y) / PAD_MAX) * 100) / 100;
+      this.sourceNode.gain.value = Math.ceil(((PAD_MAX - position.y) / PAD_MAX) * 100) / 100;
     },
     onEventEnd: () => { if (!this.padParam.isPersist) this.disconnectNode() }
   }
 
   override initNode(): void {
-    this.convolver = this.audioCtx.createConvolver();
-    this.gainConvolver = this.audioCtx.createGain();
+    this.convolver = new ConvolverNode(this.audioCtx);
+    this.gainConvolver = new GainNode(this.audioCtx);
     this.convolver.buffer = this.getBufferFromCtx();
     this.convolver.normalize = true;
   }
 
   override connectNode(): void {
-    this.audioNode.connect(this.convolver);
-    this.convolver.connect(this.gainConvolver);
-    this.gainConvolver.connect(this.audioCtx.destination);
+    this.sourceNode.connect(this.convolver).connect(this.gainConvolver).connect(this.audioCtx.destination);
   }
 
   override disconnectNode(): void {
@@ -52,7 +48,7 @@ export class AudioNodeReverbComponent extends AudioController {
     this.gainConvolver.disconnect(0);
     if (this.gainValueBkp && this.isStarting) {
       this.gainConvolver.gain.value = 0;
-      this.audioNode.gain.value = this.gainValueBkp;
+      this.sourceNode.gain.value = this.gainValueBkp;
       this.isStarting = false;
     }
   }

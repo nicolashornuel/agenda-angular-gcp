@@ -8,7 +8,7 @@ export class RadioTransformService {
 
   constructor() { }
 
-  public factory(data: Live): SongDTO {
+  public factory(data: Live): SongDTO | undefined {
     if (data.live.song) {
       return this.checkInstance(data.live.song);
     } else if (data.live.program) {
@@ -16,7 +16,7 @@ export class RadioTransformService {
     } else if (data.live.show) {
       return this.checkInstance(data.live.show);
     } else {
-      return this.checkInstance(data.live.song);
+      return undefined;
     }
   }
 

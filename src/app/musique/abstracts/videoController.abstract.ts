@@ -19,44 +19,32 @@ export abstract class VideoController {
   ) {}
 
   getVideos(): Observable<VideoGAPI[]> {
-    return this.videoService.findAll().pipe(takeUntil(this.destroy$));
+    return this.videoService.getAll().pipe(takeUntil(this.destroy$));
   }
 
   getCategories(): Promise<Set<string>> {
     return lastValueFrom(
-      this.videoService.findAll().pipe(
+      this.videoService.getAll().pipe(
         take(1),
         map((videos: VideoGAPI[]) => new Set(videos.map(video => video.categorie)))
       )
     );
   }
 
-  updateVideo(video: VideoGAPI): void {
-    this.videoService
-      .updateVideo(video)
-      .pipe(take(1))
-      .subscribe(id => {
-        this.alertService.success(`${video.title} modifié id:${id}`);
-      });
+  async updateVideo(video: VideoGAPI): Promise<void> {
+    await this.videoService.update(video, video.id)
+    this.alertService.success(`${video.title} modifié id:${video.id}`);
   }
 
-  addVideo(video: VideoGAPI): void {
-    this.videoService
-      .addVideo(video)
-      .pipe(take(1))
-      .subscribe(id => {
-        this.alertService.success(`${video.title} ajouté id:${id}`);
-      });
+  async addVideo(video: VideoGAPI): Promise<void> {
+    await this.videoService.save(video)
+    this.alertService.success(`${video.title} ajouté id:${video.id}`);
   }
 
 
-  deleteVideo(video: VideoGAPI): void {
-    this.videoService
-      .deleteVideo(video)
-      .pipe(take(1))
-      .subscribe(id => {
-        this.alertService.success(`${video.title} supprimé id:${id}`);
-      });
+  async deleteVideo(video: VideoGAPI): Promise<void> {
+    await this.videoService.delete(video.id)
+    this.alertService.success(`${video.title} supprimé id:${video.id}`);
   }
 
   openModal(video: VideoGAPI, templateRef: TemplateRef<Modal>): void {

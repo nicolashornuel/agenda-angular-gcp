@@ -1,9 +1,9 @@
-import {AfterViewInit, Component, Directive, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Observable, takeUntil} from 'rxjs';
-import {AudioGainService, PersistEffectService} from '../services/audio.service';
-import {CanvasService} from '../services/canvas.service';
-import {DestroyService} from '@shared/services/destroy.service';
+import {AfterViewInit, Directive, ElementRef, Input, OnDestroy, OnInit} from '@angular/core';
+import {Observable} from 'rxjs';
 import {AudioControlPadComponent} from '../components/audio-control-pad/audio-control-pad.component';
+import {AudioVolumeService} from '../services/audio.service';
+import {CanvasService} from '../services/canvas.service';
+import {AudioNodeAnalyserComponent} from '../components/audio-node-analyser/audio-node-analyser.component';
 
 export interface PadParam {
   canvas?: ElementRef<HTMLCanvasElement>;
@@ -25,33 +25,22 @@ export interface Position {
 
 export const PAD_MAX = 250;
 
-class PadController {
-  normalizeValueFromX(position: number, min: number, max: number): number {
-    return Math.ceil((position / PAD_MAX) * 100) / 100;
-  }
-
-  normalizeValueFromY(position: number, min: number, max: number): number {
-    return Math.ceil(((PAD_MAX - position) / PAD_MAX) * 100) / 100;
-  }
-
-  normalizeYFromValue(value: number, min: number, max: number): number {
-    return PAD_MAX - (Math.floor(value * 100) / 100) * PAD_MAX;
-  }
+@Directive({})
+export abstract class AudioNodeController {
+  @Input('context') audioCtx!: AudioContext;
+  @Input('source') sourceNode!: GainNode;
+  protected abstract initNode(): void;
+  protected abstract connectNode(): void;
 }
 
 @Directive({})
-export abstract class AudioNodeDirective extends PadController implements OnInit, AfterViewInit, OnDestroy {
-  @Input('context') audioCtx!: AudioContext;
-  @Input('source') audioNode!: GainNode;
-
-  abstract padParam: PadParam;
-  abstract initNode(): void;
-  abstract connectNode(): void;
-  abstract disconnectNode(): void;
+export abstract class AudioNodePad extends AudioNodeController implements OnInit, AfterViewInit, OnDestroy {
+  protected abstract padParam: PadParam;
+  protected abstract disconnectNode(): void;
 
   constructor(
     public component: AudioControlPadComponent,
-    public gainService: AudioGainService,
+    public gainService: AudioVolumeService,
     public canvasService: CanvasService
   ) {
     super();
@@ -68,54 +57,56 @@ export abstract class AudioNodeDirective extends PadController implements OnInit
   ngOnDestroy(): void {
     this.disconnectNode();
   }
+
+  protected normalizeValueFromX(position: number, min: number, max: number): number {
+    return Math.ceil((position / PAD_MAX) * 100) / 100;
+  }
+
+  protected normalizeValueFromY(position: number, min: number, max: number): number {
+    return Math.ceil(((PAD_MAX - position) / PAD_MAX) * 100) / 100;
+  }
+
+  protected normalizeYFromValue(value: number, min: number, max: number): number {
+    return PAD_MAX - (Math.floor(value * 100) / 100) * PAD_MAX;
+  }
 }
 
-@Component({
-  template: `
-    <div class="col-end-start h-100">
-      <canvas #canvas> </canvas>
-    </div>
-  `,
-  styles: [
-    `
-      @import 'variables.scss';
-
-      $color-primary: $orange;
-      $color-dark: $grey-40;
-
-      canvas {
-        background-color: $color-dark;
-        color: $color-primary;
-      }
-    `
-  ]
-})
-export abstract class AudioNodeAnalyser implements AfterViewInit {
-  @Input('context') audioCtx!: AudioContext;
-  @Input('source') gainNode!: GainNode;
-  @ViewChild('canvas') canvas!: ElementRef<HTMLCanvasElement>;
+@Directive({})
+export abstract class AudioNodeAnalyser extends AudioNodeController implements AfterViewInit {
+  protected canvas!: ElementRef<HTMLCanvasElement>;
   protected canvasCtx!: CanvasRenderingContext2D;
   protected analyser!: AnalyserNode;
   protected fillStyle!: string;
   protected strokeStyle!: string;
+  private component: AudioNodeAnalyserComponent;
 
   protected abstract draw(bufferLength: number, dataArray: Uint8Array): void;
+
+  constructor(component: AudioNodeAnalyserComponent, public canvasService: CanvasService) {
+    super();
+    this.component = component;
+  }
 
   ngAfterViewInit(): void {
     this.initNode();
     this.initCanvas();
+    this.connectNode();
   }
 
-  private initNode(): void {
+  protected initNode(): void {
     this.analyser = this.audioCtx.createAnalyser();
     this.analyser.minDecibels = -90; // [-100db-0db]
     this.analyser.maxDecibels = -10; // [-100db-0db]
     this.analyser.smoothingTimeConstant = 0.85; // [0-1]
     this.analyser.fftSize = 128; // [32-32768]
-    this.gainNode.connect(this.analyser);
   }
 
-  private initCanvas(): void {
+  protected connectNode(): void {
+    this.sourceNode.connect(this.analyser);
+  }
+
+  protected initCanvas(): void {
+    this.canvas = this.component.canvas;
     this.canvas.nativeElement.width = PAD_MAX;
     this.canvas.nativeElement.height = PAD_MAX;
     this.canvasCtx = this.canvas.nativeElement.getContext('2d')!;
@@ -126,5 +117,4 @@ export abstract class AudioNodeAnalyser implements AfterViewInit {
     const dataArray = new Uint8Array(bufferLength);
     this.draw(bufferLength, dataArray);
   }
-
 }

@@ -1,31 +1,34 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
+import { AudioNodeController } from 'app/musique/directives/audioDirective.abstract';
 
 @Component({
   selector: 'app-audio-node-distortion',
   templateUrl: './audio-node-distortion.component.html',
   styleUrls: ['./audio-node-distortion.component.scss']
 })
-export class AudioNodeDistortionComponent implements AfterViewInit {
+export class AudioNodeDistortionComponent extends AudioNodeController implements AfterViewInit {
 
-  @Input('context') audioCtx!: AudioContext;
-  @Input('source') audioNode!: GainNode;
-
-  currentValue: number = 0;
+  public currentValue: number = 0;
   private distortion!: WaveShaperNode; //curve OverSampleType = "2x" | "4x" | "none";
 
-  constructor() { }
-
   ngAfterViewInit(): void {
-    this.distortion = this.audioCtx.createWaveShaper();
-    this.audioNode.connect(this.distortion).connect(this.audioNode.context.destination);
+    this.initNode();
+    this.connectNode();
   }
 
-  onChange(value: number): void {
-      this.distortion.curve = this.makeDistortionCurve(value);
+  protected override initNode(): void {
+    this.distortion = new WaveShaperNode(this.audioCtx, {curve: [0]});
+  }
+  protected override connectNode(): void {
+    this.sourceNode.connect(this.distortion).connect(this.sourceNode.context.destination);
+  }
+
+  onPotChange(value: number): void {
+      this.distortion.curve = this.generateDistortion(value);
   }
 
   // https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/createWaveShaper#examples
-  makeDistortionCurve(k: number) {
+  private generateDistortion(k: number) {
     const n_samples = 44100;
     const curve = new Float32Array(n_samples);
     const deg = Math.PI / 180;
