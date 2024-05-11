@@ -6,6 +6,8 @@ import {VideoGAPI} from '../models/videoGAPI.interface';
 import {VideoService} from '../services/video.service';
 import {DestroyService} from '@shared/services/destroy.service';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import { AudioPlayingService } from '../services/audio.service';
+import { ScriptService } from '@shared/services/script.service';
 
 @Component({template: ''})
 export abstract class VideoController {

@@ -1,7 +1,9 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
-import { Modal, ModalParam, ModalService } from '@shared/services/modal.service';
-import { AudioNodeController } from 'app/musique/directives/audioDirective.abstract';
-import { AudioSelectParam, AudioSelectParamService, SelectParam } from 'app/musique/services/audio.service';
+import {Component, OnInit, TemplateRef} from '@angular/core';
+import {DestroyService} from '@shared/services/destroy.service';
+import {Modal, ModalParam, ModalService} from '@shared/services/modal.service';
+import {AudioNodeController} from 'app/musique/abstracts/audioDirective.abstract';
+import {AudioSelectParam, AudioSelectParamService, SelectParam} from 'app/musique/services/audio.service';
+import {takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-audio-control-equ',
@@ -12,14 +14,19 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
   private readonly FREQS = [32, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];
   private readonly MESSAGE_DEFAULT = 'Défaut';
   private readonly MESSAGE_NEW = 'Nouveau';
-  private readonly DEFAULT_PARAM = [{name: this.MESSAGE_DEFAULT, value: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}];
+  public readonly DEFAULT_PARAM = {name: this.MESSAGE_DEFAULT, value: this.FREQS.map(_freq => 0), isDirty: false};
 
-  public eqs: BiquadFilterNode[] = [];
-  public options: SelectParam[] = [];
-  public selected?: SelectParam;
-  public isDirty: boolean = false;
+  public equalizerParam?: AudioSelectParam;
+  public eqs!: BiquadFilterNode[];
+  public options!: SelectParam[];
+  public selected!: SelectParam;
+  public isLoading = true;
 
-  constructor(private audioSelectParamService: AudioSelectParamService, private modalService: ModalService) {
+  constructor(
+    private audioSelectParamService: AudioSelectParamService,
+    private modalService: ModalService,
+    private destroy$: DestroyService
+  ) {
     super();
   }
   ngOnInit(): void {
@@ -47,67 +54,87 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
   }
 
   private async initSelect(): Promise<void> {
-    this.options = this.DEFAULT_PARAM;
-    this.selected = this.DEFAULT_PARAM[0];
-    const selectParam = await this.audioSelectParamService.findFirstByType('equalizer');
-    if (selectParam) {
-      this.options = selectParam.list;
-      this.selected = selectParam.list[selectParam.selected ?  selectParam.selected - 1 : 0];
-      this.updateFilter();
-    }
+
+    this.audioSelectParamService
+      .findFirstByType('equalizer')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(equalizerParam => {
+        if (equalizerParam) {
+          this.equalizerParam = equalizerParam;
+          this.options = [this.DEFAULT_PARAM, ...equalizerParam!.list.map(selectParam => ({...selectParam, isDirty: false}))];
+          this.selected = this.options[equalizerParam!.selected ?? 0 ];
+        } else {
+          this.options = [this.DEFAULT_PARAM];
+          this.selected = this.options [0];
+        }
+        this.isLoading = false;
+        this.updateNode();
+      });
   }
 
-  private updateFilter(): void {
+  private updateNode(): void {
     this.eqs.forEach((eq, i) => (eq.gain.value = this.selected?.value.at(i) as number));
   }
 
-  public onReset(): void {
-    this.eqs.forEach(eq => (eq.gain.value = 0));
-    this.isDirty = false;
-  }
-
-  public async onSave(name: string): Promise<void> {
-    this.selected!.name = name;
-    const selectParam: AudioSelectParam = {
-      list: [...this.options],
-      selected: this.options.length - 1,
-      type: 'equalizer'
+  private async saveParam(index: number): Promise<void> {
+    const equalizerParam: AudioSelectParam = {
+      ...this.equalizerParam!,
+      list: this.options
+        .filter(option => option.name !== this.MESSAGE_DEFAULT)
+        .map(option => ({name: option.name, value: option.value})),
+      selected: index
     };
-    selectParam.list.shift();
+    equalizerParam.id
+      ? this.audioSelectParamService.updateOne(equalizerParam)
+      : this.audioSelectParamService.createOne(equalizerParam, 'equalizer');
+  }
+
+  public onResetSelected(): void {
+    this.selected.value = this.equalizerParam!.list.find(selectParam => selectParam.name === this.selected.name)!.value;
+    this.selected.isDirty = false;
+    this.updateNode();
+  }
+
+  public async onSaveAll(): Promise<void> {
     this.modalService.set$(undefined);
-    await this.audioSelectParamService.addOne(selectParam);
+    this.selected.isDirty = false;
+    const index = this.options.findIndex(option => option.name === this.selected.name);
+    await this.saveParam(index);
   }
 
-  public onSelect(): void {
-    this.updateFilter();
+  public async onDeleteSelected(): Promise<void> {
+    const index = this.options.findIndex(option => option.name === this.selected.name);
+    this.options.splice(index, 1);
+    await this.saveParam(this.options.length - 1);
   }
 
-  public onSliderChange(): void {
-    this.isDirty = true;
-    if (this.selected?.name == this.MESSAGE_DEFAULT) this.create();
+  public async onCreate(selectParam: SelectParam): Promise<void> {
+    this.options.push(selectParam);
+    this.selected = this.options[this.options.length - 1];
+    this.modalService.set$(undefined);
+    await this.saveParam(this.options.length - 1);
   }
 
   public onOpenModal(templateRef: TemplateRef<Modal>): void {
+    const selectParam: SelectParam = {
+      isDirty: false,
+      name: this.MESSAGE_NEW,
+      value: this.eqs.map(eq => eq.gain.value)
+    };
     const modalParam: ModalParam = {
       title: `Paramêtre d'equaliser prédéfini`,
-      context: {$implicit: this.options[this.options.length - 1]},
+      context: {$implicit: selectParam},
       template: templateRef
     };
     this.modalService.set$(modalParam);
   }
 
-  public onCloseModal(): void {
-    this.modalService.set$(undefined);
+  public onSelect(): void {
+    this.updateNode();
   }
 
-  private create(): void {
-    const eqParam: SelectParam = {
-      name: this.MESSAGE_NEW,
-      value: this.eqs.map(eq => eq.gain.value)
-    };
-    this.options.push(eqParam);
-    this.selected = this.options[this.options.length - 1];
+  public onSliderChange(): void {
+    this.selected!.isDirty = true;
+    this.selected!.value = this.eqs.map(eq => eq.gain.value);
   }
-
-
 }

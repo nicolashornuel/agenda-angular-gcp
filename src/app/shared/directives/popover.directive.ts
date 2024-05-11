@@ -18,7 +18,6 @@ export class PopoverDirective implements OnDestroy {
   @HostListener('click')
   onClick(): void {
     if (this.isDisplay) {
-      this.popoverService.set$(undefined);
       this.isDisplay = !this.isDisplay;
       this.destroy();
     } else {
@@ -36,6 +35,7 @@ export class PopoverDirective implements OnDestroy {
   }
 
   destroy(): void {
+    this.popoverService.set$(undefined);
     this.vcRef.clear();
   }
 }

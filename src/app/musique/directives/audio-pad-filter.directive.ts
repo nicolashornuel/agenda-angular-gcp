@@ -1,5 +1,5 @@
 import { Directive, Input } from '@angular/core';
-import { AudioNodePad, PAD_MAX, PadParam, Position } from './audioDirective.abstract';
+import { AudioNodePad, PAD_MAX, PadParam, Position } from '../abstracts/audioDirective.abstract';
 
 @Directive({
   selector: '[audioPadFilter]'

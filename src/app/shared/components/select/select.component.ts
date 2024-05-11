@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractInputComponent } from '@shared/abstracts/input.component';
 
@@ -12,7 +12,8 @@ import { AbstractInputComponent } from '@shared/abstracts/input.component';
       useExisting: forwardRef(() => SelectComponent),
       multi: true
     }
-  ]
+  ],
+  encapsulation: ViewEncapsulation.None
 })
 export class SelectComponent  extends AbstractInputComponent {
 
@@ -28,5 +29,6 @@ export class SelectComponent  extends AbstractInputComponent {
   @Input() options!: {name: string, value: any}[];
   @Input() selected!: any;
   @Output() selectedChange = new EventEmitter<any>();
+
 }
 

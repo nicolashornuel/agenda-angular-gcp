@@ -10,7 +10,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import {Position} from 'app/musique/directives/audioDirective.abstract';
+import {Position} from 'app/musique/abstracts/audioDirective.abstract';
 
 @Component({
   selector: 'app-audio-control-pot',

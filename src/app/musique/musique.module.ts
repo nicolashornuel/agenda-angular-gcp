@@ -23,6 +23,7 @@ import { AudioAnalyserWaveDirective } from './directives/audio-analyser-wave.dir
 import { AudioPadDelayDirective } from './directives/audio-pad-delay.directive';
 import { AudioPadFilterDirective } from './directives/audio-pad-filter.directive';
 import { AudioPadReverbDirective } from './directives/audio-pad-reverb.directive';
+import { IframeTrackerDirective } from './directives/iframe-tracker.directive';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { AudioPadReverbDirective } from './directives/audio-pad-reverb.directive
     AudioPadDelayDirective,
     AudioNodeAnalyserComponent,
     AudioAnalyserBarsDirective,
-    AudioAnalyserWaveDirective
+    AudioAnalyserWaveDirective,
+    IframeTrackerDirective
   ],
   imports: [
     CommonModule,

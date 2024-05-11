@@ -9,7 +9,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {DestroyService} from '@shared/services/destroy.service';
-import {PAD_MAX, PadParam, Position} from 'app/musique/directives/audioDirective.abstract';
+import {PAD_MAX, PadParam, Position} from 'app/musique/abstracts/audioDirective.abstract';
 import {EffectPersistService} from 'app/musique/services/audio.service';
 import {CanvasService} from 'app/musique/services/canvas.service';
 import {takeUntil} from 'rxjs';

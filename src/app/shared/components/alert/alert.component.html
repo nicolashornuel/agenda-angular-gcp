@@ -3,7 +3,7 @@
     <ng-container *ngFor="let alert of alerts; let i = index">
       <div [ngClass]="alert.styleCSS + ' row'" @showAlert>
         <div class="alert-ribbon"></div>
-        <div class="p-3 f-grow self-center">
+        <div class="p-3 f-grow self-center alert-width">
           <span class="alert-title"
             >{{ alert.title }}:<span class="alert-content"> {{ alert.content }}</span></span
           >

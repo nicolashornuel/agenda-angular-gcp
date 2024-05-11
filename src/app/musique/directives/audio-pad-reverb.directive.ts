@@ -1,5 +1,5 @@
 import { Directive } from '@angular/core';
-import { AudioNodePad, PAD_MAX, PadParam, Position } from './audioDirective.abstract';
+import { AudioNodePad, PAD_MAX, PadParam, Position } from '../abstracts/audioDirective.abstract';
 
 @Directive({
   selector: '[audioPadReverb]'
@@ -26,7 +26,7 @@ export class AudioPadReverbDirective extends AudioNodePad {
     onEventMove: (position: Position) => {
       if (!this.padParam.isPersist) this.connectNode();
       this.gainConvolver.gain.value = position.x / 20;
-      this.sourceNode.gain.value = Math.ceil(((PAD_MAX - position.y) / PAD_MAX) * 100) / 100;
+      this.sourceNode.gain.value = this.normalizeValueFromY(position.y, 0, 1);
     },
     onEventEnd: () => { if (!this.padParam.isPersist) this.disconnectNode() }
   }
@@ -43,13 +43,14 @@ export class AudioPadReverbDirective extends AudioNodePad {
   }
 
   override disconnectNode(): void {
-    this.canvasService.clearCanvas(this.padParam.canvas!);
-    this.convolver.disconnect(0);
-    this.gainConvolver.disconnect(0);
-    if (this.gainValueBkp && this.isStarting) {
-      this.gainConvolver.gain.value = 0;
-      this.sourceNode.gain.value = this.gainValueBkp;
-      this.isStarting = false;
+    if (this.convolver) {
+      this.convolver.disconnect(0);
+      this.gainConvolver.disconnect(0);
+      if (this.gainValueBkp && this.isStarting) {
+        this.gainConvolver.gain.value = 0;
+        this.sourceNode.gain.value = this.gainValueBkp;
+        this.isStarting = false;
+      }
     }
   }
   

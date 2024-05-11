@@ -1,5 +1,5 @@
 import { Directive } from '@angular/core';
-import { AudioNodeAnalyser } from './audioDirective.abstract';
+import { AudioNodeAnalyser } from '../abstracts/audioDirective.abstract';
 
 @Directive({
   selector: '[audioAnalyserWave]'

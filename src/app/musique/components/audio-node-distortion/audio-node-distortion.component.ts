@@ -1,5 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
-import { AudioNodeController } from 'app/musique/directives/audioDirective.abstract';
+import { AudioNodeController } from 'app/musique/abstracts/audioDirective.abstract';
 
 @Component({
   selector: 'app-audio-node-distortion',
@@ -17,7 +17,7 @@ export class AudioNodeDistortionComponent extends AudioNodeController implements
   }
 
   protected override initNode(): void {
-    this.distortion = new WaveShaperNode(this.audioCtx, {curve: [0]});
+    this.distortion = new WaveShaperNode(this.audioCtx);
   }
   protected override connectNode(): void {
     this.sourceNode.connect(this.distortion).connect(this.sourceNode.context.destination);

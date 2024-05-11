@@ -88,6 +88,12 @@
   justify-content: flex-start;
   align-items: center;
 }
+.col-start-start {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
 .col-start-stretch {
   display: flex;
   flex-direction: column;

@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { FieldSet } from '@shared/models/tableSet.interface';
 import { Modal } from '@shared/services/modal.service';
 import { VideoController } from 'app/musique/abstracts/videoController.abstract';
 import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
+import { AudioPlayingService } from 'app/musique/services/audio.service';
 
 @Component({
   selector: 'app-watch-modal',
@@ -13,6 +14,7 @@ import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
 export class WatchModalComponent extends VideoController implements Modal, OnInit {
   @Input() input!: VideoGAPI;
   output!: EventEmitter<any>;
+  private audioPlayingService = inject(AudioPlayingService);
 
   src!: SafeResourceUrl;
   rating!: FieldSet;
@@ -26,24 +28,25 @@ export class WatchModalComponent extends VideoController implements Modal, OnIni
       value: this.input.rating,
       disabled: false,
       required: false
-    }
+    };
     this.categories = await this.getCategories();
     this.categorie = {
       name: 'categorie',
       value: this.input.categorie,
       disabled: false,
       required: false
-    }
-    }
+    };
+  }
 
-    public updateCategorie(event: any): void {
-      console.log(event);
-      
-    }
+  public updateCategorie(event: any): void {
+    console.log(event);
+  }
 
-    public onDelete(): void {
-      this.deleteVideo(this.input);
-      
-    }
+  public onDelete(): void {
+    this.deleteVideo(this.input);
+  }
 
+  public onIframeClick(): void {
+    this.audioPlayingService.set$(false);
+  }
 }

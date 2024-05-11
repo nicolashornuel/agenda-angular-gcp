@@ -59,11 +59,19 @@ export abstract class AudioNodePad extends AudioNodeController implements OnInit
   }
 
   protected normalizeValueFromX(position: number, min: number, max: number): number {
-    return Math.ceil((position / PAD_MAX) * 100) / 100;
+    const deltaZoom = max - min;
+    const positionOnPad = position / PAD_MAX;
+    const positionWithZoom = (positionOnPad * deltaZoom) + min 
+    //return Math.ceil((position / PAD_MAX) * 100) / 100;
+    return Math.ceil(positionWithZoom * 100) / 100;
   }
 
   protected normalizeValueFromY(position: number, min: number, max: number): number {
-    return Math.ceil(((PAD_MAX - position) / PAD_MAX) * 100) / 100;
+    const deltaZoom = max - min;
+    const positionOnPad = (PAD_MAX - position) / PAD_MAX;
+    const positionWithZoom = (positionOnPad * deltaZoom) + min 
+    //return Math.ceil(((PAD_MAX - position) / PAD_MAX) * 100) / 100;
+    return Math.ceil(positionWithZoom * 100) / 100;
   }
 
   protected normalizeYFromValue(value: number, min: number, max: number): number {

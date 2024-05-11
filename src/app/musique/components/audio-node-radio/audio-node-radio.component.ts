@@ -1,6 +1,6 @@
-import {AfterViewInit, Component, ElementRef, Input, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild} from '@angular/core';
 import {DestroyService} from '@shared/services/destroy.service';
-import { AudioNodeController } from 'app/musique/directives/audioDirective.abstract';
+import { AudioNodeController } from 'app/musique/abstracts/audioDirective.abstract';
 import { AudioVolumeService } from 'app/musique/services/audio.service';
 import {takeUntil} from 'rxjs';
 
