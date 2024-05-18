@@ -42,7 +42,7 @@
       </div>
 
       <div class="row-between-stretch f-wrap card-youtube-container">
-            <app-card *ngFor="let video of videos" [title]="video.channelTitle">
+            <app-card *ngFor="let video of videos" [title]="video.channelTitle" backgroundColor="hsl(0, 0%, 90%)">
               <p>{{ video.publishedAt }}</p>
               <div class="iframe-container">
                 <iframe class="responsive-iframe" [src]="video.sanitized" allowfullscreen frameborder="0">

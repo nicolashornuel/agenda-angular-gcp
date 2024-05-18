@@ -1,5 +1,5 @@
 <ng-container *ngIf="param">
-  <section class="popover-container" [style.top]="param.position.top" [style.left]="param.position.left">
+  <section class="popover-container" [ngClass]="param.classPosition" [style.top]="param.position.top" [style.left]="param.position.left">
     <ng-container [ngTemplateOutlet]="param.template"></ng-container>
   </section>
 </ng-container>

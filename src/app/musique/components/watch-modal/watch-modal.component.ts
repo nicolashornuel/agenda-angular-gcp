@@ -1,10 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, ViewEncapsulation, inject } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { FieldSet } from '@shared/models/tableSet.interface';
 import { Modal } from '@shared/services/modal.service';
 import { VideoController } from 'app/musique/abstracts/videoController.abstract';
 import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
-import { AudioPlayingService } from 'app/musique/services/audio.service';
 
 @Component({
   selector: 'app-watch-modal',
@@ -13,15 +12,12 @@ import { AudioPlayingService } from 'app/musique/services/audio.service';
 })
 export class WatchModalComponent extends VideoController implements Modal, OnInit {
   @Input() input!: VideoGAPI;
-  output!: EventEmitter<any>;
-  private audioPlayingService = inject(AudioPlayingService);
+  public src!: SafeResourceUrl;
+  public rating!: FieldSet;
+  public categorie!: FieldSet;
+  public categories!: Set<string>;
 
-  src!: SafeResourceUrl;
-  rating!: FieldSet;
-  categorie!: FieldSet;
-  categories!: Set<string>;
-
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     this.src = this.sanitizeUrl(this.input.src);
     this.rating = {
       name: 'rating',
@@ -29,24 +25,27 @@ export class WatchModalComponent extends VideoController implements Modal, OnIni
       disabled: false,
       required: false
     };
-    this.categories = await this.getCategories();
     this.categorie = {
       name: 'categorie',
       value: this.input.categorie,
       disabled: false,
       required: false
     };
-  }
-
-  public updateCategorie(event: any): void {
-    console.log(event);
+    this.getCategories().subscribe(categories => (this.categories = categories));
   }
 
   public onDelete(): void {
     this.deleteVideo(this.input);
   }
 
-  public onIframeClick(): void {
-    this.audioPlayingService.set$(false);
+  public onSave(): void {
+    const inputChanged: VideoGAPI = {
+      ...this.input,
+      categorie: this.categorie.value as string,
+      rating: this.rating.value as number
+    };
+    this.updateVideo(inputChanged);
+    this.closeModal();
   }
+
 }

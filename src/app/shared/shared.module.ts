@@ -34,6 +34,7 @@ import { RightBarComponent } from './components/right-bar/right-bar.component';
 import { InputSuggestionComponent } from './components/input-suggestion/input-suggestion.component';
 import { InputToggleComponent } from './components/input-toggle/input-toggle.component';
 import { InputSliderComponent } from './components/input-slider/input-slider.component';
+import { CarouselComponent } from './components/carousel/carousel.component';
 
 const sharedComponents = [
   TableComponent,
@@ -66,7 +67,8 @@ const sharedComponents = [
   RightBarComponent,
   InputSuggestionComponent,
   InputToggleComponent,
-  InputSliderComponent
+  InputSliderComponent,
+  CarouselComponent
 ]
 
 const sharedModules = [
@@ -85,7 +87,7 @@ const sharedDirectives = [
 @NgModule({
   declarations: [
     sharedComponents,
-    sharedDirectives
+    sharedDirectives,
   ],
   imports: [
     sharedModules

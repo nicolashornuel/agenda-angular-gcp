@@ -3,7 +3,6 @@ import { SubjectService } from '@shared/abstracts/observable.abstract';
 
 export interface Modal {
   input: any;
-  output: EventEmitter<any>;
 }
 
 export interface ModalParam {

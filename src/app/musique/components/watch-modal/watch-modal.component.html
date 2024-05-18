@@ -3,7 +3,6 @@
   <div class="iframe-container">
     <iframe
       iframeTracker
-      (iframeClick)="onIframeClick()"
       class="responsive-iframe"
       [src]="src"
       allowfullscreen
@@ -12,19 +11,21 @@
     </iframe>
   </div>
   <p class="f-grow word-break">{{ input.description }}</p>
-  <div class="row-between-center">
+  <div *ngIf="input.extractWiki" class="row-end-center">
+    <img [appTooltip]="input.extractWiki" src="assets/Wikipedia.svg" alt="logo Wikipedia" width="100px" />
+  </div>
+  <div class="row-between-center my-3 gap-5">
     <app-priority [data]="rating"></app-priority>
-    <app-input-suggestion
-      class="col-3"
+   <app-input-suggestion
+      class="f-grow"
       [options]="categories"
-      label="Catégories favorites existantes"
-      [ngModel]="input.categorie"
-      (ngModelChange)="updateCategorie($event)"
+      label="Catégorie"
+      [(ngModel)]="categorie.value"
     >
     </app-input-suggestion>
   </div>
-  <div *ngIf="input.extractWiki" class="mt-3">
-    <img [appTooltip]="input.extractWiki" src="assets/Wikipedia.svg" alt="logo Wikipedia" width="100px" />
+  <div class="row-end-center gap-2">
+    <button appButton color="red" (click)="onDelete()">Supprimer</button>
+    <button appButton color="green" (click)="onSave()">Enregistrer</button>
   </div>
-  <button appButton (click)="onDelete()">Supprimer</button>
 </ng-container>

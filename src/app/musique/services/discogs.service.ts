@@ -1,8 +1,7 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable, map} from 'rxjs';
-import {environment} from '../../../environments/environment.prod';
-import {QueryDiscogs} from '../models/queryDiscogs.interface';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, map } from 'rxjs';
+import { environment } from '../../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'

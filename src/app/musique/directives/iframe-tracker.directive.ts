@@ -1,21 +1,26 @@
-import { Directive, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, Renderer2 } from '@angular/core';
+import { RadioPlayingService } from 'app/core/services/core.observable.service';
 
 @Directive({
   selector: '[iframeTracker]'
 })
-export class IframeTrackerDirective implements OnInit {
+export class IframeTrackerDirective implements OnInit, OnDestroy {
   private iframeMouseOver!: boolean;
 
   @Input() debug!: boolean;
 
   @Output() iframeClick = new EventEmitter<ElementRef>();
 
-  constructor(private el: ElementRef, private renderer: Renderer2) {}
-
+  constructor(private el: ElementRef, private renderer: Renderer2, private playingService: RadioPlayingService) {}
+  
   ngOnInit(): void {
     this.renderer.listen(window, 'blur', () => this.onWindowBlur());
   }
-
+  
+  ngOnDestroy(): void {
+    this.playingService.set$(true);
+  }
+  
   @HostListener('mouseover')
   private onIframeMouseOver() {
     this.log('Iframe mouse over');
@@ -34,6 +39,7 @@ export class IframeTrackerDirective implements OnInit {
     if (this.iframeMouseOver) {
       this.log('WOW! Iframe click!!!');
       this.resetFocusOnWindow();
+      this.playingService.set$(false);
       this.iframeClick.emit(this.el);
     }
   }

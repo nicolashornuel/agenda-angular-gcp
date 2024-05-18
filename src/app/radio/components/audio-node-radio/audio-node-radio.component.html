@@ -1,0 +1,22 @@
+<section class="row gap-2">
+    <app-select class="select-param"
+      [options]="radioList"
+      [(selected)]="radioSelected"
+    ></app-select>
+    <app-button-group>
+      <button appButton outline (click)="onTooglePlay()">
+        <app-icon [path]="isPlaying ? 'pause' : 'play'"></app-icon>
+      </button>
+      <button #popover appButton outline [appPopover]="radioHistory" [disabled]="radioSelected.name != 'FIP'">
+        <app-icon path="history"></app-icon>
+      </button>
+    </app-button-group>
+</section>
+
+<audio #audio [src]="radioSelected.value" preload="auto" controls style="display: none" crossorigin="anonymous">
+  <source type="audio/mpeg" />
+</audio>
+
+<ng-template #radioHistory>
+  <app-radio-history (output)="onClosePopover()"></app-radio-history>
+</ng-template>

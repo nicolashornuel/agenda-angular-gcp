@@ -69,7 +69,16 @@ $colors: (
   button-filled-green-hover-background-color: $green-hover,
   button-filled-green-hover-border-color: $green-hover,
   button-filled-green-active-background-color: $green-active,
-  button-filled-green-active-border-color: $green-active
+  button-filled-green-active-border-color: $green-active,
+
+  button-filled-red-background-color: $red,
+  button-filled-red-border-color: $red,
+  button-filled-red-text-color: $grey-100,
+  button-filled-red-hover-background-color: $red-hover,
+  button-filled-red-hover-border-color: $red-hover,
+  button-filled-red-active-background-color: $red-active,
+  button-filled-red-active-border-color: $red-active,
+  
 );
 
 .tiny {

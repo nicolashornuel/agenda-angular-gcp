@@ -15,10 +15,10 @@ export class ListSavedComponent extends VideoController implements OnInit {
   public loading: boolean = false;
 
   public tableSet: TableSet = {
-    title: 'À faire',
+    title: 'Ma playlist',
     verticaltextHeader: false,
     hover: true,
-    height: 'calc(100vh - 450px)',
+    height: 'calc(100vh - 300px)',
     openDetailByClickRow: (row: VideoGAPI) => this.openModal(row, this.modal),
     columnSet: [
       {

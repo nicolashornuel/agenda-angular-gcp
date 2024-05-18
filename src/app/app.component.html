@@ -1,2 +1,7 @@
-<app-home></app-home>
+<app-navbar [items]="items" (signOut)="auth.signOut()"  *ngIf="auth.getUserLoggedIn$ | async"></app-navbar>
+<app-alert></app-alert>
+<app-popover></app-popover>
+<app-modal></app-modal>
+<app-audio-handler></app-audio-handler>
+<app-rss-flux></app-rss-flux>
 <router-outlet></router-outlet>

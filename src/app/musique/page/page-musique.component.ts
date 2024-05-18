@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DestroyService} from '@shared/services/destroy.service';
 import {takeUntil} from 'rxjs';
-import {TabResultService} from '../services/tab-result.service';
+import { TabResultService } from '../services/musique.observable.service';
 
 @Component({
   selector: 'app-page-musique',

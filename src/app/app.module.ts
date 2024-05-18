@@ -1,22 +1,17 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { HttpClientModule } from '@angular/common/http';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
-
-import { AgendaModule } from '@agenda/agenda.module';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { HomeModule } from './home/home.module';
 import { environment } from '../environments/environment';
-import { GraphQLModule } from './graphql.module';
-
+import { RadioModule } from 'app/radio/radio.module';
+import { SharedModule } from '@shared/shared.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,9 +19,9 @@ import { GraphQLModule } from './graphql.module';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    HomeModule,
-    AgendaModule,
-    GraphQLModule,
+    RadioModule,
+    SharedModule,
+    BrowserAnimationsModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => {
@@ -42,7 +37,7 @@ import { GraphQLModule } from './graphql.module';
 
       return firestore;
 
-    })
+    }),
   ],
   providers: [{provide: LOCALE_ID, useValue: 'fr'}],
   bootstrap: [AppComponent]

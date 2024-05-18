@@ -20,7 +20,7 @@ export class AlertComponent implements OnInit {
     this.alertService.getAlerts$.pipe(takeUntil(this.destroy$)).subscribe((alert: Alert) => {
       this.alerts.push(alert);
       if (alert.title === 'Success')
-        setTimeout(() => this.close(this.alerts.length -1), 1500);
+        setTimeout(() => this.close(this.alerts.length -1), 2500);
     });
   }
 

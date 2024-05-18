@@ -1,32 +1,28 @@
-<div class="header-container">
-  <div class="row-end-center py-4 container">
-    <app-input-text
-      class="col-4"
-      label="Rechercher"
-      ngModel
-      #box
-      (keyup.enter)="onSearch(box.value)"
-      name="q"
-    ></app-input-text>
-  </div>
+<section class="header-container row-end-center py-4 container">
+  <app-input-text
+    class="col-4"
+    label="Recherche Youtube"
+    ngModel
+    #box
+    (keyup.enter)="onSearch(box.value)"
+    name="q"
+  ></app-input-text>
+</section>
 
-  <div class="nav-tabs container">
-    <a class="nav-item nav-link" [ngClass]="tabSelected === -1 ? 'active' : ''" (click)="tabSelected = -1">Liste</a>
-
-    <ng-container *ngFor="let keyword of keywords; index as i">
-      <div class="nav-item" [ngClass]="i === tabSelected ? 'active' : ''">
-        <a class="nav-link" (click)="tabSelected = i">{{ keyword }}</a>
-        <app-icon size="12px" path="close" class="ml-3 tab-close" (click)="onCloseTab(i)"></app-icon>
-      </div>
-    </ng-container>
-  </div>
-</div>
-
-<div class="body-container">
-  <app-audio-handler></app-audio-handler>
-  <app-list-saved *ngIf="tabSelected === -1; else searchTab"></app-list-saved>
-  <ng-template #searchTab>
-    <app-search-result [keyword]="keywords[tabSelected]"></app-search-result>
-  </ng-template>
-  <app-rss-flux></app-rss-flux>
-</div>
+<section class="body-container container">
+  <app-card>
+    <div class="nav-tabs mb-3">
+      <a class="nav-item nav-link" [ngClass]="tabSelected === -1 ? 'active' : ''" (click)="tabSelected = -1">Liste</a>
+      <ng-container *ngFor="let keyword of keywords; index as i">
+        <div class="nav-item" [ngClass]="i === tabSelected ? 'active' : ''">
+          <a class="nav-link" (click)="tabSelected = i">{{ keyword }}</a>
+          <app-icon size="12px" path="close" class="ml-3 tab-close" (click)="onCloseTab(i)"></app-icon>
+        </div>
+      </ng-container>
+    </div>
+    <app-list-saved *ngIf="tabSelected === -1; else searchTab"></app-list-saved>
+    <ng-template #searchTab>
+      <app-search-result [keyword]="keywords[tabSelected]"></app-search-result>
+    </ng-template>
+  </app-card>
+</section>
