@@ -35,6 +35,8 @@ import { InputSuggestionComponent } from './components/input-suggestion/input-su
 import { InputToggleComponent } from './components/input-toggle/input-toggle.component';
 import { InputSliderComponent } from './components/input-slider/input-slider.component';
 import { CarouselComponent } from './components/carousel/carousel.component';
+import { TabsComponent } from './components/tabs/tabs.component';
+import { CarouselItemDirective } from './components/carousel/carousel-item.directive';
 
 const sharedComponents = [
   TableComponent,
@@ -68,7 +70,9 @@ const sharedComponents = [
   InputSuggestionComponent,
   InputToggleComponent,
   InputSliderComponent,
-  CarouselComponent
+  CarouselComponent,
+  TabsComponent,
+  CarouselItemDirective
 ]
 
 const sharedModules = [

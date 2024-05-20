@@ -12,6 +12,7 @@ import { environment } from '../environments/environment';
 import { RadioModule } from 'app/radio/radio.module';
 import { SharedModule } from '@shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TradingModule } from './trading/trading.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -38,6 +39,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       return firestore;
 
     }),
+    TradingModule,
   ],
   providers: [{provide: LOCALE_ID, useValue: 'fr'}],
   bootstrap: [AppComponent]

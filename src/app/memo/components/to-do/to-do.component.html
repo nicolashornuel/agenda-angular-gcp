@@ -1,28 +1,26 @@
-<app-layout>
-  <app-card [title]="tableSet.title">
-    <div class="row-end-center mb-3">
-      <app-input-text
-        class="col-4 mr-3"
-        label="Filtre"
-        ngModel
-        [readonly]="enableEditIndex != undefined ? true : false"
-        (ngModelChange)="applyFilter($event)"
-      ></app-input-text>
-      <app-input-checkbox-with-label
-        class="col-4 mr-3"
-        label="Seulement les non-résolus"
-        [value]="false"
-        [readonly]="enableEditIndex != undefined ? true : false"
-        (onModelChange)="filterByNoResolved($event)"
-      ></app-input-checkbox-with-label>
-      <app-button-group class="row-end-center">
-        <button appButton outline size="small" (click)="addNew()"><i class="fas fa-plus"></i></button>
-        <button appButton outline size="small" [appPopover]="templateRef"><i class="fas fa-columns"></i></button>
-      </app-button-group>
-    </div>
-    <app-table [tableSet]="tableSet" [(enableEditIndex)]="enableEditIndex"></app-table>
-  </app-card>
-</app-layout>
+<ng-container *ngIf="!loading; else spinner">
+  <div class="row-end-center mb-3">
+    <app-input-text
+      class="col-4 mr-3"
+      label="Filtre"
+      ngModel
+      [readonly]="enableEditIndex != undefined ? true : false"
+      (ngModelChange)="applyFilter($event)"
+    ></app-input-text>
+    <app-input-checkbox-with-label
+      class="col-4 mr-3"
+      label="Seulement les non-résolus"
+      [value]="false"
+      [readonly]="enableEditIndex != undefined ? true : false"
+      (onModelChange)="filterByNoResolved($event)"
+    ></app-input-checkbox-with-label>
+    <app-button-group class="row-end-center">
+      <button appButton outline size="small" (click)="addNew()"><i class="fas fa-plus"></i></button>
+      <button appButton outline size="small" [appPopover]="templateRef"><i class="fas fa-columns"></i></button>
+    </app-button-group>
+  </div>
+  <app-table [tableSet]="tableSet" [(enableEditIndex)]="enableEditIndex"></app-table>
+</ng-container>
 
 <ng-template #templateRef>
   <h6>{{ popover.title }}</h6>
@@ -34,4 +32,8 @@
       (onModelChange)="onShowColumn($event, fieldSet)"
     ></app-input-checkbox-with-label>
   </div>
+</ng-template>
+
+<ng-template #spinner>
+  <app-spinner></app-spinner>
 </ng-template>

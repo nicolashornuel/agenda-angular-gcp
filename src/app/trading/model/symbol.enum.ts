@@ -1,0 +1,14 @@
+export enum SymbolType {
+    EURUSD = 'FX:EURUSD',
+    GBPUSD = 'FX:GBPUSD',
+    USDJPY = 'FX:USDJPY',
+    GBPJPY = 'FX:GBPJPY',
+    AUDUSD = 'FX:AUDUSD',
+    USDCAD = 'FX:USDCAD',
+    EURJPY = 'FX:EURJPY',
+    EURGBP = 'FX:EURGBP',
+    NZDUSD = 'FX:NZDUSD',
+    USDCHF = 'FX:USDCHF',
+    EURCHF = 'FX:EURCHF',
+    GBPCHF = 'FX:GBPCHF'
+  }

@@ -1,0 +1,12 @@
+<ng-container *ngIf="items">
+  <div class="nav-tabs mb-3">
+      <ng-container *ngFor="let item of items; index as i">
+        <div class="nav-item" [ngClass]="i === selected ? 'active' : ''">
+          <a class="nav-link" (click)="onChangeTab(i)">{{ item.name }}</a>
+          <ng-container *ngIf="item.closable">
+              <app-icon size="12px" path="close" class="ml-3 tab-close" (click)="onCloseTab(i)"></app-icon>
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
+</ng-container>

@@ -6,7 +6,7 @@ import { ListSavedComponent } from './components/list-saved/list-saved.component
 import { SearchResultComponent } from './components/search-result/search-result.component';
 import { WatchModalComponent } from './components/watch-modal/watch-modal.component';
 import { IframeTrackerDirective } from './directives/iframe-tracker.directive';
-import { musiqueRoutingModule } from './musique-routing.module';
+import { MusiqueRoutingModule } from './musique-routing.module';
 import { PageMusiqueComponent } from './page/page-musique.component';
 
 @NgModule({
@@ -19,7 +19,7 @@ import { PageMusiqueComponent } from './page/page-musique.component';
   ],
   imports: [
     CommonModule,
-    musiqueRoutingModule,
+    MusiqueRoutingModule,
     SharedModule,
   ]
 })

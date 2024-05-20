@@ -20,6 +20,10 @@ export class AppComponent {
     {
       title: 'Musique',
       route: 'musique'
+    },
+    {
+      title: 'Trading',
+      route: 'trading'
     }
   ]
 

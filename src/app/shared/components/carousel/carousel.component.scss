@@ -15,4 +15,10 @@
 
 .content {
   min-height: 300px;
+  overflow: hidden;
+  .translateBloc {
+    display: flex;
+    align-items: stretch;
+    transition: all .5s ease-in-out;
+  }
 }

@@ -10,7 +10,7 @@ export class DiscogsService {
   private url: string = environment.urlApiDiscogs;
   private params: any = {
     q: '',
-    per_page: 10,
+    per_page: 12,
     token: environment.discogsToken,
     artist: ''
   };

@@ -1,0 +1,37 @@
+$width-analysis: 425px;
+$height-analysis: 450px;
+
+.container {
+  width: 846px;
+}
+
+.badge {
+  font-size: 16px;
+  font-weight: 600;
+  color: hsl(0, 0%, 60%);
+}
+.scale-analysis {
+  transform: scale(0.5) translate(-90px, -65px);
+  width: calc($width-analysis * 0.5);
+  height: calc($height-analysis * 0.25);
+  clip-path: inset(0 -189px -301px);
+}
+.mini-card {
+  border: 2px solid hsl(0, 0%, 80%);
+  border-radius: 10px;
+  padding: 16px;
+  height: 250px;
+}
+.scrollable {
+  //height nav : 76px
+  //padding nb-layout-column : 36px 36px 12px
+  //height nb-card-header : 57px
+  //padding nb-card-body : 16px 24px
+  //margin-bottom nb-card : 28px
+  //width sidebar : 56px
+  // 56 + 36 + 24 + 24 + 36 = 176
+  // 76 + 36 + 57 + 16 + 16 + 28 + 12 = 251
+  height: calc(100vh - 251px);
+  overflow-y: scroll;
+  align-content: flex-start;
+}

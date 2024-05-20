@@ -1,0 +1,26 @@
+import { Component } from '@angular/core';
+import { TabParam } from '@shared/components/tabs/tabs.component';
+import { ScreenerDetailComponent } from '../components/screener-detail/screener-detail.component';
+import { ScreenerListComponent } from '../components/screener-list/screener-list.component';
+
+@Component({
+  selector: 'app-page-trading',
+  templateUrl: './page-trading.component.html',
+  styleUrls: ['./page-trading.component.scss']
+})
+export class PageTradingComponent {
+
+  public tabs: TabParam[] = [
+    {
+      name: 'screener-list',
+      closable: false,
+      content: ScreenerListComponent
+    },
+    {
+      name: 'screener-detail',
+      closable: false,
+      content: ScreenerDetailComponent
+    }
+  ];
+
+}

@@ -1,3 +1,4 @@
+@import 'variables.scss';
 
 $color-holiday: #f4cf9bb3;
 
@@ -14,27 +15,37 @@ $color-holiday: #f4cf9bb3;
     writing-mode: tb;
   }
 }
-/* .cal-month-view .cal-cell-top {
-  flex: 0 !important;
-} */
-.cal-cell {
-  width: 15%;
-  cursor: default !important;
-  position: relative;
-}
+
 .cal-month-view {
-  .cal-day-cell .cal-day-number {
-    font-weight: 500;
-    font-size: 2.5em;
-  }
-  .cal-day-cell.cal-today {
-    box-shadow: 0px 0px 5px 0px #858f8a;
-    .cal-day-number {
-      font-weight: 600;
-      margin-top: 0;
-      font-size: 4em;
-      position: absolute;
-      right: 0;
+  .cal-days {
+    height: calc(100vh - 260px);
+    overflow-y: scroll;
+
+    .cal-day-cell {
+      width: 15%;
+      cursor: default !important;
+      position: relative;
+  
+      .cal-cell-top {
+        min-height: 60px;
+        border-bottom: 1px solid #e1e1e1;
+        background-color: $grey-95;
+      }
+  
+      .cal-day-number {
+        font-weight: 500;
+        font-size: 2.5em;
+        margin-top: unset;
+        margin-bottom: unset;
+      }
+  
+      &.cal-today {
+        .cal-day-number {
+          font-weight: 600;
+          font-size: 2.5em;
+        }
+      }
+
     }
   }
 }

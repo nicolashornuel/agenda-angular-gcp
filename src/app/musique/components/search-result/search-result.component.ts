@@ -1,16 +1,16 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {VideoGAPI} from 'app/musique/models/videoGAPI.interface';
-import {DiscogsService} from 'app/musique/services/discogs.service';
-import {WikipediaService} from 'app/musique/services/wikipedia.service';
-import {YoutubeService} from 'app/musique/services/youtube.service';
-import {forkJoin, take} from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
+import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
+import { DiscogsService } from 'app/musique/services/discogs.service';
+import { WikipediaService } from 'app/musique/services/wikipedia.service';
+import { YoutubeService } from 'app/musique/services/youtube.service';
+import { forkJoin, take } from 'rxjs';
 
 @Component({
   selector: 'app-search-result',
   templateUrl: './search-result.component.html',
   styleUrls: ['./search-result.component.scss']
 })
-export class SearchResultComponent implements OnChanges {
+export class SearchResultComponent implements OnInit {
   @Input() keyword!: string;
 
   loading: boolean = false;
@@ -23,8 +23,7 @@ export class SearchResultComponent implements OnChanges {
     private wikipediaService: WikipediaService,
     private youtubeService: YoutubeService
   ) {}
-
-  ngOnChanges(_changes: SimpleChanges): void {
+  ngOnInit(): void {
     if (this.keyword) {
       this.loading = true;
       forkJoin([

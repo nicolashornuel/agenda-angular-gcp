@@ -11,6 +11,7 @@ const routes: Routes = [
   },
   {path: 'memo', loadChildren: () => import('./memo/memo.module').then(m => m.MemoModule), canMatch: [authGuard]},
   {path: 'musique', loadChildren: () => import('./musique/musique.module').then(m => m.MusiqueModule)},
+  {path: 'trading', loadChildren: () => import('./trading/trading.module').then(m => m.TradingModule)},
   {path: '**', redirectTo: '/sign-in', pathMatch: 'full'},
   {path: ' ', redirectTo: '/sign-in', pathMatch: 'full'}
 ];

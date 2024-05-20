@@ -1,10 +1,10 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {ToDoComponent} from './components/to-do/to-do.component';
-import {authGuard} from 'app/core/services/auth-guard.guard';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { authGuard } from 'app/core/services/auth-guard.guard';
+import { PageMemoComponent } from './page/page-memo.component';
 
 const routes: Routes = [
-  {path: 'todo', component: ToDoComponent, canActivate: [authGuard]},
+  {path: 'todo', component: PageMemoComponent, canActivate: [authGuard]},
   {path: '', redirectTo: 'todo', pathMatch: 'full'}
 ];
 
