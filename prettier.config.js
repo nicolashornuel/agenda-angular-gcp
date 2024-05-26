@@ -7,7 +7,7 @@
     singleQuote: true,        // Cannot use double quote in TS
     quoteProps: "as-needed",  // Use quote props only when needed (e.g.: myObject['test-property'])
     trailingComma: "none",    // Don't add a trailing comma at the end of multiline arrays
-    bracketSpacing: false,    // Don't add space between brackets (e.g.: import { Object } => import {Object})
+    bracketSpacing: true,    // Don't add space between brackets (e.g.: import { Object } => import {Object})
     arrowParens: "avoid",     // Avoid parenthesis in arrowed functions
     endOfLine: "lf",          // Just use '\n' and disable carriage return ('\r')
     jsxBracketSameLine: true, // This seems to change the way he style HTML closing tag

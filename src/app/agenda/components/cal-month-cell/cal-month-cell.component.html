@@ -19,7 +19,7 @@
 <ng-container *ngIf="day.inMonth">
   <app-button-group class="btn-container">
     <button appButton outline size="small" [disabled]="isLocked" (click)="onOpenModal(modal)">
-      <i class="fas fa-plus-square"></i>
+      <i class="fas fa-plus"></i>
     </button>
     <button appButton outline size="small" [ngClass]="isActive ? 'active' : ''" (click)="onDisplayComment()">
       <i class="fas fa-eye"></i> <app-badge *ngIf="comments.length > 0" [text]="comments.length"></app-badge>

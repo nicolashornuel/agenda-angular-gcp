@@ -26,6 +26,8 @@ export class UtilService {
   }
 
   public sortInByDesc(array: any[], key: string): any[] {
+    console.log(typeof array[0][key]);
+    
     if (typeof array[0][key] == 'boolean') {
       return array.sort((a, b) => {
         // true values first

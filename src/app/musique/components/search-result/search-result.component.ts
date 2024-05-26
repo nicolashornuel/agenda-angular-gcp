@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
+import { VideoController } from 'app/musique/abstracts/videoController.abstract';
 import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
 import { DiscogsService } from 'app/musique/services/discogs.service';
 import { WikipediaService } from 'app/musique/services/wikipedia.service';
-import { YoutubeService } from 'app/musique/services/youtube.service';
+import { OrderYoutube, YoutubeService } from 'app/musique/services/youtube.service';
 import { forkJoin, take } from 'rxjs';
 
 @Component({
@@ -10,27 +11,27 @@ import { forkJoin, take } from 'rxjs';
   templateUrl: './search-result.component.html',
   styleUrls: ['./search-result.component.scss']
 })
-export class SearchResultComponent implements OnInit {
-  @Input() keyword!: string;
+export class SearchResultComponent extends VideoController implements OnInit {
+  @Input() param!: {keyword: string, order: OrderYoutube};
 
-  loading: boolean = false;
-  discogs: any[] = [];
-  extractWiki?: string;
-  videos: VideoGAPI[] = [];
+  public loading: boolean = false;
+  public discogs: any[] = [];
+  public extractWiki?: string;
+  public videos: VideoGAPI[] = [];
+  public showMore: boolean = false;
 
-  constructor(
-    private discogsService: DiscogsService,
-    private wikipediaService: WikipediaService,
-    private youtubeService: YoutubeService
-  ) {}
+  private discogsService = inject(DiscogsService);
+  private wikipediaService = inject(WikipediaService);
+  private youtubeService = inject(YoutubeService);
+
   ngOnInit(): void {
-    if (this.keyword) {
+    if (this.param) {
       this.loading = true;
       forkJoin([
-        this.discogsService.getByArtistName(this.keyword),
-        this.wikipediaService.getWiki(this.keyword, 'fr'),
-        this.wikipediaService.getWiki(this.keyword, 'en'),
-        this.youtubeService.getVideos(this.keyword)
+        this.discogsService.getByArtistName(this.param.keyword),
+        this.wikipediaService.getWiki(this.param.keyword, 'fr'),
+        this.wikipediaService.getWiki(this.param.keyword, 'en'),
+        this.youtubeService.getVideos(this.param.keyword, this.param.order)
       ])
         .pipe(take(1))
         .subscribe(results => {
@@ -40,5 +41,12 @@ export class SearchResultComponent implements OnInit {
           this.loading = false;
         });
     }
+  }
+
+  onAdd(video: VideoGAPI): void {
+    const entity = { ...video };
+    if (this.extractWiki) entity.extractWiki = this.extractWiki;
+    delete entity.sanitized;
+    this.addVideo(entity);
   }
 }

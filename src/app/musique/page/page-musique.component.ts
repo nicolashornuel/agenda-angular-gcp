@@ -1,10 +1,11 @@
-import {Component, ComponentRef, OnInit} from '@angular/core';
-import {TabParam} from '@shared/components/tabs/tabs.component';
-import {DestroyService} from '@shared/services/destroy.service';
-import {takeUntil} from 'rxjs';
-import {ListSavedComponent} from '../components/list-saved/list-saved.component';
-import {SearchResultComponent} from '../components/search-result/search-result.component';
-import {TabResultService} from '../services/musique.observable.service';
+import { Component, ComponentRef, OnInit } from '@angular/core';
+import { TabParam } from '@shared/components/tabs/tabs.component';
+import { DestroyService } from '@shared/services/destroy.service';
+import { takeUntil } from 'rxjs';
+import { ListSavedComponent } from '../components/list-saved/list-saved.component';
+import { SearchResultComponent } from '../components/search-result/search-result.component';
+import { TabResultService } from '../services/musique.observable.service';
+import { OrderYoutube } from '../services/youtube.service';
 
 @Component({
   selector: 'app-page-musique',
@@ -14,34 +15,43 @@ import {TabResultService} from '../services/musique.observable.service';
 export class PageMusiqueComponent implements OnInit {
   public tabs: TabParam[] = [
     {
-      name: 'Liste',
+      name: 'Playlist',
       closable: false,
       content: ListSavedComponent
     }
   ];
   public tabSelected = 0;
 
+  public orderYoutubeOptions = Object.values(OrderYoutube).map(order => ({
+    name: order.toLowerCase(),
+    value: order
+  }));
+
+  public orderYoutubeSelected = this.orderYoutubeOptions.find(order => order.value === OrderYoutube.VIEWCOUNT);
+
   constructor(private destroy$: DestroyService, private tabService: TabResultService) {}
 
   ngOnInit(): void {
-    this.tabService.get$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(keyword => {
-        this.tabs.push(this.createTabResult(keyword));
-        this.tabSelected = this.tabs.length - 1;
-      });
+    this.tabService.get$.pipe(takeUntil(this.destroy$)).subscribe(keyword => {
+      this.tabs.push(this.createTabResult(keyword));
+      this.tabSelected = this.tabs.length - 1;
+    });
   }
 
-  onSearch(keyword: string) {
+  onSearch(keyword: string): void {
     this.tabService.set$(keyword);
   }
 
   private createTabResult(keyword: string): TabParam {
+    const param = {
+      keyword,
+      order: this.orderYoutubeSelected!.value
+    }
     return {
-      name: keyword,
+      name: [param.keyword, param.order].join(' '),
       closable: true,
       content: SearchResultComponent,
-      bind: (componentRef: ComponentRef<SearchResultComponent>) => (componentRef.instance.keyword = keyword)
+      bind: (componentRef: ComponentRef<SearchResultComponent>) => (componentRef.instance.param = param)
     };
   }
 }

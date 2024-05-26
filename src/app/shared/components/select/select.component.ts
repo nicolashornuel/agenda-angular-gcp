@@ -15,20 +15,15 @@ import { AbstractInputComponent } from '@shared/abstracts/input.component';
   ],
   encapsulation: ViewEncapsulation.None
 })
-export class SelectComponent  extends AbstractInputComponent {
-
+export class SelectComponent extends AbstractInputComponent {
+  @Input() options!: { name: string; value: any }[];
+  @Input() selected!: any;
+  @Output() selectedChange = new EventEmitter<any>();
   public selectOpened: boolean = false;
   public optionSelected: string = '';
 
   public selectOption(option: string): void {
-    this.value = option; 
-    this.selectedChange.emit(option);   
+    this.value = option;
+    this.selectedChange.emit(option);
   }
-
-
-  @Input() options!: {name: string, value: any}[];
-  @Input() selected!: any;
-  @Output() selectedChange = new EventEmitter<any>();
-
 }
-

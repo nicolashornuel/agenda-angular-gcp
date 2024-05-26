@@ -1,5 +1,6 @@
 <app-layout>
-  <section class="row-end-center pb-3">
+  <section class="row-end-center pb-3 gap-3">
+    <app-select [options]="orderYoutubeOptions" [(selected)]="orderYoutubeSelected"></app-select>
     <app-input-text
       class="col-4"
       label="Recherche Youtube"

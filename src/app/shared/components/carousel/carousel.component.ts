@@ -1,5 +1,5 @@
-import {AfterViewInit, Component, ContentChildren, ElementRef, HostBinding, OnInit, QueryList, ViewChild} from '@angular/core';
-import {CarouselItemDirective} from './carousel-item.directive';
+import { AfterViewInit, Component, ContentChildren, ElementRef, HostBinding, QueryList, ViewChild } from '@angular/core';
+import { CarouselItemDirective } from './carousel-item.directive';
 
 @Component({
   selector: 'app-carousel',
@@ -27,22 +27,22 @@ export class CarouselComponent implements AfterViewInit {
     const carouselWidth = this.translateBloc.nativeElement.getBoundingClientRect().width;
     this.hiddenWidth = (this.items.length * itemWidth) - carouselWidth;
     this.stepWidth = this.hiddenWidth / Math.floor(this.hiddenWidth / itemWidth);
-    this.updateArrow();
+    this.updateVisibility();
     this.loading = false;
   }
 
   next(): void {
     this.position -= this.stepWidth;
-    this.updateArrow();
+    this.updateVisibility();
   }
 
   previous(): void {
     this.position += this.stepWidth;
-    this.updateArrow();
+    this.updateVisibility();
   }
 
-  updateArrow(): void {
-    this.hasPrevious = this.position < 0;
-    this.hasNext = Math.abs(this.position) < this.hiddenWidth;
+  private updateVisibility(): void {
+    this.hasPrevious = Math.round(this.position) < 0;    
+    this.hasNext = Math.abs(Math.floor(this.position)) < this.hiddenWidth;
   }
 }

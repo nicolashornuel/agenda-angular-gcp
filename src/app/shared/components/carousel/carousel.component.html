@@ -1,17 +1,17 @@
-<section class="row-between-stretch w-100" >
-  <div class="arrow">
-    <button appButton ghost color="light" [disabled]="!hasPrevious" (click)="previous()">
-        <app-icon color="light" path="chevron-left"></app-icon>
-    </button>
+<section class="row-between-stretch w-100 relative carousel-container">
+  <div class="arrow left" *ngIf="hasPrevious">
+    <span class="btn-arrow row-center-center" (click)="previous()">
+      <app-icon path="chevron-left"></app-icon>
+    </span>
   </div>
   <div class="content">
     <div #translateBloc class="translateBloc" [ngStyle]="{'transform': 'translateX(' + position + 'px)'}">
         <ng-content></ng-content>
       </div>
   </div>
-  <div class="arrow">
-    <button appButton ghost color="light" [disabled]="!hasNext" (click)="next()">
-        <app-icon color="light" path="chevron-right"></app-icon>
-    </button>
+  <div class="arrow right" *ngIf="hasNext">
+    <span class="btn-arrow row-center-center" (click)="next()">
+      <app-icon path="chevron-right"></app-icon>
+    </span>
   </div>
 </section>

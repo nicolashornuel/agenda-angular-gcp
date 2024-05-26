@@ -22,7 +22,7 @@ export class YoutubeService {
   private params = {
     q: '',
     order: OrderYoutube.VIEWCOUNT,
-    maxResults: 12,
+    maxResults: 32,
     key: environment.youtubeToken,
     part: "snippet",
     type: "video"
@@ -30,14 +30,16 @@ export class YoutubeService {
 
   constructor(private http: HttpClient, private _sanitizer: DomSanitizer) {}
 
-  getVideos(keyword: string): Observable<any> {
+  getVideos(keyword: string, order: OrderYoutube): Observable<any> {
     this.params.q = keyword;
+    this.params.order = order;
     return this.http.get(this.url, {params: this.params}).pipe(
       map((response: any) =>
-        response.items.map((item: any) => {          
+        response.items.map((item: any) => {    
           return {
             videoId: item.id.videoId,
-            publishedAt: new Date(item.snippet.publishedAt).toLocaleDateString(),
+            publishedAt: item.snippet.publishedAt,
+            //publishedAt: new Date(item.snippet.publishedAt).toLocaleDateString(),
             title: this.decodeHTMLEntities(item.snippet.title),
             description: this.decodeHTMLEntities(item.snippet.description),
             thumbnail: item.snippet.thumbnails.medium.url,

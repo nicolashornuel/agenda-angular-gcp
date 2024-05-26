@@ -1,7 +1,8 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { PriorityComponent } from '@shared/components/priority/priority.component';
 import { ColumnSet, RenderFieldSet, TableSet } from '@shared/models/tableSet.interface';
 import { Modal } from '@shared/services/modal.service';
+import { UtilService } from '@shared/services/util.service';
 import { VideoController } from 'app/musique/abstracts/videoController.abstract';
 import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
 
@@ -25,7 +26,8 @@ export class ListSavedComponent extends VideoController implements OnInit {
         key: 'categorie',
         title: 'Catégorie',
         type: 'string',
-        visible: true
+        visible: true,
+        width: '20%'
       },
       {
         key: 'title',
@@ -39,14 +41,36 @@ export class ListSavedComponent extends VideoController implements OnInit {
         title: 'Chaine Youtube',
         type: 'string',
         visible: true,
-        width: '40%'
+        width: '20%'
       },
       {
         key: 'publishedAt',
         title: 'Date de publication',
         type: 'string',
         visible: true,
-        width: '40%'
+        width: '15%'
+      },
+      {
+        key: 'addedAt',
+        title: "Date d'ajout",
+        type: 'date',
+        visible: true,
+        width: '15%'
+      },
+      {
+        key: 'updatedAt',
+        title: "Date de modif",
+        type: 'date',
+        visible: true,
+        width: '15%'
+      },
+      {
+        key: 'extractWiki',
+        title: "Wikipedia",
+        type: 'html',
+        visible: true,
+        width: '15%',
+        innerHTML: (row: any, col: ColumnSet) => row['extractWiki'] ? `<img width="20px" src='../../../assets/Wiki.svg' />` : ''
       },
       {
         key: 'rating',
@@ -62,10 +86,12 @@ export class ListSavedComponent extends VideoController implements OnInit {
     data: []
   };
 
+  private util = inject(UtilService);
+
   ngOnInit(): void {
     this.loading = true;
     this.getVideos().subscribe(videos => {
-      this.tableSet.data = videos;
+      this.tableSet.data = this.util.sortInByDesc(videos, 'addedAt');
       this.loading = false;
     });
   }

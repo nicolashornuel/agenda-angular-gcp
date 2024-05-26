@@ -33,6 +33,11 @@
   justify-content: center;
   align-items: flex-start;
 }
+.row-center-end {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
 .row-end-center {
   display: flex;
   justify-content: flex-end;
@@ -115,6 +120,9 @@
 }
 .self-center {
   align-self: center;
+}
+.self-end {
+  align-self: flex-end;
 }
 .f-wrap {
   flex-wrap: wrap;

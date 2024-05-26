@@ -19,7 +19,7 @@ export interface TableSet {
 export interface ColumnSet {
   key: string;
   title: string;
-  type: 'custom' | 'string' | 'html';
+  type: 'custom' | 'string' | 'html' | 'date';
   visible: boolean;
   width?: string;
   innerHTML?: (row: any, col: ColumnSet) => string;
