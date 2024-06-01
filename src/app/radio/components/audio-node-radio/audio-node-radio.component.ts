@@ -17,6 +17,7 @@ export class AudioNodeRadioComponent extends AudioNodeController implements Afte
   private source!: MediaElementAudioSourceNode;
   public gainRadio?: GainNode;
   public isPlaying: boolean = false;
+  private previousPlayingStatus: boolean = false;
   public radioList = [
     {
       name: 'FIP',
@@ -55,14 +56,20 @@ export class AudioNodeRadioComponent extends AudioNodeController implements Afte
   
   private listen(): void {
     this.volumeService.get$.pipe(takeUntil(this.destroy$)).subscribe(value => (this.gainRadio!.gain.value = value));
-    this.playingService.get$.pipe(takeUntil(this.destroy$)).subscribe((isPlaying: boolean) => {
-      this.isPlaying = isPlaying;
-      this.isPlaying ? this.audio.nativeElement.play() : this.audio.nativeElement.pause();
+    this.playingService.get$.pipe(takeUntil(this.destroy$)).subscribe((isGlobalPlaying: boolean) => {
+      if (this.isPlaying) 
+        this.setRadioPlaying(isGlobalPlaying)
     });
   }
 
+  private setRadioPlaying(play: boolean): void {
+    this.isPlaying = play;
+    this.isPlaying ? this.audio.nativeElement.play() : this.audio.nativeElement.pause();
+  }
+
   onTooglePlay(): void {
-    this.playingService.set$(this.isPlaying ? false : true);
+    this.setRadioPlaying(!this.isPlaying)
+    this.playingService.set$(this.isPlaying);
   }
 
   onClosePopover(): void {

@@ -9,11 +9,12 @@ import { VideoService } from '../services/musique.firestore.service';
 
 @Component({template: ''})
 export abstract class VideoController {
+
   constructor(
-    private videoService: VideoService,
+    public videoService: VideoService,
     private alertService: AlertService,
     private modalService: ModalService,
-    private destroy$: DestroyService,
+    public destroy$: DestroyService,
     private _sanitizer: DomSanitizer
   ) {}
 
