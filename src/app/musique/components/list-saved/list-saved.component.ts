@@ -3,6 +3,7 @@ import { PriorityComponent } from '@shared/components/priority/priority.componen
 import { ColumnSet, FieldSet, RenderFieldSet, TableSet } from '@shared/models/tableSet.interface';
 import { ColSorted, ColumnsortableService } from '@shared/services/columnsortable.service';
 import { Modal } from '@shared/services/modal.service';
+import { Pageable } from 'app/core/services/firestore.service';
 import { VideoController } from 'app/musique/abstracts/videoController.abstract';
 import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
 import { takeUntil } from 'rxjs';
@@ -94,7 +95,7 @@ export class ListSavedComponent extends VideoController implements OnInit {
   };
 
   private dataSource!: VideoGAPI[];
-  public readonly pageSize = 40;
+  public readonly pageSize = 20;
   private colSortable: ColumnsortableService = inject(ColumnsortableService);
   private colSorted: ColSorted = { colKey: 'addedAt', direction: 'up' };
   public hasNext!: boolean;
@@ -121,19 +122,19 @@ export class ListSavedComponent extends VideoController implements OnInit {
 
   public onNextPage(): void {
     this.loading = true;
-    this.videoService.nextPage(this.colSorted!.colKey, this.pageSize).then(videos => this.defineData(videos));
+   this.videoService.nextPage(this.colSorted!.colKey, this.pageSize).then(videos => this.defineData(videos));
   }
 
   public onLastPage(): void {
     this.loading = true;
-    this.videoService.lastPage(this.colSorted!.colKey, this.pageSize).then(videos => this.defineData(videos));
+   this.videoService.lastPage(this.colSorted!.colKey, this.pageSize).then(videos => this.defineData(videos));
   }
 
-  private defineData(videos: VideoGAPI[]): void {
-    this.dataSource = videos;
-    this.tableSet.data = videos;
-    this.hasNext = this.videoService.hasNext;
-    this.hasPrev = this.videoService.hasPrevious;
+  private defineData(page: Pageable<VideoGAPI>): void {
+    this.dataSource = page.items;
+    this.tableSet.data = page.items;
+    this.hasNext = page.hasNext;
+    this.hasPrev = page.hasPrevious;
     this.loading = false;
   }
 
