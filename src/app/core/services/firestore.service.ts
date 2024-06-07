@@ -22,7 +22,7 @@ import {
   startAfter,
   startAt
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, count } from 'rxjs';
 
 export type Pageable<T> = {
   items: T[];
@@ -49,47 +49,6 @@ export abstract class FirestoreService<T> {
   public async getCountFromServer(): Promise<number> {
     const snapshot = await getCountFromServer(this.collectionRef);
     return snapshot.data().count;
-  }
-
-  public async firstPageOLD(fieldPath: string, pageSize: number): Promise<T[]> {
-    this.hasPrevious = false;
-    const q = query(this.collectionRef, orderBy(fieldPath), limit(pageSize + 1));
-    const items = await this.getDocs(q);
-    this.hasNext = items.length > pageSize ?? false;
-    return items.slice(0, pageSize);
-  }
-
-  public async nextPageOLD(fieldPath: string | FieldPath, pageSize: number): Promise<T[]> {
-    this.hasPrevious = true;
-    const q = query(this.collectionRef, orderBy(fieldPath), startAt(this.lastVisible), limit(pageSize + 1));
-    const items = await this.getDocs(q);
-    this.hasNext = items.length > pageSize ?? false;
-    return items.slice(0, pageSize);
-  }
-
-  public async prevPageOLD(fieldPath: string | FieldPath, pageSize: number): Promise<T[]> {
-    this.hasNext = true;
-    const q = query(this.collectionRef, orderBy(fieldPath), endAt(this.firstVisible), limitToLast(pageSize + 1));
-    const items = await this.getDocs(q);
-    this.hasPrevious = items.length > pageSize ?? false;
-    return items.slice(0, pageSize);
-  }
-
-  public async lastPageOLD(fieldPath: string, pageSize: number): Promise<T[]> {
-    this.hasNext = false;
-    const countTotal = await this.getCountFromServer();
-    const countLast = countTotal % pageSize;
-    const q = query(this.collectionRef, orderBy(fieldPath), limitToLast(countLast + 1));
-    const items = await this.getDocs(q);
-    this.hasPrevious = countTotal > countLast ?? false;
-    return items.slice(0, countLast);
-  }
-
-  private async getDocs(query: Query<T>): Promise<T[]> {
-    const documentSnapshots = await getDocs(query);
-    this.firstVisible = documentSnapshots.docs[0];
-    this.lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
-    return documentSnapshots.docs.map(doc => ({ ...doc.data(), id: doc.id }));
   }
 
   public async firstPage(fieldPath: string, pageSize: number): Promise<Pageable<T>> {
@@ -146,21 +105,18 @@ export abstract class FirestoreService<T> {
   }
 
   public async lastPage(fieldPath: string | FieldPath, pageSize: number): Promise<Pageable<T>> {
-    const skip = 0;
-    const take = pageSize + 1;
+    const skip = 1
     const countTotal = await this.getCountFromServer();
-    const countLast = countTotal % pageSize;
-    const q = query(this.collectionRef, orderBy(fieldPath), limitToLast(countLast + 1));
+    const take = countTotal % pageSize === 0 ? pageSize : countTotal % pageSize;
+    const q = query(this.collectionRef, orderBy(fieldPath), limitToLast(take + 1));
     const documentSnapshots = await getDocs(q);
     const items = documentSnapshots.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-    const itemsCount = items.length;
-    const itemsVisible = items.slice(skip, countLast);
-    const itemsVisibleCount = itemsVisible.length;
+    const itemsVisible = items.slice(skip, take + skip);
     this.firstVisible = documentSnapshots.docs[skip];
-    this.lastVisible = documentSnapshots.docs[itemsVisibleCount - 1];
+    this.lastVisible = documentSnapshots.docs[take + skip - 1];
     return {
       items: [...itemsVisible],
-      hasPrevious: countTotal > countLast ?? false,
+      hasPrevious: countTotal > take ?? false,
       hasNext: false
     };
   }

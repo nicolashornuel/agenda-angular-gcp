@@ -4,3 +4,9 @@
     text-transform: uppercase;
     color: $red;
 }
+
+@media (max-width: 576px) {
+    .col-mobile {
+        flex-direction: column;
+    }
+  }

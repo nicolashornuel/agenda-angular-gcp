@@ -49,3 +49,17 @@ $color-holiday: #f4cf9bb3;
     }
   }
 }
+
+@media (max-width: 576px) {
+  .cal-header {
+    display: none !important;
+  }
+  .cal-cell-row {
+      flex-direction: column !important;
+      .cal-cell {
+        width:unset !important;
+        border-top: 1px solid #e1e1e1;
+        border-bottom: 1px solid #e1e1e1;
+      }
+  }
+}
