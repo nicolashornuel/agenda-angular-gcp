@@ -1,8 +1,8 @@
-<app-right-bar width="632px">
+<app-right-bar [width]="isMobile ? '92%' : '632px'">
   <div class="col gap-2">
     <fieldset>
       <legend>Analyzer</legend>
-      <div class="row-between-center">
+      <div [ngClass]="isMobile ? 'col gap-2' : 'row-between-center'">
         <app-audio-node-analyser audioAnalyserWave [source]="gainNode" [context]="audioCtx"></app-audio-node-analyser>
         <app-audio-node-analyser audioAnalyserBars [source]="gainNode" [context]="audioCtx"></app-audio-node-analyser>
       </div>
@@ -31,7 +31,7 @@
     <fieldset>
       <legend>Effect</legend>
       <div class="col">
-        <section class="row-between-center mb-3 gap-2">
+        <section [ngClass]="isMobile ? 'col-start-start gap-2 mb-2' : 'row-between-center mb-3 gap-2'">
           <app-button-group>
             <button
               appButton

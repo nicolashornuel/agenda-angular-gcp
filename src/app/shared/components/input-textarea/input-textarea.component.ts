@@ -3,17 +3,18 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractInputComponent } from '@shared/abstracts/input.component';
 
 @Component({
-  selector: 'app-input-text',
-  templateUrl: './input-text-with-label.component.html',
-  styleUrls: ['./input-text-with-label.component.scss'],
+  selector: 'app-input-textarea',
+  templateUrl: './input-textarea.component.html',
+  styleUrls: ['./input-textarea.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => InputTextWithLabelComponent),
+      useExisting: forwardRef(() => InputTextareaComponent),
       multi: true
     }
   ]
 })
-export class InputTextWithLabelComponent extends AbstractInputComponent {
+export class InputTextareaComponent extends AbstractInputComponent {
+  rows: string = "3";
 
 }

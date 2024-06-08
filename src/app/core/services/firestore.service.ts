@@ -4,13 +4,11 @@ import {
   DocumentReference,
   FieldPath,
   Firestore,
-  Query,
   QueryDocumentSnapshot,
   collection,
   collectionData,
   deleteDoc,
   doc,
-  endAt,
   endBefore,
   getCountFromServer,
   getDocs,
@@ -19,10 +17,9 @@ import {
   orderBy,
   query,
   setDoc,
-  startAfter,
-  startAt
+  startAfter
 } from '@angular/fire/firestore';
-import { Observable, count } from 'rxjs';
+import { Observable } from 'rxjs';
 
 export type Pageable<T> = {
   items: T[];

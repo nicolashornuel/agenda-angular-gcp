@@ -17,9 +17,4 @@ import { FieldSet } from '@shared/models/tableSet.interface';
 })
 export class TableInputComponent extends AbstractInputComponent {
   @Input() data!: FieldSet;
-
-  constructor() {
-    super();
-  }
-
 }

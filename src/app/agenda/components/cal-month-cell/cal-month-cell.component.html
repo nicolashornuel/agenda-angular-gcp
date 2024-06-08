@@ -7,12 +7,12 @@
 
 <div class="p-3 check-container" *ngIf="day.inMonth">
   <ng-container *ngFor="let field of formFields">
-    <app-input-checkbox-with-label
+    <app-input-checkbox
       [label]="field.title"
       [value]="field.meta!.value!"
       (onModelChange)="onCheckChange($event, field)"
       [readonly]="isLocked"
-    ></app-input-checkbox-with-label>
+    ></app-input-checkbox>
   </ng-container>
 </div>
 

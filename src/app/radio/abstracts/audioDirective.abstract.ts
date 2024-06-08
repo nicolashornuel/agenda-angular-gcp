@@ -1,9 +1,9 @@
-import {AfterViewInit, Directive, ElementRef, Input, OnDestroy, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
-import {AudioControlPadComponent} from '../components/audio-control-pad/audio-control-pad.component';
-import {CanvasService} from '../services/canvas.service';
-import {AudioNodeAnalyserComponent} from '../components/audio-node-analyser/audio-node-analyser.component';
+import { AfterViewInit, Directive, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AudioControlPadComponent } from '../components/audio-control-pad/audio-control-pad.component';
+import { AudioNodeAnalyserComponent } from '../components/audio-node-analyser/audio-node-analyser.component';
 import { AudioVolumeService } from '../services/audio.observable.service';
+import { CanvasService } from '../services/canvas.service';
 
 export interface PadParam {
   canvas?: ElementRef<HTMLCanvasElement>;
@@ -114,6 +114,8 @@ export abstract class AudioNodeAnalyser extends AudioNodeController implements A
   }
 
   protected initCanvas(): void {
+    console.log(PAD_MAX);
+    
     this.canvas = this.component.canvas;
     this.canvas.nativeElement.width = PAD_MAX;
     this.canvas.nativeElement.height = PAD_MAX;

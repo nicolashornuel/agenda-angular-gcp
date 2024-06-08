@@ -7,13 +7,13 @@
       [readonly]="enableEditIndex != undefined ? true : false"
       (ngModelChange)="applyFilter($event)"
     ></app-input-text>
-    <app-input-checkbox-with-label
+    <app-input-checkbox
       class="col-4 mr-3"
       label="Seulement les non-résolus"
       [value]="false"
       [readonly]="enableEditIndex != undefined ? true : false"
       (onModelChange)="filterByNoResolved($event)"
-    ></app-input-checkbox-with-label>
+    ></app-input-checkbox>
     <app-button-group class="row-end-center">
       <button appButton outline size="small" (click)="addNew()"><i class="fas fa-plus"></i></button>
       <button appButton outline size="small" [appPopover]="templateRef"><i class="fas fa-columns"></i></button>
@@ -26,11 +26,11 @@
   <h6>{{ popover.title }}</h6>
   <hr />
   <div *ngFor="let fieldSet of popover.fieldSets">
-    <app-input-checkbox-with-label
+    <app-input-checkbox
       [label]="fieldSet.name"
       [value]="fieldSet.value"
       (onModelChange)="onShowColumn($event, fieldSet)"
-    ></app-input-checkbox-with-label>
+    ></app-input-checkbox>
   </div>
 </ng-template>
 
