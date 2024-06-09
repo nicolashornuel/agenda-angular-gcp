@@ -2,10 +2,11 @@ import { Component, TemplateRef } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AlertService } from '@shared/services/alert.service';
 import { DestroyService } from '@shared/services/destroy.service';
-import { Modal, ModalParam, ModalService } from '@shared/services/modal.service';
 import { Observable, map, takeUntil } from 'rxjs';
 import { VideoGAPI } from '../models/videoGAPI.interface';
 import { VideoService } from '../services/musique.firestore.service';
+import { Modal, ModalParam } from '@shared/models/modalParam.interface';
+import { ModalService } from '@shared/services/shared.observable.service';
 
 @Component({template: ''})
 export abstract class VideoController {

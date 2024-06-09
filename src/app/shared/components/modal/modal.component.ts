@@ -1,6 +1,7 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { ModalParam } from '@shared/models/modalParam.interface';
 import { DestroyService } from '@shared/services/destroy.service';
-import { ModalParam, ModalService } from '@shared/services/modal.service';
+import { ModalService } from '@shared/services/shared.observable.service';
 import { takeUntil } from 'rxjs';
 
 @Component({

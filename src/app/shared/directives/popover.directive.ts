@@ -6,14 +6,14 @@ import {
   TemplateRef,
   ViewContainerRef
 } from '@angular/core';
-import { PopoverService } from '@shared/services/popover.service';
+import { PopoverService } from '@shared/services/shared.observable.service';
 
 @Directive({
   selector: '[appPopover]'
 })
 export class PopoverDirective implements OnDestroy {
   @Input() appPopover!: TemplateRef<any>;
-  @Input() classPosition: 'left' | 'bottom' = 'left';
+  @Input() classPosition: 'left' | 'right' | 'bottom' = 'left';
   private isDisplay: boolean = false;
 
   @HostListener('click')
@@ -26,6 +26,8 @@ export class PopoverDirective implements OnDestroy {
       let position;
       switch (this.classPosition) {
         case 'left': position = {top: `${y + height / 2}px`, left: `${x}px`}
+          break;
+        case 'right': position = {top: `${y + height / 2}px`, left: `${x + width}px`}
           break;
         case 'bottom': position = {top: `${y + height}px`, left: `${x + width / 2}px`}
           break;

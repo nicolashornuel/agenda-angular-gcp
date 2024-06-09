@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
+import { Modal } from '@shared/models/modalParam.interface';
 import { FieldSet } from '@shared/models/tableSet.interface';
-import { Modal } from '@shared/services/modal.service';
 import { VideoController } from 'app/musique/abstracts/videoController.abstract';
 import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
 

@@ -59,6 +59,11 @@ export class AudioControlPotComponent implements AfterViewInit, OnChanges {
     this.setPositionFromEvent(event);
   }
 
+  onEventTouchStart(event: TouchEvent): void {
+    this.isStarted = true;
+    this.setPositionFromEvent(event.touches[0]);
+  }
+
   setPositionFromValue(): void {
     const deltaRotation = this.MAX_ROTATION - this.MIN_ROTATION;
     const deltaValue = this.max - this.min;
@@ -80,7 +85,7 @@ export class AudioControlPotComponent implements AfterViewInit, OnChanges {
     this.setPositionFromValue();
   }
 
-  private setPositionFromEvent(e: MouseEvent): void {
+  private setPositionFromEvent(e: MouseEvent | Touch): void {
     const rotation = this.getRotationFromTouch({x: e.clientX, y: e.clientY});
     this.valueChange.emit(this.getValueFromRotation(rotation));
     this.setPosition(rotation);

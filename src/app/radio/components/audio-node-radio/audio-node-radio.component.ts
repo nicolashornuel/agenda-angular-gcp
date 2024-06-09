@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { DestroyService } from '@shared/services/destroy.service';
+import { IsMobileService, RightBarIsOpenedService } from '@shared/services/shared.observable.service';
 import { RadioPlayingService } from 'app/core/services/core.observable.service';
 import { AudioNodeController } from 'app/radio/abstracts/audioDirective.abstract';
 import { AudioVolumeService } from 'app/radio/services/audio.observable.service';
 
-import { takeUntil } from 'rxjs';
+import { combineLatest, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-audio-node-radio',
@@ -17,7 +18,6 @@ export class AudioNodeRadioComponent extends AudioNodeController implements Afte
   private source!: MediaElementAudioSourceNode;
   public gainRadio?: GainNode;
   public isPlaying: boolean = false;
-  private previousPlayingStatus: boolean = false;
   public radioList = [
     {
       name: 'FIP',
@@ -30,11 +30,14 @@ export class AudioNodeRadioComponent extends AudioNodeController implements Afte
   ];
 
   public radioSelected = this.radioList[0];
+  public isMobile!: boolean;
 
   constructor(
     private volumeService: AudioVolumeService,
     private destroy$: DestroyService,
-    private playingService: RadioPlayingService
+    private playingService: RadioPlayingService,
+    private isMobileService: IsMobileService,
+    private rightBarIsOpenedService: RightBarIsOpenedService
   ) {
     super();
   }
@@ -46,20 +49,22 @@ export class AudioNodeRadioComponent extends AudioNodeController implements Afte
   }
 
   protected override initNode(): void {
-    this.source = new MediaElementAudioSourceNode(this.audioCtx, {mediaElement: this.audio.nativeElement});
+    this.source = new MediaElementAudioSourceNode(this.audioCtx, { mediaElement: this.audio.nativeElement });
     this.gainRadio = new GainNode(this.audioCtx);
   }
 
   protected override connectNode(): void {
     this.source.connect(this.sourceNode).connect(this.audioCtx.destination);
   }
-  
+
   private listen(): void {
-    this.volumeService.get$.pipe(takeUntil(this.destroy$)).subscribe(value => (this.gainRadio!.gain.value = value));
-    this.playingService.get$.pipe(takeUntil(this.destroy$)).subscribe((isGlobalPlaying: boolean) => {
-      if (this.isPlaying) 
-        this.setRadioPlaying(isGlobalPlaying)
-    });
+    combineLatest([this.volumeService.get$, this.playingService.get$, this.isMobileService.get$])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(values => {
+        this.gainRadio!.gain.value = values[0];
+        if (this.isPlaying) this.setRadioPlaying(values[1]);
+        this.isMobile = values[2]!;
+      });
   }
 
   private setRadioPlaying(play: boolean): void {
@@ -68,11 +73,12 @@ export class AudioNodeRadioComponent extends AudioNodeController implements Afte
   }
 
   onTooglePlay(): void {
-    this.setRadioPlaying(!this.isPlaying)
+    this.setRadioPlaying(!this.isPlaying);
     this.playingService.set$(this.isPlaying);
   }
 
   onClosePopover(): void {
     this.popoverBtn.nativeElement.click();
+    this.rightBarIsOpenedService.set$(false);
   }
 }

@@ -108,6 +108,20 @@ export class AudioControlPadComponent implements AfterViewInit {
     }
   }
 
+  onTouchEventStart(event: TouchEvent): void {
+    this.padParam.onEventStart!();
+    this.isMoving = true;
+    this.onTouchEventMove(event);
+  }
+
+  onTouchEventMove(event: TouchEvent): void {
+    if (this.isMoving) {
+      this.currentPosition = this.canvasService.getPositionFromEvent(event.touches[0], this.canvas);
+      this.draw(this.currentPosition);
+      this.padParam.onEventMove!({x: this.currentPosition.x, y: this.currentPosition.y});
+    }
+  }
+
   draw({x, y}: Position): void {
     this.canvasService.clearCanvas(this.canvas);
     this.canvasCtx.beginPath();
