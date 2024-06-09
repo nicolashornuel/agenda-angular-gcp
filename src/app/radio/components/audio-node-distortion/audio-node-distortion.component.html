@@ -1,0 +1,8 @@
+<app-audio-control-pot
+  name="distortion"
+  [min]="0"
+  [max]="400"
+  [step]="10"
+  [value]="currentValue"
+  (valueChange)="onPotChange($event)"
+></app-audio-control-pot>

@@ -1,0 +1,12 @@
+  <div class="row-start-center">
+    <input
+      type="checkbox"
+      [readonly]="inputReadonly"
+      [required]="inputRequired"
+      (blur)="onBlur.next()"
+      (focus)="onFocus.next()"
+      [(ngModel)]="value"
+      (ngModelChange)="onModelChange.next($event)"
+    />
+    <label class="ml-2">{{ label + asterix }}</label>
+  </div>

@@ -1,0 +1,31 @@
+<ng-container *ngIf="input">
+  <h3 class="mb-3">{{ input.title }}</h3>
+  <div class="iframe-container">
+    <iframe
+      iframeTracker
+      class="responsive-iframe"
+      [src]="src"
+      allowfullscreen
+      frameborder="0"
+    >
+    </iframe>
+  </div>
+  <p class="f-grow word-break">{{ input.description }}</p>
+  <div *ngIf="input.extractWiki" class="row-end-center">
+    <img [appTooltip]="input.extractWiki" src="assets/Wikipedia.svg" alt="logo Wikipedia" width="100px" />
+  </div>
+  <div class="row-between-center my-3 gap-5">
+    <app-priority [data]="rating"></app-priority>
+   <app-input-suggestion
+      class="f-grow"
+      [options]="categories"
+      label="Catégorie"
+      [(ngModel)]="categorie.value"
+    >
+    </app-input-suggestion>
+  </div>
+  <div class="row-end-center gap-2">
+    <button appButton color="red" (click)="onDelete()">Supprimer</button>
+    <button appButton color="green" (click)="onSave()">Enregistrer</button>
+  </div>
+</ng-container>

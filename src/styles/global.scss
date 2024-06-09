@@ -1,45 +1,81 @@
-html,
+*, ::after, ::before {
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.2;
+}
+h3 {
+  font-size: 1.75rem;
+}
+h5 {
+  font-size: 1.25rem;
+}
+h6 {
+  font-size: 1rem;
+}
+
 body {
-  height: 100%;
+  margin: 0;
+  font-family: sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: $grey-95;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.container {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  width: 100%;
+  padding-right: calc(var(--bs-gutter-x)* .5);
+  padding-left: calc(var(--bs-gutter-x)* .5);
+  margin-right: auto;
+  margin-left: auto;
+}
+.header-container {
+  background-color: $grey-95;
+  position: sticky;
+  top: $height-nav;
+  z-index: $z-index-header-sticky;
+  margin-top: $height-nav;
+}
+.body-container {
+  position: relative;
 }
 
 @media (min-width: 576px) {
-  .container,
-  .container-sm {
+  .container {
     max-width: 540px;
   }
 }
 @media (min-width: 768px) {
-  .container,
-  .container-md,
-  .container-sm {
+  .container {
     max-width: 720px;
   }
 }
 @media (min-width: 992px) {
-  .container,
-  .container-lg,
-  .container-md,
-  .container-sm {
+  .container {
     max-width: 960px;
   }
 }
 @media (min-width: 1200px) {
-  .container,
-  .container-lg,
-  .container-md,
-  .container-sm,
-  .container-xl {
+  .container {
     max-width: 1140px;
   }
 }
 @media (min-width: 1400px) {
-  .container,
-  .container-lg,
-  .container-md,
-  .container-sm,
-  .container-xl,
-  .container-xxl {
+  .container {
     max-width: 1320px;
+  }
+}
+@media (min-width: 1600px) {
+  .container {
+    max-width: 1520px;
   }
 }

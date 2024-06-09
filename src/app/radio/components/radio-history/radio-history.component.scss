@@ -1,0 +1,42 @@
+@import 'variables.scss';
+
+article {
+  width: 500px;
+}
+
+.radio-divider {
+  margin: 15px 0;
+  border-bottom: 2px solid $grey-80;
+  width: 100%;
+}
+.countdown {
+  margin: 0;
+}
+.track-live {
+  overflow-x: hidden;
+  white-space: nowrap;
+  width: 100%;
+  .performers {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.2em;
+  }
+  .title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.2em;
+    color: $grey-50;
+  }
+}
+
+.song-option {
+  cursor: pointer;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  &:hover {
+    background-color: $grey-95;
+  }
+}

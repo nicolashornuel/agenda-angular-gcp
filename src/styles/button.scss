@@ -39,6 +39,14 @@ $colors: (
   button-ghost-blue-active-border-color: transparent,
   button-ghost-blue-active-text-color: $blue-active,
 
+  button-ghost-green-text-color: $green,
+  button-ghost-green-hover-background-color: $transparent-default-bg,
+  button-ghost-green-hover-border-color: transparent,
+  button-ghost-green-hover-text-color: $green-hover,
+  button-ghost-green-active-background-color: $transparent-active-bg,
+  button-ghost-green-active-border-color: transparent,
+  button-ghost-green-active-text-color: $green-active,
+
   button-ghost-light-text-color: $grey-100,
   button-ghost-light-hover-background-color: $transparent-default-bg,
   button-ghost-light-hover-border-color: transparent,
@@ -53,7 +61,24 @@ $colors: (
   button-filled-blue-hover-background-color: $blue-hover,
   button-filled-blue-hover-border-color: $blue-hover,
   button-filled-blue-active-background-color: $blue-active,
-  button-filled-blue-active-border-color: $blue-active
+  button-filled-blue-active-border-color: $blue-active,
+
+  button-filled-green-background-color: $green,
+  button-filled-green-border-color: $green,
+  button-filled-green-text-color: $grey-100,
+  button-filled-green-hover-background-color: $green-hover,
+  button-filled-green-hover-border-color: $green-hover,
+  button-filled-green-active-background-color: $green-active,
+  button-filled-green-active-border-color: $green-active,
+
+  button-filled-red-background-color: $red,
+  button-filled-red-border-color: $red,
+  button-filled-red-text-color: $grey-100,
+  button-filled-red-hover-background-color: $red-hover,
+  button-filled-red-hover-border-color: $red-hover,
+  button-filled-red-active-background-color: $red-active,
+  button-filled-red-active-border-color: $red-active,
+  
 );
 
 .tiny {
@@ -81,11 +106,19 @@ $colors: (
   }
   &[disabled] {
     cursor: default;
-    opacity: 0.4;
+    //opacity: 0.4;
     background-color: $transparent-disabled-bg;
-    border-color: $transparent-disabled-border;
+    //border-color: $transparent-disabled-border;
     color: $transparent-disabled-text;
   }
+}
+
+button.icon {
+  border-radius: 50%;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
 }
 
 

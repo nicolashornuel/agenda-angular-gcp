@@ -1,0 +1,97 @@
+@import 'variables.scss';
+
+$height-navbar: 56px;
+$padding-tab-icon: 5px;
+$padding-tab-content: 30px;
+$height-tab-content: 204px;
+$height-tab: 60px;
+$width-tab: 30px;
+$width-open: calc($width-tab + var(--width));
+$width-closed: $width-tab + 10px;
+$radius: 7px;
+$bg-color: $blue;
+
+%tab {
+  .radius-inverted {
+    position: relative;
+    height: $height-tab;
+    width: $width-tab;
+    &:before {
+      content: '';
+      position: absolute;
+      height: $height-tab;
+      width: $width-tab;
+    }
+    &.top-right:before {
+      border-top-right-radius: $radius;
+      box-shadow: 5px -5px 0 0 $bg-color;
+      clip-path: inset(-1px 0 0);
+    }
+    &.bottom-right:before {
+      border-bottom-right-radius: $radius;
+      box-shadow: 5px 5px 0 0 $bg-color;
+      clip-path: inset(0 0 -1px);
+    }
+  }
+  .tab-icon {
+    border-top-left-radius: $radius;
+    border-bottom-left-radius: $radius;
+    background-color: $bg-color;
+    width: $width-tab;
+    height: $height-tab;
+    padding: $padding-tab-icon;
+    fill: $grey-100;
+    * {
+      cursor: pointer;
+    }
+  }
+  .tab-content {
+    width: var(--width);
+    height: calc(100vh - $height-navbar);
+    padding: $padding-tab-content;
+    border-left: 10px solid $bg-color;
+    background-color: $grey-95;
+   overflow-x: auto;
+  }
+}
+
+.right-bar {
+  @extend %tab;
+  position: fixed;
+  right: 0;
+  top: 56px;
+  z-index: $z-index-right-bar;
+  transition: width 0.5s ease-in;
+  &.close {
+    width: $width-closed;
+    .tab-icon app-icon {
+      transform: rotate(0deg);
+    }
+  }
+  &.open {
+    width: $width-open;
+    .tab-icon app-icon {
+      transform: rotate(180deg);
+    }
+  }
+  ~ .backdrop {
+    &.open {
+      background-color: rgba(0, 0, 0, 0.3);
+      width: 100vw;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: $z-index-right-bar-backdrop;
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 0.5s ease-in;
+    }
+    &.close {
+      opacity: 0;
+      transition: opacity 0.5s ease-in;
+    }
+  }
+}
+
+

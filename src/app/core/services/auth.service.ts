@@ -14,6 +14,8 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { StorageService } from './storage.service';
 import { UserService } from './user.service';
 
+export const KEY_STORAGE_USER = 'user';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,7 +24,6 @@ export class AuthService {
   authState$ = authState(this.auth);
   idToken$ = idToken(this.auth); */
 
-  private readonly KEY_STORAGE_USER = 'user';
   private readonly isLoggedIn$ = new BehaviorSubject<boolean>(false);
   public isLoggedIn = false;
   private readonly provider = new GoogleAuthProvider();
@@ -36,7 +37,7 @@ export class AuthService {
   ) {}
 
   public get getUserLoggedIn$(): Observable<boolean> {
-    const userStored: UserInfo | undefined = this.storage.getLocalItem(this.KEY_STORAGE_USER);
+    const userStored: UserInfo | undefined = this.storage.getLocalItem(KEY_STORAGE_USER);
     this.isLoggedIn = userStored && userStored.uid ? true : false;
     return userStored && userStored.uid ? of(true) : this.isLoggedIn$.asObservable();
   }
@@ -51,7 +52,7 @@ export class AuthService {
   public signOut(): Promise<void> {
     return signOut(this.auth).then(
       _response => {
-        this.storage.removeLocalItem(this.KEY_STORAGE_USER);
+        this.storage.removeLocalItem(KEY_STORAGE_USER);
         this.isLoggedIn$.next(false);
         this.router.navigate(['/sign-in']);
       },
@@ -63,7 +64,7 @@ export class AuthService {
     //const userInfo: UserInfo = await this.userService.saveOne(user);
     const exist = await this.checkUser(user.user.uid);
     if (exist) {
-      this.storage.setLocalItem(this.KEY_STORAGE_USER, user.user);
+      this.storage.setLocalItem(KEY_STORAGE_USER, user.user);
       this.isLoggedIn$.next(true);
       this.alert.success('Authentifié');
       this.router.navigate(['/agenda']);

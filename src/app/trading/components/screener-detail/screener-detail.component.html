@@ -1,0 +1,11 @@
+
+<button (click)="openModal()"></button>
+
+<ng-template #modal let-input>
+  <div class="scrollable row gap-5">
+    <div *ngFor="let interval of intervals" class="mini-card">
+      <span class="badge">{{ interval }}</span>
+      <div class="scale-analysis" appWidgetAnalysis [symbol]="symbol" [interval]="interval"></div>
+    </div>
+  </div>
+</ng-template>

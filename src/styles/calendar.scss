@@ -1,0 +1,65 @@
+@import 'variables.scss';
+
+$color-holiday: #f4cf9bb3;
+
+.holiday {
+  background: linear-gradient(to top, white 4%, $color-holiday 4% 7%, white 7% 12%);
+  &::before {
+    content: 'Vacances Scolaires';
+    color: rgb(244 207 155);
+    position: absolute;
+    bottom: 10%;
+    right: 5%;
+    font-size: 14px;
+    transform: rotate(180deg);
+    writing-mode: tb;
+  }
+}
+
+.cal-month-view {
+  .cal-days {
+    height: calc(100vh - 260px);
+    overflow-y: scroll;
+
+    .cal-day-cell {
+      width: 15%;
+      cursor: default !important;
+      position: relative;
+  
+      .cal-cell-top {
+        min-height: 60px;
+        border-bottom: 1px solid #e1e1e1;
+        background-color: $grey-95;
+      }
+  
+      .cal-day-number {
+        font-weight: 500;
+        font-size: 2.5em;
+        margin-top: unset;
+        margin-bottom: unset;
+      }
+  
+      &.cal-today {
+        .cal-day-number {
+          font-weight: 600;
+          font-size: 2.5em;
+        }
+      }
+
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .cal-header {
+    display: none !important;
+  }
+  .cal-cell-row {
+      flex-direction: column !important;
+      .cal-cell {
+        width:unset !important;
+        border-top: 1px solid #e1e1e1;
+        border-bottom: 1px solid #e1e1e1;
+      }
+  }
+}

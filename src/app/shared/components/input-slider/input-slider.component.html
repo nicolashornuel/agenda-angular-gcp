@@ -1,0 +1,28 @@
+<div class="slide-container row-center-center">
+    <div class="range-slider col-between-center">
+      <div class="col-center-center">
+        <span class="scope">{{ value | number : format }}</span>
+        <button appButton ghost color="green" (click)="onIncrease()" tabindex="-1"><i class="fas fa-plus fa-lg"></i></button>
+      </div>
+  
+      <input
+        class="vertical"
+        type="range"
+        [max]="max"
+        [min]="min"
+        [step]="step"
+        [readonly]="inputReadonly"
+        [required]="inputRequired"
+        (blur)="onBlur.next()"
+        (focus)="onFocus.next()"
+        [(ngModel)]="value"
+        (ngModelChange)="valueChange.emit(value)"
+      />
+  
+      <div class="col-center-center">
+        <button appButton ghost color="green" (click)="onDecreases()" tabindex="-1"><i class="fas fa-minus fa-lg"></i></button>
+        <span class="scope">{{ name }}</span>
+      </div>
+    </div>
+  </div>
+  

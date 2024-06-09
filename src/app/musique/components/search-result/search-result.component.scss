@@ -1,0 +1,83 @@
+@import 'variables.scss';
+
+.scrolling {
+  height: calc(100vh - 290px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.logo {
+  width: 100px;
+}
+p {
+  margin-top: 8px;
+  word-break: break-word;
+}
+
+// DISCOGS
+.column-elt {
+  display: flex;
+  flex-direction: column;
+  padding-right: 16px;
+  flex-wrap: wrap;
+}
+.discogs-img-container {
+  height: 200px;
+  width: 200px;
+  overflow: hidden;
+  img {
+    height: 100%;
+  }
+}
+.label {
+  font-weight: bold;
+  color: $red;
+}
+
+// WIKIPEDIA
+.wikipedia-container {
+  position: relative;
+  &.close {
+    .wikipedia-content {
+        max-height: 100px;
+        overflow: hidden;
+    }
+    .show-more {
+      background: linear-gradient(to bottom, transparent, $grey-100, $grey-100);
+    }
+  }
+  .show-more {
+    position: absolute;
+    bottom: 0;
+    height: 40px;
+    a {
+        color: $red;
+        cursor: pointer;
+    }
+  }
+}
+
+// YOUTUBE
+.card-youtube-container {
+  row-gap: 15px;
+  app-card {
+    flex-basis: 24%;
+  }
+}
+.iframe-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+}
+
+/* Then style the iframe to fit in the container div with full height and width */
+.responsive-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}

@@ -1,14 +1,16 @@
-<div class="modal fade show">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5 text-danger">{{ title }}</h1>
-        <button type="button" class="btn-close" (click)="onClose()"></button>
-      </div>
-      <div class="modal-body p-4">
-        <ng-content></ng-content>
+<ng-container *ngIf="param">
+    <div class="modal">
+      <div class="modal-dialog row-center-center">
+        <div class="modal-content">
+          <div class="modal-header row-between-center">
+            <h5 class="modal-title">{{ param.title }}</h5>
+            <button type="button" class="btn-close" (click)="onClose()"></button>
+          </div>
+          <div class="modal-body p-4">
+            <ng-container *ngTemplateOutlet="param.template; context: param.context"></ng-container>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-<div class="backdrop"></div>
+    <div class="backdrop"></div>
+</ng-container>

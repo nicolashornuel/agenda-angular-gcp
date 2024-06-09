@@ -45,7 +45,6 @@ export class TableCellComponent implements AfterViewInit, OnDestroy, OnChanges {
   }
 
   private loadComponent(): void {
-    console.log('table-cell custom');
     if (this.columnSet.render) {
       this.childComponent = this.target.createComponent<FieldComponent>(this.columnSet.render.component);
       this.childComponent.instance.data = this.columnSet.render.valuePrepare(this.rowData, this.columnSet);

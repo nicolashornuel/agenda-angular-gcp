@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
+import { TooltipParam } from '@shared/models/tooltipParam.interface';
 
 @Component({
   selector: 'app-tooltip',
@@ -7,6 +8,10 @@ import { Component } from '@angular/core';
 })
 export class TooltipComponent {
 
-  tooltip: string = '';
+  param!: TooltipParam;
+
+  @HostBinding('style.position') get position() {
+    return 'absolute';
+  }
 
 }

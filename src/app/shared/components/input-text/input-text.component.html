@@ -1,0 +1,14 @@
+<div class="input-text-container">
+  <input
+    type="text"
+    placeholder=" "
+    [readonly]="inputReadonly"
+    [required]="inputRequired"
+    (blur)="onBlur.next()"
+    (focus)="onFocus.next()"
+    [(ngModel)]="value"
+  />
+  <label>
+    {{ label + asterix }}
+  </label>
+</div>

@@ -61,3 +61,22 @@ https://firebaseopensource.com/projects/angular/angularfire2
 https://www.npmjs.com/package/@angular/fire
 https://github.com/angular/angularfire
 https://firebase.google.com/docs/auth/web/firebaseui?hl=fr&authuser=0
+
+# MyStation
+
+`npm uninstall -g @angular/cli`
+`npm install -g @angular/cli@latest`
+`ng new my-station`
+`nvm install v..`
+`nvm use v..`
+
+## https://console.firebase.google.com/u/0/
+`firebase init`
+`npm i firebase --save`
+
+## https://the-guild.dev/graphql/apollo-angular/docs/get-started
+`npm i apollo-angular @apollo/client graphql`
+
+## https://mattlewis-github.com/angular-calendar/#/kitchen-sink
+`npm i angular-calendar`
+

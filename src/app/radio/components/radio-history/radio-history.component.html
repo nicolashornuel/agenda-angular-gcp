@@ -1,0 +1,21 @@
+<ng-container *ngIf="song && grid; else spinner">
+  <article class="col">
+    <h5 class="radio-divider">FIP</h5>
+    <div class="row-txt f-grow">
+      <p class="countdown">{{ minutesLeft | number : '2.0' }} : {{ secondsLeft | number : '2.0' }}</p>
+      <div class="track-live">
+        <div class="performers">{{ song!.artist }}</div>
+        <div class="title">{{ song!.title }}</div>
+      </div>
+    </div>
+    <h6 class="radio-divider">TITRES DIFFUSÉS (dans la dernière heure) :</h6>
+    <div *ngFor="let song of grid" class="song-option" (click)="onSearch(song)">
+      {{ song.start * 1000 | date : 'HH:mm' }} - {{ song.title }} -
+      {{ song.artist }}
+    </div>
+  </article>
+</ng-container>
+
+<ng-template #spinner>
+  <app-spinner></app-spinner>
+</ng-template>

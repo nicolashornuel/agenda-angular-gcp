@@ -1,7 +1,7 @@
 @import 'variables.scss';
 
 .card-container {
-    background-color: $grey-100;
+    background-color: var(--background-color);
     border-radius: .25rem;
     .card-content {
         padding: 1rem;

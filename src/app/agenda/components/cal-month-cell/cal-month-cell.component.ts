@@ -1,16 +1,25 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ViewContainerRef } from '@angular/core';
-import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
-import { isSameDay, isSameMonth } from 'date-fns';
-import { take, takeUntil } from 'rxjs';
-import { EventService } from '@agenda/services/event.service';
-import { AlertService } from '@shared/services/alert.service';
-import { DestroyService } from '@shared/services/destroy.service';
-import { CalEventDTO, CalEventField, CalEventType } from '../../models/calEvent.model';
-import { emptyFields } from '../../models/emptyFields.constant';
-import { DayClickedService } from '../../services/day-clicked.service';
-import { MapperService } from '../../services/mapper.service';
-import { CalMonthAddCommentComponent } from '../cal-month-add-comment/cal-month-add-comment.component';
-import { ModalService } from '@shared/services/modal.service';
+import {EventService} from '@agenda/services/event.service';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
+import {AlertService} from '@shared/services/alert.service';
+import {DestroyService} from '@shared/services/destroy.service';
+import {Modal, ModalParam, ModalService} from '@shared/services/modal.service';
+import {CalendarEvent, CalendarMonthViewDay} from 'angular-calendar';
+import {isSameDay, isSameMonth} from 'date-fns';
+import {takeUntil} from 'rxjs';
+import {CalEventDTO, CalEventField, CalEventType} from '../../models/calEvent.model';
+import {emptyFields} from '../../models/emptyFields.constant';
+import {DayClickedService} from '../../services/day-clicked.service';
+import {MapperService} from '../../services/mapper.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-cal-month-cell',
@@ -33,7 +42,8 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
     private destroy$: DestroyService,
     private mapper: MapperService,
     public alert: AlertService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit(): void {
@@ -47,12 +57,6 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
       .filter((eventField: CalEventDTO) => eventField.meta!.type === CalEventType.COMMENT);
   }
 
-  /**
-   * initialize field : display or not & checked or not
-   *
-   * @private
-   * @memberof CalMonthCellComponent
-   */
   private initializeData(): void {
     emptyFields.forEach((field: CalEventField) => {
       let existField: CalendarEvent | undefined = this.day.events
@@ -75,53 +79,40 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
     });
   }
 
-  /**
-   * onCLick checkbox to save or delete
-   *
-   * @param {*} formField
-   * @memberof CalMonthCellComponent
-   */
-  public onCheck(value: boolean, formField: CalEventField) {
+  public onCheckChange(value: boolean, formField: CalEventField): void {
     formField.meta!.value = value;
     if (!formField.meta!.value) {
       this.eventService.delete(formField.id as string).then(() => {
-        this.alert.success('delete ok')
+        this.alert.success('delete ok');
       });
     } else if (formField.meta!.value) {
       const entity = this.mapper.fieldToEntity(formField, this.day.date);
       this.eventService.save(entity).then(id => {
         formField.id = id;
-        this.alert.success('save ok')
-
+        this.alert.success('save ok');
       });
     }
   }
 
-  /**
-   * onclick to view extra events inside 'activeDayIsOpen' & Month view
-   *
-   * @memberof CalMonthCellComponent
-   */
-  public viewExtra(): void {
-    this.isActive ? this.dayService.setDayClicked$(null) : this.dayService.setDayClicked$(this.day.date);
+  public onDisplayComment(): void {
+    this.dayService.setDayClicked$(this.isActive ? null : this.day.date);
   }
 
-  /**
-   * button to open modal add comment
-   *
-   * @memberof CalMonthCellComponent
-   */
-  public addExtra(): void {
-    const modal = this.modalService.openModal(this.target, CalMonthAddCommentComponent, this.day);
-    modal
-      .listenEvent()
-      .pipe(take(1))
-      .subscribe(async (response: string) => {
-        if (response) {
-          const entity = this.mapper.commentToEntity(response, this.day.date);
-          await this.eventService.save(entity);
-          this.alert.success('save ok')
-        }
-      });
+  public onOpenModal(templateRef: TemplateRef<Modal>): void {
+    const modalParam: ModalParam = {
+      title: this.datePipe.transform(this.day.date, 'fullDate')!,
+      context: {$implicit: this.day},
+      template: templateRef
+    };
+    this.modalService.set$(modalParam);
   }
+
+  public async onAddComment(comment: string): Promise<void> {
+    if (comment) {
+      const entity = this.mapper.commentToEntity(comment, this.day.date);
+      await this.eventService.save(entity);
+      this.alert.success('save ok');
+    }
+  }
+
 }

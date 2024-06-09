@@ -1,16 +1,14 @@
 import {
   AfterViewChecked,
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
   QueryList,
-  ViewChild,
   ViewChildren,
   forwardRef
 } from '@angular/core';
-import {NG_VALUE_ACCESSOR, NgForm, NgModel} from '@angular/forms';
+import {NG_VALUE_ACCESSOR} from '@angular/forms';
 import {AbstractInputComponent} from '@shared/abstracts/input.component';
 import {FieldSet} from '@shared/models/tableSet.interface';
 
@@ -28,7 +26,7 @@ import {FieldSet} from '@shared/models/tableSet.interface';
 })
 export class PriorityComponent extends AbstractInputComponent implements AfterViewChecked {
   @Input() data!: FieldSet;
-  public ratingArr: number[] = [0, 1, 2];
+  @Input() ratingArr: number[] = [0, 1, 2, 3, 4];
   @ViewChildren('star') starList!: QueryList<ElementRef>;
 
   constructor(private cdRef: ChangeDetectorRef) {
@@ -40,6 +38,7 @@ export class PriorityComponent extends AbstractInputComponent implements AfterVi
 
   onClick(rating: number): void {
     this.data.value = this.data.value == 1 && rating == 1 ? 0 : rating;
+    //this.onModelChange.next(this.data);
     this.onBlur.next();
   }
 

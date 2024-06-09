@@ -7,6 +7,9 @@
 .d-block {
     display: block;
 }
+.relative {
+    position: relative;
+}
 .txt-nowrap {
     white-space: nowrap;
 }
@@ -24,4 +27,10 @@
 }
 .fst-italic {
     font-style: italic;
+}
+.fs-6 {
+    font-size: 1rem !important;
+}
+.word-break {
+    word-break: break-word;
 }

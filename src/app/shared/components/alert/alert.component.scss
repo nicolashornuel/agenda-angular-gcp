@@ -1,7 +1,6 @@
 @import 'variables.scss';
 
 %alert {
-    width: 400px;
     min-height: 65px;
     box-shadow: $box-shadow;
     background-color: $grey-97;
@@ -54,6 +53,9 @@
 .alert-title {
     font-size: 14px;
     color: $grey-10;
+}
+.alert-width {
+    width: 352px;
 }
 .alert-content {
     font-size: 14px;

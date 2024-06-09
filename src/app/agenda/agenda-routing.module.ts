@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LayoutComponent } from './components/layout/layout.component';
+import { PageAgendaComponent } from './page/page-agenda.component';
 
-const routes: Routes = [{ path: '', component: LayoutComponent}];
+const routes: Routes = [{ path: '', component: PageAgendaComponent}];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -52,6 +52,9 @@ $box-shadow: 0px 0rem 5px 0px $grey-80;
 }
 
 // z-index.
+$z-index-header-sticky: 1000;
+$z-index-right-bar-backdrop: 1010;
+$z-index-right-bar: 1020;
 $z-index-navbar: 1030;
 $z-index-modal-backdrop: 1050;
 $z-index-modal: 1055;
@@ -60,3 +63,17 @@ $z-index-alert: 1090;
 
 // border-radius.
 $border-radius: 0.2rem;
+$height: 26px;
+$padding: 2px 4px;
+
+// system color used
+$color-primary: $green;
+$color-dark: $grey-40;
+$color-light: $grey-97;
+
+// z-index.
+$z-index-popover: 1070;
+
+//height nav bar
+$height-nav: 56px;
+$height-header: 60px;

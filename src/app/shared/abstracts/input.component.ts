@@ -3,7 +3,7 @@ import { AbstractNgModelComponent } from './ng-model.component';
 import { NgForm, NgModel } from '@angular/forms';
 
 @Component({ template: '' })
-export class AbstractInputComponent extends AbstractNgModelComponent<string | boolean>  implements AfterViewInit {
+export class AbstractInputComponent extends AbstractNgModelComponent implements AfterViewInit {
     @Input()
     readonly: boolean = false;
   
@@ -37,5 +37,11 @@ export class AbstractInputComponent extends AbstractNgModelComponent<string | bo
     ngAfterViewInit(): void {
       if (this.parentForm)
       this.parentForm.addControl(this.ngModel);
+    }
+    @Input()
+    label: string = '';
+  
+    get asterix(): string {
+      return this.inputRequired ? ' *' : '';
     }
 }

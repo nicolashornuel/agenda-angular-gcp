@@ -13,13 +13,13 @@ export interface TableSet {
     save: (row: any) => Promise<any>;
     delete: (id: string) => Promise<any>;
   };
-  openDetailByClickRow?: (row: any) => string;
+  openDetailByClickRow?: (row: any) => string | void;
 }
 
 export interface ColumnSet {
   key: string;
   title: string;
-  type: 'custom' | 'string' | 'html';
+  type: 'custom' | 'string' | 'html' | 'date';
   visible: boolean;
   width?: string;
   innerHTML?: (row: any, col: ColumnSet) => string;

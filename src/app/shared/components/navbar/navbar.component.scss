@@ -8,22 +8,6 @@ nav {
   left: 0;
   z-index: $z-index-navbar;
   padding: 8px 12px;
-  ul {
-    list-style: none;
-    margin-bottom: 0;
-  }
-  a {
-    text-decoration: none;
-    display: block;
-    color: $grey-100;
-    opacity: .6;
-    &:hover {
-      opacity: .8;
-    }
-    &.active {
-      opacity: 1;
-    }
-  }
   i {
     color: $grey-100;
   }
@@ -31,7 +15,79 @@ nav {
 
 .user-img {
   border: 2px solid $grey-100;
-    border-radius: 50%;
-      height: 40px;
-      width: 40px;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+}
+
+.nav-items {
+  margin-top: 0;
+}
+
+.burger {
+  color: $grey-100;
+  font-size: 23px;
+  cursor: pointer;
+  display: none;
+}
+
+
+ul {
+  list-style: none;
+  margin-bottom: 0;
+  padding: 0;
+  li {
+    display: inline-block;
+  }
+  a {
+    text-decoration: none;
+    display: block;
+    color: $grey-100;
+    opacity: 0.6;
+    &:hover {
+      opacity: 0.8;
     }
+    &.active {
+      opacity: 1;
+    }
+  }
+}
+
+
+@media (max-width: 576px) {
+  nav {
+      ul {
+          position: fixed;
+          height: 100vh;
+          width: 100%;
+          left: -100%;
+          top: 0;
+          background: $blue;
+          text-align: center;
+          padding-top: 80px;
+          transition: all 0.3s ease;
+
+          li {
+              display: block;
+              a {
+                  display: inline-block;
+                  margin: 20px 0;
+                  font-size: 25px;
+              }
+          }
+
+          &.active {
+              left: 0;
+          }
+      }
+
+      .burger {
+          display: block;
+          z-index: 999;
+
+          &.active.i:before {
+              content: '\f00d';
+          }
+      }
+  }
+}

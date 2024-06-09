@@ -7,24 +7,26 @@
 
 <div class="p-3 check-container" *ngIf="day.inMonth">
   <ng-container *ngFor="let field of formFields">
-    <app-input-checkbox-with-label
+    <app-input-checkbox
       [label]="field.title"
       [value]="field.meta!.value!"
-      (onModelChange)="onCheck($event, field)"
+      (onModelChange)="onCheckChange($event, field)"
       [readonly]="isLocked"
-    ></app-input-checkbox-with-label>
+    ></app-input-checkbox>
   </ng-container>
 </div>
 
 <ng-container *ngIf="day.inMonth">
   <app-button-group class="btn-container">
-    <button appButton outline size="tiny" [disabled]="isLocked" (click)="addExtra()">
-      <i class="fas fa-plus-square"></i>
+    <button appButton outline size="small" [disabled]="isLocked" (click)="onOpenModal(modal)">
+      <i class="fas fa-plus"></i>
     </button>
-    <button appButton outline size="tiny" [ngClass]="isActive ? 'active' : ''" (click)="viewExtra()">
+    <button appButton outline size="small" [ngClass]="isActive ? 'active' : ''" (click)="onDisplayComment()">
       <i class="fas fa-eye"></i> <app-badge *ngIf="comments.length > 0" [text]="comments.length"></app-badge>
     </button>
   </app-button-group>
 </ng-container>
 
-<ng-template #modal></ng-template>
+<ng-template #modal let-input>
+  <app-cal-month-add-comment [input]="input" (output)="onAddComment($event)"></app-cal-month-add-comment>
+</ng-template>

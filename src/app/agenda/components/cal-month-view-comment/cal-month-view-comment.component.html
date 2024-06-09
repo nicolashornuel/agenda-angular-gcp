@@ -9,10 +9,9 @@
       <ng-container *ngFor="let comment of comments; let rowIndex = index">
         <div class="row-start-center m-2">
           <span class="cal-event mx-2"></span>
+
           <ng-container *ngIf="enableEditIndex != rowIndex || isLocked; else editing">
-            <span class="fw-light fst-italic mr-3"
-              ><em>{{ comment.title }}</em></span
-            >
+            <span class="fw-light fst-italic mx-3 col-10">{{ comment.title }}</span>
             <app-button-group class="mx-3">
               <button appButton ghost size="tiny" color="light" (click)="onEdit(rowIndex)" [disabled]="isLocked">
                 <i class="fas fa-pencil-alt"></i>
@@ -22,13 +21,14 @@
               </button>
             </app-button-group>
           </ng-container>
+
           <ng-template #editing>
-            <app-input-text-with-label
-              class="mr-3"
+            <app-input-text
+              class="mx-3 col-10"
               #input="ngModel"
               [(ngModel)]="comment.title"
               label="commentaire"
-            ></app-input-text-with-label>
+            ></app-input-text>
             <app-button-group class="mx-3">
               <button appButton ghost size="tiny" color="light" (click)="onCancel()">
                 <i class="fas fa-times-circle"></i>

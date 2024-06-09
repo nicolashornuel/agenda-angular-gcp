@@ -96,8 +96,8 @@ export class ToDoComponent implements OnInit {
     })
   };
   private dataSource!: toDoDTO[];
-
   public enableEditIndex: number | null = null;
+  public loading = true;
 
   constructor(private toDoService: TodoService, private util: UtilService, private destroy$: DestroyService) {}
 
@@ -118,6 +118,7 @@ export class ToDoComponent implements OnInit {
       .subscribe((toDoDTOList: toDoDTO[]) => {
         this.dataSource = toDoDTOList;
         this.tableSet.data = this.dataSource;
+        this.loading = false;
       });
   }
 

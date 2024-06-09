@@ -1,0 +1,80 @@
+<app-right-bar [width]="isMobile ? '92%' : '632px'">
+  <div class="col gap-2">
+    <fieldset>
+      <legend>Analyzer</legend>
+      <div [ngClass]="isMobile ? 'col gap-2' : 'row-between-center'">
+        <app-audio-node-analyser audioAnalyserWave [source]="gainNode" [context]="audioCtx"></app-audio-node-analyser>
+        <app-audio-node-analyser audioAnalyserBars [source]="gainNode" [context]="audioCtx"></app-audio-node-analyser>
+      </div>
+    </fieldset>
+    <fieldset class="main-container">
+      <legend>Main</legend>
+      <div class="row-between-center gap-2">
+        <app-audio-node-radio class="w-100" [source]="gainNode" [context]="audioCtx"></app-audio-node-radio>
+        <div class="row-between-center gap-2">
+          <app-audio-control-pot
+            name="volume"
+            [min]="0"
+            [max]="1"
+            [step]="0.03"
+            [(value)]="gainNode.gain.value"
+            (valueChange)="onGainChange($event)"
+          ></app-audio-control-pot>
+          <app-audio-node-distortion [source]="gainNode" [context]="audioCtx"></app-audio-node-distortion>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Equalizer</legend>
+      <app-audio-control-equ [source]="gainNode" [context]="audioCtx"></app-audio-control-equ>
+    </fieldset>
+    <fieldset>
+      <legend>Effect</legend>
+      <div class="col">
+        <section [ngClass]="isMobile ? 'col-start-start gap-2 mb-2' : 'row-between-center mb-3 gap-2'">
+          <app-button-group>
+            <button
+              appButton
+              outline
+              *ngFor="let effect of effectList"
+              (click)="onSelectEffect(effect)"
+              [ngClass]="effectSelected == effect ? 'active' : ''"
+            >
+              {{ effect }}
+            </button>
+          </app-button-group>
+          <app-input-toggle
+            [value]="isPersist"
+            (valueChange)="onPersistChange($event)"
+            [mono]="true"
+            label="Persist"
+          ></app-input-toggle>
+        </section>
+        <ng-container [ngSwitch]="effectSelected">
+          <ng-container *ngSwitchCase="'highpass'">
+            <app-audio-control-pad
+              audioPadFilter
+              [source]="gainNode"
+              [context]="audioCtx"
+              type="highpass"
+            ></app-audio-control-pad>
+          </ng-container>
+          <ng-container *ngSwitchCase="'lowpass'">
+            <app-audio-control-pad
+              audioPadFilter
+              [source]="gainNode"
+              [context]="audioCtx"
+              type="lowpass"
+            ></app-audio-control-pad>
+          </ng-container>
+          <ng-container *ngSwitchCase="'Reverb'">
+            <app-audio-control-pad audioPadReverb [source]="gainNode" [context]="audioCtx"></app-audio-control-pad>
+          </ng-container>
+          <ng-container *ngSwitchCase="'Delay'">
+            <app-audio-control-pad audioPadDelay [source]="gainNode" [context]="audioCtx"></app-audio-control-pad>
+          </ng-container>
+        </ng-container>
+      </div>
+    </fieldset>
+  </div>
+</app-right-bar>

@@ -1,0 +1,16 @@
+<div class="right-bar row" [ngClass]="isOpen ? 'open' : 'close'" [style.--width]="width">
+  <div class="row-center-center f-grow">
+    <div class="col">
+      <div class="radius-inverted bottom-right"></div>
+      <div class="tab-icon row-center-center">
+        <app-icon color="light" (click)="isOpen = !isOpen" path="chevron-left"></app-icon>
+      </div>
+      <div class="radius-inverted top-right"></div>
+    </div>
+    <div class="tab-content">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" (click)="isOpen = !isOpen" [ngClass]="isOpen ? 'open' : 'close'"></div>
