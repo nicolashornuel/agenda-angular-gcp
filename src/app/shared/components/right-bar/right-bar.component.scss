@@ -1,6 +1,5 @@
 @import 'variables.scss';
 
-$height-navbar: 56px;
 $padding-tab-icon: 5px;
 $padding-tab-content: 30px;
 $height-tab-content: 204px;
@@ -47,11 +46,11 @@ $bg-color: $blue;
   }
   .tab-content {
     width: var(--width);
-    height: calc(100vh - $height-navbar);
+    height: calc(100vh - $height-nav);
     padding: $padding-tab-content;
     border-left: 10px solid $bg-color;
     background-color: $grey-95;
-   overflow-x: auto;
+    overflow-x: auto;
   }
 }
 
@@ -59,7 +58,7 @@ $bg-color: $blue;
   @extend %tab;
   position: fixed;
   right: 0;
-  top: 56px;
+  top: $height-nav;
   z-index: $z-index-right-bar;
   transition: width 0.5s ease-in;
   &.close {
@@ -94,4 +93,34 @@ $bg-color: $blue;
   }
 }
 
+.sideBar {
+  button {
+    position: fixed;
+    right: 0;
+    top: $height-nav;
+    z-index: $z-index-right-bar;
+    margin: 12px;
+  }
 
+  .sideBar-content {
+    position: fixed;
+    top: $height-nav;
+    z-index: $z-index-right-bar-backdrop;
+    transition: all 0.3s ease-in;
+    width: 100%;
+    right: -100%;
+    height: calc(100vh - $height-nav - $height-rss);
+    padding: 20px;
+    background-color: $grey-95;
+    overflow-x: auto;
+  }
+
+  &.show {
+    .sideBar-content {
+      right: 0%;
+    }
+    i {
+      transform: rotate(180deg);
+    }
+  }
+}

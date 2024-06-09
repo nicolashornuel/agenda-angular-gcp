@@ -49,6 +49,11 @@ body {
   position: relative;
 }
 
+@media (max-width: 576px) {
+  .container {
+    padding: unset;
+  }
+}
 @media (min-width: 576px) {
   .container {
     max-width: 540px;

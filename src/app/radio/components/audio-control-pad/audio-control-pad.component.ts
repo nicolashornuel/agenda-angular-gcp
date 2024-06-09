@@ -67,8 +67,7 @@ export class AudioControlPadComponent implements AfterViewInit {
     this.canvas.nativeElement.width = PAD_MAX;
     this.canvas.nativeElement.height = PAD_MAX;
     this.canvasCtx = this.canvas.nativeElement.getContext('2d')!;
-    let css: CSSStyleDeclaration = getComputedStyle(this.canvas.nativeElement);
-    const colorCss = css.getPropertyValue('color');
+    const colorCss = '#00d68f';
     this.canvasCtx.fillStyle = colorCss;
     this.canvasCtx.strokeStyle = '#5dbb033b';
     this.initScalling(colorCss);
@@ -78,24 +77,21 @@ export class AudioControlPadComponent implements AfterViewInit {
     this.scalling.nativeElement.width = PAD_MAX;
     this.scalling.nativeElement.height = PAD_MAX;
     const scallingCtx = this.scalling.nativeElement.getContext('2d')!;
-    // axe vertical
-    scallingCtx.beginPath();
     scallingCtx.strokeStyle = colorCss;
     scallingCtx.lineWidth = 1;
+    scallingCtx.beginPath();
+    // axe vertical
     for (let i = 0; i < PAD_MAX; i++) {
       if (i % 25 == 0) scallingCtx.moveTo(PAD_MAX, i);
       else scallingCtx.lineTo(0, i);
     }
-    scallingCtx.stroke();
     // axe horizontal
-    scallingCtx.beginPath();
-    scallingCtx.strokeStyle = colorCss;
-    scallingCtx.lineWidth = 1;
     for (let i = 0; i < PAD_MAX; i++) {
       if (i % 25 == 0) scallingCtx.moveTo(i, 0);
       else scallingCtx.lineTo(i, PAD_MAX);
     }
     scallingCtx.stroke();
+    scallingCtx.closePath();
   }
 
   onEventStart(event: MouseEvent): void {
@@ -118,5 +114,6 @@ export class AudioControlPadComponent implements AfterViewInit {
     this.canvasCtx.arc(x, y, 10, 0, 2 * Math.PI);
     this.canvasCtx.fill();
     this.canvasCtx.stroke();
+    this.canvasCtx.closePath();
   }
 }
