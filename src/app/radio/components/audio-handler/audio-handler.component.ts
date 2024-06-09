@@ -37,7 +37,7 @@ export class AudioHandlerComponent implements OnInit {
           this.gainNode.gain.value = values[0];
           this.isPersist = values[1];
           this.isMobile = values[2]!;
-          if (values[3]) this.audioCtx = new AudioContext();
+          if (values[3]) this.audioCtx.resume();
           
           this.isLoading = false;
         });
