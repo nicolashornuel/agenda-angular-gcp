@@ -2,7 +2,7 @@
   <div class="col-6 row-start-center">
     <h3 class="title">{{ viewDate | calendarDate : view + 'ViewTitle' : locale }}</h3>
   </div>
-  <div class="col-6 row-end-center">
+  <div class="col-6 row-end-center row gap-2">
     <ng-container [ngTemplateOutlet]="btnGroupViewDateChange"></ng-container>
     <ng-container [ngTemplateOutlet]="btnGroupViewChange"></ng-container>
     <button appButton (click)="onToggleLock()"><i [ngClass]="isLocked ? 'fas fa-lock' : 'fas fa-unlock'"></i></button>
@@ -10,7 +10,7 @@
 </div>
 
 <ng-template #btnGroupViewDateChange>
-  <app-button-group class="mx-3">
+  <app-button-group>
     <button
       appButton
       outline
@@ -38,7 +38,7 @@
 </ng-template>
 
 <ng-template #btnGroupViewChange>
-  <app-button-group class="mx-3">
+  <app-button-group>
     <button appButton outline (click)="viewChange.emit(CalendarView.Month)" [class.active]="view === CalendarView.Month">
       Mois
     </button>

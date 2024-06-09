@@ -8,6 +8,6 @@ import { Component, Input } from '@angular/core';
 export class RightBarComponent {
 
   @Input('width') width: string = "600px";
-  isOpen: boolean = false;
+  @Input('isOpen') isOpen: boolean = false;
 
 }

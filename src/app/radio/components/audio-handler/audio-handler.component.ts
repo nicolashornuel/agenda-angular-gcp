@@ -16,6 +16,7 @@ export class AudioHandlerComponent implements OnInit {
   public effectSelected: string = this.effectList[0];
   public isPersist: boolean = false;
   public isMobile!: boolean;
+  public isLoading!: boolean;
 
   constructor(
     private volumeService: AudioVolumeService,
@@ -25,6 +26,7 @@ export class AudioHandlerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.audioCtx = new AudioContext();
     this.gainNode = new GainNode(this.audioCtx);
     combineLatest([this.volumeService.get$, this.persistService.get$, this.isMobileService.get$])
@@ -33,6 +35,7 @@ export class AudioHandlerComponent implements OnInit {
         this.gainNode.gain.value = values[0];
         this.isPersist = values[1];
         this.isMobile = values[2]!;
+        this.isLoading = false;
       });
   }
 

@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { SubjectService } from '@shared/abstracts/observable.abstract';
+import { BehaviorSubjectService } from '@shared/abstracts/observable.abstract';
 
 @Injectable({
   providedIn: 'root'
 })
-export class IsMobileService extends SubjectService<boolean> {
+export class IsMobileService extends BehaviorSubjectService<boolean> {
+  constructor() {
+    super(false);
+  }
 }
