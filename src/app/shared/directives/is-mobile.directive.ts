@@ -1,5 +1,5 @@
 import { Directive, HostListener, OnInit } from '@angular/core';
-import { IsMobileService } from '@shared/services/is-mobile.service';
+import { IsMobileService } from '@shared/services/shared.observable.service';
 
 @Directive({
   selector: '[isMobile]'

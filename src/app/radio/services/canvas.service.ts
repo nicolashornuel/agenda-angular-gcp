@@ -11,11 +11,11 @@ export class CanvasService {
     ctx?.clearRect(0, 0, width, height);
   }
 
-  public getPositionFromEvent(event: MouseEvent, canvas: ElementRef<HTMLCanvasElement>): {x: number, y: number} {
+  public getPositionFromEvent(event: MouseEvent | Touch, canvas: ElementRef<HTMLCanvasElement>): {x: number, y: number} {
     const { x, y } = canvas.nativeElement.getBoundingClientRect();
     return {
-      x: event.x - x,
-      y: event.y - y
+      x: event.clientX - x,
+      y: event.clientY - y
     };
   }
   

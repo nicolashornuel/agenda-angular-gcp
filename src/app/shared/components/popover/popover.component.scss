@@ -27,6 +27,16 @@
     top: calc(50% - 5px);
   }
 }
+.right {
+  transform: translate(7px, calc(-50% - 0px));
+  &::before {
+    border-right: 5px solid $grey-100;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    left: -5px;
+    top: calc(50% - 5px);
+  }
+}
 .bottom {
   transform: translate(-50%, 7px);
   &::before {

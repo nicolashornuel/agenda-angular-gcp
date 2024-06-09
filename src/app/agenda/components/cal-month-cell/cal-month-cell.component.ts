@@ -11,7 +11,6 @@ import {
 } from '@angular/core';
 import {AlertService} from '@shared/services/alert.service';
 import {DestroyService} from '@shared/services/destroy.service';
-import {Modal, ModalParam, ModalService} from '@shared/services/modal.service';
 import {CalendarEvent, CalendarMonthViewDay} from 'angular-calendar';
 import {isSameDay, isSameMonth} from 'date-fns';
 import {takeUntil} from 'rxjs';
@@ -20,6 +19,8 @@ import {emptyFields} from '../../models/emptyFields.constant';
 import {DayClickedService} from '../../services/day-clicked.service';
 import {MapperService} from '../../services/mapper.service';
 import { DatePipe } from '@angular/common';
+import { ModalService } from '@shared/services/shared.observable.service';
+import { Modal, ModalParam } from '@shared/models/modalParam.interface';
 
 @Component({
   selector: 'app-cal-month-cell',

@@ -1,8 +1,8 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
-import {PopoverParam} from '@shared/models/popoverParam.interface';
-import {DestroyService} from '@shared/services/destroy.service';
-import {PopoverService} from '@shared/services/popover.service';
-import {takeUntil} from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { PopoverParam } from '@shared/models/popoverParam.interface';
+import { DestroyService } from '@shared/services/destroy.service';
+import { PopoverService } from '@shared/services/shared.observable.service';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-popover',

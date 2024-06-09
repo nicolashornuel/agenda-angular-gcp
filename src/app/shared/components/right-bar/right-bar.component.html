@@ -1,7 +1,7 @@
 <ng-container [ngSwitch]="width">
   <ng-container *ngSwitchCase="'100%'">
-    <div #sideBar class="sideBar">
-      <button appButton filled (click)="sideBar.classList.toggle('show')"><i class="fas fa-arrow-left fa-2x"></i></button>
+    <div class="sideBar" [ngClass]="isOpen ? 'show' : ''">
+      <button appButton filled (click)="onToggleOpen()"><i class="fas fa-arrow-left fa-2x"></i></button>
       <div class="sideBar-content">
         <ng-container [ngTemplateOutlet]="content"></ng-container>
       </div>
@@ -13,7 +13,7 @@
         <div class="col">
           <div class="radius-inverted bottom-right"></div>
           <div class="tab-icon row-center-center">
-            <app-icon color="light" (click)="isOpen = !isOpen" path="chevron-left"></app-icon>
+            <app-icon color="light" (click)="onToggleOpen()" path="chevron-left"></app-icon>
           </div>
           <div class="radius-inverted top-right"></div>
         </div>
@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="backdrop" (click)="isOpen = !isOpen" [ngClass]="isOpen ? 'open' : 'close'"></div>
+    <div class="backdrop" (click)="onToggleOpen()" [ngClass]="isOpen ? 'open' : 'close'"></div>
   </ng-container>
 </ng-container>
 

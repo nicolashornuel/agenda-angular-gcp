@@ -1,6 +1,7 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
+import { Modal, ModalParam } from '@shared/models/modalParam.interface';
 import {DestroyService} from '@shared/services/destroy.service';
-import {Modal, ModalParam, ModalService} from '@shared/services/modal.service';
+import { ModalService } from '@shared/services/shared.observable.service';
 import { AudioNodeController } from 'app/radio/abstracts/audioDirective.abstract';
 import { AudioSelectParam, AudioSelectParamService, SelectParam } from 'app/radio/services/audio.firestore.service';
 
