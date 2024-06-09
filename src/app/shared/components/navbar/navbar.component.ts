@@ -12,6 +12,7 @@ export class NavbarComponent implements OnInit {
   @Input() items: {title: string; route: string}[] = [];
   @Output() signOut = new EventEmitter<void>();
   public userImg: SafeUrl | undefined;
+  public isOpen: boolean = false;
 
   constructor(private storage: StorageService, private sanitizer: DomSanitizer) {}
 

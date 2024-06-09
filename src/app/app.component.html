@@ -1,7 +1,9 @@
-<app-navbar isMobile [items]="items" (signOut)="auth.signOut()"  *ngIf="auth.getUserLoggedIn$ | async"></app-navbar>
-<app-alert></app-alert>
-<app-popover></app-popover>
-<app-modal></app-modal>
-<app-audio-handler></app-audio-handler>
-<app-rss-flux></app-rss-flux>
+<ng-container *ngIf="auth.getUserLoggedIn$ | async">
+    <app-navbar isMobile [items]="items" (signOut)="auth.signOut()"></app-navbar>
+    <app-alert></app-alert>
+    <app-popover></app-popover>
+    <app-modal></app-modal>
+    <app-audio-handler></app-audio-handler>
+    <app-rss-flux></app-rss-flux>
+</ng-container>
 <router-outlet></router-outlet>

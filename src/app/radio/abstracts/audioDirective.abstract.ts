@@ -114,8 +114,6 @@ export abstract class AudioNodeAnalyser extends AudioNodeController implements A
   }
 
   protected initCanvas(): void {
-    console.log(PAD_MAX);
-    
     this.canvas = this.component.canvas;
     this.canvas.nativeElement.width = PAD_MAX;
     this.canvas.nativeElement.height = PAD_MAX;
