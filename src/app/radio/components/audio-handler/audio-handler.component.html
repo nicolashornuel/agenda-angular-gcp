@@ -4,14 +4,14 @@
       <fieldset>
         <legend>Analyzer</legend>
         <div [ngClass]="isMobile ? 'col gap-2' : 'row-between-center'">
-          <app-audio-node-analyser audioAnalyserWave [source]="gainNode" [context]="audioCtx"></app-audio-node-analyser>
-          <app-audio-node-analyser audioAnalyserBars [source]="gainNode" [context]="audioCtx"></app-audio-node-analyser>
+          <app-audio-node-analyser audioAnalyserWave [gainNode]="gainNode" [context]="audioCtx"></app-audio-node-analyser>
+          <app-audio-node-analyser audioAnalyserBars [gainNode]="gainNode" [context]="audioCtx"></app-audio-node-analyser>
         </div>
       </fieldset>
       <fieldset class="main-container">
         <legend>Main</legend>
         <div class="row-between-center gap-2">
-          <app-audio-node-radio class="w-100" [source]="gainNode" [context]="audioCtx"></app-audio-node-radio>
+          <app-audio-node-radio class="w-100" [gainNode]="gainNode" [context]="audioCtx"></app-audio-node-radio>
           <div class="row-between-center gap-2">
             <app-audio-control-pot
               name="volume"
@@ -21,13 +21,14 @@
               [(value)]="gainNode.gain.value"
               (valueChange)="onGainChange($event)"
             ></app-audio-control-pot>
-            <app-audio-node-distortion [source]="gainNode" [context]="audioCtx"></app-audio-node-distortion>
+              <app-audio-node-distortion [gainNode]="gainNode" [context]="audioCtx"></app-audio-node-distortion>
           </div>
         </div>
+        <app-radio-history></app-radio-history>
       </fieldset>
       <fieldset>
         <legend>Equalizer</legend>
-        <app-audio-control-equ [source]="gainNode" [context]="audioCtx"></app-audio-control-equ>
+        <app-audio-control-equ [gainNode]="gainNode" [context]="audioCtx"></app-audio-control-equ>
       </fieldset>
       <fieldset>
         <legend>Effect</legend>
@@ -53,26 +54,16 @@
           </section>
           <ng-container [ngSwitch]="effectSelected">
             <ng-container *ngSwitchCase="'highpass'">
-              <app-audio-control-pad
-                audioPadFilter
-                [source]="gainNode"
-                [context]="audioCtx"
-                type="highpass"
-              ></app-audio-control-pad>
+              <app-audio-control-pad audioPadFilter [gainNode]="gainNode" [context]="audioCtx" type="highpass" ></app-audio-control-pad>
             </ng-container>
             <ng-container *ngSwitchCase="'lowpass'">
-              <app-audio-control-pad
-                audioPadFilter
-                [source]="gainNode"
-                [context]="audioCtx"
-                type="lowpass"
-              ></app-audio-control-pad>
+              <app-audio-control-pad audioPadFilter [gainNode]="gainNode" [context]="audioCtx" type="lowpass"></app-audio-control-pad>
             </ng-container>
             <ng-container *ngSwitchCase="'Reverb'">
-              <app-audio-control-pad audioPadReverb [source]="gainNode" [context]="audioCtx"></app-audio-control-pad>
+              <app-audio-control-pad audioPadReverb [gainNode]="gainNode" [context]="audioCtx"></app-audio-control-pad>
             </ng-container>
             <ng-container *ngSwitchCase="'Delay'">
-              <app-audio-control-pad audioPadDelay [source]="gainNode" [context]="audioCtx"></app-audio-control-pad>
+              <app-audio-control-pad audioPadDelay [gainNode]="gainNode" [context]="audioCtx"></app-audio-control-pad>
             </ng-container>
           </ng-container>
         </div>

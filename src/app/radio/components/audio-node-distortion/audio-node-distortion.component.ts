@@ -1,26 +1,22 @@
-import { AfterViewInit, Component } from '@angular/core';
-import { AudioNodeController } from 'app/radio/abstracts/audioDirective.abstract';
+import { Component } from '@angular/core';
+import { AudioNodeSource } from 'app/radio/abstracts/audioDirective.abstract';
 
 @Component({
   selector: 'app-audio-node-distortion',
   templateUrl: './audio-node-distortion.component.html',
   styleUrls: ['./audio-node-distortion.component.scss']
 })
-export class AudioNodeDistortionComponent extends AudioNodeController implements AfterViewInit {
-
+export class AudioNodeDistortionComponent extends AudioNodeSource {
+  
   public currentValue: number = 0;
   private distortion!: WaveShaperNode; //curve OverSampleType = "2x" | "4x" | "none";
-
-  ngAfterViewInit(): void {
-    this.initNode();
-    this.connectNode();
-  }
 
   protected override initNode(): void {
     this.distortion = new WaveShaperNode(this.audioCtx);
   }
+  
   protected override connectNode(): void {
-    this.sourceNode.connect(this.distortion).connect(this.sourceNode.context.destination);
+    this.sourceNode.connect(this.distortion).connect(this.audioCtx.destination);
   }
 
   onPotChange(value: number): void {

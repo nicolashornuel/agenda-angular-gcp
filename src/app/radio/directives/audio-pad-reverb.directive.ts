@@ -20,13 +20,13 @@ export class AudioPadReverbDirective extends AudioNodePad {
     updatePosition: ({ x }, value: number) => ({ x, y: PAD_MAX - (Math.floor(value * 100) / 100) * PAD_MAX }),
     onEventStart: () => {
       this.isStarting = true;
-      this.gainValueBkp = this.sourceNode.gain.value;
+      this.gainValueBkp = this.gainNode.gain.value;
       this.connectNode();
     },
     onEventMove: (position: Position) => {
       if (!this.padParam.isPersist) this.connectNode();
       this.gainConvolver.gain.value = position.x / 20;
-      this.sourceNode.gain.value = this.normalizeValueFromY(position.y, 0, 1);
+      this.gainNode.gain.value = this.normalizeValueFromY(position.y, 0, 1);
     },
     onEventEnd: () => { if (!this.padParam.isPersist) this.disconnectNode() }
   }
@@ -48,7 +48,7 @@ export class AudioPadReverbDirective extends AudioNodePad {
       this.gainConvolver.disconnect(0);
       if (this.gainValueBkp && this.isStarting) {
         this.gainConvolver.gain.value = 0;
-        this.sourceNode.gain.value = this.gainValueBkp;
+        this.gainNode.gain.value = this.gainValueBkp;
         this.isStarting = false;
       }
     }

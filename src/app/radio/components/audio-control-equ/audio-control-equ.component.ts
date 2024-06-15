@@ -48,11 +48,11 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
   }
 
   protected override connectNode(): void {
-    this.sourceNode.connect(this.eqs[0]);
+    this.gainNode.connect(this.eqs[0]);
     for (let i = 1; i < this.eqs.length; i++) {
       this.eqs[i - 1].connect(this.eqs[i]);
     }
-    this.eqs[this.eqs.length - 1].connect(this.sourceNode.context.destination);
+    this.eqs[this.eqs.length - 1].connect(this.gainNode.context.destination);
   }
 
   private async initSelect(): Promise<void> {

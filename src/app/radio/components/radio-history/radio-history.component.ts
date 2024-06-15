@@ -1,5 +1,6 @@
-import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { RightBarIsOpenedService } from '@shared/services/shared.observable.service';
 import { TabResultService } from 'app/musique/services/musique.observable.service';
 import { StationsEnum } from 'app/radio/enums/radioFrance.enum';
 import { SongDTO, Grid } from 'app/radio/models/radioFrance.interface';
@@ -26,7 +27,8 @@ export class RadioHistoryComponent implements AfterViewInit {
     private radioService: RadioService,
     private transform: RadioTransformService,
     private titleService: Title,
-    private tabService: TabResultService
+    private tabService: TabResultService,
+    private rightBarIsOpenedService: RightBarIsOpenedService
   ) {}
 
   ngAfterViewInit(): void {
@@ -36,6 +38,7 @@ export class RadioHistoryComponent implements AfterViewInit {
   public onSearch(song: SongDTO): void {
     this.output.emit();
     this.tabService.set$(song.artist);
+    this.rightBarIsOpenedService.set$(false);
   }
 
   private getGrid(): void {

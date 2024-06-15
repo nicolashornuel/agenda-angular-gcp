@@ -128,7 +128,7 @@ export class RadioService {
    */
   private getGrid(station: StationsEnum): QueryRef<Grid> {
     const end = Math.round(new Date().getTime() / 1000);
-    const start = end - 3600; // il y a 1 heure
+    const start = end - 1800; // il y a 30 min (1heure - 3600)
     const GET_GRID = gql`
       query GetGrid($start: Int!, $end: Int!, $station: StationsEnum!) {
         grid(start: $start, end: $end, station: $station, includeTracks: true) {

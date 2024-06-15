@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { DestroyService } from '@shared/services/destroy.service';
-import { IsMobileService, RightBarIsOpenedService } from '@shared/services/shared.observable.service';
+import { IsMobileService } from '@shared/services/shared.observable.service';
 import { RadioPlayingService } from 'app/core/services/core.observable.service';
 import { AudioNodeController } from 'app/radio/abstracts/audioDirective.abstract';
 import { AudioVolumeService } from 'app/radio/services/audio.observable.service';
@@ -14,8 +14,6 @@ import { combineLatest, takeUntil } from 'rxjs';
 })
 export class AudioNodeRadioComponent extends AudioNodeController implements AfterViewInit {
   @ViewChild('audio') audio!: ElementRef;
-  @ViewChild('popover') popoverBtn!: ElementRef;
-  private source!: MediaElementAudioSourceNode;
   public gainRadio?: GainNode;
   public isPlaying: boolean = false;
   public radioList = [
@@ -37,7 +35,6 @@ export class AudioNodeRadioComponent extends AudioNodeController implements Afte
     private destroy$: DestroyService,
     private playingService: RadioPlayingService,
     private isMobileService: IsMobileService,
-    private rightBarIsOpenedService: RightBarIsOpenedService
   ) {
     super();
   }
@@ -49,12 +46,13 @@ export class AudioNodeRadioComponent extends AudioNodeController implements Afte
   }
 
   protected override initNode(): void {
-    this.source = new MediaElementAudioSourceNode(this.audioCtx, { mediaElement: this.audio.nativeElement });
+    this.sourceNode = new MediaElementAudioSourceNode(this.audioCtx, { mediaElement: this.audio.nativeElement });
     this.gainRadio = new GainNode(this.audioCtx);
+    this.sourceService.set$(this.sourceNode); 
   }
 
   protected override connectNode(): void {
-    this.source.connect(this.sourceNode).connect(this.audioCtx.destination);
+    this.sourceNode.connect(this.gainNode).connect(this.audioCtx.destination);
   }
 
   private listen(): void {
@@ -77,8 +75,4 @@ export class AudioNodeRadioComponent extends AudioNodeController implements Afte
     this.playingService.set$(this.isPlaying);
   }
 
-  onClosePopover(): void {
-    this.popoverBtn.nativeElement.click();
-    this.rightBarIsOpenedService.set$(false);
-  }
 }

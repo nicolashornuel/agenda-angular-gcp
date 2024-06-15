@@ -1,9 +1,20 @@
-import { AfterViewInit, Directive, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import {
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  inject
+} from '@angular/core';
+import { Observable, take, takeUntil } from 'rxjs';
 import { AudioControlPadComponent } from '../components/audio-control-pad/audio-control-pad.component';
 import { AudioNodeAnalyserComponent } from '../components/audio-node-analyser/audio-node-analyser.component';
-import { AudioVolumeService } from '../services/audio.observable.service';
+import { AudioVolumeService, SourceAudioService } from '../services/audio.observable.service';
 import { CanvasService } from '../services/canvas.service';
+import { DestroyService } from '@shared/services/destroy.service';
 
 export interface PadParam {
   canvas?: ElementRef<HTMLCanvasElement>;
@@ -28,9 +39,22 @@ export const PAD_MAX = 250;
 @Directive({})
 export abstract class AudioNodeController {
   @Input('context') audioCtx!: AudioContext;
-  @Input('source') sourceNode!: GainNode;
+  @Input() gainNode!: GainNode;
   protected abstract initNode(): void;
   protected abstract connectNode(): void;
+  protected sourceService = inject(SourceAudioService);
+  public sourceNode!: MediaElementAudioSourceNode;
+}
+
+@Directive({})
+export abstract class AudioNodeSource extends AudioNodeController implements AfterViewInit {
+  ngAfterViewInit(): void {
+    this.sourceService.get$.pipe(take(1)).subscribe(source => {
+      this.sourceNode = source!;
+      this.initNode();
+      this.connectNode();
+    });
+  }
 }
 
 @Directive({})
@@ -41,7 +65,8 @@ export abstract class AudioNodePad extends AudioNodeController implements OnInit
   constructor(
     public component: AudioControlPadComponent,
     public volumeService: AudioVolumeService,
-    public canvasService: CanvasService
+    public canvasService: CanvasService,
+    public destroy$: DestroyService
   ) {
     super();
   }
@@ -51,7 +76,10 @@ export abstract class AudioNodePad extends AudioNodeController implements OnInit
   }
 
   ngAfterViewInit(): void {
-    this.initNode();
+    this.sourceService.get$.pipe(takeUntil(this.destroy$)).subscribe(source => {
+      this.sourceNode = source!;
+      this.initNode();
+    });
   }
 
   ngOnDestroy(): void {
@@ -61,7 +89,7 @@ export abstract class AudioNodePad extends AudioNodeController implements OnInit
   protected normalizeValueFromX(position: number, min: number, max: number): number {
     const deltaZoom = max - min;
     const positionOnPad = position / PAD_MAX;
-    const positionWithZoom = (positionOnPad * deltaZoom) + min 
+    const positionWithZoom = positionOnPad * deltaZoom + min;
     //return Math.ceil((position / PAD_MAX) * 100) / 100;
     return Math.ceil(positionWithZoom * 100) / 100;
   }
@@ -69,7 +97,7 @@ export abstract class AudioNodePad extends AudioNodeController implements OnInit
   protected normalizeValueFromY(position: number, min: number, max: number): number {
     const deltaZoom = max - min;
     const positionOnPad = (PAD_MAX - position) / PAD_MAX;
-    const positionWithZoom = (positionOnPad * deltaZoom) + min 
+    const positionWithZoom = positionOnPad * deltaZoom + min;
     //return Math.ceil(((PAD_MAX - position) / PAD_MAX) * 100) / 100;
     return Math.ceil(positionWithZoom * 100) / 100;
   }
@@ -110,7 +138,7 @@ export abstract class AudioNodeAnalyser extends AudioNodeController implements A
   }
 
   protected connectNode(): void {
-    this.sourceNode.connect(this.analyser);
+    this.gainNode.connect(this.analyser);
   }
 
   protected initCanvas(): void {

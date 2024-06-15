@@ -8,11 +8,11 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import {DestroyService} from '@shared/services/destroy.service';
+import { DestroyService } from '@shared/services/destroy.service';
 import { PAD_MAX, PadParam, Position } from 'app/radio/abstracts/audioDirective.abstract';
 import { EffectPersistService } from 'app/radio/services/audio.observable.service';
 import { CanvasService } from 'app/radio/services/canvas.service';
-import {takeUntil} from 'rxjs';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-audio-control-pad',
@@ -26,7 +26,7 @@ export class AudioControlPadComponent implements AfterViewInit {
   @Output() isPersistChange = new EventEmitter<boolean>();
   public isMoving = false;
   private canvasCtx!: CanvasRenderingContext2D;
-  private currentPosition: Position = {x: 0, y: PAD_MAX};
+  public currentPosition: Position = {x: 0, y: PAD_MAX};
 
   @HostListener('window:mouseup')
   @HostListener('window:touchend')
