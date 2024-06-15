@@ -16,7 +16,7 @@
       {
         files: "*.html",
         "options": {
-          printWidth: 120     // Set 120 column sized code in HTML files
+          printWidth: 180     // Set 120 column sized code in HTML files
         }
       }
     ]

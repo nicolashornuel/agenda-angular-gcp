@@ -1,28 +1,24 @@
 @import 'variables.scss';
 
 article {
-  width: 500px;
+  display: grid;
 }
 
 .radio-divider {
-  margin: 15px 0;
+  margin: 10px 0;
   border-bottom: 2px solid $grey-80;
-  width: 100%;
 }
 .countdown {
   margin: 0;
 }
 .track-live {
-  overflow-x: hidden;
-  white-space: nowrap;
-  width: 100%;
-  .performers {
+  &.performers {
     margin: 0;
     font-size: 16px;
     font-weight: 400;
     line-height: 1.2em;
   }
-  .title {
+  &.title {
     margin: 0;
     font-size: 16px;
     font-weight: 400;
@@ -33,10 +29,15 @@ article {
 
 .song-option {
   cursor: pointer;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+  margin: unset;
+  font-size: 14px;
   &:hover {
     background-color: $grey-95;
   }
+}
+
+.ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }

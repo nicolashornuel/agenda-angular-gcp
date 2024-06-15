@@ -34,8 +34,8 @@ export class AudioPadFilterDirective extends AudioNodePad {
     this.filterNode = this.audioCtx.createBiquadFilter();
   }
 
-  override connectNode(): void {
-    this.sourceNode.connect(this.filterNode).connect(this.sourceNode.context.destination);
+  override connectNode(): void {    
+    this.sourceNode.connect(this.filterNode).connect(this.audioCtx.destination);
   }
 
   override disconnectNode(): void {

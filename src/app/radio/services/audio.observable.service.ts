@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubjectService } from '@shared/abstracts/observable.abstract';
+import { BehaviorSubjectService, SubjectService } from '@shared/abstracts/observable.abstract';
 
 @Injectable({
   providedIn: 'root'
@@ -16,5 +16,14 @@ export class AudioVolumeService extends BehaviorSubjectService<number> {
 export class EffectPersistService extends BehaviorSubjectService<boolean> {
   constructor() {
     super(false);
+  }
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SourceAudioService extends BehaviorSubjectService<MediaElementAudioSourceNode | undefined> {
+  constructor() {
+    super(undefined);
   }
 }

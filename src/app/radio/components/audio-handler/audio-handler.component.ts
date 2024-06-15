@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DestroyService } from '@shared/services/destroy.service';
 import { IsMobileService, RightBarIsOpenedService } from '@shared/services/shared.observable.service';
-import { AudioVolumeService, EffectPersistService } from 'app/radio/services/audio.observable.service';
+import { AudioVolumeService, EffectPersistService, SourceAudioService } from 'app/radio/services/audio.observable.service';
 import { combineLatest, takeUntil } from 'rxjs';
 
 @Component({
@@ -18,12 +18,13 @@ export class AudioHandlerComponent implements OnInit {
   public isMobile!: boolean;
   public isLoading!: boolean;
 
+
   constructor(
     private volumeService: AudioVolumeService,
     private persistService: EffectPersistService,
     private isMobileService: IsMobileService,
     private rightBarIsOpenedService: RightBarIsOpenedService,
-    private destroy$: DestroyService
+    private destroy$: DestroyService,
   ) {}
 
   ngOnInit(): void {
@@ -38,7 +39,6 @@ export class AudioHandlerComponent implements OnInit {
           this.isPersist = values[1];
           this.isMobile = values[2]!;
           if (values[3]) this.audioCtx.resume();
-          
           this.isLoading = false;
         });
     }

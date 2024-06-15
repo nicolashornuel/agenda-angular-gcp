@@ -2,13 +2,6 @@
   <span class="scalling-legend x">{{ padParam.libelleX }}</span>
   <span class="scalling-legend y">{{ padParam.libelleY }}</span>
   <canvas #scalling id="scalling"> </canvas>
-  <canvas
-    id="control"
-    #canvas
-    (mousedown)="onEventStart($event)"
-    (mousemove)="onEventMove($event)"
-    (touchstart)="onTouchEventStart($event)"
-    (touchmove)="onTouchEventMove($event)"
-  >
+  <canvas id="control" #canvas (mousedown)="onEventStart($event)" (mousemove)="onEventMove($event)" (touchstart)="onTouchEventStart($event)" (touchmove)="onTouchEventMove($event)">
   </canvas>
 </div>
