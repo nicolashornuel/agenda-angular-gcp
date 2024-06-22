@@ -7,7 +7,7 @@ article {
 section {
   transition: all .5s ease;
   &.open {
-    height: 340px;
+    height: 380px;
   }
   &.close {
     height: 0px;
