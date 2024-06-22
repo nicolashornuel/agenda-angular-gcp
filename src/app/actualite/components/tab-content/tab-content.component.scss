@@ -12,7 +12,6 @@
   row-gap: 20px;
 
   app-card {
-    flex-basis: 24%;
     transition: transform .3s ease-in-out;
     &:hover {
       transform: scale(101%);
@@ -34,4 +33,15 @@
     }
   }
 
+}
+
+@media (max-width: 576px) {
+  app-card {
+    flex-basis: 100%;
+  }
+}
+@media (min-width: 576px) {
+  app-card {
+    flex-basis: 24%;
+  }
 }
