@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { DestroyService } from '@shared/services/destroy.service';
 import { IsMobileService } from '@shared/services/shared.observable.service';
-import { RadioPlayingService } from 'app/core/services/core.observable.service';
+import { RadioPlayingService } from '@core/services/core.observable.service';
 import { AudioNodeController } from 'app/radio/abstracts/audioDirective.abstract';
 import { AudioVolumeService } from 'app/radio/services/audio.observable.service';
 
@@ -14,7 +14,6 @@ import { combineLatest, takeUntil } from 'rxjs';
 })
 export class AudioNodeRadioComponent extends AudioNodeController implements AfterViewInit {
   @ViewChild('audio') audio!: ElementRef;
-  public gainRadio?: GainNode;
   public isPlaying: boolean = false;
   public radioList = [
     {
@@ -47,7 +46,6 @@ export class AudioNodeRadioComponent extends AudioNodeController implements Afte
 
   protected override initNode(): void {
     this.sourceNode = new MediaElementAudioSourceNode(this.audioCtx, { mediaElement: this.audio.nativeElement });
-    this.gainRadio = new GainNode(this.audioCtx);
     this.sourceService.set$(this.sourceNode); 
   }
 
@@ -59,7 +57,7 @@ export class AudioNodeRadioComponent extends AudioNodeController implements Afte
     combineLatest([this.volumeService.get$, this.playingService.get$, this.isMobileService.get$])
       .pipe(takeUntil(this.destroy$))
       .subscribe(values => {
-        this.gainRadio!.gain.value = values[0];
+        this.audio.nativeElement.volume = values[0];
         if (this.isPlaying) this.setRadioPlaying(values[1]);
         this.isMobile = values[2]!;
       });

@@ -8,7 +8,7 @@ export const environment = {
     messagingSenderId: '1076193011248',
   },
   production: true,
-  url_backend: 'https://agenda-backend-blfd6t66sq-od.a.run.app',
+  urlBackEnd: 'https://agenda-backend-blfd6t66sq-od.a.run.app',
   discogsToken: "lFqQfxurDTjYekydiilIbmdglWEdZqWinZMEnugw",
   urlApiDiscogs: "https://api.discogs.com/database/search?",
   youtubeToken: "AIzaSyDL_mFIhyWvHaC_auDh1xWpHMQ5nENbqnU",

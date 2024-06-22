@@ -4,6 +4,22 @@ article {
   display: grid;
 }
 
+section {
+  transition: all .5s ease;
+  &.open {
+    height: 340px;
+  }
+  &.close {
+    height: 0px;
+    overflow: hidden;
+  }
+}
+
+app-icon {
+  cursor: pointer;
+  transform: rotate(90deg);
+}
+
 .radio-divider {
   margin: 10px 0;
   border-bottom: 2px solid $grey-80;

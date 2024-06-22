@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
-import {StorageService} from 'app/core/services/storage.service';
-import {User} from 'app/core/services/user.service';
+import {StorageService} from '@core/services/storage.service';
+import {User} from '@core/services/user.service';
 
 @Component({
   selector: 'app-navbar',

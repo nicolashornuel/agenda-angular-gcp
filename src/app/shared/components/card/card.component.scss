@@ -4,7 +4,7 @@
     background-color: var(--background-color);
     border-radius: .25rem;
     .card-content {
-        padding: 1rem;
+        padding: var(--padding);
     }
     .header {
         border-bottom: 1px solid $grey-90;

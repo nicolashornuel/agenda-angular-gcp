@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { authGuard } from 'app/core/services/auth-guard.guard';
+import { authGuard } from '@core/services/auth-guard.guard';
 import { PageMemoComponent } from './page/page-memo.component';
 
 const routes: Routes = [

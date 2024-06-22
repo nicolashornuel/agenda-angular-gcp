@@ -22,6 +22,10 @@ export class AppComponent {
       route: 'musique'
     },
     {
+      title: 'Actualité',
+      route: 'actualite'
+    },
+    {
       title: 'Trading',
       route: 'trading'
     }

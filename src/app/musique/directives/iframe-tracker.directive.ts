@@ -1,5 +1,5 @@
 import { Directive, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, Renderer2 } from '@angular/core';
-import { RadioPlayingService } from 'app/core/services/core.observable.service';
+import { RadioPlayingService } from '@core/services/core.observable.service';
 
 @Directive({
   selector: '[iframeTracker]'

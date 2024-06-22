@@ -1,4 +1,4 @@
-<div class="card-container col" [style.--background-color]="backgroundColor">
+<div class="card-container col h-100" [style.--background-color]="backgroundColor" [style.--padding]="padding">
   <h5 class="header" *ngIf="title">{{ title }}</h5>
   <div class="card-content col f-grow">
     <ng-content></ng-content>

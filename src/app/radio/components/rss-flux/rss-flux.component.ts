@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { RssService } from 'app/radio/services/rss.service';
+import { RssService } from '@core/services/rss.service';
 import {take} from 'rxjs/operators';
 
 @Component({
