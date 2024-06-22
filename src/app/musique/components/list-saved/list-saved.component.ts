@@ -3,7 +3,7 @@ import { PriorityComponent } from '@shared/components/priority/priority.componen
 import { Modal } from '@shared/models/modalParam.interface';
 import { ColumnSet, FieldSet, RenderFieldSet, TableSet } from '@shared/models/tableSet.interface';
 import { ColSorted, ColumnsortableService } from '@shared/services/columnsortable.service';
-import { Pageable } from 'app/core/services/firestore.service';
+import { Pageable } from '@core/services/firestore.service';
 import { VideoController } from 'app/musique/abstracts/videoController.abstract';
 import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
 import { takeUntil } from 'rxjs';

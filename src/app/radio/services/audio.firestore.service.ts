@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {UserInfo} from '@angular/fire/auth';
 import {collectionData, query, where} from '@angular/fire/firestore';
 import {AlertService} from '@shared/services/alert.service';
-import {KEY_STORAGE_USER} from 'app/core/services/auth.service';
-import {FirestoreService} from 'app/core/services/firestore.service';
-import {StorageService} from 'app/core/services/storage.service';
+import {KEY_STORAGE_USER} from '@core/services/auth.service';
+import {FirestoreService} from '@core/services/firestore.service';
+import {StorageService} from '@core/services/storage.service';
 import {Observable, map} from 'rxjs';
 
 @Injectable({

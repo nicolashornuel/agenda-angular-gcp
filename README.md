@@ -80,3 +80,38 @@ https://firebase.google.com/docs/auth/web/firebaseui?hl=fr&authuser=0
 ## https://mattlewis-github.com/angular-calendar/#/kitchen-sink
 `npm i angular-calendar`
 
+
+## Cloud Function
+https://firebase.google.com/docs/functions/manage-functions?hl=fr&gen=2nd
+fetch fourni nativement avec node.js v18 :
+https://nodejs.org/en/blog/announcements/v18-release-announce
+
+Dépendances
+```sh
+npm install firebase-functions@latest firebase-admin@latest --save
+npm install -g firebase-tools
+```
+
+Déploiement
+```sh
+firebase deploy --only functions
+firebase deploy --only functions:onCallGetJson,functions:onCallGetText
+```
+
+```sh
+cd functions && npm run build:watch (tsc --watch)
+```
+```sh
+cd functions && npm run serve (npm run build && firebase emulators:start --only functions)
+```
+to test with postman and codespace github : 
+```sh
+gcloud auth application-default login
+gcloud auth print-identity-token
+```
+and get token into /home/node/.config/firebase
+https://googleapis.dev/nodejs/firestore/latest/index.html
+
+https://glowing-sniffle-p6j57p657qqcrg99-5001.app.github.dev/agenda-bf245/us-central1/onRequest
+https://docs.github.com/en/codespaces/developing-in-codespaces/forwarding-ports-in-your-codespace
+echo $GITHUB_TOKEN

@@ -5,6 +5,7 @@
     "baseUrl": "src",
     "paths": { 
       "@shared/*": ["app/shared/*"], 
+      "@core/*": ["app/core/*"], 
       "@agenda/*": [
         "app/agenda/*"
       ],

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertService } from '@shared/services/alert.service';
-import { AuthService } from 'app/core/services/auth.service';
+import { AuthService } from '@core/services/auth.service';
 import { Observable, take } from 'rxjs';
 
 @Component({

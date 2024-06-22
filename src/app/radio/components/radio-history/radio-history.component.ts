@@ -20,6 +20,7 @@ export class RadioHistoryComponent implements AfterViewInit {
   public grid?: SongDTO[];
   public secondsLeft = 0;
   public minutesLeft = 0;
+  public isOpen: boolean = false;
   private readonly STATION = StationsEnum.FIP;
   private ticker$ = new Subscription();
 
@@ -39,6 +40,10 @@ export class RadioHistoryComponent implements AfterViewInit {
     this.output.emit();
     this.tabService.set$(song.artist);
     this.rightBarIsOpenedService.set$(false);
+  }
+
+  public onToggleOpen(): void {
+    this.isOpen = !this.isOpen;
   }
 
   private getGrid(): void {

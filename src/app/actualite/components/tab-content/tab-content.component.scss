@@ -1,0 +1,37 @@
+@import 'variables.scss';
+
+
+.scrolling {
+    height: calc(100vh - 250px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: .75rem;
+  }
+
+.cards-container {
+  row-gap: 20px;
+
+  app-card {
+    flex-basis: 24%;
+    transition: transform .3s ease-in-out;
+    &:hover {
+      transform: scale(101%);
+    }
+  }
+
+  a {
+    text-decoration: none;
+    p {
+      margin: .75rem 1rem;
+    }
+    .date {
+      text-transform: capitalize;
+      color: $grey-20;
+      font-size: 1.25rem;
+    }
+    img {
+      width: 100%;
+    }
+  }
+
+}
