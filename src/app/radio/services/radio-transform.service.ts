@@ -62,7 +62,7 @@ export class RadioTransformService {
   public gridMapper(grid: TrackStep[] | BlankStep[] | DiffusionStep[]): SongDTO[] {
     let songs: SongDTO[] = [];
     grid.forEach((song: TrackStep | BlankStep | DiffusionStep) => songs.push(this.checkInstance(song)));
-    return songs.slice().reverse();
+    return songs.slice(0,10).reverse();
   }
 
   public brandMapper(brand: Brand): BrandDTO {

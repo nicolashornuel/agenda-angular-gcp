@@ -1,8 +1,15 @@
-*, ::after, ::before {
+*,
+::after,
+::before {
   box-sizing: border-box;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0;
   font-weight: 500;
   line-height: 1.2;
@@ -33,8 +40,8 @@ body {
   --bs-gutter-x: 1.5rem;
   --bs-gutter-y: 0;
   width: 100%;
-  padding-right: calc(var(--bs-gutter-x)* .5);
-  padding-left: calc(var(--bs-gutter-x)* .5);
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
   margin-right: auto;
   margin-left: auto;
 }
@@ -48,15 +55,33 @@ body {
 .body-container {
   position: relative;
 }
+.cards-container {
+  row-gap: 15px;
+}
 
 @media (max-width: 576px) {
   .container {
     padding: unset;
   }
+  .cards-container app-card {
+    flex-basis: 100%;
+  }
+  .scrolling {
+    padding: unset;
+  }
+  app-carousel {
+    padding: 20px;
+  }
 }
 @media (min-width: 576px) {
   .container {
     max-width: 540px;
+  }
+  .cards-container app-card {
+    flex-basis: 24%;
+  }
+  .scrolling {
+    padding: 20px;
   }
 }
 @media (min-width: 768px) {

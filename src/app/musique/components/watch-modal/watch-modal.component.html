@@ -25,7 +25,9 @@
     </app-input-suggestion>
   </div>
   <div class="row-end-center gap-2">
-    <button appButton color="red" (click)="onDelete()">Supprimer</button>
+    <ng-container *ngIf="input.id">
+      <button appButton color="red" (click)="onDelete()">Supprimer</button>
+    </ng-container>
     <button appButton color="green" (click)="onSave()">Enregistrer</button>
   </div>
 </ng-container>

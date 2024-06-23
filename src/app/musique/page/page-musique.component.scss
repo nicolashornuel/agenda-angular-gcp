@@ -1,0 +1,16 @@
+@media (max-width: 576px) {
+    .musique-header-select {
+        flex-basis: 50%
+    }
+    .musique-header-input {
+        flex-basis: 50%
+    }
+  }
+  @media (min-width: 576px) {
+    .musique-header-select {
+        flex-basis: 25%
+      }
+      .musique-header-input {
+        flex-basis: 25%
+      }
+  }

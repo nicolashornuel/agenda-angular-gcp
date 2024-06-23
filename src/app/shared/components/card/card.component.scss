@@ -3,12 +3,22 @@
 .card-container {
     background-color: var(--background-color);
     border-radius: .25rem;
-    .card-content {
-        padding: var(--padding);
-    }
     .header {
         border-bottom: 1px solid $grey-90;
         padding: 1rem;
         margin: 0;
+        display: grid;
+        span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
     }
+}
+
+.card-container.mini-card {
+        padding: 0rem;
+}
+.card-container.large-card {
+        padding: 1rem;
 }
