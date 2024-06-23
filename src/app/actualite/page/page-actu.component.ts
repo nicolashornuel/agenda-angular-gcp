@@ -43,7 +43,7 @@ export class PageActuComponent implements OnInit {
   private createTab(feed: RssFeed): TabParam {
     return {
       name: feed.name,
-      closable: true,
+      closable: false,
       content: TabContentComponent,
       bind: (componentRef: ComponentRef<TabContentComponent>) => (componentRef.instance.url = feed.url)
     };

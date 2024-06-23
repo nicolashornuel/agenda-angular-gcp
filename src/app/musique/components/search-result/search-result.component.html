@@ -1,53 +1,53 @@
 <ng-container *ngIf="!loading; else spinner">
-  <section class="scrolling col-start-start gap-4 px-4">
-    <ng-container *ngIf="discogs.length > 0">
-      <img class="logo" src="assets/discogs-simplified.svg" />
-      <app-carousel>
-        <app-card appCarouselItem *ngFor="let discog of discogs" class="column-elt" backgroundColor="hsl(0, 0%, 95%)">
-          <div class="discogs-img-container row-center-center">
-            <img [src]="discog.thumb" />
-          </div>
-          <p>
-            <span *ngIf="discog.title" class="label">Titre : </span>{{ discog.title }}
-            <span *ngIf="discog.year" class="label">Sortie : </span>{{ discog.year }} - {{ discog.country }}
-            <span *ngIf="discog.format" class="label">Support : </span>{{ discog.format?.slice(0, 50) }}
-            <span *ngIf="discog.style" class="label">Style : </span>{{ discog.style }}
-          </p>
-        </app-card>
-      </app-carousel>
-    </ng-container>
-
-    <ng-container *ngIf="extractWiki">
-      <div class="row-between-center">
-        <img class="logo" src="assets/Wikipedia.svg" />
-      </div>
-      <div class="col-start-stretch wikipedia-container pb-3" [ngClass]="showMore ? '' : 'close'">
-        <span class="wikipedia-content">{{ extractWiki }}</span>
-        <div class="row-center-end w-100 show-more">
-          <a (click)="showMore = !showMore">...</a>
+  <section class="scrolling col-start-start gap-4">
+      <ng-container *ngIf="discogs.length > 0">
+        <img class="logo" src="assets/discogs-simplified.svg" />
+        <app-carousel>
+          <app-card appCarouselItem *ngFor="let discog of discogs" class="column-elt" backgroundColor="hsl(0, 0%, 95%)" [isMiniCard]="true">
+            <div class="discogs-img-container row-center-center">
+              <img [src]="discog.thumb" />
+            </div>
+            <p class="m-3">
+              <span *ngIf="discog.title" class="label">Titre : </span>{{ discog.title }}
+              <span *ngIf="discog.year" class="label">Sortie : </span>{{ discog.year }} - {{ discog.country }}
+              <span *ngIf="discog.format" class="label">Support : </span>{{ discog.format?.slice(0, 50) }}
+              <span *ngIf="discog.style" class="label">Style : </span>{{ discog.style }}
+            </p>
+          </app-card>
+        </app-carousel>
+      </ng-container>
+      <ng-container *ngIf="extractWiki">
+        <div class="row-between-center">
+          <img class="logo" src="assets/Wikipedia.svg" />
         </div>
-      </div>
-    </ng-container>
-
-    <ng-container *ngIf="videos.length > 0">
-      <div class="row-between-center">
-        <img class="logo" src="../../../assets/youtube.svg" />
-      </div>
-      <div class="row-between-stretch f-wrap card-youtube-container">
-        <app-card *ngFor="let video of videos" [title]="video.channelTitle" backgroundColor="hsl(0, 0%, 95%)">
-          <p>{{ video.publishedAt }}</p>
-          <div class="iframe-container">
-            <iframe class="responsive-iframe" [src]="video.sanitized" allowfullscreen frameborder="0"> </iframe>
+        <div class="col-start-stretch wikipedia-container pb-3" [ngClass]="showMore ? '' : 'close'">
+          <span class="wikipedia-content">{{ extractWiki }}</span>
+          <div class="row-center-end w-100 show-more">
+            <a (click)="showMore = !showMore">...</a>
           </div>
-          <p>{{ video.title }}</p>
-          <p class="f-grow word-break">{{ video.description }}</p>
-          <button class="self-end" appButton color="green" (click)="onAdd(video)">Ajouter</button>
-        </app-card>
-      </div>
-    </ng-container>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="videos.length > 0">
+        <div class="row-between-center">
+          <img class="logo" src="../../../assets/youtube.svg" />
+        </div>
+        <div class="row-between-stretch f-wrap cards-container">
+          <app-card *ngFor="let video of videos" [title]="video.channelTitle" backgroundColor="hsl(0, 0%, 95%)" [isMiniCard]="true">
+            <p class="m-3">{{ video.publishedAt | date : 'shortDate' }}</p>
+            <img [src]="video.thumbnail" />
+            <p class="m-3">{{ video.title }}</p>
+            <p class="m-3 f-grow word-break">{{ video.description }}</p>
+            <button class="m-3 self-end" appButton color="green" (click)="openModal(video, modal)">VOIR</button>
+          </app-card>
+        </div>
+      </ng-container>
   </section>
 </ng-container>
 
 <ng-template #spinner>
   <app-spinner></app-spinner>
+</ng-template>
+
+<ng-template #modal let-video>
+  <app-watch-modal [input]="video"></app-watch-modal>
 </ng-template>

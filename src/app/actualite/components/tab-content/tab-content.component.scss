@@ -5,12 +5,9 @@
     height: calc(100vh - 250px);
     overflow-y: auto;
     overflow-x: hidden;
-    padding: .75rem;
   }
 
 .cards-container {
-  row-gap: 20px;
-
   app-card {
     transition: transform .3s ease-in-out;
     &:hover {
@@ -33,15 +30,4 @@
     }
   }
 
-}
-
-@media (max-width: 576px) {
-  app-card {
-    flex-basis: 100%;
-  }
-}
-@media (min-width: 576px) {
-  app-card {
-    flex-basis: 24%;
-  }
 }

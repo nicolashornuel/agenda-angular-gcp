@@ -1,4 +1,5 @@
 import { Component, ComponentRef, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { TabParam } from '@shared/components/tabs/tabs.component';
 import { DestroyService } from '@shared/services/destroy.service';
 import { takeUntil } from 'rxjs';
@@ -29,13 +30,22 @@ export class PageMusiqueComponent implements OnInit {
 
   public orderYoutubeSelected = this.orderYoutubeOptions.find(order => order.value === OrderYoutube.VIEWCOUNT);
 
-  constructor(private destroy$: DestroyService, private tabService: TabResultService) {}
+  constructor(private destroy$: DestroyService, private tabService: TabResultService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.listenTabService();
+    this.checkNavigation();
+  }
+
+  private listenTabService(): void {
     this.tabService.get$.pipe(takeUntil(this.destroy$)).subscribe(keyword => {
       this.tabs.push(this.createTabResult(keyword));
       this.tabSelected = this.tabs.length - 1;
     });
+  }
+
+  private checkNavigation(): void {
+    if (history.state.keyword) this.tabService.set$(history.state.keyword);
   }
 
   onSearch(keyword: string): void {
@@ -46,7 +56,7 @@ export class PageMusiqueComponent implements OnInit {
     const param = {
       keyword,
       order: this.orderYoutubeSelected!.value
-    }
+    };
     return {
       name: [param.keyword, param.order].join(' '),
       closable: true,

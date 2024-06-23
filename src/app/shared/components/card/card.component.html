@@ -1,6 +1,21 @@
-<div class="card-container col h-100" [style.--background-color]="backgroundColor" [style.--padding]="padding">
-  <h5 class="header" *ngIf="title">{{ title }}</h5>
-  <div class="card-content col f-grow">
-    <ng-content></ng-content>
+<ng-container *ngIf="!isMiniCard; else miniCard">
+  <div class="card-container col h-100 large-card" [style.--background-color]="backgroundColor">
+    <h5 class="header" *ngIf="title"><span>{{ title }}</span></h5>
+    <div class="card-content col f-grow">
+      <ng-container [ngTemplateOutlet]="content"></ng-container>
+    </div>
   </div>
-</div>
+</ng-container>
+
+<ng-template #miniCard>
+  <div class="card-container col h-100 mini-card" [style.--background-color]="backgroundColor">
+    <h5 class="header" *ngIf="title"><span>{{ title }}</span></h5>
+    <div class="card-content col f-grow">
+      <ng-container [ngTemplateOutlet]="content"></ng-container>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #content>
+  <ng-content></ng-content>
+</ng-template>
