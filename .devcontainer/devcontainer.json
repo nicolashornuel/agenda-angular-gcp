@@ -1,17 +1,18 @@
 {
   // "image": "mcr.microsoft.com/devcontainers/universal:2",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:16",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:18",
   "features": {
     "ghcr.io/devcontainers-contrib/features/angular-cli:2": {},
     "ghcr.io/devcontainers-contrib/features/firebase-cli:2": {},
     "ghcr.io/dhoeric/features/google-cloud-cli:1": {}
   },
   "customizations": {
-		// Configure properties specific to VS Code.
-		"vscode": {
-			// Set *default* container specific settings.json values on container create.
-			"settings": {},
-			"extensions": [],
-		}
-}
+    // Configure properties specific to VS Code.
+    "vscode": {
+      // Set *default* container specific settings.json values on container create.
+      "settings": {},
+      "extensions": []
+    }
+  },
+  "postCreateCommand": "npm install"
 }
