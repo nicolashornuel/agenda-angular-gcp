@@ -28,6 +28,10 @@ export class AppComponent {
     {
       title: 'Trading',
       route: 'trading'
+    },
+    {
+      title: 'GPS',
+      route: 'location'
     }
   ]
 

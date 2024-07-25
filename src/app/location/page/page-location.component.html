@@ -1,0 +1,14 @@
+<app-layout>
+    <div>ok</div>
+</app-layout>
+
+<section class="container">
+    <div class="map-container" 
+    leaflet 
+    [leafletOptions]="options" 
+    (leafletMapReady)="onMapReady($event)" 
+    (leafletClick)="mapClicked($event)"
+    [leafletLayersControl]="layersControl">
+  </div>
+  </section>
+  

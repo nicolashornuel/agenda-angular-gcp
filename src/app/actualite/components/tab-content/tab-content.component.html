@@ -1,5 +1,5 @@
 <section *ngIf="!loading; else spinner" class="scrolling row-between-stretch f-wrap cards-container">
-  <app-card *ngFor="let card of cards" backgroundColor="hsl(0, 0%, 95%)">
+  <app-card *ngFor="let card of cards" backgroundColor="hsl(0, 0%, 95%)" [isMiniCard]="true">
     <a [href]="card.link">
       <p class="date">{{ card.pubDate | date : 'fullDate' }}</p>
       <img [src]="card.img" />

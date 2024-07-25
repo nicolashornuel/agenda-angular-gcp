@@ -13,6 +13,7 @@ const routes: Routes = [
   {path: 'musique', loadChildren: () => import('./musique/musique.module').then(m => m.MusiqueModule)},
   {path: 'actualite', loadChildren: () => import('./actualite/actualite.module').then(m => m.ActualiteModule)},
   {path: 'trading', loadChildren: () => import('./trading/trading.module').then(m => m.TradingModule)},
+  {path: 'location', loadChildren: () => import('./location/location.module').then(m => m.LocationModule)},
   {path: '**', redirectTo: '/sign-in', pathMatch: 'full'},
   {path: ' ', redirectTo: '/sign-in', pathMatch: 'full'}
 ];

@@ -6,7 +6,7 @@
       label="Recherche Youtube"
       ngModel
       #box
-      (keyup.enter)="onSearch(box.value)"
+      (onBlur)="onSearch(box.value)"
       name="q"
     ></app-input-text>
   </section>
