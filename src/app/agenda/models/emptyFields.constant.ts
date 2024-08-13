@@ -67,7 +67,7 @@ export const emptyFields: CalEventField[] = [
         description: "Baptiste va à la garderie ce soir"
       }
     },
-    {
+/*     {
       title: 'CLSH',
       meta: {
         start: '07:30:00',
@@ -76,6 +76,61 @@ export const emptyFields: CalEventField[] = [
         daysWhenHoliday: [1, 2, 3, 4, 5],
         daysWhenNotHoliday: [3],
         description: "Baptiste va au centre de loisir aujourd'hui"
+      }
+    }, */
+    {
+      title: 'CLSH Baptiste',
+      meta: {
+        start: '07:30:00',
+        end: '18:30:00',
+        type: CalEventType.FAMILY,
+        daysWhenHoliday: [1, 2, 3, 4, 5],
+        daysWhenNotHoliday: [3],
+        description: "Baptiste va au centre de loisir aujourd'hui"
+      }
+    },
+    {
+      title: 'GM Romane',
+      meta: {
+        start: '07:30:00',
+        end: '09:00:00',
+        type: CalEventType.FAMILY,
+        daysWhenHoliday: [],
+        daysWhenNotHoliday: [1, 2, 4, 5],
+        description: "Romane va à la garderie ce matin"
+      }
+    },
+    {
+      title: 'Cantine Romane',
+      meta: {
+        start: '12:00:00',
+        end: '14:00:00',
+        type: CalEventType.FAMILY,
+        daysWhenHoliday: [],
+        daysWhenNotHoliday: [1, 2, 4, 5],
+        description: "Romane mange à la cantine aujourd'hui"
+      }
+    },
+    {
+      title: 'GS Romane',
+      meta: {
+        start: '17:00:00',
+        end: '19:00:00',
+        type: CalEventType.FAMILY,
+        daysWhenHoliday: [],
+        daysWhenNotHoliday: [1, 2, 4, 5],
+        description: "Romane va à la garderie ce soir"
+      }
+    },
+    {
+      title: 'CLSH Romane',
+      meta: {
+        start: '07:30:00',
+        end: '18:30:00',
+        type: CalEventType.FAMILY,
+        daysWhenHoliday: [1, 2, 3, 4, 5],
+        daysWhenNotHoliday: [3],
+        description: "Romane va au centre de loisir aujourd'hui"
       }
     }
   ]
