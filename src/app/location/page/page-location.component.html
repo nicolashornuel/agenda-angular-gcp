@@ -3,7 +3,8 @@
 </app-layout>
 
 <section class="container">
-    <div class="map-container" 
+    <div class="map-container"
+     *ngIf="!isLoading"
     leaflet 
     [leafletOptions]="options" 
     (leafletMapReady)="onMapReady($event)" 

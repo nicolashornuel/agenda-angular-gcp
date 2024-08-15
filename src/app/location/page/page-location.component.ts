@@ -1,25 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import * as Leaflet from 'leaflet';
-import { LocationService } from '../services/location.firestore.service';
-import { DestroyService } from '@shared/services/destroy.service';
-import { Timestamp, takeUntil } from 'rxjs';
-import { icon, marker, tileLayer } from 'leaflet';
+import { Component, OnInit } from '@angular/core';
 import { LeafletControlLayersConfig } from '@asymmetrik/ngx-leaflet';
-
-export interface Location {
-  id: string;
-  address: string;
-  date: Date;
-  lat: number;
-  lng: number;
-  time: Timestamp<number>;
-  user: string;
-}
-Leaflet.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'assets/icons/mobile.png',
-  iconUrl: 'assets/icons/mobile.png',
-  shadowUrl: 'assets/marker-shadow.png'
-});
+import { DestroyService } from '@shared/services/destroy.service';
+import { UtilService } from '@shared/services/util.service';
+import * as Leaflet from 'leaflet';
+import { takeUntil } from 'rxjs';
+import { GeoLocation, layersControl, mapOptions, markerOptions } from '../models/locations.constant';
+import { LocationService } from '../services/location.firestore.service';
 
 @Component({
   selector: 'app-page-location',
@@ -27,112 +13,53 @@ Leaflet.Icon.Default.mergeOptions({
   styleUrls: ['./page-location.component.scss']
 })
 export class PageLocationComponent implements OnInit {
-  public options!: Leaflet.MapOptions;
-  public layersControl!: LeafletControlLayersConfig;
+
+  public options: Leaflet.MapOptions = mapOptions;
+  public layersControl: LeafletControlLayersConfig = layersControl;
+  public isLoading = false;
 
   private map!: Leaflet.Map;
-  private route!: Leaflet.Polyline;
-  private markers: Leaflet.Marker[] = [];
+  private locations: GeoLocation[] = [];
 
-  // Define our base layers so we can reference them multiple times
-  private streetMaps: Leaflet.Layer = tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    detectRetina: true,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-  });
-  private wikiMaps: Leaflet.Layer = tileLayer('http://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
-    detectRetina: true,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-  });
-
-  // Marker for the top of Mt. Ranier
-  private summit = marker([46.8523, -121.7603], {
-    icon: icon({
-      iconSize: [25, 41],
-      iconAnchor: [13, 41],
-      iconUrl: 'assets/icons/mobile.png',
-      shadowUrl: 'assets/marker-shadow.png'
-    })
-  });
-
-  // Marker for the parking lot at the base of Mt. Ranier trails
-  private paradise!: Leaflet.Polyline; 
-  private locations: Location[] = [];
-
-  constructor(private locationService: LocationService, private destroy$: DestroyService) {}
+  constructor(private locationService: LocationService, private destroy$: DestroyService, private util: UtilService) {}
 
   ngOnInit(): void {
-    this.route = new Leaflet.Polyline([], {
-      color: 'red',
-      weight: 3,
-      opacity: 0.5
-    });
-    this.layersControl = {
-      baseLayers: {
-        'Street Maps': this.streetMaps,
-        'Wikimedia Maps': this.wikiMaps
-      },
-      overlays: {
-        'Mt. Rainier Summit': this.summit,
-        'Mt. Rainier Paradise Start': this.paradise,
-        'Mt. Rainier Climb Route': this.route
-      }
-    };
-    this.options = {
-      layers: [
-        tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        })
-      ],
-      zoom: 18,
-      maxZoom: 18,
-      //maxNativeZoom: 18,
-      center: { lat: 43.72, lng: 4.02 }
-    };
+    this.fetchLocations();
   }
 
   public onMapReady($event: Leaflet.Map) {
     this.map = $event;
-    this.locationService
-      .getAll()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(locations => this.initMarkers(locations));
+    this.layersControl.overlays = {
+      'Polyline': this.polylineLayer,
+      'Markers': this.markersLayer
+    }
   }
 
   public onMapClicked($event: any) {
-    console.log($event.latlng.lat, $event.latlng.lng);
+    const position = new Leaflet.LatLng($event.latlng.lat, $event.latlng.lng);
+    new Leaflet.Popup().setLatLng(position).setContent(`${position}`).addTo(this.map);
   }
 
-  private initMarkers(locations: Location[]) {
+  private fetchLocations(): void {
+        this.isLoading = true;
+    this.locationService
+      .getAll()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(locations => {
+        this.locations = this.util.sortInByDesc(locations, 'time');
+        this.isLoading = false;
+      });
 
-    this.locations = locations;
-    this.paradise = new Leaflet.Polyline([], {
-      color: 'green',
-      weight: 3,
-      opacity: 0.5
-    });
-    //this.paradise.addLatLng(this.getUserMarker('samsung-a20e'));
-    
-    //this.paradise.addTo(this.map);
-    
-
-    locations.forEach((location: Location, index: number) => {
-      const marker = this.generateMarker(location, index);
-      marker.addTo(this.map).bindPopup(`<b>${location.lat},  ${location.lng}</b>`);
-      this.map.panTo(location);
-
-      const position = new Leaflet.LatLng(location.lat, location.lng);
-      this.route.addLatLng(position);
-      this.route.addTo(this.map);
-
-      this.markers.push(marker);
-    });
-    this.map.fitBounds(this.route.getBounds(), {
-      padding: Leaflet.point(24, 24),
-      animate: true
-    });
+    /* this.isLoading = true;
+    this.locationService.firstPage('date', 50).then(locations => {
+      this.locations = this.util.sortInByDesc(locations.items, 'time');
+      this.isLoading = false;
+    }); */
   }
 
   private getUserMarker(user: string): Leaflet.LatLngExpression[] {
+    let set = new Set(this.locations.map(location => location.user));
+    console.log(set);
     return this.locations
       .filter(location => location.user === user)
       .map(location => ({
@@ -141,11 +68,43 @@ export class PageLocationComponent implements OnInit {
       }));
   }
 
-  private generateMarker(location: Location, index: number) {
-    return Leaflet.marker(location, { draggable: false }).on('click', event => this.markerClicked(event, index));
+
+  private get markersLayer(): Leaflet.Layer {
+    const markers: Leaflet.Marker[] = this.locations.map(location => {
+      const marker = this.generateMarker(location);
+      marker.bindPopup(`<b>${this.getDisplayDate(location)}</b> <br /> ${location.lat},  ${location.lng}`);
+      this.setFocus(location)
+      return marker;
+    });
+    return Leaflet.layerGroup(markers).addTo(this.map);
   }
 
-  private markerClicked($event: any, index: number) {
-    console.log($event.latlng.lat, $event.latlng.lng);
+  private get polylineLayer(): Leaflet.Layer {
+    const polyline: Leaflet.Polyline = this.generatePolyline(this.locations).addTo(this.map);
+    //this.map.fitBounds(polyline.getBounds());
+    return polyline;
+  }
+
+  private generateMarker(location: GeoLocation): Leaflet.Marker {
+    return Leaflet.marker(location, markerOptions);
+  }
+
+  private generatePolyline(locations: GeoLocation[]): Leaflet.Polyline {
+    return Leaflet.polyline(locations);
+  }
+
+  private setFocus(location: GeoLocation): void {
+    this.map.panTo(location);
+  }
+
+  private getDisplayDate(location: GeoLocation): string {
+    return new Date(location.date).toLocaleDateString('fr-FR', {
+      weekday: 'long',
+      day: 'numeric',
+      year: 'numeric',
+      month: 'short',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   }
 }
