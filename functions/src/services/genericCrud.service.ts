@@ -36,6 +36,18 @@ async function findByField(req: CallableRequest<DocumentData>): Promise<any> {
 
 async function findByDateRange(req: CallableRequest<DocumentData>): Promise<any> {
   const snapshot: QuerySnapshot<DocumentData> = await getFirestoreCollection(req.data.collection)
+    .where(req.data.key, '>=', req.data.startAt)
+    .where(req.data.key, '<=', req.data.endAt)
+    .get();
+  if (!snapshot.empty) {
+    const docs: QueryDocumentSnapshot<DocumentData>[] = snapshot.docs;
+    return docs.map((doc: DocumentSnapshot) => ({ ...doc.data(), id: doc.id }));
+  } else {
+    return []
+  }
+}
+/* async function findByDateRange(req: CallableRequest<DocumentData>): Promise<any> {
+  const snapshot: QuerySnapshot<DocumentData> = await getFirestoreCollection(req.data.collection)
     .where(req.data.key, '>=', new Date(req.data.startAt))
     .where(req.data.key, '<=', new Date(req.data.endAt))
     .get();
@@ -45,7 +57,7 @@ async function findByDateRange(req: CallableRequest<DocumentData>): Promise<any>
   } else {
     return []
   }
-}
+} */
 
 export { createOne, deleteOne, findByField, getAll, getFirestoreCollection, updateOne, findByDateRange };
 

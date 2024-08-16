@@ -1,6 +1,6 @@
-//import { initializeApp } from 'firebase-admin/app';
+import { initializeApp } from 'firebase-admin/app';
 
-//initializeApp();
+initializeApp();
 
 import { onCallCreateOne, onCallDeleteOne, onCallFindByField, onCallGetAll, onCallUpdateOne, onCallFindByDateRange } from './controllers/genericCrud.controller';
 import { onCallGetJson, onCallGetText } from './controllers/fetch.controller';
