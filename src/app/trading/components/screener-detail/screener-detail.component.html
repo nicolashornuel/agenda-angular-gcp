@@ -1,11 +1,11 @@
 
-<button (click)="openModal()"></button>
+<section class="row gap-5">
+  <app-select [options]="symbols" [(selected)]="symbol"></app-select>
+</section>
 
-<ng-template #modal let-input>
-  <div class="scrollable row gap-5">
-    <div *ngFor="let interval of intervals" class="mini-card">
-      <span class="badge">{{ interval }}</span>
-      <div class="scale-analysis" appWidgetAnalysis [symbol]="symbol" [interval]="interval"></div>
-    </div>
+<div class="scrollable row gap-5 pt-5">
+  <div *ngFor="let interval of intervals" class="mini-card">
+    <span class="badge">{{ interval }}</span>
+    <div class="scale-analysis" appWidgetAnalysis [symbol]="symbol.value" [interval]="interval"></div>
   </div>
-</ng-template>
+</div>

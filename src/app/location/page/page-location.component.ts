@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { LeafletControlLayersConfig } from '@asymmetrik/ngx-leaflet';
-import { DestroyService } from '@shared/services/destroy.service';
 import { UtilService } from '@shared/services/util.service';
 import * as Leaflet from 'leaflet';
-import { takeUntil } from 'rxjs';
-import { GeoLocation, layersControl, mapOptions, markerOptions } from '../models/locations.constant';
-import { LocationFunctionService, LocationService } from '../services/location.firestore.service';
+import { GeoLocation, baseLayers, mapOptions, markerOptions } from '../models/locations.constant';
+import { LocationFunctionService } from '../services/location.firestore.service';
 
 @Component({
   selector: 'app-page-location',
@@ -15,68 +12,73 @@ import { LocationFunctionService, LocationService } from '../services/location.f
 export class PageLocationComponent implements OnInit {
 
   public options: Leaflet.MapOptions = mapOptions;
-  public layersControl: LeafletControlLayersConfig = layersControl;
   public isLoading = false;
+  public periode: any;
+  public isLocked = true;
+  public locations: GeoLocation[] = [];
 
   private map!: Leaflet.Map;
-  private locations: GeoLocation[] = [];
 
-  constructor(private locationService: LocationService, private destroy$: DestroyService, private util: UtilService, private locationFunctionService: LocationFunctionService) {}
+  constructor(private util: UtilService, private locationFunctionService: LocationFunctionService) {}
 
   ngOnInit(): void {
-    this.fetchLocations();
+    this.initPeriode();
+    this.getData();
   }
 
-  public onMapReady($event: Leaflet.Map) {
+  public onFilterData(): void {
+    this.getData();
+  }
+
+  public onMapReady($event: Leaflet.Map): void {
     this.map = $event;
-    this.layersControl.overlays = {
-      'Polyline': this.polylineLayer,
-      'Markers': this.markersLayer
-    }
+    this.buildLayers();
   }
 
-  public onMapClicked($event: any) {
+  public onMapClicked($event: any): void {
     const position = new Leaflet.LatLng($event.latlng.lat, $event.latlng.lng);
     new Leaflet.Popup().setLatLng(position).setContent(`${position}`).addTo(this.map);
   }
 
-  private fetchLocations(): void {
-        this.isLoading = true;
-/*     this.locationService
-      .getAll()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(locations => {
-        this.locations = this.util.sortInByDesc(locations, 'time');
-        this.isLoading = false;
-      }); */
-
-      /* this.locationFunctionService.findByDateRange('time', 1723523904126, 1723527401078).then(locations => {
-        console.log(locations);
-        this.locations = this.util.sortInByDesc(locations.data, 'time');
-        this.isLoading = false;
-      }); */
-
+  public onDeleteData(): void {
     this.isLoading = true;
-    this.locationService.firstPage('date', 50).then(locations => {
-      this.locations = this.util.sortInByDesc(locations.items, 'time');
+    let promises = this.locations.map(location =>this.locationFunctionService.delete(location.id));
+    Promise.all(promises).then( () => this.isLoading = false);
+  }
+
+  private initPeriode(): void {
+    let date = new Date();
+    date.setDate(date.getDate() - 1);
+    this.periode = {
+      start: date,
+      end: new Date(),
+    }
+  }
+
+  private getData(): void {
+    this.isLoading = true;
+    this.locationFunctionService.findByDateRange('time', new Date(this.periode.start).getTime(), new Date(this.periode.end).getTime()).then(locations => {
+      this.locations = locations.data.length > 0 ? this.util.sortInByDesc(locations.data, 'time') : [];
       this.isLoading = false;
     });
   }
 
-  private getUserMarker(user: string): Leaflet.LatLngExpression[] {
-    let set = new Set(this.locations.map(location => location.user));
-    console.log(set);
-    return this.locations
-      .filter(location => location.user === user)
-      .map(location => ({
-        lat: location.lat,
-        lng: location.lng
-      }));
+  private buildLayers(): void {
+    const set = new Set(this.locations.map(location => location.provider));
+    const overlays = {
+      'Polyline': this.polylineLayer(this.locations),
+      'Markers': this.markersLayer(this.locations)
+    }
+    const layerControl = Leaflet.control.layers(baseLayers, overlays).addTo(this.map);
+    set.forEach(provider => {
+      const locations = this.locations.filter(location => location.provider === provider);
+      layerControl.addOverlay(this.markersLayer(locations), provider)
+    })
   }
 
 
-  private get markersLayer(): Leaflet.Layer {
-    const markers: Leaflet.Marker[] = this.locations.map(location => {
+  private markersLayer(locations: GeoLocation[]): Leaflet.Layer {
+    const markers: Leaflet.Marker[] = locations.map(location => {
       const marker = this.generateMarker(location);
       marker.bindPopup(`<b>${this.getDisplayDate(location)}</b> <br /> ${location.address} <br /> ${location.lat},  ${location.lng}`);
       this.setFocus(location)
@@ -85,8 +87,8 @@ export class PageLocationComponent implements OnInit {
     return Leaflet.layerGroup(markers).addTo(this.map);
   }
 
-  private get polylineLayer(): Leaflet.Layer {
-    const polyline: Leaflet.Polyline = this.generatePolyline(this.locations).addTo(this.map);
+  private polylineLayer(locations: GeoLocation[]): Leaflet.Layer {
+    const polyline: Leaflet.Polyline = this.generatePolyline(locations).addTo(this.map);
     //this.map.fitBounds(polyline.getBounds());
     return polyline;
   }

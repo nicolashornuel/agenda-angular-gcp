@@ -1,5 +1,9 @@
 @import 'variables.scss';
 
+:root {
+  --max-width: 800px;
+}
+
 .modal {
   z-index: $z-index-modal;
   position: fixed;
@@ -13,7 +17,7 @@
   .modal-dialog {
     margin: auto;
     min-height: calc(100% - 0.5rem * 2);
-    max-width: 800px;
+    max-width: var(--max-width);
 
     .modal-content {
       background-color: $grey-94;

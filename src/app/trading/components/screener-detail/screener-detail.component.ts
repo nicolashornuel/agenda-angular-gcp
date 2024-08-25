@@ -14,22 +14,15 @@ export class ScreenerDetailComponent implements OnInit {
   
   @ViewChild('modal') modal!: TemplateRef<Modal>;
   public intervals: IntervalType[] = [];
-  public symbol!: SymbolType;
-
-  constructor(private modalService: ModalService) {}
+  public symbols: any[] = [];
+  public symbol!: any;
 
   ngOnInit(): void {
     this.intervals = Object.values(IntervalType);
-    this.symbol = SymbolType.EURUSD;
+    this.symbols = Object.values(SymbolType).map(symbol => ({
+      name: symbol.toLowerCase(),
+      value: symbol
+    }));
+    this.symbol = this.symbols[0];
   }
-
-  openModal(): void {
-    const modalParam: ModalParam = {
-      title: `title`,
-      context: {$implicit: this.intervals},
-      template: this.modal
-    };
-    this.modalService.set$(modalParam);
-  }
-
 }

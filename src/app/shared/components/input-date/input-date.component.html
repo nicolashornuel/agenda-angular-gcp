@@ -1,0 +1,25 @@
+<!-- <div class="input-date-container">
+    <input
+      type="date"
+      [readonly]="inputReadonly"
+      [required]="inputRequired"
+      (blur)="onBlur.next()"
+      (focus)="onFocus.next()"
+      [ngModel]="value | date:'yyyy-MM-dd'"
+      (ngModelChange)="value = $event; onModelChange.next($event)"
+      />
+    <label>{{ label + asterix }}</label>
+  </div> -->
+
+  <div class="input-date-container">
+    <input
+      type="datetime-local"
+      [readonly]="inputReadonly"
+      [required]="inputRequired"
+      (blur)="onBlur.next()"
+      (focus)="onFocus.next()"
+      [ngModel]="value | date:'yyyy-MM-dd HH:mm'"
+      (ngModelChange)="value = $event; onModelChange.next($event)"
+      />
+    <label>{{ label + asterix }}</label>
+  </div>

@@ -8,4 +8,5 @@ export interface ModalParam {
   title: string,
   context: any;
   template: TemplateRef<any>;
+  maxWidth?: string;
 }

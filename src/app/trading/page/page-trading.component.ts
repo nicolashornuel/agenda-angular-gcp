@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { TabParam } from '@shared/components/tabs/tabs.component';
 import { ScreenerDetailComponent } from '../components/screener-detail/screener-detail.component';
 import { ScreenerListComponent } from '../components/screener-list/screener-list.component';
+import { ChartComponent } from '../components/chart/chart.component';
 
 @Component({
   selector: 'app-page-trading',
@@ -11,6 +12,11 @@ import { ScreenerListComponent } from '../components/screener-list/screener-list
 export class PageTradingComponent {
 
   public tabs: TabParam[] = [
+    {
+      name: 'chart',
+      closable: false,
+      content: ChartComponent
+    },
     {
       name: 'screener-list',
       closable: false,

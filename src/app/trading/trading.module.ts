@@ -7,13 +7,17 @@ import { SharedModule } from '@shared/shared.module';
 import { TradingRoutingModule } from './trading-routing.module';
 import { ScreenerDetailComponent } from './components/screener-detail/screener-detail.component';
 import { ScreenerListComponent } from './components/screener-list/screener-list.component';
+import { ChartComponent } from './components/chart/chart.component';
+import { WidgetChartDirective } from './directive/widget-chart.directive';
 
 const TradingElements = [
   WidgetScreenerDirective,
   WidgetAnalysisDirective,
+  WidgetChartDirective,
   PageTradingComponent,
   ScreenerListComponent,
-  ScreenerDetailComponent
+  ScreenerDetailComponent,
+  ChartComponent
 ]
 
 @NgModule({

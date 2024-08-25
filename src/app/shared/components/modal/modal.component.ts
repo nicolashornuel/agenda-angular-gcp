@@ -18,7 +18,7 @@ export class ModalComponent implements OnInit {
   constructor(private modalService: ModalService, private destroy$: DestroyService) {}
 
   ngOnInit(): void {
-    this.modalService.get$.pipe(takeUntil(this.destroy$)).subscribe(param => (this.param = param));
+    this.modalService.get$.pipe(takeUntil(this.destroy$)).subscribe(param => this.param = param);
   }
 
   @HostListener('blur') 
