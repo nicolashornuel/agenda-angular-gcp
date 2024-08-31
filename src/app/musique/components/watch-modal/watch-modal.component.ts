@@ -42,9 +42,10 @@ export class WatchModalComponent extends VideoController implements Modal, OnIni
     const inputChanged: VideoGAPI = {
       ...this.input,
       categorie: this.categorie.value as string,
-      rating: this.rating.value as number
+      rating: this.rating.value as number ?? 0
     };
-    this.updateVideo(inputChanged);
+    delete inputChanged.sanitized;
+    inputChanged.id ? this.updateVideo(inputChanged) : this.addVideo(inputChanged);
     this.closeModal();
   }
 

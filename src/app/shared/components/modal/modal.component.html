@@ -1,6 +1,6 @@
 <ng-container *ngIf="param">
     <div class="modal">
-      <div class="modal-dialog row-center-center" [style.--max-width]="param.maxWidth">
+      <div class="modal-dialog row-center-center" [style.--max-width]="param.maxWidth ?? '800px'">
         <div class="modal-content">
           <div class="modal-header row-between-center">
             <h5 class="modal-title">{{ param.title }}</h5>

@@ -1,8 +1,8 @@
 import { Component, ComponentRef, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { TabParam } from '@shared/components/tabs/tabs.component';
 import { DestroyService } from '@shared/services/destroy.service';
-import { takeUntil } from 'rxjs';
+import { IsMobileService } from '@shared/services/shared.observable.service';
+import { combineLatest, take, takeUntil } from 'rxjs';
 import { ListSavedComponent } from '../components/list-saved/list-saved.component';
 import { SearchResultComponent } from '../components/search-result/search-result.component';
 import { TabResultService } from '../services/musique.observable.service';
@@ -22,26 +22,23 @@ export class PageMusiqueComponent implements OnInit {
     }
   ];
   public tabSelected = 0;
-
   public orderYoutubeOptions = Object.values(OrderYoutube).map(order => ({
     name: order.toLowerCase(),
     value: order
   }));
-
   public orderYoutubeSelected = this.orderYoutubeOptions.find(order => order.value === OrderYoutube.VIEWCOUNT);
+  public isMobile!: boolean;
 
-  constructor(private destroy$: DestroyService, private tabService: TabResultService, private route: ActivatedRoute) {}
+  constructor(private destroy$: DestroyService, private tabService: TabResultService, private isMobileService: IsMobileService,) {}
 
   ngOnInit(): void {
-    this.listenTabService();
-    this.checkNavigation();
-  }
-
-  private listenTabService(): void {
-    this.tabService.get$.pipe(takeUntil(this.destroy$)).subscribe(keyword => {
-      this.tabs.push(this.createTabResult(keyword));
+    combineLatest([this.tabService.get$.pipe(takeUntil(this.destroy$)), this.isMobileService.get$.pipe(take(1))])
+    .subscribe(values => {
+      this.tabs.push(this.createTabResult(values[0]));
       this.tabSelected = this.tabs.length - 1;
+      this.isMobile = values[1]!;
     });
+    this.checkNavigation();
   }
 
   private checkNavigation(): void {

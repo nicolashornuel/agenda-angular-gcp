@@ -1,15 +1,30 @@
 <app-layout>
   <section class="row-end-center pb-3 gap-3">
     <app-select class="musique-header-select" [options]="orderYoutubeOptions" [(selected)]="orderYoutubeSelected"></app-select>
-    <app-input-text
-      class="musique-header-input"
-      label="Recherche Youtube"
-      ngModel
-      #box
-      (onBlur)="onSearch(box.value)"
-      (keyenter)="onSearch(box.value)"
-      name="q"
-    ></app-input-text>
+
+
+    <ng-container *ngIf="!isMobile; else mobile">
+      <app-input-text
+        class="musique-header-input"
+        label="Recherche Youtube"
+        ngModel
+        #box
+        (keyup.enter)="onSearch(box.value)"
+        name="q"
+      ></app-input-text>
+    </ng-container>
+
+    <ng-template #mobile>
+      <app-input-text
+        class="musique-header-input"
+        label="Recherche Youtube"
+        ngModel
+        #box
+        (onBlur)="onSearch(box.value)"
+        name="q"
+      ></app-input-text>
+    </ng-template>
+
   </section>
   <app-tabs [items]="tabs" [selected]="tabSelected"></app-tabs>
 </app-layout>

@@ -52,9 +52,9 @@ const wikiMaps: Leaflet.Layer = tileLayer('http://maps.wikimedia.org/osm-intl/{z
 });
 
 const iconOption: Leaflet.BaseIconOptions = {
-  iconRetinaUrl: 'assets/icons/mobile.png',
-  iconUrl: 'assets/icons/mobile.png',
-  shadowUrl: 'assets/marker-shadow.png'
+  iconRetinaUrl: '/assets/icons/mobile.png',
+  iconUrl: '/assets/icons/mobile.png',
+  shadowUrl: '/assets/marker-shadow.png'
 };
 
 Leaflet.Icon.Default.mergeOptions(iconOption);
