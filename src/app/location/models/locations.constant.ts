@@ -1,6 +1,5 @@
-import { LeafletControlLayersConfig } from '@asymmetrik/ngx-leaflet';
 import * as Leaflet from 'leaflet';
-import { icon, marker, tileLayer } from 'leaflet';
+import { tileLayer } from 'leaflet';
 
 export interface GeoLocation {
   id: string;
@@ -51,15 +50,12 @@ const wikiMaps: Leaflet.Layer = tileLayer('http://maps.wikimedia.org/osm-intl/{z
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 });
 
-const iconOption: Leaflet.BaseIconOptions = {
-  iconRetinaUrl: '/assets/icons/mobile.png',
+const mobileIcon = Leaflet.icon({
   iconUrl: '/assets/icons/mobile.png',
-  shadowUrl: '/assets/marker-shadow.png'
-};
+  iconAnchor:   [10, 30], // point of the icon which will correspond to marker's location
+});
 
-Leaflet.Icon.Default.mergeOptions(iconOption);
-
-export const markerOptions: Leaflet.MarkerOptions = { draggable: false };
+export const markerOptions: Leaflet.MarkerOptions = { draggable: false, icon: mobileIcon };
 
 export const polylineOptions: Leaflet.PolylineOptions = {
   color: 'green',

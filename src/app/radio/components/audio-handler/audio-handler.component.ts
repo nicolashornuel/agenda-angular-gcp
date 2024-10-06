@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DestroyService } from '@shared/services/destroy.service';
 import { IsMobileService, RightBarIsOpenedService } from '@shared/services/shared.observable.service';
-import { AudioVolumeService, EffectPersistService, SourceAudioService } from 'app/radio/services/audio.observable.service';
+import { AudioVolumeService, EffectPersistService } from 'app/radio/services/audio.observable.service';
 import { combineLatest, takeUntil } from 'rxjs';
 
 @Component({

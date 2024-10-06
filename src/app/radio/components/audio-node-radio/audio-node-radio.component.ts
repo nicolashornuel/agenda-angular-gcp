@@ -3,9 +3,10 @@ import { DestroyService } from '@shared/services/destroy.service';
 import { IsMobileService } from '@shared/services/shared.observable.service';
 import { RadioPlayingService } from '@core/services/core.observable.service';
 import { AudioNodeController } from 'app/radio/abstracts/audioDirective.abstract';
-import { AudioVolumeService } from 'app/radio/services/audio.observable.service';
+import { AudioVolumeService, StationRadioService } from 'app/radio/services/audio.observable.service';
 
 import { combineLatest, takeUntil } from 'rxjs';
+import { StationSelectable, Stations } from 'app/radio/enums/radioFrance.enum';
 
 @Component({
   selector: 'app-audio-node-radio',
@@ -15,17 +16,7 @@ import { combineLatest, takeUntil } from 'rxjs';
 export class AudioNodeRadioComponent extends AudioNodeController implements AfterViewInit {
   @ViewChild('audio') audio!: ElementRef;
   public isPlaying: boolean = false;
-  public radioList = [
-    {
-      name: 'FIP',
-      value: 'https://icecast.radiofrance.fr/fip-midfi.mp3?id=openapi'
-    },
-    {
-      name: 'Bassdrive',
-      value: 'http://chi.bassdrive.co/;stream/1'
-    }
-  ];
-
+  public radioList: StationSelectable[] = Stations;
   public radioSelected = this.radioList[0];
   public isMobile!: boolean;
 
@@ -34,6 +25,7 @@ export class AudioNodeRadioComponent extends AudioNodeController implements Afte
     private destroy$: DestroyService,
     private playingService: RadioPlayingService,
     private isMobileService: IsMobileService,
+    private stationRadioService: StationRadioService
   ) {
     super();
   }
@@ -42,6 +34,10 @@ export class AudioNodeRadioComponent extends AudioNodeController implements Afte
     this.initNode();
     this.connectNode();
     this.listen();
+  }
+
+  public onSelectStation() {
+    this.stationRadioService.set$(this.radioSelected.id);
   }
 
   protected override initNode(): void {

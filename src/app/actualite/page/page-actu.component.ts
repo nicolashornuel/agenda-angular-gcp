@@ -2,6 +2,7 @@ import { Component, ComponentRef, OnInit } from '@angular/core';
 import { RssCard, RssFeed } from '@core/services/rss.service';
 import { TabParam } from '@shared/components/tabs/tabs.component';
 import { TabContentComponent } from '../components/tab-content/tab-content.component';
+import { ListComponent } from '../components/list/list.component';
 
 @Component({
   selector: 'app-page-actu',
@@ -41,6 +42,12 @@ export class PageActuComponent implements OnInit {
   }
 
   private createTab(feed: RssFeed): TabParam {
+    /* return {
+      name: feed.name,
+      closable: false,
+      content: ListComponent,
+      bind: (componentRef: ComponentRef<ListComponent>) => (componentRef.instance.url = feed.url)
+    }; */
     return {
       name: feed.name,
       closable: false,

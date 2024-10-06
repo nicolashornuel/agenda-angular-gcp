@@ -55,7 +55,8 @@ export class RssService {
       link: item.querySelector('link').textContent,
       description: item.querySelector('description').textContent,
       img: item.querySelector('enclosure').getAttribute('url'),
-      pubDate: item.querySelector('pubDate').textContent
+      pubDate: item.querySelector('pubDate').textContent,
+      category: item.querySelector('category') ? item.querySelector('category').textContent : undefined
     };
   }
 }

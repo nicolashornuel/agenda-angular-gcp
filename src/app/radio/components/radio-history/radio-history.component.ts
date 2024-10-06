@@ -1,13 +1,15 @@
 import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { DestroyService } from '@shared/services/destroy.service';
 import { RightBarIsOpenedService } from '@shared/services/shared.observable.service';
 import { TabResultService } from 'app/musique/services/musique.observable.service';
 import { StationsEnum } from 'app/radio/enums/radioFrance.enum';
 import { Grid, SongDTO } from 'app/radio/models/radioFrance.interface';
+import { StationRadioService } from 'app/radio/services/audio.observable.service';
 import { RadioTransformService } from 'app/radio/services/radio-transform.service';
 import { RadioService } from 'app/radio/services/radio.service';
-import { Subscription, interval, take, timer } from 'rxjs';
+import { Subscription, interval, take, takeUntil, timer } from 'rxjs';
 
 @Component({
   selector: 'app-radio-history',
@@ -21,7 +23,7 @@ export class RadioHistoryComponent implements AfterViewInit {
   public secondsLeft = 0;
   public minutesLeft = 0;
   public isOpen: boolean = false;
-  private readonly STATION = StationsEnum.FIP;
+  private station = StationsEnum.FIP;
   private ticker$ = new Subscription();
 
   constructor(
@@ -30,11 +32,18 @@ export class RadioHistoryComponent implements AfterViewInit {
     private titleService: Title,
     private tabService: TabResultService,
     private rightBarIsOpenedService: RightBarIsOpenedService,
-    private router: Router
+    private router: Router,
+    private stationRadionService: StationRadioService,
+    private destroy$: DestroyService
   ) {}
 
   ngAfterViewInit(): void {
-    this.getLive(0);
+    this.stationRadionService.get$.pipe(takeUntil(this.destroy$)).subscribe(station => {
+      if (station) {
+        this.station = station
+        this.getLive(0);
+      };
+    });
   }
 
   public async onSearch(song: SongDTO): Promise<void> {
@@ -50,7 +59,7 @@ export class RadioHistoryComponent implements AfterViewInit {
 
   private getGrid(): void {
     this.radioService
-      .subscribeGrid(this.STATION)
+      .subscribeGrid(this.station)
       .pipe(take(1))
       .subscribe((grid: Grid) => (this.grid = this.transform.gridMapper(grid.grid)));
   }
@@ -59,7 +68,7 @@ export class RadioHistoryComponent implements AfterViewInit {
     timer(delay)
       .pipe(take(1))
       .subscribe(async () => {
-        const result = await this.radioService.getLive(this.STATION).refetch();
+        const result = await this.radioService.getLive(this.station).refetch();
         this.song = result.data.live ? this.transform.factory(result.data) : undefined;
         if (this.song) {
           this.titleService.setTitle([this.song.artist, this.song.title].join(' '));
