@@ -10,6 +10,7 @@
             <p class="m-3">
               <span *ngIf="discog.title" class="label">Titre : </span>{{ discog.title }}
               <span *ngIf="discog.year" class="label">Sortie : </span>{{ discog.year }} - {{ discog.country }}
+              <span *ngIf="discog.label" class="label">Label : </span>{{ discog.label }}
               <span *ngIf="discog.format" class="label">Support : </span>{{ discog.format?.slice(0, 50) }}
               <span *ngIf="discog.style" class="label">Style : </span>{{ discog.style }}
             </p>
@@ -35,8 +36,7 @@
           <app-card *ngFor="let video of videos" [title]="video.channelTitle" backgroundColor="hsl(0, 0%, 95%)" [isMiniCard]="true">
             <p class="m-3">{{ video.publishedAt | date : 'shortDate' }}</p>
             <img [src]="video.thumbnail" />
-            <p class="m-3">{{ video.title }}</p>
-            <p class="m-3 f-grow word-break">{{ video.description }}</p>
+            <p class="m-3 f-grow ">{{ video.title }}</p>
             <button class="m-3 self-end" appButton color="green" (click)="openModal(video, modal)">VOIR</button>
           </app-card>
         </div>
