@@ -7,7 +7,7 @@ import { StationSelectable, StationsEnum } from '../enums/radioFrance.enum';
 })
 export class AudioVolumeService extends BehaviorSubjectService<number> {
   constructor() {
-    super(0.03);
+    super(0.01);
   }
 }
 
