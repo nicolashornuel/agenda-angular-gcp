@@ -1,0 +1,15 @@
+
+<app-layout>
+    <app-button-group class="btn-container">
+        <button appButton outline size="small" (click)="onOpenModal(modal)">
+          <i class="fas fa-plus"></i>
+        </button>
+  
+      </app-button-group>
+    <!-- <app-tabs [items]="tabs" [selected]="tabSelected"></app-tabs> -->
+  </app-layout>
+
+  
+  <ng-template #modal let-input>
+    <app-edition [input]="input" (output)="onAddReservation($event)"></app-edition>
+  </ng-template>

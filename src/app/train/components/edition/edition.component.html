@@ -1,0 +1,50 @@
+<app-input-date
+[label]="startAtField.name" 
+[(ngModel)]="startAtField.value"
+></app-input-date>
+<app-input-suggestion
+[label]="startPlaceField.name" 
+[(ngModel)]="startPlaceField.value"
+[options]="startPlaceField.options" 
+></app-input-suggestion>
+<app-input-date
+[label]="endAtField.name" 
+[(ngModel)]="endAtField.value"
+></app-input-date>
+<app-input-suggestion
+[label]="endPlaceField.name" 
+[(ngModel)]="endPlaceField.value"
+[options]="endPlaceField.options" 
+></app-input-suggestion>
+<app-input-suggestion
+[label]="trainNumberField.name" 
+[(ngModel)]="trainNumberField.value"
+[options]="trainNumberField.options" 
+></app-input-suggestion>
+
+
+<app-input-suggestion></app-input-suggestion>
+<app-input-text></app-input-text>
+<app-input-text></app-input-text>
+<app-input-suggestion></app-input-suggestion>
+<app-input-suggestion></app-input-suggestion>
+<app-input-text></app-input-text>
+
+<app-input-textarea 
+class="my-3 d-block" 
+ ngModel 
+ rows="5" 
+ label="Ajouter un commentaire">
+</app-input-textarea>
+<div class="row-end-center gap-2">
+  <button appButton outline size="regular" color="blue" (click)="onClose()">Annuler</button>
+  <button
+    appButton
+    outline
+    size="regular"
+    color="green"
+    (click)="onSave()"
+  >
+    Enregistrer
+  </button>
+</div>

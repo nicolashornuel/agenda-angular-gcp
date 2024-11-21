@@ -32,10 +32,11 @@ export interface ColumnSet {
 
 export interface FieldSet {
   name: string;
-  value: string | boolean | number;
-  disabled: boolean;
-  required: boolean;
+  value?: string | boolean | number;
+  disabled?: boolean;
+  required?: boolean;
   parentForm?: NgForm;
+  options?: any;
 }
 
 export interface FieldComponent {

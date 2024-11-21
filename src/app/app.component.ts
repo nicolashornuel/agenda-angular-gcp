@@ -26,6 +26,10 @@ export class AppComponent {
       route: 'actualite'
     },
     {
+      title: 'Train',
+      route: 'train'
+    },
+    {
       title: 'Trading',
       route: 'trading'
     },
