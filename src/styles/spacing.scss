@@ -4,6 +4,12 @@
   }
 }
 
+@for $number from 1 through 10 {
+  .gap-row-#{$number} {
+    row-gap: $number * 5px;
+  }
+}
+
 @for $number from 0 through 10 {
   .pt-#{$number} {
     padding-top: $number * 5px;

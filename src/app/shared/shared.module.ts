@@ -37,6 +37,7 @@ import { TabsComponent } from './components/tabs/tabs.component';
 import { CarouselItemDirective } from './components/carousel/carousel-item.directive';
 import { IsMobileDirective } from './directives/is-mobile.directive';
 import { InputDateComponent } from './components/input-date/input-date.component';
+import { InputNumberComponent } from './components/input-number/input-number.component';
 
 const sharedComponents = [
   TableComponent,
@@ -69,7 +70,8 @@ const sharedComponents = [
   CarouselComponent,
   TabsComponent,
   CarouselItemDirective,
-  InputDateComponent
+  InputDateComponent,
+  InputNumberComponent
 ]
 
 const sharedModules = [

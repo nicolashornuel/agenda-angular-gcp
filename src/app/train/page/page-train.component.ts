@@ -18,7 +18,7 @@ export class PageTrainComponent {
 
   public onOpenModal(templateRef: TemplateRef<Modal>): void {
     const modalParam: ModalParam = {
-      title: '"Ajouter une réservation',
+      title: "Ajouter une réservation",
       context: {$implicit: undefined},
       template: templateRef
     };
