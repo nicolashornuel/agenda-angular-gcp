@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {PriorityComponent} from '@shared/components/priority/priority.component';
 import {TableCheckboxComponent} from '@shared/components/table-checkbox/table-checkbox.component';
 import {TableInputComponent} from '@shared/components/table-input/table-input.component';
-import {ColumnSet, FieldSet, RenderFieldSet, TableSet} from '@shared/models/tableSet.interface';
+import {CellRenderers, ColumnSet, FieldSet, TableSet} from '@shared/models/tableSet.interface';
 import {DestroyService} from '@shared/services/destroy.service';
 import {UtilService} from '@shared/services/util.service';
 import {toDoDTO} from 'app/memo/models/to-do.model';
@@ -32,7 +32,7 @@ export class ToDoComponent implements OnInit {
         visible: true,
         render: {
           component: TableInputComponent,
-          valuePrepare: (row: toDoDTO, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col)
+          valuePrepare: (row: toDoDTO, col: ColumnSet) => CellRenderers.toField(row, col)
         }
       },
       {
@@ -43,7 +43,7 @@ export class ToDoComponent implements OnInit {
         width: '40%',
         render: {
           component: TableInputComponent,
-          valuePrepare: (row: toDoDTO, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col)
+          valuePrepare: (row: toDoDTO, col: ColumnSet) => CellRenderers.toField(row, col)
         }
       },
       {
@@ -53,7 +53,7 @@ export class ToDoComponent implements OnInit {
         visible: true,
         render: {
           component: PriorityComponent,
-          valuePrepare: (row: toDoDTO, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col)
+          valuePrepare: (row: toDoDTO, col: ColumnSet) => CellRenderers.toField(row, col)
         }
       },
       {
@@ -61,7 +61,7 @@ export class ToDoComponent implements OnInit {
         title: 'Date de création',
         type: 'html',
         visible: true,
-        innerHTML: (row: any, col: ColumnSet) => `<div class="txt-nowrap">${this.util.formatDate(row[col.key])}</div>`
+        innerHTML: (row: any, col: ColumnSet) => CellRenderers.toDate(row, col)
       },
       {
         key: 'updatingDate',
@@ -69,7 +69,7 @@ export class ToDoComponent implements OnInit {
         type: 'html',
         visible: true,
         width: '15%',
-        innerHTML: (row: any, col: ColumnSet) => `<div class="txt-nowrap">${this.util.formatDate(row[col.key])}</div>`
+        innerHTML: (row: any, col: ColumnSet) => CellRenderers.toDate(row, col)
       },
       {
         key: 'isResolved',
@@ -78,7 +78,7 @@ export class ToDoComponent implements OnInit {
         visible: true,
         render: {
           component: TableCheckboxComponent,
-          valuePrepare: (row: toDoDTO, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col)
+          valuePrepare: (row: toDoDTO, col: ColumnSet) => CellRenderers.toField(row, col)
         }
       }
     ],

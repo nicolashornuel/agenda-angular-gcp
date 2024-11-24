@@ -3,18 +3,16 @@ import {
   Directive,
   ElementRef,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
-  SimpleChanges,
   inject
 } from '@angular/core';
+import { DestroyService } from '@shared/services/destroy.service';
 import { Observable, take, takeUntil } from 'rxjs';
 import { AudioControlPadComponent } from '../components/audio-control-pad/audio-control-pad.component';
 import { AudioNodeAnalyserComponent } from '../components/audio-node-analyser/audio-node-analyser.component';
 import { AudioVolumeService, SourceAudioService } from '../services/audio.observable.service';
 import { CanvasService } from '../services/canvas.service';
-import { DestroyService } from '@shared/services/destroy.service';
 
 export interface PadParam {
   canvas?: ElementRef<HTMLCanvasElement>;

@@ -1,9 +1,9 @@
 import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Pageable } from '@core/services/firestore.service';
 import { PriorityComponent } from '@shared/components/priority/priority.component';
 import { Modal } from '@shared/models/modalParam.interface';
-import { ColumnSet, FieldSet, RenderFieldSet, TableSet } from '@shared/models/tableSet.interface';
+import { CellRenderers, ColumnSet, FieldSet, TableSet } from '@shared/models/tableSet.interface';
 import { ColSorted, ColumnsortableService } from '@shared/services/columnsortable.service';
-import { Pageable } from '@core/services/firestore.service';
 import { VideoController } from 'app/musique/abstracts/videoController.abstract';
 import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
 import { takeUntil } from 'rxjs';
@@ -75,7 +75,7 @@ export class ListSavedComponent extends VideoController implements OnInit {
         visible: true,
         render: {
           component: PriorityComponent,
-          valuePrepare: (row: VideoGAPI, col: ColumnSet) => RenderFieldSet.valuePrepare(row, col)
+          valuePrepare: (row: VideoGAPI, col: ColumnSet) => CellRenderers.toField(row, col)
         }
       }
     ],

@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, Input, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractInputComponent } from '@shared/abstracts/input.component';
 
@@ -15,6 +15,7 @@ import { AbstractInputComponent } from '@shared/abstracts/input.component';
   ]
 })
 export class InputTextareaComponent extends AbstractInputComponent {
-  rows: string = "3";
+
+  @Input() rows: string = '3';
 
 }

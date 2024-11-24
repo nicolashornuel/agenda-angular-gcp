@@ -8,6 +8,7 @@ import localeFr from '@angular/common/locales/fr';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { connectStorageEmulator, getStorage, provideStorage } from '@angular/fire/storage';
 import { environment } from '../environments/environment';
 import { RadioModule } from 'app/radio/radio.module';
 import { SharedModule } from '@shared/shared.module';
@@ -39,6 +40,15 @@ import { TradingModule } from './trading/trading.module';
       return firestore;
 
     }),
+
+    provideStorage(() => {
+      const firebaseStorage = getStorage();
+      if (location.hostname === 'localhost') {
+              connectStorageEmulator(firebaseStorage, '127.0.0.1', 5001);
+      }
+      return firebaseStorage;
+}),
+
     TradingModule,
   ],
   providers: [{provide: LOCALE_ID, useValue: 'fr'}],

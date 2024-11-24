@@ -17,4 +17,8 @@ export class PopoverComponent implements OnInit {
   ngOnInit(): void {
     this.popoverService.get$.pipe(takeUntil(this.destroy$)).subscribe(param => (this.param = param));
   }
+
+  public onClose(): void {
+    this.popoverService.set$(undefined);
+  }
 }

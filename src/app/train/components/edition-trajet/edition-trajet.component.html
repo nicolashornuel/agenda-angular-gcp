@@ -1,0 +1,77 @@
+<div class="row-between-start f-wrap train-edition-container">
+    <app-input-date
+      class="col-3"
+      [label]="startAtField.name"
+      [(ngModel)]="startAtField.value"
+    ></app-input-date>
+    <app-input-suggestion
+      class="col-9"
+      [label]="startPlaceField.name"
+      [(ngModel)]="startPlaceField.value"
+      [options]="startPlaceField.options"
+    ></app-input-suggestion>
+    <app-input-date
+      class="col-3"
+      [label]="endAtField.name"
+      [(ngModel)]="endAtField.value"
+    ></app-input-date>
+    <app-input-suggestion
+      class="col-9"
+      [label]="endPlaceField.name"
+      [(ngModel)]="endPlaceField.value"
+      [options]="endPlaceField.options"
+    ></app-input-suggestion>
+    <app-input-suggestion
+      class="col-6"
+      [label]="trainNumberField.name"
+      [(ngModel)]="trainNumberField.value"
+      [options]="trainNumberField.options"
+    ></app-input-suggestion>
+    <app-input-text
+      class="col-6"
+      [label]="seatNumberField.name"
+      [(ngModel)]="seatNumberField.value"
+    ></app-input-text>
+    <app-input-text
+      class="col-4"
+      [label]="travelReferencyField.name"
+      [(ngModel)]="travelReferencyField.value"
+    ></app-input-text>
+    <app-input-number
+      class="col-4"
+      [label]="priceField.name"
+      [(ngModel)]="priceField.value"
+    ></app-input-number>
+    <app-input-suggestion
+      class="col-4"
+      [label]="subscriptionCardField.name"
+      [(ngModel)]="subscriptionCardField.value"
+      [options]="subscriptionCardField.options"
+    ></app-input-suggestion>
+    <app-input-textarea 
+    class="col-12" 
+    [label]="cancelationField.name"
+    [(ngModel)]="cancelationField.value"
+    rows='5'
+    ></app-input-textarea>
+    <app-input-file 
+    class="col-12" 
+    [label]="fileStorageField.name"
+    [ngModel]="fileStorageField.value"
+    (onFileChange)="onFileChange($event)"
+    ></app-input-file>    
+  </div>
+
+  <ng-container *ngIf="src && file && (file.type == 'image/png' || file.type == 'image/jpeg')">
+    <div class="w-100 img-container"><img [src]="src" class="w-100"/></div>
+  </ng-container>
+
+  <ng-container *ngIf="src && file && file.type == 'application/pdf'">
+    <iframe [src]="src" class="w-100 iframe-container"></iframe>
+  </ng-container>
+  
+  <div class="row-end-center gap-2">
+    <button appButton outline size="regular" color="blue" (click)="onClose()">Annuler</button>
+    <button appButton outline size="regular" color="green" (click)="onSave()">Enregistrer</button>
+  </div>
+  

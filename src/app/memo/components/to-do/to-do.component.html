@@ -28,7 +28,7 @@
   <div *ngFor="let fieldSet of popover.fieldSets">
     <app-input-checkbox
       [label]="fieldSet.name"
-      [value]="fieldSet.value"
+      [(ngModel)]="fieldSet.value"
       (onModelChange)="onShowColumn($event, fieldSet)"
     ></app-input-checkbox>
   </div>

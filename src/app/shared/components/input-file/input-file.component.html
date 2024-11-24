@@ -1,0 +1,36 @@
+<!-- <div class="input-file-container">
+  <input 
+  #inputFile 
+  type="file" 
+  placeholder=" " 
+  [readonly]="inputReadonly" 
+  [required]="inputRequired" 
+  (blur)="onBlur.next()" 
+  (focus)="onFocus.next()" 
+  (change)="onFileChange.next($event)"
+  />
+  <label>
+    {{ label + asterix }}
+  </label>
+  <button appButton ghost size="tiny" (click)="inputFile.click()"><i class="fas fa-plus"></i></button>
+</div> -->
+
+
+<div class="input-file-container row-between-center" (click)="inputFile.click()">
+  <input 
+  #inputFile 
+  type="file" 
+  placeholder=" " 
+  [readonly]="inputReadonly" 
+  [required]="inputRequired" 
+  (blur)="onBlur.next()" 
+  (focus)="onFocus.next()" 
+  (change)="onValueChange($event)"
+  required
+  />
+  <span *ngIf="value && value.name" class="input-file-value">{{ value.name }}</span>
+  <label>
+    {{ label + asterix }}
+  </label>
+  <button appButton ghost size="tiny" (click)="inputFile.click()"><i class="fas fa-plus"></i></button>
+</div>

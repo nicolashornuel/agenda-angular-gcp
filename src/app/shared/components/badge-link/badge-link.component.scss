@@ -1,0 +1,33 @@
+@import 'variables.scss';
+
+.link-content {
+    padding: 3px 9px;
+    border-radius: 12px;
+    text-decoration: none;
+}
+
+%white-txt {
+    color: $grey-100;
+}
+
+.blue .link-content {
+    background-color: $blue;
+    @extend %white-txt;
+}
+.green .link-content {
+    background-color: $green;
+    @extend %white-txt;
+}
+.orange .link-content {
+    background-color: $orange;
+    @extend %white-txt;
+}
+.red .link-content {
+    background-color: $red;
+    @extend %white-txt;
+}
+.light .link-content {
+    background-color: transparent;
+    border: 1px solid $grey-100;
+    color: $grey-100;
+}

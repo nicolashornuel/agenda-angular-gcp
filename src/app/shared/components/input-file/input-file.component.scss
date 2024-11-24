@@ -1,0 +1,62 @@
+@import 'variables.scss';
+
+/* input[type='file'] {
+  @extend %show-input-value;
+  &::-webkit-file-upload-button {
+    display: none;
+  }
+}
+.input-file-container {
+  @extend %show-input-label;
+  button {
+    position: absolute;
+    right: 0;
+  }
+} */
+
+input[type='file'] {
+  display: none;
+}
+
+.input-file-container {
+  position: relative;
+  cursor: pointer;
+  border-bottom: 1px solid $grey-70;
+  transition: all 250ms ease-in-out;
+  height: 24px;
+  &:hover {
+    border-color: $green;
+  }
+  &[readonly] {
+    border-color: $grey-90;
+    cursor: default;
+    pointer-events: none;
+  }
+  .input-file-value {
+    font-size: 14px;
+  }
+  button {
+    position: absolute;
+    right: 0;
+  }
+  label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    @extend %show-input-text;
+    color: $grey-60;
+    font-weight: 600;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    transition: all 250ms ease-in-out;
+    pointer-events: none;
+  }
+  .input-file-value ~ label {
+    transform: translateY(-50%);
+    font-size: 10px;
+    padding: 0;
+  }
+  &:hover label {
+    color: $green;
+  }
+}
