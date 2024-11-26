@@ -7,11 +7,11 @@ import { environment } from '../../../environments/environment.prod';
   providedIn: 'root'
 })
 export class DiscogsService {
-  private url: string = environment.urlApiDiscogs;
+  private url: string = environment.discogsApi;
   private params: any = {
     q: '',
     per_page: 12,
-    token: environment.discogsToken,
+    token: environment.discogsKey,
     artist: ''
   };
 

@@ -5,6 +5,7 @@ import { DestroyService } from '@shared/services/destroy.service';
 import { ModalService } from '@shared/services/shared.observable.service';
 import { takeUntil } from 'rxjs';
 import { ReservationService } from '../services/reservation.service';
+import { STATIONS, SncfService } from '../services/sncf.service';
 
 @Directive({
   selector: '[appListe]'
@@ -21,10 +22,12 @@ export abstract class ListeDirective<T> implements OnInit {
   constructor(
     private reservationService: ReservationService,
     private destroy$: DestroyService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private sncfService: SncfService
   ) {}
 
   ngOnInit(): void {
+    this.sncfService.getDepartures(STATIONS[0].id).pipe(takeUntil(this.destroy$)).subscribe(res => console.log(res));
     this.initComponents();
     this.initData();
   }
