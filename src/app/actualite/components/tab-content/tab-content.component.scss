@@ -29,5 +29,11 @@
       width: 100%;
     }
   }
+  .description {
+    position: absolute;
+    bottom: 0;
+    right: 1rem;
+    color:$green;
+  }
 
 }

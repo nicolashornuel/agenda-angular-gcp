@@ -10,6 +10,7 @@
   padding: 12px;
   z-index: $z-index-popover;
   font-size: 14px;
+  max-width: 400px;
   &::before {
     content: '';
     width: 0;
