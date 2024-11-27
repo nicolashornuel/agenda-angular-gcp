@@ -10,7 +10,7 @@
           [isEditing]="enableEditIndex != undefined ? true : false"
         ></app-table-cell-header>
       </ng-container>
-      <ng-container *ngIf="tableSet.actions">
+      <ng-container *ngIf="tableSet.actions || tableSet.actionSet">
         <div class="table-cell">Actions</div>
       </ng-container>
     </div>
@@ -24,7 +24,7 @@
       <ng-container *ngFor="let column of tableSet.columnSet">
         <app-table-cell
           class="table-cell"
-          [ngStyle]="{width: column.width ?? null}"
+          [ngStyle]="{ width: column.width ?? null }"
           *ngIf="column.visible"
           [rowData]="tableSet.data[i]"
           [columnSet]="column"
@@ -32,17 +32,22 @@
           [parentForm]="f"
         ></app-table-cell>
       </ng-container>
-      <ng-container *ngIf="tableSet.actions">
+      <ng-container *ngIf="tableSet.actions || tableSet.actionSet">
         <div class="table-cell">
           <div class="row-center-center">
-            <ng-container *ngIf="enableEditIndex !== i; else edit">
-              <button appButton ghost size="tiny" (click)="enableEditMethod(i)"><i class="fas fa-pencil-alt"></i></button>
-              <button appButton ghost size="tiny" (click)="onDelete(i)"><i class="fas fa-trash-alt"></i></button>
+            <ng-container *ngFor="let action of tableSet.actionSet">
+              <button appButton ghost size="tiny" (click)="action.method(tableSet.data[i])"><i [ngClass]="action.icon"></i></button>
             </ng-container>
-            <ng-template #edit>
-              <button appButton ghost size="tiny" (click)="onCancel(f, tableSet.data[i])"><i class="fas fa-times"></i></button>
-              <button appButton ghost size="tiny" (click)="onSave(f, tableSet.data[i])"><i class="fas fa-save"></i></button>
-            </ng-template>
+            <ng-container *ngIf="tableSet.actions">
+              <ng-container *ngIf="enableEditIndex !== i; else edit">
+                <button appButton ghost size="tiny" (click)="enableEditMethod(i)"><i class="fas fa-pencil-alt"></i></button>
+                <button appButton ghost size="tiny" (click)="onDelete(i)"><i class="fas fa-trash-alt"></i></button>
+              </ng-container>
+              <ng-template #edit>
+                <button appButton ghost size="tiny" (click)="onCancel(f, tableSet.data[i])"><i class="fas fa-times"></i></button>
+                <button appButton ghost size="tiny" (click)="onSave(f, tableSet.data[i])"><i class="fas fa-save"></i></button>
+              </ng-template>
+            </ng-container>
           </div>
         </div>
       </ng-container>

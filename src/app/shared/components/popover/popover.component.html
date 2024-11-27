@@ -2,4 +2,5 @@
   <section class="popover-container" [ngClass]="param.classPosition" [style.top]="param.position.top" [style.left]="param.position.left">
     <ng-container [ngTemplateOutlet]="param.template"></ng-container>
   </section>
+  <div class="backdrop" (click)="onClose()"></div>
 </ng-container>

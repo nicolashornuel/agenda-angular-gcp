@@ -1,48 +1,50 @@
-@import "variables.scss";
-
-%show-text {
-    font-size: 0.75rem;
-    font-weight: 600;
-    line-height: 20px;
-    padding: 0 8px;
-}
+@import 'variables.scss';
 
 textarea {
-    width: 100%;
-    background-color: $grey-97;
-    outline: none;
+  width: 100%;
+  background-color: $grey-97;
+  outline: none;
+  border: 1px solid $grey-70;
+  border-radius: 0.25rem;
+
+  line-height: 20px;
+  padding: 4px 8px;
+  transition: all 250ms ease-in-out;
+  font-family: sans-serif;
+  &:hover {
     border: 1px solid $green;
-    border-radius: 0.25rem;
-    @extend %show-text;
-    &:hover, &:focus {
-        border: 1px solid $blue;
-    }
-    &:active {
-        @extend %box-shadow-active;
-    }
+  }
+  &:focus {
+    border: 1px solid $blue;
+  }
+  &:active {
+    @extend %box-shadow-active;
+  }
 }
-label {
-    display: inline-block;
-    width: 100%;
-    position: relative;
-    span {
-        position: absolute;
-        top: 0;
-        left: 0;
-        opacity: .5;
-        @extend %show-text;
-        height: 24px;
-        transition: all 250ms ease-in-out;
-        pointer-events: none;
-        border: 1px solid transparent;
-    }
-    textarea:active + span, textarea:focus + span, textarea:not(:placeholder-shown) + span {
-        transform: translateY(-100%);
-        font-size: 10px;
-        color: $blue;
-        padding: 0;
-        opacity: 1;
-        line-height: 15px;
-        height: 15px;
-    }
+.input-textarea-container {
+  display: inline-block;
+  @extend %show-input-label;
+  label {
+    padding: 0 8px;
+    line-height: 24px;
+  }
+  textarea:hover + label {
+    color: $green;
+  }
+  textarea:active + label,
+  textarea:focus + label {
+    transform: translateY(-100%);
+    font-size: 10px;
+    color: $blue;
+    padding: 0;
+    line-height: 15px;
+    height: 15px;
+  }
+  textarea:not(:placeholder-shown) + label {
+    transform: translateY(-100%);
+    font-size: 10px;
+    padding: 0;
+    line-height: 15px;
+    height: 15px;
+  }
 }

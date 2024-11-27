@@ -1,0 +1,28 @@
+<ng-container *ngIf="!isLoading; else spinner">
+    <div class="row-end-center mb-3">
+      <app-button-group class="row-end-center">
+        <button appButton outline size="small" (click)="onOpenModal(undefined)">
+          <i class="fas fa-plus"></i>
+        </button>
+        <button appButton outline size="small" [appPopover]="templateRef"><i class="fas fa-columns"></i></button>
+      </app-button-group>
+    </div>
+    <app-table [tableSet]="tableSet"></app-table>
+  </ng-container>
+  
+  <ng-template #templateRef>
+    <h6>{{ popoverTitle }}</h6>
+    <hr />
+    <div *ngFor="let fieldSet of popoverFieldSets">
+      <app-input-checkbox [label]="fieldSet.name" [(ngModel)]="fieldSet.value" (onModelChange)="onShowColumn($event, fieldSet)"></app-input-checkbox>
+    </div>
+  </ng-template>
+  
+  <ng-template #modal let-input>
+    <app-edition-reservation [input]="input" (output)="onAdd($event)"></app-edition-reservation>
+  </ng-template>
+  
+  <ng-template #spinner>
+    <app-spinner></app-spinner>
+  </ng-template>
+  

@@ -1,14 +1,31 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from '@core/services/auth-guard.guard';
+import { EditionTrajetComponent } from './components/edition-trajet/edition-trajet.component';
+import { ListeTrajetComponent } from './components/liste-trajet/liste-trajet.component';
 import { PageTrainComponent } from './page/page-train.component';
+import { ListeReservationComponent } from './components/liste-reservation/liste-reservation.component';
 
 const routes: Routes = [
-  {path: '', component: PageTrainComponent, canActivate: [authGuard]}
+  {
+    path: '',
+    component: PageTrainComponent,
+    canActivate: [authGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: 'trajets',
+        pathMatch: 'full'
+      },
+      { path: 'trajets', component: ListeTrajetComponent },
+      { path: 'reservations', component: ListeReservationComponent },
+      { path: 'reservations/:id', component: ListeReservationComponent }
+    ]
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class TrainRoutingModule { }
+export class TrainRoutingModule {}

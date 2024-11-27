@@ -3,7 +3,8 @@ import { Component, ComponentRef, Input, OnChanges, OnInit, SimpleChanges, ViewC
 export interface TabParam {
   name: string;
   closable: boolean;
-  content: any;
+  content?: any;
+  link?: string;
   bind?: (componentRef: ComponentRef<any>) => void;
 }
 @Component({
@@ -48,7 +49,9 @@ export class TabsComponent implements OnInit, OnChanges {
   private renderTab(): void {
     this.el.clear();
     const item = this.items[this.selected];
-    const componentRef = this.el.createComponent<any>(item.content);
-    if (item.bind) item.bind(componentRef);
+    if (item.content) {
+      const componentRef = this.el.createComponent<any>(item.content);
+      if (item.bind) item.bind(componentRef);
+    }
   }
 }
