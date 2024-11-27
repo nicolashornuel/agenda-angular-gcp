@@ -39,6 +39,9 @@ export class SncfService {
   public getJourneys(departure_links_1_id: string): Observable<NavitiaResponse> {
     return this.get(`coverage/sncf/vehicle_journeys/${departure_links_1_id}`);
   }
+  //line id :
+//https://api.sncf.com/v1/coverage/sncf/lines/line:SNCF:FR:Line::A3ED2329-4705-47A8-88B3-047AB7EDDDF4:
+//https://api.sncf.com/v1/coverage/sncf/traffic_reports
   /**
    * get Navitia Response https://doc.navitia.io/#api-catalog
    */
@@ -73,6 +76,7 @@ export interface Journey {
 }
 
 // https://api.sncf.com/v1/coverage/sncf/places?q=avignon
+// liste des gares :https://ressources.data.sncf.com/explore/dataset/liste-des-gares/table/
 export const STATIONS = [
   {
     id: 'stop_area:SNCF:87773457',
