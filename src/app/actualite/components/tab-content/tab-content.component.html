@@ -1,10 +1,16 @@
-<section *ngIf="!loading; else spinner" class="scrolling row-between-stretch f-wrap cards-container">
+<section
+  *ngIf="!loading; else spinner"
+  class="scrolling row-between-stretch f-wrap cards-container"
+>
   <app-card *ngFor="let card of cards" backgroundColor="hsl(0, 0%, 95%)" [isMiniCard]="true">
     <a [href]="card.link">
       <p class="date">{{ card.pubDate | date : 'fullDate' }}</p>
       <img [src]="card.img" />
       <p>{{ card.title }}</p>
-      <!-- <div [innerHTML]="card.description"></div> -->
+      <!-- <p [innerHTML]="card.description"></p> -->
+      <div *ngIf="card.description" class="row-end-end">
+        <i [appTooltip]="card.description" class="fa-solid fa-circle-info"></i>
+      </div>
     </a>
   </app-card>
 </section>

@@ -29,6 +29,38 @@ export class PageActuComponent implements OnInit {
     {
       url: 'https://www.france24.com/fr/rss',
       name: 'france24.com'
+    },
+    {
+      url: 'https://www.usinenouvelle.com/rss/',
+      name: 'usinenouvelle'
+    },
+    {
+      url: 'https://www.courrierinternational.com/feed/all/rss.xml',
+      name: 'courrierinternational'
+    },
+    {
+      url: 'https://www.tomsguide.fr/feed/',
+      name: 'tomsguide'
+    },
+    {
+      url: 'https://www.generation-nt.com/export/rss.xml',
+      name: 'generation-nt'
+    },
+    {
+      url: 'https://www.sciencesetavenir.fr/rss.xml',
+      name: 'sciencesetavenir'
+    },
+    {
+      url: 'https://www.journaldunet.com/rss/',
+      name: 'journaldunet'
+    },
+    {
+      url: 'https://korben.info/feed',
+      name: 'korben'
+    },
+    {
+      url: 'https://www.tomshardware.fr/feed/',
+      name: 'tomshardware'
     }
   ];
 
