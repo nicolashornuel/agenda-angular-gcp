@@ -12,7 +12,7 @@ import { takeUntil } from 'rxjs';
 export class ModalComponent implements OnInit {
   @Input() title: string | null | undefined;
   @Output() close = new EventEmitter<void>();
-  param: ModalParam | null | undefined;
+  param: ModalParam<any> | null | undefined;
 
 
   constructor(private modalService: ModalService, private destroy$: DestroyService) {}

@@ -1,3 +1,16 @@
-<select class="select" (change)="selectedChange.emit(selected)" [(ngModel)]="selected" [ngClass]="selected.isDirty ? 'dirty' : ''">
+<!-- <select class="select" (change)="selectedChange.emit(selected)" [(ngModel)]="selected" [ngClass]="selected.isDirty ? 'dirty' : ''">
   <option *ngFor="let item of options" [ngValue]="item" [selected]="item == selected">{{ item.name }}</option>
 </select>
+ -->
+
+<div class="input-select-container">
+  <select class="select" 
+  required
+  placeholder=" "
+  (change)="selectedChange.emit(selected)" [(ngModel)]="selected" [ngClass]="selected.isDirty ? 'dirty' : ''">
+    <option *ngFor="let item of options" [ngValue]="item" [selected]="item == selected">{{ item.name }}</option>
+  </select>  
+  <label class="row-start-center">
+    {{ label + asterix }}
+  </label>
+</div>

@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from '@core/services/auth-guard.guard';
-import { EditionTrajetComponent } from './components/edition-trajet/edition-trajet.component';
+import { ListeNextComponent } from './components/liste-next/liste-next.component';
+import { ListeReservationComponent } from './components/liste-reservation/liste-reservation.component';
 import { ListeTrajetComponent } from './components/liste-trajet/liste-trajet.component';
 import { PageTrainComponent } from './page/page-train.component';
-import { ListeReservationComponent } from './components/liste-reservation/liste-reservation.component';
 
 const routes: Routes = [
   {
@@ -19,7 +19,8 @@ const routes: Routes = [
       },
       { path: 'trajets', component: ListeTrajetComponent },
       { path: 'reservations', component: ListeReservationComponent },
-      { path: 'reservations/:id', component: ListeReservationComponent }
+      { path: 'reservations/:id', component: ListeReservationComponent },
+      { path: 'nexts', component: ListeNextComponent }
     ]
   }
 ];

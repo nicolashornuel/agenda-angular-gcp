@@ -1,0 +1,8 @@
+<ng-container *ngIf="!isLoading">
+        <marquee scrollamount="6">
+            <span *ngFor="let arret of arrets; index as i">
+                {{arret}}
+                <i *ngIf="i < arrets.length - 1" class="fa-solid fa-circle puce"></i>
+            </span>
+        </marquee>
+    </ng-container>

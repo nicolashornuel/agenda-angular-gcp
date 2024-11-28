@@ -1,0 +1,27 @@
+<ng-container *ngIf="!isLoading; else spinner">
+
+    <div *ngFor="let arrival of arrivals">
+        <h1 class="fw-semibold">
+            {{arrival.direction}}
+        </h1>
+        <span>
+            {{arrival.headsign}}
+        </span>
+        <span>
+            {{arrival.network}}
+        </span>
+        <span>
+            {{arrival.hour| date: 'HH:mm'}}
+        </span>
+        <span>
+            {{arrival.delay}}
+        </span>
+        <app-liste-arret [trajetId]="arrival.trajetId"></app-liste-arret>
+
+    </div>
+
+</ng-container>
+
+<ng-template #spinner>
+    <app-spinner></app-spinner>
+  </ng-template>

@@ -48,7 +48,7 @@ export abstract class VideoController {
   }
 
   openModal(video: VideoGAPI, templateRef: TemplateRef<Modal>): void {
-    const modalParam: ModalParam = {
+    const modalParam: ModalParam<VideoGAPI> = {
       title: `${video.channelTitle} (${video.publishedAt})`,
       context: {$implicit: video},
       template: templateRef

@@ -1,16 +1,13 @@
-import { Directive, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Directive, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { Modal, ModalParam } from '@shared/models/modalParam.interface';
 import { ActionSet, ColumnSet, FieldSet, TableSet } from '@shared/models/tableSet.interface';
 import { DestroyService } from '@shared/services/destroy.service';
 import { ModalService } from '@shared/services/shared.observable.service';
-import { takeUntil } from 'rxjs';
-import { ReservationService } from '../services/reservation.service';
-import { STATIONS, SncfService } from '../services/sncf.service';
 
 @Directive({
   selector: '[appListe]'
 })
-export abstract class ListeDirective<T> implements OnInit {
+export abstract class ListeController<T> implements OnInit {
 
   @ViewChild('modal') modal!: TemplateRef<Modal>;
   
@@ -18,16 +15,10 @@ export abstract class ListeDirective<T> implements OnInit {
   public tableSet!: TableSet;
   public popoverTitle!: string;
   public popoverFieldSets!: FieldSet[];
-  
-  constructor(
-    private reservationService: ReservationService,
-    private destroy$: DestroyService,
-    private modalService: ModalService,
-    private sncfService: SncfService
-  ) {}
+  public destroy$ = inject(DestroyService);
+  private modalService = inject(ModalService);
 
   ngOnInit(): void {
-    this.sncfService.getDepartures(STATIONS[0].id).pipe(takeUntil(this.destroy$)).subscribe(res => console.log(res));
     this.initComponents();
     this.initData();
   }
@@ -36,19 +27,10 @@ export abstract class ListeDirective<T> implements OnInit {
     this.tableSet.columnSet!.find((columnSet: ColumnSet) => columnSet.title === fieldSet.name)!.visible = value;
   }
 
-  public async onDelete(id: string): Promise<void> {}
-  public async onEdit(row: T): Promise<void> {
-    this.onOpenModal(row);
-  }
-  public async onSave(id: string): Promise<void> {}
-  public async onCancel(id: string): Promise<void> {}
-
-  public onAdd(t: T) {}
-
-  public onOpenModal(row: T | undefined): void {
-    const modalParam: ModalParam = {
-      title: 'Ajouter une réservation',
-      context: { $implicit: row },
+  public onOpenModal(title: string, t?: T): void {
+    const modalParam: ModalParam<T> = {
+      title,
+      context: { $implicit: t },
       template: this.modal
     };
     this.modalService.set$(modalParam);
@@ -57,7 +39,12 @@ export abstract class ListeDirective<T> implements OnInit {
   protected abstract getColumnSet(): ColumnSet[];
   protected abstract getActionSet(): ActionSet[];
   protected abstract mapData(list: any[]): T[];
-
+  protected abstract initData(): void;
+  public abstract onEdit(row: T): void;
+  public abstract onDelete(row: T): void;
+  public abstract onCreate(): void;
+  public abstract onSave(t: T): void;
+ 
   private initComponents() {
     this.tableSet = {
       verticaltextHeader: false,
@@ -73,7 +60,7 @@ export abstract class ListeDirective<T> implements OnInit {
     );
   }
 
-  private initData() {
+/*   private initData() {
     this.isLoading = true;
     this.reservationService
       .getAll()
@@ -82,6 +69,6 @@ export abstract class ListeDirective<T> implements OnInit {
         this.tableSet.data = this.mapData(t);
         this.isLoading = false;
       });
-  }
+  } */
   
 }

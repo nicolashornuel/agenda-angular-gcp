@@ -7,15 +7,33 @@ import {
   ColumnSet,
   ColumnString
 } from '@shared/models/tableSet.interface';
-import { ListeDirective } from 'app/train/abstracts/listeDirective.abstract';
-import { Reservation, Train } from 'app/train/models/reservation';
+import { ListeController } from 'app/train/abstracts/listeController.abstract';
+import { ReservationDTO, Train } from 'app/train/models/reservation';
+import { ReservationService } from 'app/train/services/reservation.service';
+import { STATIONS, SncfService } from 'app/train/services/sncf.service';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-liste-trajet',
   templateUrl: './liste-trajet.component.html',
   styleUrls: ['./liste-trajet.component.scss']
 })
-export class ListeTrajetComponent extends ListeDirective<Reservation> implements OnInit {
+export class ListeTrajetComponent extends ListeController<ReservationDTO> implements OnInit {
+
+  constructor(private reservationService: ReservationService) {
+    super();
+  }
+  
+  protected override initData(): void {
+    this.isLoading = true;
+    this.reservationService
+      .getAll()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((t: any[]) => {
+        this.tableSet.data = this.mapData(t);
+        this.isLoading = false;
+      });
+  }
   
   protected override mapData(reservations: any[]): any[] {
     return reservations.flatMap(reservation =>
@@ -44,6 +62,18 @@ export class ListeTrajetComponent extends ListeDirective<Reservation> implements
         new ActionSet(ActionSet.DELETE, row => this.onDelete(row))
       ]
     }
+
+    public onCreate(): void {
+      this.onOpenModal('Créer une réservation', new ReservationDTO())
+    }
+
+    public onEdit(row: ReservationDTO): void {
+      this.onOpenModal('Editer une réservation', row);
+    }
+
+    public onDelete(row: ReservationDTO): void {}
+
+    public async onSave(row: ReservationDTO): Promise<void> {}
 
 
 }

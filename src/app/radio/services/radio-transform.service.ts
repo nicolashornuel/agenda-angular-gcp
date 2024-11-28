@@ -34,8 +34,8 @@ export class RadioTransformService {
 
   private diffusionStepToPlayer(step: DiffusionStep): SongDTO {
     return {
-      title: step.diffusion.title,
-      artist: step.diffusion.standFirst,
+      title: step.diffusion?.title,
+      artist: step.diffusion?.standFirst,
       start: step.start,
       end: step.end,
     }

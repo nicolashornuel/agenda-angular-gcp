@@ -19,6 +19,25 @@ export interface Trajet {
   isRefunded: boolean;
 }
 
+export class ReservationDTO {
+  travelReferency: string | undefined;
+  fileStorage?: FileStorage;
+  id?: string;
+  startAt: Date | undefined;
+  endAt: Date | undefined;
+  startPlace: any | undefined;
+  endPlace: any | undefined;
+  trainNumber: string | undefined;
+  seatNumber?: string | undefined;
+  price: number | undefined;
+  subscriptionCard?: string | undefined;
+  cancelation: string | undefined;
+  isRefunded: boolean | undefined;
+  constructor() {
+    
+  }
+}
+
 /* export interface FileStorage {
   name: string;
   size: number;

@@ -22,7 +22,7 @@ export interface TableSet {
 
 export interface ActionSet {
   icon: string;
-  method: (row: any) => Promise<any>;
+  method: (row: any) => Promise<any> | void;
 }
 
 export class ActionSet {
@@ -30,7 +30,7 @@ export class ActionSet {
   public static readonly DELETE = "fas fa-trash-alt";
   public static readonly CANCEL = "fas fa-times";
   public static readonly SAVE = "fas fa-save";
-  constructor(icon: string, method: (row: any) => Promise<any>) {
+  constructor(icon: string, method: (row: any) => Promise<any> | void) {
     this.icon = icon;
     this.method = method;
   }
@@ -112,6 +112,12 @@ export class FieldSet {
 export class DataField extends FieldSet {
   constructor(data: {key: string, title: string}, object: any) {
     super(data.title, object ? object[data.key] : "")
+  }
+}
+export class DataSelect extends FieldSet {
+  constructor(data: {key: string, title: string}, object: any, options: string[]) {
+    super(data.title, object ? object[data.key] : "")
+    this.options = options
   }
 }
 

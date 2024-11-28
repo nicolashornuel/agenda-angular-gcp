@@ -100,7 +100,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   }
 
   public onOpenModal(templateRef: TemplateRef<Modal>): void {
-    const modalParam: ModalParam = {
+    const modalParam: ModalParam<CalendarMonthViewDay> = {
       title: this.datePipe.transform(this.day.date, 'fullDate')!,
       context: {$implicit: this.day},
       template: templateRef

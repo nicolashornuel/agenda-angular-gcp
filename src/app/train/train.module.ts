@@ -7,8 +7,9 @@ import { ListeTrajetComponent } from './components/liste-trajet/liste-trajet.com
 import { TrainRoutingModule } from './train-routing.module';
 import { PageTrainComponent } from './page/page-train.component';
 import { ListeReservationComponent } from './components/liste-reservation/liste-reservation.component';
-import { ListeDirective } from './abstracts/listeDirective.abstract';
 import { EditionReservationComponent } from './components/edition-reservation/edition-reservation.component';
+import { ListeNextComponent } from './components/liste-next/liste-next.component';
+import { ListeArretComponent } from './components/liste-arret/liste-arret.component';
 
 
 @NgModule({
@@ -17,7 +18,9 @@ import { EditionReservationComponent } from './components/edition-reservation/ed
     ListeTrajetComponent,
     PageTrainComponent,
     ListeReservationComponent,
-    EditionReservationComponent
+    EditionReservationComponent,
+    ListeNextComponent,
+    ListeArretComponent
   ],
   imports: [
     CommonModule,

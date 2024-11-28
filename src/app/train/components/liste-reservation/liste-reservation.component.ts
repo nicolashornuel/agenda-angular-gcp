@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActionSet, CellRenderers, ColumnCustom, ColumnHtml, ColumnSet, ColumnString } from '@shared/models/tableSet.interface';
-import { ListeDirective } from 'app/train/abstracts/listeDirective.abstract';
+import { ListeController } from 'app/train/abstracts/listeController.abstract';
 import { Reservation, Train } from 'app/train/models/reservation';
 
 @Component({
@@ -8,7 +8,22 @@ import { Reservation, Train } from 'app/train/models/reservation';
   templateUrl: './liste-reservation.component.html',
   styleUrls: ['./liste-reservation.component.scss']
 })
-export class ListeReservationComponent extends ListeDirective<Reservation> {
+export class ListeReservationComponent extends ListeController<Reservation> {
+  protected override initData(): void {
+    throw new Error('Method not implemented.');
+  }
+  public override onCreate(): void {
+    throw new Error('Method not implemented.');
+  }
+  public override onSave(t: Reservation): void {
+    throw new Error('Method not implemented.');
+  }
+  public override onEdit(row: Reservation): void {
+    throw new Error('Method not implemented.');
+  }
+  public override onDelete(row: Reservation): void {
+    throw new Error('Method not implemented.');
+  }
 
   protected override mapData(reservations: any[]): any[] {
     return reservations.flatMap(reservation =>

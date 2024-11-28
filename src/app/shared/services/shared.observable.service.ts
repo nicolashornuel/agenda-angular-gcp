@@ -6,7 +6,7 @@ import { PopoverParam } from '@shared/models/popoverParam.interface';
 @Injectable({
   providedIn: 'root'
 })
-export class ModalService extends SubjectService<ModalParam> {}
+export class ModalService extends SubjectService<ModalParam<any>> {}
 
 @Injectable({
   providedIn: 'root'

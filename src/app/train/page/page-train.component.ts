@@ -19,6 +19,11 @@ export class PageTrainComponent {
       closable: false,
       link: 'reservations',
     },
+    {
+      name: 'Prochains',
+      closable: false,
+      link: 'nexts',
+    }
   ];
   
 

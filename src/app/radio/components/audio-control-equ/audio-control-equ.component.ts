@@ -123,7 +123,7 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
       name: this.MESSAGE_NEW,
       value: this.eqs.map(eq => eq.gain.value)
     };
-    const modalParam: ModalParam = {
+    const modalParam: ModalParam<SelectParam> = {
       title: `Paramêtre d'equaliser prédéfini`,
       context: {$implicit: selectParam},
       template: templateRef

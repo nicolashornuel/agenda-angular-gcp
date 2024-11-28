@@ -4,9 +4,9 @@ export interface Modal {
   input: any;
 }
 
-export interface ModalParam {
+export interface ModalParam<T> {
   title: string,
-  context: any;
+  context: { $implicit: T | undefined };
   template: TemplateRef<any>;
   maxWidth?: string;
 }

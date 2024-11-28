@@ -3,10 +3,12 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { FirestoreStorageService } from '@core/services/firebasestorage.service';
 import {
   DataField,
+  DataSelect,
   FieldSet
 } from '@shared/models/tableSet.interface';
 import { ModalService } from '@shared/services/shared.observable.service';
-import { FileStorage, Reservation, Train } from 'app/train/models/reservation';
+import { Reservation, ReservationDTO, Train } from 'app/train/models/reservation';
+import { StopArea, StopAreaEnum } from 'app/train/services/sncf.service';
 
 @Component({
   selector: 'app-edition-trajet',
@@ -27,8 +29,8 @@ export class EditionTrajetComponent implements OnInit {
   public fileStorageField!: FieldSet;
   public isRefundedField!: FieldSet;
 
-  @Input() input!: Reservation;
-  @Output() output = new EventEmitter<Reservation>();
+  @Input() input!: any;
+  @Output() output = new EventEmitter<ReservationDTO>();
 
   public src: string | SafeResourceUrl = '';
   public file?: File;
@@ -36,10 +38,27 @@ export class EditionTrajetComponent implements OnInit {
   constructor(private modalService: ModalService, private firebaseStorage: FirestoreStorageService, private _sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
+    this.input = {
+      travelReferency: '',
+      fileStorage: '',
+      id: '',
+      startAt: new Date(),
+      endAt: new Date(),
+      startPlace: {},
+      endPlace: StopArea.BAILLARGUES,
+      trainNumber: '',
+      seatNumber: '',
+      price: 0,
+      subscriptionCard: '',
+      cancelation: '',
+      isRefunded: false,
+    };
+    /* console.log(this.input); */
+    
     this.startAtField = new DataField(Train.START_AT, this.input);
-    this.startPlaceField = new DataField(Train.START_PLACE, this.input);
+    this.startPlaceField = new DataSelect(Train.START_PLACE, this.input, Object.values(StopArea));
     this.endAtField = new DataField(Train.END_AT, this.input);
-    this.endPlaceField = new DataField(Train.END_PLACE, this.input);
+    this.endPlaceField = new DataSelect(Train.END_PLACE, this.input, Object.values(StopArea));
     this.trainNumberField = new DataField(Train.TRAIN_NUMBER, this.input);
     this.seatNumberField = new DataField(Train.SEAT_NUMBER, this.input);
     this.travelReferencyField = new DataField(Train.TRAVEL_REF, this.input);
@@ -48,7 +67,7 @@ export class EditionTrajetComponent implements OnInit {
     this.cancelationField = new DataField(Train.CANCELATION, this.input);
     this.isRefundedField = new DataField(Train.REFUNDED, this.input);
     this.fileStorageField = new DataField(Train.FILE_STORAGE, this.input);
-    console.log(this.fileStorageField);
+    console.log(this);
     
   }
 
@@ -69,6 +88,9 @@ export class EditionTrajetComponent implements OnInit {
   }
 
   public onSave(): void {
+    console.log(this.startPlaceField);
+    console.log(this.input);
+    
     //this.output.emit(value);
       //let link = await this.firebaseStorage.uploadToStorage("train/trajets", event.target);
     this.modalService.set$(undefined);
