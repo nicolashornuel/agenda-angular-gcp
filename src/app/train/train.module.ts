@@ -8,7 +8,7 @@ import { TrainRoutingModule } from './train-routing.module';
 import { PageTrainComponent } from './page/page-train.component';
 import { ListeReservationComponent } from './components/liste-reservation/liste-reservation.component';
 import { EditionReservationComponent } from './components/edition-reservation/edition-reservation.component';
-import { ListeNextComponent } from './components/liste-next/liste-next.component';
+import { ListeArrivalComponent, ListeDepartureComponent, ListeNextComponent } from './components/liste-next/liste-next.component';
 import { ListeArretComponent } from './components/liste-arret/liste-arret.component';
 
 
@@ -20,7 +20,9 @@ import { ListeArretComponent } from './components/liste-arret/liste-arret.compon
     ListeReservationComponent,
     EditionReservationComponent,
     ListeNextComponent,
-    ListeArretComponent
+    ListeArretComponent,
+    ListeArrivalComponent,
+    ListeDepartureComponent
   ],
   imports: [
     CommonModule,

@@ -20,9 +20,9 @@ export class PageTrainComponent {
       link: 'reservations',
     },
     {
-      name: 'Prochains',
+      name: 'Arrivées',
       closable: false,
-      link: 'nexts',
+      link: 'arrivals',
     }
   ];
   

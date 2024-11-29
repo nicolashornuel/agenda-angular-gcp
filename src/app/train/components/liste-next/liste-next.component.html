@@ -1,22 +1,22 @@
 <ng-container *ngIf="!isLoading; else spinner">
 
-    <div *ngFor="let arrival of arrivals">
+    <div *ngFor="let item of liste">
         <h1 class="fw-semibold">
-            {{arrival.direction}}
+            {{item.direction}}
         </h1>
         <span>
-            {{arrival.headsign}}
+            {{item.headsign}}
         </span>
         <span>
-            {{arrival.network}}
+            {{item.network}}
         </span>
         <span>
-            {{arrival.hour| date: 'HH:mm'}}
+            {{item.hour| date: 'HH:mm'}}
         </span>
         <span>
-            {{arrival.delay}}
+            {{item.delay}}
         </span>
-        <app-liste-arret [trajetId]="arrival.trajetId"></app-liste-arret>
+        <app-liste-arret [trajetId]="item.trajetId"></app-liste-arret>
 
     </div>
 

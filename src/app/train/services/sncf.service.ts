@@ -11,14 +11,14 @@ export class SncfService {
   /**
    * Les 10 prochains départs
    */
-  public getDepartures(station: string): Observable<Journey[]> {
-    return this.get(`/coverage/sncf/stop_areas/${station}/departures`).pipe(map(response => response.departures!));
+  public getDepartures(station: string): Observable<JourneyDTO[]> {
+    return this.get(`/coverage/sncf/stop_areas/${station}/departures`).pipe(map(response => this.mapperArrivals(response)));
   }
   /**
    * Les 10 prochaines arrivées
    */
-  public getArrivals(station: string): Observable<Journey[]> {
-    return this.get(`coverage/sncf/stop_areas/${station}/arrivals`).pipe(map(response => response.arrivals!));
+  public getArrivals(station: string): Observable<JourneyDTO[]> {
+    return this.get(`coverage/sncf/stop_areas/${station}/arrivals`).pipe(map(response => this.mapperArrivals(response)));
   }
   /**
    * departures grouped by terminus
@@ -62,10 +62,39 @@ export class SncfService {
     };
     return this.http.get<NavitiaResponse>(`${api}/${endpoint}`, options);
   }
+
+  public mapperArrivals(response: NavitiaResponse): JourneyDTO[] {
+    return response.arrivals!.map(arrival => ({
+        disruptions: response.disruptions,
+        stop_point: arrival.stop_point.name,
+        ...arrival.display_informations,
+        hour: this.convertDate(arrival.stop_date_time.base_arrival_date_time),
+        trajetId: arrival.links[1].id,
+        delay: this.getDifference(
+          arrival.stop_date_time.base_arrival_date_time,
+          arrival.stop_date_time.arrival_date_time)
+      }));
+  }
+
+  public getDifference(theorique: string, reel: string): number {
+    const dateTheorique = this.convertDate(theorique);
+    const dateReel = this.convertDate(reel);
+    const diffTime = Math.abs(dateTheorique.getTime() - dateReel.getTime());
+    return diffTime;
+  }
+
+  public convertDate(apiDate: string): Date {
+    const utcDate = apiDate.split('');
+    utcDate.splice(4, 0, '-');
+    utcDate.splice(7, 0, '-');
+    utcDate.splice(13, 0, ':');
+    utcDate.splice(16, 0, ':');
+    return new Date(utcDate.join(''));
+  }
 }
 
 export interface NavitiaResponse {
-  disruptions: any[];
+  disruptions: any;
   exceptions: any[];
   departures?: Journey[];
   arrivals?: Journey[];
@@ -82,6 +111,17 @@ export interface Journey {
     departure_date_time: string;
   };
   stop_point: { name: string };
+}
+
+export interface JourneyDTO {
+  disruptions: any;
+  headsign: string; 
+  network: string; 
+  direction: string;
+  trajetId: string;
+  hour: Date;
+  delay: number;
+  stop_point: string;
 }
 
 // https://api.sncf.com/v1/coverage/sncf/places?q=avignon
