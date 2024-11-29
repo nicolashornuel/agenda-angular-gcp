@@ -43,6 +43,8 @@ export class SncfService {
   /**
    * "https://api.sncf.com/v1/coverage/sncf/disruptions/{disruptions.id}"
    * "https://api.sncf.com/v1/coverage/sncf/disruptions?since=20241025T053400&until=20241125T053400"
+   * https://api.sncf.com/v1/coverage/sncf/stop_areas/stop_area:SNCF:87773457/arrivals
+   * => response.disruptions.impacted_objects[0].impacted_stops.filter(impacted_stop => impacted_stop.stop_point.id == "stop_point:SNCF:87773457:Train")
    */
   public getDisruptions(since?: string): Observable<NavitiaResponse> {
     return this.get(`coverage/sncf/disruptions`, { since: since ?? undefined });
