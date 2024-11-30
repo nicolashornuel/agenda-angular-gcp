@@ -1,3 +1,5 @@
+import { StopArea } from "../services/sncf.service";
+
 export interface Reservation {
   id?: string;
   travelReferency: string;
@@ -9,8 +11,8 @@ export interface Trajet {
   id?: string;
   startAt: Date;
   endAt: Date;
-  startPlace: string;
-  endPlace: string;
+  startPlace: StopArea;
+  endPlace: StopArea;
   trainNumber: string;
   seatNumber?: string;
   price: number;

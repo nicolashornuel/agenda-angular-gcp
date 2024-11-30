@@ -1,4 +1,5 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment.prod';
 import { Observable, map } from 'rxjs';
@@ -7,18 +8,22 @@ import { Observable, map } from 'rxjs';
   providedIn: 'root'
 })
 export class SncfService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private datePipe: DatePipe) {}
   /**
    * Les 10 prochains départs
    */
   public getDepartures(station: string): Observable<JourneyDTO[]> {
-    return this.get(`/coverage/sncf/stop_areas/${station}/departures`).pipe(map(response => this.mapperArrivals(response)));
+    return this.get(`/coverage/sncf/stop_areas/${station}/departures`).pipe(
+      map(response => this.mapperDepartures(response))
+    );
   }
   /**
    * Les 10 prochaines arrivées
    */
   public getArrivals(station: string): Observable<JourneyDTO[]> {
-    return this.get(`coverage/sncf/stop_areas/${station}/arrivals`).pipe(map(response => this.mapperArrivals(response)));
+    return this.get(`coverage/sncf/stop_areas/${station}/arrivals`).pipe(
+      map(response => this.mapperArrivals(response))
+    );
   }
   /**
    * departures grouped by terminus
@@ -65,22 +70,52 @@ export class SncfService {
 
   public mapperArrivals(response: NavitiaResponse): JourneyDTO[] {
     return response.arrivals!.map(arrival => ({
-        disruptions: response.disruptions,
-        stop_point: arrival.stop_point.name,
-        ...arrival.display_informations,
-        hour: this.convertDate(arrival.stop_date_time.base_arrival_date_time),
-        trajetId: arrival.links[1].id,
-        delay: this.getDifference(
-          arrival.stop_date_time.base_arrival_date_time,
-          arrival.stop_date_time.arrival_date_time)
-      }));
+      disruptions: this.mapperArrivalDisruptions(response.disruptions, arrival.stop_point),
+      stop_point: arrival.stop_point,
+      ...arrival.display_informations,
+      baseHour: this.formatBaseHour(arrival.stop_date_time.base_arrival_date_time),
+      trajetId: arrival.links[1].id,
+      delay: this.getDifference(arrival.stop_date_time.base_arrival_date_time, arrival.stop_date_time.arrival_date_time)
+    }));
   }
 
-  public getDifference(theorique: string, reel: string): number {
+  public mapperDepartures(response: NavitiaResponse): JourneyDTO[] {
+    return response.departures!.map(departure => ({
+      disruptions: this.mapperDepartureDisruptions(response.disruptions, departure.stop_point),
+      stop_point: departure.stop_point,
+      ...departure.display_informations,
+      baseHour: this.formatBaseHour(departure.stop_date_time.base_departure_date_time),
+      trajetId: departure.links[1].id,
+      delay: this.getDifference(
+        departure.stop_date_time.base_departure_date_time,
+        departure.stop_date_time.departure_date_time
+      )
+    }));
+  }
+
+  public mapperArrivalDisruptions(disruptions: Disruption[], stop_point: Stop_point): any {
+    return disruptions[0].impacted_objects[0].impacted_stops.filter(impacted_stop => impacted_stop.stop_point.id === stop_point.id).map(impacted_stop => ({
+      status: impacted_stop.arrival_status,
+      cause: impacted_stop.cause,
+      isDetour: impacted_stop.is_detour,
+      test: impacted_stop
+    }))
+  }
+  public mapperDepartureDisruptions(disruptions: Disruption[], stop_point: Stop_point): any {
+    return disruptions[0].impacted_objects[0].impacted_stops.filter(impacted_stop => impacted_stop.stop_point.id === stop_point.id).map(impacted_stop => ({
+      status: impacted_stop.departure_status,
+      cause: impacted_stop.cause,
+      isDetour: impacted_stop.is_detour,
+    }))
+  }
+
+  public getDifference(theorique: string, reel: string): string {
     const dateTheorique = this.convertDate(theorique);
     const dateReel = this.convertDate(reel);
-    const diffTime = Math.abs(dateTheorique.getTime() - dateReel.getTime());
-    return diffTime;
+    const minuteDelay = Math.abs(dateTheorique.getTime() - dateReel.getTime()) / 60000;
+    if (minuteDelay >= 60) return `retard ${Math.floor(minuteDelay / 60)}h${minuteDelay % 60}`;
+    if (minuteDelay > 0) return `retard ${minuteDelay}min`;
+    return "à l'heure";
   }
 
   public convertDate(apiDate: string): Date {
@@ -91,14 +126,43 @@ export class SncfService {
     utcDate.splice(16, 0, ':');
     return new Date(utcDate.join(''));
   }
+
+  public formatBaseHour(apiDate: string): string {
+    const date = this.convertDate(apiDate);
+    return this.datePipe.transform(date, 'HH:mm')!.replace(':', 'h');
+  }
 }
 
 export interface NavitiaResponse {
-  disruptions: any;
+  disruptions: Disruption[];
   exceptions: any[];
   departures?: Journey[];
   arrivals?: Journey[];
-  vehicle_journeys: { stop_times: { stop_point: { name: string } }[] }[];
+  vehicle_journeys: { stop_times: { stop_point: Stop_point }[] }[];
+}
+
+export interface Disruption {
+  messages: { text: string }[];
+  severity: { effect: string; name: string };
+  status: string;
+  impacted_objects: {
+    impacted_stops: {
+      amended_arrival_time: string;
+      amended_departure_time: string;
+      arrival_status: string;
+      base_arrival_time: string;
+      base_departure_time: string;
+      cause: string;
+      is_detour: boolean;
+      departure_status: string;
+      stop_point: Stop_point;
+    }[];
+  }[];
+}
+
+export interface Stop_point {
+  id: string; 
+  name: string;
 }
 
 export interface Journey {
@@ -110,18 +174,18 @@ export interface Journey {
     base_departure_date_time: string;
     departure_date_time: string;
   };
-  stop_point: { name: string };
+  stop_point: Stop_point;
 }
 
 export interface JourneyDTO {
   disruptions: any;
-  headsign: string; 
-  network: string; 
+  headsign: string;
+  network: string;
   direction: string;
   trajetId: string;
-  hour: Date;
-  delay: number;
-  stop_point: string;
+  baseHour: string;
+  delay: string;
+  stop_point: Stop_point;
 }
 
 // https://api.sncf.com/v1/coverage/sncf/places?q=avignon

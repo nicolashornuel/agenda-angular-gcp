@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Reservation } from '../models/reservation';
+import { Reservation, ReservationDTO } from '../models/reservation';
 import { Observable, of } from 'rxjs';
+import { StopArea } from './sncf.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,8 @@ export class ReservationService  {
         {
           startAt: new Date(),
           endAt: new Date(),
-          startPlace: "BAILLARGUES",
-          endPlace: "NIMES",
+          startPlace: StopArea.BAILLARGUES,
+          endPlace: StopArea.NIMES_CENTRE,
           trainNumber: "TGV INOUI 5647",
           seatNumber: "voiture 6 Haut - Place 107 - Duo cote à cote",
           price: 37,
@@ -31,8 +32,8 @@ export class ReservationService  {
         {
           startAt: new Date(),
           endAt: new Date(),
-          startPlace: "BAILLARGUES",
-          endPlace: "NIMES",
+          startPlace: StopArea.NIMES_CENTRE,
+          endPlace: StopArea.BAILLARGUES,
           trainNumber: "TGV INOUI 5647",
           seatNumber: "voiture 6 Haut - Place 107 - Duo cote à cote",
           price: 37,

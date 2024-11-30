@@ -43,9 +43,9 @@ export class ListeTrajetComponent extends ListeController<ReservationDTO> implem
     protected override getColumnSet(): ColumnSet[] {
       return [
         new ColumnHtml(Train.START_AT, true, CellRenderers.toShortDate()),
-        new ColumnString(Train.START_PLACE, true),
+        new ColumnCustom(Train.START_PLACE, true, CellRenderers.toMiniBadgeLink('blue', '/train/departures/')),
         new ColumnHtml(Train.END_AT, true, CellRenderers.toShortDate()),
-        new ColumnString(Train.END_PLACE, true),
+        new ColumnCustom(Train.END_PLACE, true, CellRenderers.toMiniBadgeLink('green', '/train/arrivals/')),
         new ColumnString(Train.TRAIN_NUMBER, true),
         new ColumnString(Train.SEAT_NUMBER, true),
         new ColumnString(Train.PRICE, false),

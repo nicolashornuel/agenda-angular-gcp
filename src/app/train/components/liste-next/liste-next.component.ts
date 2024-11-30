@@ -1,51 +1,73 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, inject, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { DataSelect } from '@shared/models/tableSet.interface';
 import { DestroyService } from '@shared/services/destroy.service';
-import { Journey, JourneyDTO, SncfService, STATIONS, StopArea, StopAreaEnum } from 'app/train/services/sncf.service';
-import { combineLatest, Observable, switchMap, take, takeUntil } from 'rxjs';
+import { JourneyDTO, SncfService, STATIONS, StopArea } from 'app/train/services/sncf.service';
+import { interval, Observable, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-liste-next',
   templateUrl: './liste-next.component.html',
-  styleUrls: ['./liste-next.component.scss']
+  styleUrls: ['./liste-next.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ListeNextComponent implements OnInit {
-  @Input() liste!: JourneyDTO[];
-  @Input() isLoading!: boolean;
   @Input() function!: (sncfService: SncfService, id: string) => Observable<JourneyDTO[]>;
+  @Input() route!: string;
+  public liste!: JourneyDTO[];
+  public isLoading!: boolean;
+  public isTimeDisplay!: boolean;
+  public select = new DataSelect<StopArea>({key: 'key', title: 'choix de la gare'}, {key: StopArea.BAILLARGUES}, Object.values(StopArea));
+
   private sncfService = inject(SncfService);
-  private route = inject(ActivatedRoute);
+  private activatedRoute = inject(ActivatedRoute);
+  private destroy$ = inject(DestroyService);
+  private router = inject(Router);
   
   ngOnInit(): void {
     this.isLoading = true;
-    const id = this.route.snapshot.paramMap.get('id') ?? StopArea.BAILLARGUES.id;
-    this.function(this.sncfService, id).pipe(take(1)).subscribe(liste => {
+    this.activatedRoute.paramMap.pipe(takeUntil(this.destroy$)).subscribe((param: ParamMap) => {
+      this.select.value = Object.values(StopArea).find(any => any['id'] === param.get('id')) ?? StopArea.BAILLARGUES
+      this.isLoading = false;
+      this.initData();
+    })
+  }
+
+  private initData(): void {
+    this.isLoading = true;
+    this.function(this.sncfService, this.select.value.id).pipe(take(1)).subscribe(liste => {
       this.liste = liste;
+      console.log(this.liste);
+      this.initInterval();
       this.isLoading = false;
     })
   }
-}
 
-@Component({
-  template: '<app-liste-next [function]="function" class="arrivals"></app-liste-next>',
-  styleUrls: ['./liste-next.component.scss']
-})
-export class ListeArrivalComponent implements OnInit {
-  public function!: (sncfService: SncfService, id: string) => Observable<JourneyDTO[]>;
+  public onSelectChange(): void {
+    this.router.navigate([`/train/${this.route}/`, this.select.value.id]);
+  }
 
-  ngOnInit(): void {
-    this.function = (sncfService, id) => sncfService.getArrivals(id)
+  private initInterval() {
+    interval(5000).pipe(takeUntil(this.destroy$)).subscribe(() => this.isTimeDisplay = !this.isTimeDisplay )
   }
 }
 
 @Component({
-  template: '<app-liste-next [function]="function" class="arrivals"></app-liste-next>',
-  styleUrls: ['./liste-next.component.scss']
+  template: '<app-liste-next [function]="function" [ngClass]="route" [route]="route"></app-liste-next>',
+  styleUrls: ['./liste-next.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
-export class ListeDepartureComponent implements OnInit {
-public function!: (sncfService: SncfService, id: string) => Observable<JourneyDTO[]>;
+export class ListeArrivalComponent {
+  public function = (sncfService: SncfService, id: string) => sncfService.getArrivals(id);
+  public route = "arrivals";
+}
 
-  ngOnInit(): void {
-    this.function = (sncfService, id) => sncfService.getDepartures(id)
-  }
+@Component({
+  template: '<app-liste-next [function]="function" [ngClass]="route" [route]="route"></app-liste-next>',
+  styleUrls: ['./liste-next.component.scss'],
+  encapsulation: ViewEncapsulation.None
+})
+export class ListeDepartureComponent {
+public function = (sncfService: SncfService, id: string) => sncfService.getDepartures(id);
+public route = "departures";
 }

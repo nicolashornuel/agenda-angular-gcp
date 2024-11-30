@@ -1,27 +1,32 @@
+<div class="row-end-center m-3">
+    <app-select class="col-5" [options]="select.options" [(selected)]="select.value" [label]="select.name" (selectedChange)="onSelectChange()"></app-select>
+</div>
+
 <ng-container *ngIf="!isLoading; else spinner">
-
-    <div *ngFor="let item of liste">
-        <h1 class="fw-semibold">
-            {{item.direction}}
+  <div *ngFor="let item of liste" class="journey">
+    <div class="row-start-center f-wrap">
+      <div class="col-start-start network">
+        <span>{{ item.network }}</span>
+        <span>{{ item.headsign }}</span>
+      </div>
+      <h1 class="hour">
+        <ng-container *ngIf="isTimeDisplay; else delay">
+          <span class="fw-semibold yellow">{{ item.baseHour }}</span>
+        </ng-container>
+        <ng-template #delay>
+          <span>{{ item.delay }}</span>
+        </ng-template>
+      </h1>
+      <div class="fw-semibold">
+        <h1>
+          {{ item.direction.split(' (')[0] }}
         </h1>
-        <span>
-            {{item.headsign}}
-        </span>
-        <span>
-            {{item.network}}
-        </span>
-        <span>
-            {{item.hour| date: 'HH:mm'}}
-        </span>
-        <span>
-            {{item.delay}}
-        </span>
-        <app-liste-arret [trajetId]="item.trajetId"></app-liste-arret>
-
+      </div>
     </div>
-
+    <app-liste-arret [trajetId]="item.trajetId"></app-liste-arret>
+  </div>
 </ng-container>
 
 <ng-template #spinner>
-    <app-spinner></app-spinner>
-  </ng-template>
+  <app-spinner></app-spinner>
+</ng-template>

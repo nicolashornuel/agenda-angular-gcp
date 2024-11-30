@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { registerLocaleData } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
@@ -51,7 +51,7 @@ import { TradingModule } from './trading/trading.module';
 
     TradingModule,
   ],
-  providers: [{provide: LOCALE_ID, useValue: 'fr'}],
+  providers: [{provide: LOCALE_ID, useValue: 'fr'}, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {

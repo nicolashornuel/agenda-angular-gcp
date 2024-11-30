@@ -2,7 +2,9 @@ import { EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { BadgeLinkComponent } from '@shared/components/badge-link/badge-link.component';
 import { TableCheckboxComponent } from '@shared/components/table-checkbox/table-checkbox.component';
-import { FileStorage } from 'app/train/models/reservation';
+import { FileStorage, Reservation } from 'app/train/models/reservation';
+import { Colors } from './button.type';
+import { StopArea } from 'app/train/services/sncf.service';
 
 export interface TableSet {
   title?: string;
@@ -114,10 +116,17 @@ export class DataField extends FieldSet {
     super(data.title, object ? object[data.key] : "")
   }
 }
-export class DataSelect extends FieldSet {
-  constructor(data: {key: string, title: string}, object: any, options: string[]) {
-    super(data.title, object ? object[data.key] : "")
+export class DataSelect<T> {
+  name: string;
+  value: T;
+  disabled?: boolean;
+  required?: boolean;
+  parentForm?: NgForm;
+  options: { name: string; value: any }[];
+  constructor(data: {key: string, title: string}, object: any, options: { name: string; value: any }[]) {
+    this.name = data.title
     this.options = options
+    this.value = object[data.key];
   }
 }
 
@@ -165,7 +174,17 @@ export class CellRenderers {
       component: BadgeLinkComponent,
       valuePrepare: (row: any, col: ColumnSet) => ({
         text: row[col.key],
-        link: `reservation-${row.id}`
+        link: row.id
+      })
+    };
+  }
+  public static toMiniBadgeLink(color: Colors, prefix: string) {
+    return {
+      component: BadgeLinkComponent,
+      valuePrepare: (row: any, col: ColumnSet) => ({
+        text: (row[col.key] as StopArea).name,
+        link: prefix + (row[col.key] as StopArea).id,
+        color
       })
     };
   }
