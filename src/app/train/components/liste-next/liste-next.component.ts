@@ -1,9 +1,11 @@
 import { Component, inject, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Pageable } from '@core/services/firestore.service';
 import { DataSelect } from '@shared/models/tableSet.interface';
 import { DestroyService } from '@shared/services/destroy.service';
-import { JourneyDTO, SncfService, STATIONS, StopArea } from 'app/train/services/sncf.service';
-import { interval, Observable, take, takeUntil } from 'rxjs';
+import { JourneyDTO, StopArea } from 'app/train/models/sncf.model';
+import { SncfService } from 'app/train/services/sncf.service';
+import { interval, Observable, Subscription, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-liste-next',
@@ -18,11 +20,15 @@ export class ListeNextComponent implements OnInit {
   public isLoading!: boolean;
   public isTimeDisplay!: boolean;
   public select = new DataSelect<StopArea>({key: 'key', title: 'choix de la gare'}, {key: StopArea.BAILLARGUES}, Object.values(StopArea));
+  public hasNext!: boolean;
+  public hasPrev!: boolean;
 
   private sncfService = inject(SncfService);
   private activatedRoute = inject(ActivatedRoute);
   private destroy$ = inject(DestroyService);
   private router = inject(Router);
+
+  private interval$?: Subscription;
   
   ngOnInit(): void {
     this.isLoading = true;
@@ -37,7 +43,7 @@ export class ListeNextComponent implements OnInit {
     this.isLoading = true;
     this.function(this.sncfService, this.select.value.id).pipe(take(1)).subscribe(liste => {
       this.liste = liste;
-      console.log(this.liste);
+      this.interval$?.unsubscribe();
       this.initInterval();
       this.isLoading = false;
     })
@@ -48,7 +54,33 @@ export class ListeNextComponent implements OnInit {
   }
 
   private initInterval() {
-    interval(5000).pipe(takeUntil(this.destroy$)).subscribe(() => this.isTimeDisplay = !this.isTimeDisplay )
+    this.interval$ = interval(5000).pipe(takeUntil(this.destroy$)).subscribe(() => this.isTimeDisplay = !this.isTimeDisplay )
+  }
+
+  public onFirstPage(): void {
+    this.isLoading = true;
+    //this.videoService.firstPage(this.colSorted!.colKey, this.pageSize).then(videos => this.defineData(videos));
+  }
+
+  public onPrevPage(): void {
+    this.isLoading = true;
+    //this.videoService.prevPage(this.colSorted!.colKey, this.pageSize).then(videos => this.defineData(videos));
+  }
+
+  public onNextPage(): void {
+    this.isLoading = true;
+   //this.videoService.nextPage(this.colSorted!.colKey, this.pageSize).then(videos => this.defineData(videos));
+  }
+
+  public onLastPage(): void {
+    this.isLoading = true;
+   //this.videoService.lastPage(this.colSorted!.colKey, this.pageSize).then(videos => this.defineData(videos));
+  }
+
+  private defineData(page: Pageable<JourneyDTO>): void {
+    this.hasNext = page.hasNext;
+    this.hasPrev = page.hasPrevious;
+    this.isLoading = false;
   }
 }
 

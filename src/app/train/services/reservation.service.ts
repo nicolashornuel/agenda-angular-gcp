@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Reservation, ReservationDTO } from '../models/reservation';
 import { Observable, of } from 'rxjs';
-import { StopArea } from './sncf.service';
+import { Reservation } from '../models/reservation.model';
+import { StopArea } from '../models/sncf.model';
 
 @Injectable({
   providedIn: 'root'

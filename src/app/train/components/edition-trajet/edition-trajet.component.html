@@ -1,7 +1,7 @@
 <div class="row-between-start f-wrap train-edition-container">
   <app-input-date class="col-4" [label]="startAtField.name" [(ngModel)]="startAtField.value"></app-input-date>
 
-  <app-select class="col-8" [options]="startPlaceField.options" [(selected)]="startPlaceField.value" [label]="startPlaceField.name"></app-select>
+  <app-select class="col-8" [options]="startPlaceField.options" [(selected)]="startPlaceField.value" [label]="startPlaceField.name" (selectedChange)="onSelectChange($event)"></app-select>
 
   <app-input-date class="col-4" [label]="endAtField.name" [(ngModel)]="endAtField.value"></app-input-date>
 

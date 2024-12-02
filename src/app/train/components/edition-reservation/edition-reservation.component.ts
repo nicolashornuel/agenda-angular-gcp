@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Reservation } from 'app/train/models/reservation';
+import { Reservation } from 'app/train/models/reservation.model';
 
 @Component({
   selector: 'app-edition-reservation',

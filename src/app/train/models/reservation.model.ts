@@ -1,4 +1,6 @@
-import { StopArea } from "../services/sncf.service";
+import { FileStorage } from "@shared/components/input-file/input-file.component";
+import { StopArea } from "./sncf.model";
+
 
 export interface Reservation {
   id?: string;
@@ -38,20 +40,6 @@ export class ReservationDTO {
   constructor() {
     
   }
-}
-
-/* export interface FileStorage {
-  name: string;
-  size: number;
-  type: string;
-  lastModified: number;
-  lastModifiedDate: Date;
-} */
-
-export interface FileStorage {
-  name?: string;
-  link?: string;
-  file?: File;
 }
 
 export class Train {

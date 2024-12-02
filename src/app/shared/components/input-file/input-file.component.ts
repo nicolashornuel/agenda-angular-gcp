@@ -1,7 +1,20 @@
 import { Component, EventEmitter, Input, OnInit, Output, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractInputComponent } from '@shared/abstracts/input.component';
-import { FileStorage } from 'app/train/models/reservation';
+
+/* export interface FileStorage {
+  name: string;
+  size: number;
+  type: string;
+  lastModified: number;
+  lastModifiedDate: Date;
+} */
+
+export interface FileStorage {
+  name?: string;
+  link?: string;
+  file?: File;
+}
 
 @Component({
   selector: 'app-input-file',

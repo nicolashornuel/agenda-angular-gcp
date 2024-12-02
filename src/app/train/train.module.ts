@@ -10,6 +10,7 @@ import { ListeReservationComponent } from './components/liste-reservation/liste-
 import { EditionReservationComponent } from './components/edition-reservation/edition-reservation.component';
 import { ListeArrivalComponent, ListeDepartureComponent, ListeNextComponent } from './components/liste-next/liste-next.component';
 import { ListeArretComponent } from './components/liste-arret/liste-arret.component';
+import { DisruptionComponent } from './components/disruption/disruption.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { ListeArretComponent } from './components/liste-arret/liste-arret.compon
     ListeNextComponent,
     ListeArretComponent,
     ListeArrivalComponent,
-    ListeDepartureComponent
+    ListeDepartureComponent,
+    DisruptionComponent
   ],
   imports: [
     CommonModule,

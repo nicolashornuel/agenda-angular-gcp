@@ -29,10 +29,10 @@ export class AppComponent {
       title: 'Train',
       route: 'train'
     },
-    {
+  /*   {
       title: 'Trading',
       route: 'trading'
-    },
+    }, */
     {
       title: 'GPS',
       route: 'location'

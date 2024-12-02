@@ -7,8 +7,10 @@ import {
   FieldSet
 } from '@shared/models/tableSet.interface';
 import { ModalService } from '@shared/services/shared.observable.service';
-import { Reservation, ReservationDTO, Train } from 'app/train/models/reservation';
-import { StopArea, StopAreaEnum } from 'app/train/services/sncf.service';
+import { ReservationDTO, Train } from 'app/train/models/reservation.model';
+import { StopArea } from 'app/train/models/sncf.model';
+import { SncfService } from 'app/train/services/sncf.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-edition-trajet',
@@ -35,7 +37,7 @@ export class EditionTrajetComponent implements OnInit {
   public src: string | SafeResourceUrl = '';
   public file?: File;
 
-  constructor(private modalService: ModalService, private firebaseStorage: FirestoreStorageService, private _sanitizer: DomSanitizer) {}
+  constructor(private modalService: ModalService, private firebaseStorage: FirestoreStorageService, private _sanitizer: DomSanitizer, private sncfService: SncfService) {}
 
   ngOnInit(): void {
     this.input = {
@@ -67,8 +69,16 @@ export class EditionTrajetComponent implements OnInit {
     this.cancelationField = new DataField(Train.CANCELATION, this.input);
     this.isRefundedField = new DataField(Train.REFUNDED, this.input);
     this.fileStorageField = new DataField(Train.FILE_STORAGE, this.input);
-    console.log(this);
     
+  }
+
+  public onSelectChange(selected:  StopArea): void {
+    /* this.sncfService.getByRoute(selected.id).pipe(take(1)).subscribe(liste => {
+      console.log(liste);
+    }) */
+    this.sncfService.getByTerminus(selected.id).pipe(take(1)).subscribe(liste => {
+      console.log(liste);
+    })
   }
 
   public onClose(): void {

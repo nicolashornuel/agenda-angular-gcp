@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { BadgeLinkComponent } from '@shared/components/badge-link/badge-link.component';
+import { Colors } from '@shared/models/button.type';
 import {
   ActionSet,
   CellRenderers,
@@ -8,9 +10,9 @@ import {
   ColumnString
 } from '@shared/models/tableSet.interface';
 import { ListeController } from 'app/train/abstracts/listeController.abstract';
-import { ReservationDTO, Train } from 'app/train/models/reservation';
+import { ReservationDTO, Train } from 'app/train/models/reservation.model';
+import { StopArea } from 'app/train/models/sncf.model';
 import { ReservationService } from 'app/train/services/reservation.service';
-import { STATIONS, SncfService } from 'app/train/services/sncf.service';
 import { takeUntil } from 'rxjs';
 
 @Component({
@@ -43,9 +45,9 @@ export class ListeTrajetComponent extends ListeController<ReservationDTO> implem
     protected override getColumnSet(): ColumnSet[] {
       return [
         new ColumnHtml(Train.START_AT, true, CellRenderers.toShortDate()),
-        new ColumnCustom(Train.START_PLACE, true, CellRenderers.toMiniBadgeLink('blue', '/train/departures/')),
+        new ColumnCustom(Train.START_PLACE, true, ListeTrajetComponent.toMiniBadgeLink('blue', '/train/departures/')),
         new ColumnHtml(Train.END_AT, true, CellRenderers.toShortDate()),
-        new ColumnCustom(Train.END_PLACE, true, CellRenderers.toMiniBadgeLink('green', '/train/arrivals/')),
+        new ColumnCustom(Train.END_PLACE, true, ListeTrajetComponent.toMiniBadgeLink('green', '/train/arrivals/')),
         new ColumnString(Train.TRAIN_NUMBER, true),
         new ColumnString(Train.SEAT_NUMBER, true),
         new ColumnString(Train.PRICE, false),
@@ -74,6 +76,17 @@ export class ListeTrajetComponent extends ListeController<ReservationDTO> implem
     public onDelete(row: ReservationDTO): void {}
 
     public async onSave(row: ReservationDTO): Promise<void> {}
+
+    public static toMiniBadgeLink(color: Colors, prefix: string) {
+      return {
+        component: BadgeLinkComponent,
+        valuePrepare: (row: any, col: ColumnSet) => ({
+          text: (row[col.key] as StopArea).name,
+          link: prefix + (row[col.key] as StopArea).id,
+          color
+        })
+      };
+    }
 
 
 }

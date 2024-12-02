@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActionSet, CellRenderers, ColumnCustom, ColumnHtml, ColumnSet, ColumnString } from '@shared/models/tableSet.interface';
 import { ListeController } from 'app/train/abstracts/listeController.abstract';
-import { Reservation, Train } from 'app/train/models/reservation';
+import { Reservation, Train } from 'app/train/models/reservation.model';
 
 @Component({
   selector: 'app-liste-reservation',
