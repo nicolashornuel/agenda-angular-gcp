@@ -4,14 +4,17 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {environment} from '../../../environments/environment.prod';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Selectable } from '@shared/components/select/select.component';
 
-export enum OrderYoutube {
-  DATE = 'DATE',
-  RATING = 'RATING',
-  RELEVANCE = 'RELEVANCE',
-  TITLE = 'TITLE',
-  VIDEOCOUNT = 'VIDEOCOUNT',
-  VIEWCOUNT = 'VIEWCOUNT'
+export class OrderYoutube implements Selectable<string> {
+  value!: string;
+  name!: string;
+  public static readonly DATE = {value:'DATE', name:'Date'};
+  public static readonly RATING = {value:'RATING', name:'Rating'};
+  public static readonly RELEVANCE = {value:'RELEVANCE', name:'Relevance'};
+  public static readonly TITLE = {value:'TITLE', name:'Title'};
+  public static readonly VIDEOCOUNT = {value:'VIDEOCOUNT', name:'VideoCount'};
+  public static readonly VIEWCOUNT = {value:'VIEWCOUNT', name:'ViewCount'};
 } 
 
 @Injectable({
@@ -21,7 +24,7 @@ export class YoutubeService {
   private url: string = environment.urlApiYoutube;
   private params = {
     q: '',
-    order: OrderYoutube.VIEWCOUNT,
+    order: OrderYoutube.VIEWCOUNT.value,
     maxResults: 32,
     key: environment.youtubeToken,
     part: "snippet",
@@ -32,7 +35,7 @@ export class YoutubeService {
 
   getVideos(keyword: string, order: OrderYoutube): Observable<any> {
     this.params.q = keyword;
-    this.params.order = order;
+    this.params.order = order.value;
     return this.http.get(this.url, {params: this.params}).pipe(
       map((response: any) =>
         response.items.map((item: any) => {    

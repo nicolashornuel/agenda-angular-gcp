@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from '@core/services/auth-guard.guard';
 import { ListeArrivalComponent, ListeDepartureComponent } from './components/liste-next/liste-next.component';
 import { ListeReservationComponent } from './components/liste-reservation/liste-reservation.component';
-import { ListeTrajetComponent } from './components/liste-trajet/liste-trajet.component';
 import { PageTrainComponent } from './page/page-train.component';
 
 const routes: Routes = [
@@ -14,10 +13,9 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'trajets',
+        redirectTo: 'reservations',
         pathMatch: 'full'
       },
-      { path: 'trajets', component: ListeTrajetComponent },
       { path: 'reservations', component: ListeReservationComponent },
       { path: 'reservations/:id', component: ListeReservationComponent },
       { path: 'arrivals', component: ListeArrivalComponent },

@@ -22,10 +22,7 @@ export class PageMusiqueComponent implements OnInit {
     }
   ];
   public tabSelected = 0;
-  public orderYoutubeOptions = Object.values(OrderYoutube).map(order => ({
-    name: order.toLowerCase(),
-    value: order
-  }));
+  public orderYoutubeOptions = Object.values(OrderYoutube);
   public orderYoutubeSelected = this.orderYoutubeOptions.find(order => order.value === OrderYoutube.VIEWCOUNT);
   public isMobile!: boolean;
 

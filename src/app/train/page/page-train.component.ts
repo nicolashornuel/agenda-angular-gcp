@@ -10,11 +10,6 @@ export class PageTrainComponent {
 
   public tabs: TabParam[] = [
     {
-      name: 'Trajets',
-      closable: false,
-      link: 'trajets',
-    },
-    {
       name: 'Réservations',
       closable: false,
       link: 'reservations',

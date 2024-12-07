@@ -38,7 +38,6 @@ export abstract class ListeController<T> implements OnInit {
 
   protected abstract getColumnSet(): ColumnSet[];
   protected abstract getActionSet(): ActionSet[];
-  protected abstract mapData(list: any[]): T[];
   protected abstract initData(): void;
   public abstract onEdit(row: T): void;
   public abstract onDelete(row: T): void;

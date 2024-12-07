@@ -9,7 +9,7 @@ import { Colors } from '@shared/models/button.type';
 })
 export class BadgeLinkComponent {
 
-  @Input() data!: {text: string, color?: Colors, link: string};
+  @Input() data!: {text: string, color?: Colors, link?: string};
 
   @HostBinding('class')
   get additionalClasses() {

@@ -1,3 +1,4 @@
+import { Selectable } from "@shared/components/select/select.component";
 
 export interface NavitiaResponse {
   pagination: {
@@ -105,102 +106,102 @@ export enum StopAreaEnum {
   MACON_LOCHE_TGV = 'Mâcon Loché TGV',
   MACON = 'Mâcon'
 }
-export class StopArea {
-  id!: string;
+export class StopArea implements Selectable<string> {
+  value!: string;
   name!: StopAreaEnum;
 
   public static readonly BAILLARGUES = {
-    id: 'stop_area:SNCF:87773457',
+    value: 'stop_area:SNCF:87773457',
     name: StopAreaEnum.BAILLARGUES
   };
   public static readonly BOURG_EN_BRESSE = {
-    id: "stop_area:SNCF:87743005",
+    value: "stop_area:SNCF:87743005",
     name: StopAreaEnum.BOURG_EN_BRESSE
   };
   public static readonly MONTPELLIER_SAINT_ROCK = {
-    id: 'stop_area:SNCF:87773002',
+    value: 'stop_area:SNCF:87773002',
     name: StopAreaEnum.MONTPELLIER_SAINT_ROCK
   };
   public static readonly MONTPELLIER_SUD_DE_FRANCE = {
-    id: 'stop_area:SNCF:87688887',
+    value: 'stop_area:SNCF:87688887',
     name: StopAreaEnum.MONTPELLIER_SUD_DE_FRANCE
   };
   public static readonly NIMES_CENTRE = {
-    id: 'stop_area:SNCF:87775007',
+    value: 'stop_area:SNCF:87775007',
     name: StopAreaEnum.NIMES_CENTRE
   };
   public static readonly NIMES_PONT_DU_GARD = {
-    id: 'stop_area:SNCF:87703975',
+    value: 'stop_area:SNCF:87703975',
     name: StopAreaEnum.NIMES_PONT_DU_GARD
   };
   public static readonly LYON_PART_DIEU = {
-    id: 'stop_area:SNCF:87723197',
+    value: 'stop_area:SNCF:87723197',
     name: StopAreaEnum.LYON_PART_DIEU
   };
   public static readonly AVIGNON_CENTRE = {
-    id: 'stop_area:SNCF:87765008',
+    value: 'stop_area:SNCF:87765008',
     name: StopAreaEnum.AVIGNON_CENTRE
   };
   public static readonly AVIGNON_TGV = {
-    id: 'stop_area:SNCF:87318964',
+    value: 'stop_area:SNCF:87318964',
     name: StopAreaEnum.AVIGNON_TGV
   };
   public static readonly MARSEILLE_SAINT_CHARLES = {
-    id: 'stop_area:SNCF:87751008',
+    value: 'stop_area:SNCF:87751008',
     name: StopAreaEnum.MARSEILLE_SAINT_CHARLES
   };
   public static readonly MACON_LOCHE_TGV = {
-    id: 'stop_area:SNCF:87725705',
+    value: 'stop_area:SNCF:87725705',
     name: StopAreaEnum.MACON_LOCHE_TGV
   };
   public static readonly MACON = {
-    id: 'stop_area:SNCF:87725689',
+    value: 'stop_area:SNCF:87725689',
     name: StopAreaEnum.MACON
   };
 }
 export const STATIONS = [
   {
-    id: 'stop_area:SNCF:87773457',
+    value: 'stop_area:SNCF:87773457',
     name: StopAreaEnum.BAILLARGUES
   },
   {
-    id: 'stop_area:SNCF:87773002',
+    value: 'stop_area:SNCF:87773002',
     name: StopAreaEnum.MONTPELLIER_SAINT_ROCK
   },
   {
-    id: 'stop_area:SNCF:87688887',
+    value: 'stop_area:SNCF:87688887',
     name: StopAreaEnum.MONTPELLIER_SUD_DE_FRANCE
   },
   {
-    id: 'stop_area:SNCF:87775007',
+    value: 'stop_area:SNCF:87775007',
     name: StopAreaEnum.NIMES_CENTRE
   },
   {
-    id: 'stop_area:SNCF:87703975',
+    value: 'stop_area:SNCF:87703975',
     name: StopAreaEnum.NIMES_PONT_DU_GARD
   },
   {
-    id: 'stop_area:SNCF:87723197',
+    value: 'stop_area:SNCF:87723197',
     name: StopAreaEnum.LYON_PART_DIEU
   },
   {
-    id: 'stop_area:SNCF:87765008',
+    value: 'stop_area:SNCF:87765008',
     name: StopAreaEnum.AVIGNON_CENTRE
   },
   {
-    id: 'stop_area:SNCF:87318964',
+    value: 'stop_area:SNCF:87318964',
     name: StopAreaEnum.AVIGNON_TGV
   },
   {
-    id: 'stop_area:SNCF:87751008',
+    value: 'stop_area:SNCF:87751008',
     name: StopAreaEnum.MARSEILLE_SAINT_CHARLES
   },
   {
-    id: 'stop_area:SNCF:87725705',
+    value: 'stop_area:SNCF:87725705',
     name: StopAreaEnum.MACON_LOCHE_TGV
   },
   {
-    id: 'stop_area:SNCF:87725689',
+    value: 'stop_area:SNCF:87725689',
     name: StopAreaEnum.MACON
   }
 ];

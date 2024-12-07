@@ -2,6 +2,7 @@ import { EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { BadgeLinkComponent } from '@shared/components/badge-link/badge-link.component';
 import { FileStorage } from '@shared/components/input-file/input-file.component';
+import { Selectable } from '@shared/components/select/select.component';
 import { TableCheckboxComponent } from '@shared/components/table-checkbox/table-checkbox.component';
 
 export interface TableSet {
@@ -49,10 +50,11 @@ export interface ColumnSet {
     valueSave?: (row: any) => any;
   };
 }
-interface Nameable {
-  key: string;
-  title: string;
+
+export interface Nameable {
+  name: string;
 }
+
 interface DataColumn<T extends 'string' | 'custom' | 'html' | 'date'> {
   key: string;
   title: string;
@@ -61,8 +63,8 @@ interface DataColumn<T extends 'string' | 'custom' | 'html' | 'date'> {
   width: string | undefined;
 }
 class DataColumn<T> implements DataColumn<T> {
-  constructor(name: Nameable, visible: boolean, type: T) {
-    (this.key = name.key), (this.title = name.title), (this.visible = visible)
+  constructor(fieldSet: FieldSet, visible: boolean, type: T) {
+    (this.key = fieldSet.key!), (this.title = fieldSet.name), (this.visible = visible)
     , this.type = type;
   }
 }
@@ -95,39 +97,38 @@ export class ColumnCustom extends DataColumn<'custom'> {
   }
 }
 
-export interface FieldSet {
-  name: string;
-  value?: string | boolean | number | FileStorage;
+export interface FieldSet extends Nameable {
+  key?: string;
+  value?: string | boolean | number | FileStorage | any | Selectable<any>;
   disabled?: boolean;
   required?: boolean;
   parentForm?: NgForm;
-  options?: any;
 }
 
 export class FieldSet {
-  constructor(name: string, value: string | boolean | number, disabled: boolean = false, required: boolean = false) {
+  constructor(name: string, value: string | boolean | number | FileStorage | any | Selectable<any>, disabled: boolean = false, required: boolean = false) {
     (this.name = name), (this.value = value), (this.disabled = disabled), (this.required = required);
   }
 }
 export class DataField extends FieldSet {
-  constructor(data: {key: string, title: string}, object: any) {
-    super(data.title, object ? object[data.key] : "")
+  constructor(fieldSet: FieldSet, object: any) {
+    super(fieldSet.name, object ? object[fieldSet.key!] : "")
   }
 }
-export class DataSelect<T> {
-  name: string;
-  value: T;
-  disabled?: boolean;
-  required?: boolean;
-  parentForm?: NgForm;
-  options: { name: string; value: any }[];
-  constructor(data: {key: string, title: string}, object: any, options: { name: string; value: any }[]) {
-    this.name = data.title
+export class DataList extends FieldSet {
+  options: Set<string>;
+  constructor(fieldSet: FieldSet, object: any, options: Set<string>) {
+    super(fieldSet.name, object ? object[fieldSet.key!] : {})
     this.options = options
-    this.value = object[data.key];
   }
 }
-
+export class DataSelect<T extends Nameable> extends FieldSet {
+  options: Selectable<T>[];
+  constructor(fieldSet: FieldSet, object: any, options: Selectable<T>[]) {
+    super(fieldSet.name, object ? object[fieldSet.key!] : {})
+    this.options = options
+  }
+}
 export interface FieldComponent {
   data: FieldSet;
   output: EventEmitter<FieldSet>;
@@ -173,6 +174,14 @@ export class CellRenderers {
       valuePrepare: (row: any, col: ColumnSet) => ({
         text: row[col.key],
         link: row.id
+      })
+    };
+  }
+  public static toSimpleBadge() {
+    return {
+      component: BadgeLinkComponent,
+      valuePrepare: (row: any, col: ColumnSet) => ({
+        text: row[col.key]
       })
     };
   }

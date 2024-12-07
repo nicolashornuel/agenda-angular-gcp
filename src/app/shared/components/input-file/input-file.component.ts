@@ -1,19 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output, forwardRef } from '@angular/core';
+import { Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractInputComponent } from '@shared/abstracts/input.component';
-
-/* export interface FileStorage {
-  name: string;
-  size: number;
-  type: string;
-  lastModified: number;
-  lastModifiedDate: Date;
-} */
 
 export interface FileStorage {
   name?: string;
   link?: string;
-  file?: File;
+  type: 'application/pdf' | 'image/jpeg' | 'image/png'
 }
 
 @Component({

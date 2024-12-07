@@ -6,7 +6,6 @@
     }
   }
 }
-
 .departures {
   .journey {
     background-color: #123a9feb;
@@ -15,23 +14,33 @@
     }
   }
 }
-
 .yellow {
   color: #e1e929;
 }
-
 .journey {
     padding: 12px 48px;
     color: #fff;
     .network {
-        font-size: 12px;
-        width: 50px;
+        font-size: 1.25em;
     }
-    .hour {
+    .text-center {
         text-align: center;
+    }
+    .height-row-45 {
+      height: 45px;
+    }
+    .width-col-150 {
         width: 150px;
     }
     @media (max-width: 576px) {
         padding: 8px;
+    }
+    .show {
+      position: absolute;
+      opacity: 1;
+    }
+    .hide {
+      position: absolute;
+      opacity: 0;
     }
 }

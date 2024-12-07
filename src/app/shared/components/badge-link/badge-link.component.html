@@ -1,1 +1,7 @@
-<a class="link-content" [routerLink]="data.link">{{ data.text }}</a>
+
+<ng-container *ngIf="data.link; else SimpleBadge">
+    <a class="link-content" [routerLink]="data.link">{{ data.text }}</a>
+</ng-container>
+<ng-template #SimpleBadge>
+    <span class="link-content">{{ data.text }}</span>
+</ng-template>

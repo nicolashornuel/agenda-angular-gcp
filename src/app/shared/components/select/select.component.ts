@@ -1,6 +1,16 @@
-import { Component, EventEmitter, Input, Output, ViewEncapsulation, forwardRef } from '@angular/core';
+import {
+  Component,
+  Directive,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewEncapsulation,
+  forwardRef
+} from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractInputComponent } from '@shared/abstracts/input.component';
+import { Nameable } from '@shared/models/tableSet.interface';
 
 @Component({
   selector: 'app-select',
@@ -16,14 +26,14 @@ import { AbstractInputComponent } from '@shared/abstracts/input.component';
   encapsulation: ViewEncapsulation.None
 })
 export class SelectComponent extends AbstractInputComponent {
-  @Input() options!: { name: string; value: any }[];
-  @Input() selected!: any;
+  @Input() options!: Selectable<any>[];
+  @Input() selected!: Selectable<any>;
   @Output() selectedChange = new EventEmitter<any>();
-  public selectOpened: boolean = false;
-  public optionSelected: string = '';
+  public isDirty = false;
+}
 
-  public selectOption(option: string): void {
-    this.value = option;
-    this.selectedChange.emit(option);
-  }
+export interface Selectable<T> extends Nameable {
+  isDirty?: boolean;
+  value?: T;
+  name: string;
 }

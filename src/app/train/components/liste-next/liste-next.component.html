@@ -1,36 +1,27 @@
-<div class="row-end-center gap-3 my-3">
-  <app-button-group class="mx-3">
-    <button appButton outline (click)="onFirstPage()" [disabled]="!hasPrev"><i class="fas fa-angles-left"></i></button>
-    <button appButton outline (click)="onPrevPage()" [disabled]="!hasPrev"><i class="fas fa-angle-left"></i></button>
-    <button appButton outline (click)="onNextPage()" [disabled]="!hasNext"><i class="fas fa-angle-right"></i></button>
-    <button appButton outline (click)="onLastPage()" [disabled]="!hasNext"><i class="fas fa-angles-right"></i></button>
-  </app-button-group>
-
-    <app-select class="col-5" [options]="select.options" [(selected)]="select.value" [label]="select.name" (selectedChange)="onSelectChange()"></app-select>
+<div class="row-end-center my-3">
+  <app-select class="col-5" [options]="select.options" [(selected)]="select.value" [label]="select.name" (selectedChange)="onSelectChange()"></app-select>
 </div>
 
 <ng-container *ngIf="!isLoading; else spinner">
   <div *ngFor="let item of liste" class="journey">
-
-    <div class="row-start-center f-wrap">
-      <div class="col-start-start network">
-        <span>{{ item.network }}</span>
-        <span>{{ item.headsign }}</span>
-      </div>
-      <h1 class="hour">
-        <ng-container *ngIf="isTimeDisplay; else delay">
-          <span class="fw-semibold yellow">{{ item.baseHour }}</span>
-        </ng-container>
-        <ng-template #delay>
+    <div class="row-start-start f-wrap height-row-45">
+      <div class="width-col-150 self-start">
+        <div class="col-start-start network" [ngClass]="isTimeDisplay ? 'show' : 'hide'">
+          {{ item.network }} - {{ item.headsign }}
+        </div>
+        <h1 [ngClass]="!isTimeDisplay ? 'show' : 'hide'">
           <span>{{ item.delay }}</span>
-        </ng-template>
-        <app-disruption *ngIf="item.disruptionId" [disruptionId]="item.disruptionId"></app-disruption>
-      </h1>
-      <div class="fw-semibold">
-        <h1>
-          {{ item.direction.split(' (')[0] }}
+          <app-disruption class="absolute" *ngIf="item.disruptionId" [disruptionId]="item.disruptionId"></app-disruption>
         </h1>
       </div>
+
+      <h1 class="width-col-150 text-center fw-semibold yellow">
+        {{ item.baseHour }}
+      </h1>
+
+      <h1>
+        {{ item.direction.split(' (')[0] }}
+      </h1>
     </div>
 
     <app-liste-arret [trajetId]="item.trajetId"></app-liste-arret>

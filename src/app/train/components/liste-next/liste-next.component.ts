@@ -5,7 +5,7 @@ import { DataSelect } from '@shared/models/tableSet.interface';
 import { DestroyService } from '@shared/services/destroy.service';
 import { JourneyDTO, StopArea } from 'app/train/models/sncf.model';
 import { SncfService } from 'app/train/services/sncf.service';
-import { interval, Observable, Subscription, take, takeUntil } from 'rxjs';
+import { interval, Observable, Subscription, switchMap, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-liste-next',
@@ -19,10 +19,9 @@ export class ListeNextComponent implements OnInit {
   public liste!: JourneyDTO[];
   public isLoading!: boolean;
   public isTimeDisplay!: boolean;
-  public select = new DataSelect<StopArea>({key: 'key', title: 'choix de la gare'}, {key: StopArea.BAILLARGUES}, Object.values(StopArea));
+  public select = new DataSelect<StopArea>({key: 'key', name: 'choix de la gare'}, {key: StopArea.BAILLARGUES}, Object.values(StopArea));
   public hasNext!: boolean;
   public hasPrev!: boolean;
-
   private sncfService = inject(SncfService);
   private activatedRoute = inject(ActivatedRoute);
   private destroy$ = inject(DestroyService);
@@ -33,7 +32,7 @@ export class ListeNextComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = true;
     this.activatedRoute.paramMap.pipe(takeUntil(this.destroy$)).subscribe((param: ParamMap) => {
-      this.select.value = Object.values(StopArea).find(any => any['id'] === param.get('id')) ?? StopArea.BAILLARGUES
+      this.select.value = Object.values(StopArea).find(any => any['value'] === param.get('id')) ?? StopArea.BAILLARGUES
       this.isLoading = false;
       this.initData();
     })
@@ -41,7 +40,7 @@ export class ListeNextComponent implements OnInit {
 
   private initData(): void {
     this.isLoading = true;
-    this.function(this.sncfService, this.select.value.id).pipe(take(1)).subscribe(liste => {
+    this.function(this.sncfService, this.select.value!.value).pipe(take(1)).subscribe(liste => {
       this.liste = liste;
       this.interval$?.unsubscribe();
       this.initInterval();
@@ -50,37 +49,11 @@ export class ListeNextComponent implements OnInit {
   }
 
   public onSelectChange(): void {
-    this.router.navigate([`/train/${this.route}/`, this.select.value.id]);
+    this.router.navigate([`/train/${this.route}/`, this.select.value!.value]);
   }
 
   private initInterval() {
     this.interval$ = interval(5000).pipe(takeUntil(this.destroy$)).subscribe(() => this.isTimeDisplay = !this.isTimeDisplay )
-  }
-
-  public onFirstPage(): void {
-    this.isLoading = true;
-    //this.videoService.firstPage(this.colSorted!.colKey, this.pageSize).then(videos => this.defineData(videos));
-  }
-
-  public onPrevPage(): void {
-    this.isLoading = true;
-    //this.videoService.prevPage(this.colSorted!.colKey, this.pageSize).then(videos => this.defineData(videos));
-  }
-
-  public onNextPage(): void {
-    this.isLoading = true;
-   //this.videoService.nextPage(this.colSorted!.colKey, this.pageSize).then(videos => this.defineData(videos));
-  }
-
-  public onLastPage(): void {
-    this.isLoading = true;
-   //this.videoService.lastPage(this.colSorted!.colKey, this.pageSize).then(videos => this.defineData(videos));
-  }
-
-  private defineData(page: Pageable<JourneyDTO>): void {
-    this.hasNext = page.hasNext;
-    this.hasPrev = page.hasPrevious;
-    this.isLoading = false;
   }
 }
 
