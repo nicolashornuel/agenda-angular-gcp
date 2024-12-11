@@ -1,10 +1,9 @@
 <div class="input-select-container">
-<!--   <select class="select" required placeholder=" " (change)="selectedChange.emit(selected)" [(ngModel)]="selected">
- -->  <select #select="ngModel" class="select" required placeholder=" " (change)="selectedChange.emit(selected)" [(ngModel)]="selected" [ngClass]="select.dirty ? 'dirty' : ''">
-    
- <option *ngFor="let item of options" [ngValue]="item" [selected]="item == selected">{{ item.name }}</option>
+  <select class="select" required placeholder=" " (change)="selectedChange.emit(selected)" [(ngModel)]="selected" [compareWith]="compareFn" [ngClass]="isDirty ? 'dirty' : ''">
+    <option *ngFor="let item of options" [ngValue]="item">{{ item.name }}</option>
   </select>
   <label class="row-start-center">
     {{ label + asterix }}
   </label>
 </div>
+

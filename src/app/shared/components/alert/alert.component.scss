@@ -70,3 +70,11 @@
         opacity: 1;
     }
 }
+@media (max-width: 576px) {
+    .alert-width {
+        width: calc(100vw - 80px);
+    }
+    #insert {
+        right: 16px;
+    }
+}

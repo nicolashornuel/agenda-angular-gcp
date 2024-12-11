@@ -1,9 +1,8 @@
-import { EventEmitter } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { BadgeLinkComponent } from '@shared/components/badge-link/badge-link.component';
-import { FileStorage } from '@shared/components/input-file/input-file.component';
-import { Selectable } from '@shared/components/select/select.component';
 import { TableCheckboxComponent } from '@shared/components/table-checkbox/table-checkbox.component';
+import { FieldSet, Nameable } from '@shared/models/fieldSet.model';
+import { Color } from './color.enum';
+import { tooltip } from 'leaflet';
 
 export interface TableSet {
   title?: string;
@@ -51,10 +50,6 @@ export interface ColumnSet {
   };
 }
 
-export interface Nameable {
-  name: string;
-}
-
 interface DataColumn<T extends 'string' | 'custom' | 'html' | 'date'> {
   key: string;
   title: string;
@@ -62,6 +57,7 @@ interface DataColumn<T extends 'string' | 'custom' | 'html' | 'date'> {
   visible: boolean;
   width: string | undefined;
 }
+
 class DataColumn<T> implements DataColumn<T> {
   constructor(fieldSet: FieldSet, visible: boolean, type: T) {
     (this.key = fieldSet.key!), (this.title = fieldSet.name), (this.visible = visible)
@@ -97,45 +93,8 @@ export class ColumnCustom extends DataColumn<'custom'> {
   }
 }
 
-export interface FieldSet extends Nameable {
-  key?: string;
-  value?: string | boolean | number | FileStorage | any | Selectable<any>;
-  disabled?: boolean;
-  required?: boolean;
-  parentForm?: NgForm;
-}
-
-export class FieldSet {
-  constructor(name: string, value: string | boolean | number | FileStorage | any | Selectable<any>, disabled: boolean = false, required: boolean = false) {
-    (this.name = name), (this.value = value), (this.disabled = disabled), (this.required = required);
-  }
-}
-export class DataField extends FieldSet {
-  constructor(fieldSet: FieldSet, object: any) {
-    super(fieldSet.name, object ? object[fieldSet.key!] : "")
-  }
-}
-export class DataList extends FieldSet {
-  options: Set<string>;
-  constructor(fieldSet: FieldSet, object: any, options: Set<string>) {
-    super(fieldSet.name, object ? object[fieldSet.key!] : {})
-    this.options = options
-  }
-}
-export class DataSelect<T extends Nameable> extends FieldSet {
-  options: Selectable<T>[];
-  constructor(fieldSet: FieldSet, object: any, options: Selectable<T>[]) {
-    super(fieldSet.name, object ? object[fieldSet.key!] : {})
-    this.options = options
-  }
-}
-export interface FieldComponent {
-  data: FieldSet;
-  output: EventEmitter<FieldSet>;
-  onSave: (value: string | number | boolean) => void;
-}
-
 export class CellRenderers {
+  
   public static toField(row: any, col: ColumnSet, disabled?: boolean): FieldSet {
     return {
       name: col.key,
@@ -168,21 +127,31 @@ export class CellRenderers {
       valuePrepare: (row: any, col: ColumnSet) => CellRenderers.toField(row, col)
     };
   }
-  public static toBadgeLink() {
-    return {
-      component: BadgeLinkComponent,
-      valuePrepare: (row: any, col: ColumnSet) => ({
-        text: row[col.key],
-        link: row.id
-      })
-    };
-  }
+
   public static toSimpleBadge() {
     return {
       component: BadgeLinkComponent,
       valuePrepare: (row: any, col: ColumnSet) => ({
-        text: row[col.key]
+        text: (row[col.key] as FieldSet).name,
+        color: (row[col.key] as any).color ?? 'light'
       })
     };
   }
+
+  public static toBoolean(): (row: any, col: ColumnSet) => string {
+    return (row: any, col: ColumnSet) => row[col.key] ? `<i class="fa-solid fa-check green"></i>`: `<i class="fa-solid fa-xmark red"></i>`;
+  }
+
+  public static toBadgeLink(color: Color, prefix: string, tooltip: string) {
+    return {
+      component: BadgeLinkComponent,
+      valuePrepare: (row: any, col: ColumnSet) => ({
+        text: (row[col.key] as FieldSet).name,
+        link: prefix + (row[col.key] as FieldSet).value,
+        tooltip,
+        color
+      })
+    };
+  }
+  
 }

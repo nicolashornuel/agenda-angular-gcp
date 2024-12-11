@@ -72,6 +72,7 @@ Déploiement
 ```sh
 firebase deploy --only functions
 firebase deploy --only functions:onCallGetJson,functions:onCallGetText
+firebase functions:delete myFunction myOtherFunction
 ```
 
 ```sh

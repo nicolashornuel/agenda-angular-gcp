@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { BadgeLinkComponent } from '@shared/components/badge-link/badge-link.component';
-import { Colors } from '@shared/models/button.type';
+import { FirestoreStorageService } from '@core/services/firebasestorage.service';
+import { Color } from '@shared/models/color.enum';
 import { ActionSet, CellRenderers, ColumnCustom, ColumnHtml, ColumnSet, ColumnString } from '@shared/models/tableSet.interface';
 import { ListeController } from 'app/train/abstracts/listeController.abstract';
-import { Reservation, Train } from 'app/train/models/reservation.model';
-import { StopArea } from 'app/train/models/sncf.model';
+import { Reservation } from 'app/train/models/reservation.model';
 import { ReservationService } from 'app/train/services/reservation.service';
 import { takeUntil } from 'rxjs';
 
@@ -15,7 +14,7 @@ import { takeUntil } from 'rxjs';
 })
 export class ListeReservationComponent extends ListeController<Reservation> implements OnInit {
 
-  constructor(private reservationService: ReservationService) {
+  constructor(private reservationService: ReservationService, private firebaseStorage: FirestoreStorageService) {
     super();
   }
   
@@ -32,24 +31,24 @@ export class ListeReservationComponent extends ListeController<Reservation> impl
     
     protected override getColumnSet(): ColumnSet[] {
       return [
-        new ColumnHtml(Train.START_AT, true, CellRenderers.toShortDate()),
-        new ColumnCustom(Train.START_PLACE, true, this.toMiniBadgeLink('blue', '/train/departures/')),
-        new ColumnHtml(Train.END_AT, true, CellRenderers.toShortDate()),
-        new ColumnCustom(Train.END_PLACE, true, this.toMiniBadgeLink('green', '/train/arrivals/')),
-        new ColumnString(Train.TRAIN_NUMBER, true),
-        new ColumnString(Train.SEAT_NUMBER, true),
-        new ColumnString(Train.PRICE, false),
-        new ColumnString(Train.SUBSCRIPTION, false),
-        new ColumnString(Train.CANCELATION, false),
-        new ColumnCustom(Train.TRAVEL_REF, true, CellRenderers.toBadgeLink()),
-        new ColumnCustom(Train.STATUS, false, CellRenderers.toSimpleBadge())
+        new ColumnHtml(Reservation.START_AT, true, CellRenderers.toShortDate()),
+        new ColumnCustom(Reservation.START_PLACE, true, CellRenderers.toBadgeLink(Color.BLUE, '/train/departures/', 'Les prochains départs')),
+        new ColumnHtml(Reservation.END_AT, true, CellRenderers.toShortDate()),
+        new ColumnCustom(Reservation.END_PLACE, true, CellRenderers.toBadgeLink(Color.GREEN, '/train/arrivals/', 'Les prochaines arrivées')),
+        new ColumnString(Reservation.TRAIN_NUMBER, true),
+        new ColumnCustom(Reservation.STATUS, true, CellRenderers.toSimpleBadge()),
+        new ColumnString(Reservation.TRAVEL_REF, false),
+        new ColumnString(Reservation.PRICE, false),
+        new ColumnHtml(Reservation.SUBSCRIPTION, false, CellRenderers.toBoolean()),
+        new ColumnString(Reservation.CANCELATION, false),
+        new ColumnString(Reservation.SEAT_NUMBER, false),
       ];
     }
     
     protected override getActionSet(): ActionSet[] {
       return [
-        new ActionSet(ActionSet.EDIT, row => this.onEdit(row)),
-        new ActionSet(ActionSet.DELETE, row => this.onDelete(row))
+        new ActionSet(ActionSet.EDIT, row => this.onOpenModal('Editer une réservation', row)),
+        new ActionSet(ActionSet.DELETE, row => this.onOpenConfirm('Supprimer une réservation', row))
       ]
     }
 
@@ -57,25 +56,18 @@ export class ListeReservationComponent extends ListeController<Reservation> impl
       this.onOpenModal('Créer une réservation', new Reservation())
     }
 
-    public onEdit(row: Reservation): void {
-      this.onOpenModal('Editer une réservation', row);
+    public onConfirmDelete(row: Reservation) {
+     this.reservationService.delete(row.id!);
+     this.modalService.set$(undefined);
     }
 
-    public onDelete(row: Reservation): void {}
-
-    public async onSave(row: Reservation): Promise<void> {}
-
-    public toMiniBadgeLink(color: Colors, prefix: string) {
-      return {
-        component: BadgeLinkComponent,
-        valuePrepare: (row: any, col: ColumnSet) => ({
-          text: (row[col.key] as StopArea).name,
-          link: prefix + (row[col.key] as StopArea).value,
-          color
-        })
-      };
+    public async onSave(row: Reservation): Promise<void> {
+      await this.firebaseStorage.storeFile('trainReservation', row.fileStorage!);
+      row.endAt = row.endAt.toString();
+      row.startAt = row.startAt.toString();
+      row.fileStorage = {...row.fileStorage!};
+      row.id ? this.reservationService.update(row, row.id) : this.reservationService.save(row);
     }
-
 
 }
 

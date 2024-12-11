@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {environment} from '../../../environments/environment.prod';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Selectable } from '@shared/components/select/select.component';
+import { Selectable } from '@shared/models/fieldSet.model';
 
 export class OrderYoutube implements Selectable<string> {
   value!: string;

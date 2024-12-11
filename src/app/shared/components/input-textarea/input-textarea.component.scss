@@ -3,7 +3,6 @@
 textarea {
   width: 100%;
   background-color: $grey-97;
-  outline: none;
   border: 1px solid $grey-70;
   border-radius: 0.25rem;
 
@@ -11,15 +10,7 @@ textarea {
   padding: 4px 8px;
   transition: all 250ms ease-in-out;
   font-family: sans-serif;
-  &:hover {
-    border: 1px solid $green;
-  }
-  &:focus {
-    border: 1px solid $blue;
-  }
-  &:active {
-    @extend %box-shadow-active;
-  }
+  @extend %input-box;
 }
 .input-textarea-container {
   display: inline-block;

@@ -1,16 +1,7 @@
-import {
-  Component,
-  Directive,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  ViewEncapsulation,
-  forwardRef
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractInputComponent } from '@shared/abstracts/input.component';
-import { Nameable } from '@shared/models/tableSet.interface';
+import { Selectable } from '@shared/models/fieldSet.model';
 
 @Component({
   selector: 'app-select',
@@ -22,18 +13,15 @@ import { Nameable } from '@shared/models/tableSet.interface';
       useExisting: forwardRef(() => SelectComponent),
       multi: true
     }
-  ],
-  encapsulation: ViewEncapsulation.None
+  ]
 })
 export class SelectComponent extends AbstractInputComponent {
   @Input() options!: Selectable<any>[];
   @Input() selected!: Selectable<any>;
+  @Input() isDirty: boolean = false;
   @Output() selectedChange = new EventEmitter<any>();
-  public isDirty = false;
-}
 
-export interface Selectable<T> extends Nameable {
-  isDirty?: boolean;
-  value?: T;
-  name: string;
+  public compareFn(c1: Selectable<any>, c2: Selectable<any>): boolean {
+    return c1 && c2 ? c1.value === c2.value : c1 === c2;
+  }
 }

@@ -6,6 +6,7 @@ import {KEY_STORAGE_USER} from '@core/services/auth.service';
 import {FirestoreService} from '@core/services/firestore.service';
 import {StorageService} from '@core/services/storage.service';
 import {Observable, map} from 'rxjs';
+import { Selectable } from '@shared/models/fieldSet.model';
 
 @Injectable({
   providedIn: 'root'
@@ -36,14 +37,9 @@ export class AudioSelectParamService extends FirestoreService<AudioSelectParam> 
 
 export declare type AudioParamType = 'radio' | 'equalizer';
 
-export interface SelectParam {
-  isDirty?: boolean;
-  name: string;
-  value: number[] | string;
-}
 export interface AudioSelectParam {
   id?: string;
-  list: SelectParam[];
+  list: Selectable<number>[];
   selected: number;
   uid?: string;
   type: AudioParamType;

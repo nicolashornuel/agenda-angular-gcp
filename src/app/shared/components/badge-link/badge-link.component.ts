@@ -8,13 +8,10 @@ import { Colors } from '@shared/models/button.type';
   encapsulation: ViewEncapsulation.None
 })
 export class BadgeLinkComponent {
-
-  @Input() data!: {text: string, color?: Colors, link?: string};
+  @Input() data!: { text: string; color?: Colors; link?: string, tooltip?: string };
 
   @HostBinding('class')
   get additionalClasses() {
-    return this.data.color ?? 'red' ;
-}
-
-
+    return this.data.color ?? 'red';
+  }
 }

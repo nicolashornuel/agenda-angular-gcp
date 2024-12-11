@@ -22,6 +22,13 @@
   <app-edition-reservation [input]="input" (output)="onSave($event)"></app-edition-reservation>
 </ng-template>
 
+<ng-template #confirm let-input>
+  <div class="row-end-center gap-2">
+    <button appButton outline size="regular" color="blue" (click)="onClose()">Annuler</button>
+    <button appButton outline size="regular" color="green" (click)="onConfirmDelete(input)">Supprimer</button>
+  </div>
+</ng-template>
+
 <ng-template #spinner>
   <app-spinner></app-spinner>
 </ng-template>

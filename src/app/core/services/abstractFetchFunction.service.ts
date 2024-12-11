@@ -22,4 +22,9 @@ export abstract class AbstractFetchFunctionService {
     const onCallFunction = httpsCallable(this.functions, 'onCallGetText');
     return onCallFunction({ url });
   }
+  
+  public async getBlob(url: string): Promise<any>{
+    const onCallFunction = httpsCallable(this.functions, 'onCallGetBlob');
+    return onCallFunction({ url });
+  }
 }

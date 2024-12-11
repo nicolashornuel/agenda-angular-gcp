@@ -1,9 +1,10 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
+import { Selectable } from '@shared/models/fieldSet.model';
 import { Modal, ModalParam } from '@shared/models/modalParam.interface';
 import {DestroyService} from '@shared/services/destroy.service';
 import { ModalService } from '@shared/services/shared.observable.service';
 import { AudioNodeController } from 'app/radio/abstracts/audioDirective.abstract';
-import { AudioSelectParam, AudioSelectParamService, SelectParam } from 'app/radio/services/audio.firestore.service';
+import { AudioSelectParam, AudioSelectParamService } from 'app/radio/services/audio.firestore.service';
 
 import {takeUntil} from 'rxjs';
 
@@ -16,13 +17,15 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
   private readonly FREQS = [32, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];
   private readonly MESSAGE_DEFAULT = 'Défaut';
   private readonly MESSAGE_NEW = 'Nouveau';
-  public readonly DEFAULT_PARAM = {name: this.MESSAGE_DEFAULT, value: this.FREQS.map(_freq => 0), isDirty: false};
-
+  public readonly DEFAULT_PARAM = {name: this.MESSAGE_DEFAULT, value: this.FREQS.map(_freq => 0)};
+/*   public readonly DEFAULT_PARAM = {name: this.MESSAGE_DEFAULT, value: this.FREQS.map(_freq => 0), isDirty: false};
+ */
   public equalizerParam?: AudioSelectParam;
   public eqs!: BiquadFilterNode[];
-  public options!: SelectParam[];
-  public selected!: SelectParam;
+  public options!: Selectable<any>[];
+  public selected!: Selectable<any>;
   public isLoading = true;
+  public isDirty = false;
 
   constructor(
     private audioSelectParamService: AudioSelectParamService,
@@ -63,8 +66,9 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
       .subscribe(equalizerParam => {
         if (equalizerParam) {
           this.equalizerParam = equalizerParam;
-          this.options = [this.DEFAULT_PARAM, ...equalizerParam!.list.map(selectParam => ({...selectParam, isDirty: false}))];
-          this.selected = this.options[equalizerParam!.selected ?? 0 ];
+          this.options = [this.DEFAULT_PARAM, ...equalizerParam.list];
+/*           this.options = [this.DEFAULT_PARAM, ...equalizerParam.list.map(selectParam => ({...selectParam, isDirty: false}))];
+ */          this.selected = this.options[equalizerParam!.selected ?? 0 ];
         } else {
           this.options = [this.DEFAULT_PARAM];
           this.selected = this.options [0];
@@ -75,7 +79,7 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
   }
 
   private updateNode(): void {
-    this.eqs.forEach((eq, i) => (eq.gain.value = this.selected?.value.at(i) as number));
+    this.eqs.forEach((eq, i) => (eq.gain.value = this.selected.value.at(i) as number));
   }
 
   private async saveParam(index: number): Promise<void> {
@@ -93,13 +97,13 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
 
   public onResetSelected(): void {
     this.selected.value = this.equalizerParam!.list.find(selectParam => selectParam.name === this.selected.name)!.value;
-    this.selected.isDirty = false;
+    this.isDirty = false;
     this.updateNode();
   }
 
   public async onSaveAll(): Promise<void> {
     this.modalService.set$(undefined);
-    this.selected.isDirty = false;
+    this.isDirty = false;
     const index = this.options.findIndex(option => option.name === this.selected.name);
     await this.saveParam(index);
   }
@@ -110,7 +114,7 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
     await this.saveParam(this.options.length - 1);
   }
 
-  public async onCreate(selectParam: SelectParam): Promise<void> {
+  public async onCreate(selectParam: Selectable<any>): Promise<void> {
     this.options.push(selectParam);
     this.selected = this.options[this.options.length - 1];
     this.modalService.set$(undefined);
@@ -118,12 +122,11 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
   }
 
   public onOpenModal(templateRef: TemplateRef<Modal>): void {
-    const selectParam: SelectParam = {
-      isDirty: false,
+    const selectParam: Selectable<any> = {
       name: this.MESSAGE_NEW,
       value: this.eqs.map(eq => eq.gain.value)
     };
-    const modalParam: ModalParam<SelectParam> = {
+    const modalParam: ModalParam<Selectable<any>> = {
       title: `Paramêtre d'equaliser prédéfini`,
       context: {$implicit: selectParam},
       template: templateRef
@@ -136,7 +139,7 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
   }
 
   public onSliderChange(): void {
-    this.selected!.isDirty = true;
-    this.selected!.value = this.eqs.map(eq => eq.gain.value);
+    this.isDirty = true;
+    this.selected.value = this.eqs.map(eq => eq.gain.value);
   }
 }

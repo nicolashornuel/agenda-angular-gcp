@@ -1,3 +1,5 @@
+@import './variables.scss';
+
 .w-100 {
     width: 100%;
 }
@@ -9,6 +11,9 @@
 }
 .relative {
     position: relative;
+}
+.absolute {
+    position: absolute;
 }
 .txt-nowrap {
     white-space: nowrap;
@@ -33,4 +38,10 @@
 }
 .word-break {
     word-break: break-word;
+}
+.green {
+    color: $green;
+}
+.red {
+    color: $red;
 }

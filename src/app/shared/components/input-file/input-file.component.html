@@ -1,18 +1,32 @@
-<div class="input-file-container row-between-center" (click)="inputFile.click()">
-  <input 
-  #inputFile 
-  type="file" 
-  placeholder=" " 
-  [readonly]="inputReadonly" 
-  [required]="inputRequired" 
-  (blur)="onBlur.next()" 
-  (focus)="onFocus.next()" 
-  (change)="onValueChange($event)"
-  required
+<div class="input-file-container row-between-center mb-3" (click)="inputFile.click()">
+  <input
+    #inputFile
+    type="file"
+    placeholder=" "
+    [readonly]="inputReadonly"
+    [required]="inputRequired"
+    (blur)="onBlur.next()"
+    (focus)="onFocus.next()"
+    (change)="onFileChange($event)"
+    required
   />
-  <span *ngIf="value && value.name" class="input-file-value">{{ value.name }}</span>
+  <span *ngIf="fileStorage && fileStorage.name" class="input-file-value">{{ fileStorage.name }}</span>
   <label>
     {{ label + asterix }}
   </label>
-  <button appButton ghost size="tiny" (click)="inputFile.click()"><i class="fas fa-plus"></i></button>
+  <button appButton ghost size="tiny"><i class="fas fa-plus"></i></button>
 </div>
+
+<ng-container *ngIf="!isLoading; else spinner">
+  <ng-container *ngIf="fileStorage && (fileStorage.type == 'image/png' || fileStorage.type == 'image/jpeg')">
+    <div class="w-100 img-container"><img [src]="src" class="w-100" /></div>
+  </ng-container>
+
+  <ng-container *ngIf="fileStorage && fileStorage.type == 'application/pdf'">
+    <iframe [src]="src" class="w-100 iframe-container"></iframe>
+  </ng-container>
+</ng-container>
+
+<ng-template #spinner>
+  <app-spinner></app-spinner>
+</ng-template>

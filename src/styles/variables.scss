@@ -136,3 +136,18 @@ $height-rss: 40px;
       padding: 0;
   }
 }
+%input-box {
+  background-color: $grey-97;
+  border: 1px solid $grey-70;
+  border-radius: 0.25rem;
+  outline: none;
+  &:hover {
+      border: 1px solid $green;
+    }
+    &:focus {
+      border: 1px solid $blue;
+    }
+    &:active {
+      @extend %box-shadow-active;
+    }
+}

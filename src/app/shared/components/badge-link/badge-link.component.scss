@@ -1,33 +1,69 @@
 @import 'variables.scss';
 
-.link-content {
-    padding: 3px 9px;
-    border-radius: 12px;
-    text-decoration: none;
+%content {
+  padding: 3px 9px;
+  border-radius: 12px;
+  text-decoration: none;
+  text-wrap: nowrap;
 }
-
-%white-txt {
+%link {
+  .link-content {
+    @extend %content;
+    color: #212529;
+    a {
+      position: absolute;
+      top: -1px;
+      margin-left: 5px;
+      color: $blue;
+      &:hover {
+        color: $blue-hover;
+      }
+      &:active {
+        color: $blue-active;
+      }
+    }
+  }
+}
+%status {
+  .status-content {
     color: $grey-100;
+    @extend %content;
+  }
 }
 
-.blue .link-content {
+.blue {
+  @extend %link;
+  @extend %status;
+  .status-content {
     background-color: $blue;
-    @extend %white-txt;
+  }
 }
-.green .link-content {
+.green {
+  @extend %link;
+  @extend %status;
+  .status-content {
     background-color: $green;
-    @extend %white-txt;
+  }
 }
-.orange .link-content {
+.orange {
+  @extend %link;
+  @extend %status;
+  .status-content {
     background-color: $orange;
-    @extend %white-txt;
+  }
 }
-.red .link-content {
+.red {
+  @extend %link;
+  @extend %status;
+  .status-content {
     background-color: $red;
-    @extend %white-txt;
+  }
 }
-.light .link-content {
-    background-color: transparent;
+.light {
+  @extend %link;
+  @extend %status;
+  .status-content {
     border: 1px solid $grey-100;
-    color: $grey-100;
+    background-color: transparent;
+  }
 }

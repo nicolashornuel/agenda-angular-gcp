@@ -1,8 +1,9 @@
 import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { Pageable } from '@core/services/firestore.service';
 import { PriorityComponent } from '@shared/components/priority/priority.component';
+import { FieldSet } from '@shared/models/fieldSet.model';
 import { Modal } from '@shared/models/modalParam.interface';
-import { CellRenderers, ColumnSet, FieldSet, TableSet } from '@shared/models/tableSet.interface';
+import { CellRenderers, ColumnSet, TableSet } from '@shared/models/tableSet.interface';
 import { ColSorted, ColumnsortableService } from '@shared/services/columnsortable.service';
 import { VideoController } from 'app/musique/abstracts/videoController.abstract';
 import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';

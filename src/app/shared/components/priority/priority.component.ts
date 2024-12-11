@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
 import {AbstractInputComponent} from '@shared/abstracts/input.component';
-import {FieldSet} from '@shared/models/tableSet.interface';
+import { FieldSet } from '@shared/models/fieldSet.model';
 
 @Component({
   selector: 'app-priority',

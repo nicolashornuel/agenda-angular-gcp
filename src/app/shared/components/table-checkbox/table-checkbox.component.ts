@@ -1,7 +1,7 @@
 import { Component, Input, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractInputComponent } from '@shared/abstracts/input.component';
-import { FieldSet } from '@shared/models/tableSet.interface';
+import { FieldSet } from '@shared/models/fieldSet.model';
 
 @Component({
   selector: 'app-table-checkbox',
@@ -17,9 +17,5 @@ import { FieldSet } from '@shared/models/tableSet.interface';
 })
 export class TableCheckboxComponent extends AbstractInputComponent {
   @Input() data!: FieldSet;
-
-  constructor() {
-    super();
-  }
 
 }

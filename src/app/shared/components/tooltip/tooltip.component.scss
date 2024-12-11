@@ -2,9 +2,9 @@
 
 .tooltip {
   border-radius: 3px;
-  background: $grey-100;
+  background: $blue;
   box-shadow: $box-shadow;
-  color: $grey-0;
+  color: $grey-100;
   position: fixed;
   transform: translate(-50%, 7px);
   padding: 12px;
@@ -17,7 +17,7 @@
     height: 0;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-bottom: 5px solid $grey-100;
+    border-bottom: 5px solid $blue;
     position: absolute;
     left: calc(50% - 5px);
     top: -5px;

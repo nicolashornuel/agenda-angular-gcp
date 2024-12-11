@@ -1,19 +1,5 @@
 @import 'variables.scss';
 
-/* input[type='file'] {
-  @extend %show-input-value;
-  &::-webkit-file-upload-button {
-    display: none;
-  }
-}
-.input-file-container {
-  @extend %show-input-label;
-  button {
-    position: absolute;
-    right: 0;
-  }
-} */
-
 input[type='file'] {
   display: none;
 }
@@ -59,4 +45,15 @@ input[type='file'] {
   &:hover label {
     color: $green;
   }
+}
+
+
+.img-container, .iframe-container {
+  height: 250px;
+}
+.img-container {
+  overflow-y: scroll;
+}
+.iframe-container {
+  border: none;
 }

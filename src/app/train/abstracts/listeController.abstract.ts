@@ -1,22 +1,30 @@
 import { Directive, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { FirestoreService } from '@core/services/firestore.service';
+import { FieldSet } from '@shared/models/fieldSet.model';
 import { Modal, ModalParam } from '@shared/models/modalParam.interface';
-import { ActionSet, ColumnSet, FieldSet, TableSet } from '@shared/models/tableSet.interface';
+import { ActionSet, ColumnSet, TableSet } from '@shared/models/tableSet.interface';
 import { DestroyService } from '@shared/services/destroy.service';
 import { ModalService } from '@shared/services/shared.observable.service';
+import { Identifiable } from '../models/reservation.model';
+import { AlertService } from '@shared/services/alert.service';
 
 @Directive({
   selector: '[appListe]'
 })
-export abstract class ListeController<T> implements OnInit {
+export abstract class ListeController<T extends Identifiable> implements OnInit {
 
   @ViewChild('modal') modal!: TemplateRef<Modal>;
+  @ViewChild('confirm') confirm!: TemplateRef<Modal>;
   
   public isLoading!: boolean;
   public tableSet!: TableSet;
   public popoverTitle!: string;
   public popoverFieldSets!: FieldSet[];
   public destroy$ = inject(DestroyService);
-  private modalService = inject(ModalService);
+  public modalService = inject(ModalService);
+  private alertService = inject(AlertService);
+
+  public firestoreService!: FirestoreService<T>;
 
   ngOnInit(): void {
     this.initComponents();
@@ -36,11 +44,23 @@ export abstract class ListeController<T> implements OnInit {
     this.modalService.set$(modalParam);
   }
 
+  public onOpenConfirm(title: string, t?: T): void {
+    const modalParam: ModalParam<T> = {
+      title,
+      context: { $implicit: t },
+      template: this.confirm,
+      maxWidth: '400px'
+    };
+    this.modalService.set$(modalParam);
+  }
+
+  public onClose(): void {
+    this.modalService.set$(undefined);
+  }
+
   protected abstract getColumnSet(): ColumnSet[];
   protected abstract getActionSet(): ActionSet[];
   protected abstract initData(): void;
-  public abstract onEdit(row: T): void;
-  public abstract onDelete(row: T): void;
   public abstract onCreate(): void;
   public abstract onSave(t: T): void;
  
@@ -55,19 +75,22 @@ export abstract class ListeController<T> implements OnInit {
     };
     this.popoverTitle = 'colonne visible';
     this.popoverFieldSets = this.tableSet.columnSet.map(
-      (col: ColumnSet) => new FieldSet(col.title, col.visible)
+      (col: ColumnSet) => new FieldSet({name: col.title}, col.visible)
     );
   }
 
-/*   private initData() {
-    this.isLoading = true;
-    this.reservationService
-      .getAll()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((t: any[]) => {
-        this.tableSet.data = this.mapData(t);
-        this.isLoading = false;
-      });
-  } */
-  
+  async update(t: T): Promise<void> {
+    await this.firestoreService.update(t, t.id!);
+    this.alertService.success(`Modification id:${t.id}`);
+  }
+
+  async add(t: T): Promise<void> {
+    t.id = await this.firestoreService.save(t);
+    this.alertService.success(`Création id:${t.id}`);
+  }
+
+  async delete(t: T): Promise<void> {
+    await this.firestoreService.delete(t.id!);
+    this.alertService.success(`Suppression id:${t.id}`);
+  }
 }

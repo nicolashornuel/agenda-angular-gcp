@@ -10,8 +10,9 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ColumnSet, FieldComponent } from '../../models/tableSet.interface';
 import { AlertService } from '../../services/alert.service';
+import { ColumnSet } from '@shared/models/tableSet.interface';
+import { FieldComponent } from '@shared/models/fieldSet.model';
 
 @Component({
   selector: 'app-table-cell',

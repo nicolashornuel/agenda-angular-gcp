@@ -1,4 +1,4 @@
-import { Selectable } from "@shared/components/select/select.component";
+import { Selectable } from "@shared/models/fieldSet.model";
 
 export interface NavitiaResponse {
   pagination: {
