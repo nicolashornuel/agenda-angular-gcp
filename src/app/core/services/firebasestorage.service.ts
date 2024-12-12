@@ -7,6 +7,7 @@ export interface FileStorage {
   link?: string;
   type: 'application/pdf' | 'image/jpeg' | 'image/png' | string;
   file?: File;
+  isDirty?: boolean;
 }
 
 export class FileStorage {
@@ -14,6 +15,7 @@ export class FileStorage {
     this.name = file.name;
     this.type = file.type;
     this.file = file;
+    this.isDirty = true;
   }
 }
 
@@ -23,10 +25,11 @@ export class FileStorage {
 export class FirestoreStorageService extends SubjectService<string> {
   private storage = getStorage();
 
-  public async storeFile(path: string, fileStorage: FileStorage): Promise<void> {
-    if (fileStorage.file) {
-      fileStorage.link = await this.store(path, fileStorage.file!);
+  public async storeFile(path: string, fileStorage: FileStorage): Promise<void> {    
+    if (fileStorage && fileStorage.isDirty && fileStorage.file) {
+      fileStorage.link = await this.store(path, fileStorage.file);
       delete fileStorage.file;
+      fileStorage.isDirty = false;
     }
   }
 

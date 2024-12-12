@@ -1,5 +1,11 @@
 <ng-container *ngIf="!isLoading; else spinner">
   <div class="row-end-center mb-3">
+      <app-input-checkbox
+        class="mr-5"
+        label="Seulement les trajets à venir"
+        [value]="true"
+        (onModelChange)="filter($event)"
+      ></app-input-checkbox>
     <app-button-group class="row-end-center">
       <button appButton outline size="small" (click)="onCreate()">
         <i class="fas fa-plus"></i>

@@ -30,8 +30,11 @@ $border-radius: 0.375rem;
     border-color: $grey-80;
     border-bottom-color: transparent;
     background-color: $grey-100;
+    pointer-events: none;
   }
-
+  a:-webkit-any-link {
+    color: unset;
+  }
   .nav-link {
     cursor: pointer;
     max-width: 150px;

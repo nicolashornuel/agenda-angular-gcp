@@ -1,6 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { Modal, ModalParam } from '@shared/models/modalParam.interface';
-import { ModalService } from '@shared/services/shared.observable.service';
+import { Modal } from '@shared/models/modalParam.interface';
 import { SymbolType } from 'app/trading/model/symbol.enum';
 import { IntervalType } from 'app/trading/model/tv-analysis.interface';
 

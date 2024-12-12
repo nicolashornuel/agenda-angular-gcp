@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, Input, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractInputComponent } from '@shared/abstracts/input.component';
 
@@ -15,5 +15,7 @@ import { AbstractInputComponent } from '@shared/abstracts/input.component';
   ]
 })
 export class InputNumberComponent extends AbstractInputComponent {
-
+  @Input() max: number = Number.POSITIVE_INFINITY;
+  @Input() min: number = Number.NEGATIVE_INFINITY;
+  @Input() step: number = 1;
 }

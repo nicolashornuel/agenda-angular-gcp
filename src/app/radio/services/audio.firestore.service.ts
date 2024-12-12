@@ -30,7 +30,7 @@ export class AudioSelectParamService extends FirestoreService<AudioSelectParam> 
     audioSelectParam.type = type;
     const userStored: UserInfo | undefined = this.storage.getLocalItem(KEY_STORAGE_USER);
     if (userStored && userStored.uid) audioSelectParam.uid = userStored.uid;
-    audioSelectParam.id = await this.save(audioSelectParam);
+    await this.save(audioSelectParam);
     this.alertService.success(`${audioSelectParam.type} ajouté`);
   }
 }

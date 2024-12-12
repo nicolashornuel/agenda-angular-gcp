@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FirestoreStorageService } from '@core/services/firebasestorage.service';
 import { DataField, DataFile, DataList, DataSelect, FieldSet } from '@shared/models/fieldSet.model';
 import { ModalService } from '@shared/services/shared.observable.service';
 import { Reservation, TrajetStatus } from 'app/train/models/reservation.model';
@@ -43,7 +42,7 @@ export class EditionReservationComponent implements OnInit {
     this.statusField = new DataSelect<TrajetStatus>(
       Reservation.STATUS,
       Object.values(TrajetStatus).sort((status: TrajetStatus) => status.order)
-    );
+    );    
     this.fileStorageField = new DataFile(Reservation.FILE_STORAGE);
   }
 

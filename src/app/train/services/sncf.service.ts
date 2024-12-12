@@ -14,7 +14,7 @@ export class SncfService {
    * Les 10 prochains départs
    */
   public getDepartures(station: string): Observable<JourneyDTO[]> {
-    const params : {start_page?: number, count?: number} = {count: 200}
+    const params: { start_page?: number; count?: number } = { count: 200 };
     return this.get(`/coverage/sncf/stop_areas/${station}/departures`, params).pipe(
       map(response => this.mapperDepartures(response))
     );
@@ -23,7 +23,7 @@ export class SncfService {
    * Les 10 prochaines arrivées
    */
   public getArrivals(station: string): Observable<JourneyDTO[]> {
-    const params : {start_page?: number, count?: number} = {count: 200}
+    const params: { start_page?: number; count?: number } = { count: 200 };
     return this.get(`coverage/sncf/stop_areas/${station}/arrivals`, params).pipe(
       map(response => this.mapperArrivals(response))
     );
@@ -79,7 +79,10 @@ export class SncfService {
       direction: schedule.display_informations.direction,
       headsign: schedule.display_informations.headsign,
       network: schedule.display_informations.network,
-      date_times: schedule.date_times.map(date_time => ({baseHour: this.formatBaseHour(date_time.base_date_time), trajetId: date_time.links.filter(link => link.type === 'vehicle_journey')[0].id})),
+      date_times: schedule.date_times.map(date_time => ({
+        baseHour: this.formatBaseHour(date_time.base_date_time),
+        trajetId: date_time.links.filter(link => link.type === 'vehicle_journey')[0].id
+      })),
       routeId: schedule.route.id,
       lineId: schedule.route.line.id,
       networkId: schedule.route.line.network.id
@@ -89,21 +92,27 @@ export class SncfService {
     return response.arrivals!.map(arrival => ({
       disruptionId: arrival.display_informations.links[0]?.id,
       ...arrival.display_informations,
-      baseHour: this.formatBaseHour(arrival.stop_date_time.base_arrival_date_time),
+      baseHour: this.formatBaseHour(
+        arrival.stop_date_time.base_arrival_date_time ?? arrival.stop_date_time.arrival_date_time
+      ),
       trajetId: arrival.links[1].id,
-      delay: this.getDifference(arrival.stop_date_time.base_arrival_date_time, arrival.stop_date_time.arrival_date_time)
+      delay: this.getDifference(
+        arrival.stop_date_time.base_arrival_date_time ?? arrival.stop_date_time.arrival_date_time,
+        arrival.stop_date_time.arrival_date_time
+      )
     }));
   }
 
   private mapperDepartures(response: NavitiaResponse): JourneyDTO[] {
-    //console.log(response);
     return response.departures!.map(departure => ({
       disruptionId: departure.display_informations.links[0]?.id,
       ...departure.display_informations,
-      baseHour: this.formatBaseHour(departure.stop_date_time.base_departure_date_time),
+      baseHour: this.formatBaseHour(
+        departure.stop_date_time.base_departure_date_time ?? departure.stop_date_time.departure_date_time
+      ),
       trajetId: departure.links[1].id,
       delay: this.getDifference(
-        departure.stop_date_time.base_departure_date_time,
+        departure.stop_date_time.base_departure_date_time ?? departure.stop_date_time.departure_date_time,
         departure.stop_date_time.departure_date_time
       )
     }));

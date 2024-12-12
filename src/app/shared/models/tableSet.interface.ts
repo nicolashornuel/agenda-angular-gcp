@@ -2,7 +2,6 @@ import { BadgeLinkComponent } from '@shared/components/badge-link/badge-link.com
 import { TableCheckboxComponent } from '@shared/components/table-checkbox/table-checkbox.component';
 import { FieldSet, Nameable } from '@shared/models/fieldSet.model';
 import { Color } from './color.enum';
-import { tooltip } from 'leaflet';
 
 export interface TableSet {
   title?: string;
@@ -132,7 +131,7 @@ export class CellRenderers {
     return {
       component: BadgeLinkComponent,
       valuePrepare: (row: any, col: ColumnSet) => ({
-        text: (row[col.key] as FieldSet).name,
+        text: (row[col.key] as Nameable).name,
         color: (row[col.key] as any).color ?? 'light'
       })
     };
@@ -140,6 +139,10 @@ export class CellRenderers {
 
   public static toBoolean(): (row: any, col: ColumnSet) => string {
     return (row: any, col: ColumnSet) => row[col.key] ? `<i class="fa-solid fa-check green"></i>`: `<i class="fa-solid fa-xmark red"></i>`;
+  }
+  
+  public static toDevise(suffix: string): (row: any, col: ColumnSet) => string {
+    return (row: any, col: ColumnSet) => `${row[col.key].toFixed(2)} ${suffix}`;
   }
 
   public static toBadgeLink(color: Color, prefix: string, tooltip: string) {

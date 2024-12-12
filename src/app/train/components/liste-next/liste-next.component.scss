@@ -1,3 +1,11 @@
+.scrolling {
+  height: calc(100vh - 250px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: unset;
+}
+
+
 .arrivals {
   .journey {
     background-color: #017142eb;
@@ -22,6 +30,7 @@
     color: #fff;
     .network {
         font-size: 1.25em;
+        line-height: 1.25em;
     }
     .text-center {
         text-align: center;

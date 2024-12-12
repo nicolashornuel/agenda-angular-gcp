@@ -2,6 +2,9 @@
     <input
       type="number"
       placeholder=" "
+      [max]="max"
+      [min]="min"
+      [step]="step"
       [readonly]="inputReadonly"
       [required]="inputRequired"
       (blur)="onBlur.next()"

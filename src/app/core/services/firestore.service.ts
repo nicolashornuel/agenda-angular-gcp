@@ -17,8 +17,11 @@ import {
   orderBy,
   query,
   setDoc,
-  startAfter
+  startAfter,
+  where
 } from '@angular/fire/firestore';
+import { AlertService } from '@shared/services/alert.service';
+import { Identifiable } from 'app/train/models/reservation.model';
 import { Observable } from 'rxjs';
 
 export type Pageable<T> = {
@@ -41,6 +44,10 @@ export abstract class FirestoreService<T> {
 
   public getAll(): Observable<T[]> {
     return collectionData(this.collectionRef, { idField: 'id' });
+  }
+  public getWhereByOrder(fieldPathWhere: string, whereValue: any, fieldPathOrder: string): Observable<T[]> {
+    const q = query(this.collectionRef, orderBy(fieldPathOrder), where(fieldPathWhere, '==', whereValue));
+    return collectionData(q, { idField: 'id' });
   }
 
   public async getCountFromServer(): Promise<number> {
@@ -82,7 +89,6 @@ export abstract class FirestoreService<T> {
     };
   }
 
-
   public async nextPage(fieldPath: string | FieldPath, pageSize: number): Promise<Pageable<T>> {
     const skip = 0;
     const take = pageSize + 1;
@@ -102,7 +108,7 @@ export abstract class FirestoreService<T> {
   }
 
   public async lastPage(fieldPath: string | FieldPath, pageSize: number): Promise<Pageable<T>> {
-    const skip = 1
+    const skip = 1;
     const countTotal = await this.getCountFromServer();
     const take = countTotal % pageSize === 0 ? pageSize : countTotal % pageSize;
     const q = query(this.collectionRef, orderBy(fieldPath), limitToLast(take + 1));
@@ -118,10 +124,10 @@ export abstract class FirestoreService<T> {
     };
   }
 
-  public async save(document: T): Promise<string> {
+  public async save(document: T): Promise<void> {
     const docRef: DocumentReference<T> = doc(this.collectionRef);
     await setDoc(docRef, { ...document });
-    return docRef.id;
+    (document as Identifiable).id = docRef.id;
   }
 
   public async update(document: T, id: string): Promise<void> {
@@ -129,8 +135,12 @@ export abstract class FirestoreService<T> {
     await setDoc(docRef, { ...document });
   }
 
-  public delete(id: string): Promise<void> {
+  public async delete(id: string): Promise<void> {
     const docRef: DocumentReference<T> = doc(this.collectionRef, id);
-    return deleteDoc(docRef);
+    await deleteDoc(docRef);
+  }
+
+  public async saveOrUpdate(document: Identifiable): Promise<any> {
+    document.id ? await this.update(document as T, document.id) : await this.save(document as T);
   }
 }

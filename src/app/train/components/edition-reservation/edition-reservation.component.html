@@ -18,7 +18,7 @@
 
   <app-input-textarea class="col-12" [label]="cancelationField.name" [(ngModel)]="input.cancelation" rows="5"></app-input-textarea>
 
-  <app-input-number class="col-6" [label]="priceField.name" [(ngModel)]="input.price"></app-input-number>
+  <app-input-number class="col-6" [label]="priceField.name" [(ngModel)]="input.price" [min]="0" [step]="0.01" ></app-input-number>
   
   <app-select class="col-6" [options]="statusField.options" [(selected)]="input.status" [label]="statusField.name"></app-select>
 

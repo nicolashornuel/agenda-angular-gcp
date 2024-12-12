@@ -38,7 +38,7 @@ export abstract class VideoController {
 
   async addVideo(video: VideoGAPI): Promise<void> {
     video.addedAt = new Date().toJSON();
-    video.id = await this.videoService.save(video);
+    await this.videoService.save(video);
     this.alertService.success(`${video.title} ajouté id:${video.id}`);
   }
 

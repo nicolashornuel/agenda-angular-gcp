@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FirestoreService } from '@core/services/firestore.service';
-import { Reservation, TrajetStatus } from '../models/reservation.model';
-import { StopArea } from '../models/sncf.model';
+import { Reservation } from '../models/reservation.model';
 
 @Injectable({
   providedIn: 'root'

@@ -45,7 +45,7 @@ export class Reservation {
     this.trainNumber = '';
     this.seatNumber = '';
     this.travelReferency = '';
-    this.price = 0.0;
+    this.price = 0.00;
     this.subscriptionCard = true;
     this.cancelation = '';
     this.status = TrajetStatus.WAITING;

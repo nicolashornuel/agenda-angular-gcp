@@ -1,18 +1,18 @@
-import { LOCALE_ID, NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { DatePipe, registerLocaleData } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import localeFr from '@angular/common/locales/fr';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { connectStorageEmulator, getStorage, provideStorage } from '@angular/fire/storage';
-import { environment } from '../environments/environment.prod';
-import { RadioModule } from 'app/radio/radio.module';
-import { SharedModule } from '@shared/shared.module';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SharedModule } from '@shared/shared.module';
+import { RadioModule } from 'app/radio/radio.module';
+import { environment } from '../environments/environment.prod';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 import { TradingModule } from './trading/trading.module';
 
 @NgModule({

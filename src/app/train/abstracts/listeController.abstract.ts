@@ -7,6 +7,7 @@ import { DestroyService } from '@shared/services/destroy.service';
 import { ModalService } from '@shared/services/shared.observable.service';
 import { Identifiable } from '../models/reservation.model';
 import { AlertService } from '@shared/services/alert.service';
+import { ColumnsortableService } from '@shared/services/columnsortable.service';
 
 @Directive({
   selector: '[appListe]'
@@ -22,9 +23,9 @@ export abstract class ListeController<T extends Identifiable> implements OnInit 
   public popoverFieldSets!: FieldSet[];
   public destroy$ = inject(DestroyService);
   public modalService = inject(ModalService);
-  private alertService = inject(AlertService);
-
-  public firestoreService!: FirestoreService<T>;
+  public alertService = inject(AlertService);
+  public colSortable = inject(ColumnsortableService);
+  //public firestoreService!: FirestoreService<T>;
 
   ngOnInit(): void {
     this.initComponents();
@@ -62,7 +63,7 @@ export abstract class ListeController<T extends Identifiable> implements OnInit 
   protected abstract getActionSet(): ActionSet[];
   protected abstract initData(): void;
   public abstract onCreate(): void;
-  public abstract onSave(t: T): void;
+  public abstract onSave(t: T): Promise<void>;
  
   private initComponents() {
     this.tableSet = {
@@ -77,20 +78,5 @@ export abstract class ListeController<T extends Identifiable> implements OnInit 
     this.popoverFieldSets = this.tableSet.columnSet.map(
       (col: ColumnSet) => new FieldSet({name: col.title}, col.visible)
     );
-  }
-
-  async update(t: T): Promise<void> {
-    await this.firestoreService.update(t, t.id!);
-    this.alertService.success(`Modification id:${t.id}`);
-  }
-
-  async add(t: T): Promise<void> {
-    t.id = await this.firestoreService.save(t);
-    this.alertService.success(`Création id:${t.id}`);
-  }
-
-  async delete(t: T): Promise<void> {
-    await this.firestoreService.delete(t.id!);
-    this.alertService.success(`Suppression id:${t.id}`);
   }
 }
