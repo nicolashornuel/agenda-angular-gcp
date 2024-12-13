@@ -34,10 +34,10 @@ export class PageActuComponent implements OnInit {
       url: 'https://www.usinenouvelle.com/rss/',
       name: 'usinenouvelle'
     },
-    {
+/*     {
       url: 'https://www.sciencesetavenir.fr/rss.xml',
       name: 'sciencesetavenir'
-    },
+    }, */
     {
       url: 'https://www.journaldunet.com/rss/',
       name: 'journaldunet'

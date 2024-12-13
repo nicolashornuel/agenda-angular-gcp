@@ -45,12 +45,12 @@ export class ListeNextComponent implements OnInit {
       .subscribe(liste => {
         console.log(liste);
       }); */
-    this.sncfService
+    /* this.sncfService
       .getByTerminus(StopArea.BAILLARGUES.value)
       .pipe(take(1))
       .subscribe(liste => {
         console.log(liste);
-      });
+      }); */
   }
 
   private initData(): void {

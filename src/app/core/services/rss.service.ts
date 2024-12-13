@@ -51,6 +51,7 @@ export class RssService {
     const indexOf = description.indexOf('<br />');
     const finalDescription = indexOf != -1 ? description.substring(0, indexOf) : description; */
 
+    
     let img = item.querySelector('content') ? item.querySelector('content').getAttribute('url') : undefined;
     img = item.querySelector('enclosure') ? item.querySelector('enclosure').getAttribute('url') : img;
 

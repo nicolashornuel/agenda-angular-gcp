@@ -1,18 +1,14 @@
+<div class="row-end-center mb-3">
+  <app-input-checkbox class="mr-5" label="Voir tout" [(ngModel)]="isShowAll" (onModelChange)="showAll()"></app-input-checkbox>
+  <app-button-group class="row-end-center">
+    <button appButton outline size="small" (click)="onCreate()">
+      <i class="fas fa-plus"></i>
+    </button>
+    <button appButton outline size="small" [appPopover]="templateRef"><i class="fas fa-columns"></i></button>
+  </app-button-group>
+</div>
+
 <ng-container *ngIf="!isLoading; else spinner">
-  <div class="row-end-center mb-3">
-      <app-input-checkbox
-        class="mr-5"
-        label="Seulement les trajets à venir"
-        [value]="true"
-        (onModelChange)="filter($event)"
-      ></app-input-checkbox>
-    <app-button-group class="row-end-center">
-      <button appButton outline size="small" (click)="onCreate()">
-        <i class="fas fa-plus"></i>
-      </button>
-      <button appButton outline size="small" [appPopover]="templateRef"><i class="fas fa-columns"></i></button>
-    </app-button-group>
-  </div>
   <app-table [tableSet]="tableSet"></app-table>
 </ng-container>
 
@@ -31,7 +27,7 @@
 <ng-template #confirm let-input>
   <div class="row-end-center gap-2">
     <button appButton outline size="regular" color="blue" (click)="onClose()">Annuler</button>
-    <button appButton outline size="regular" color="green" (click)="onConfirmDelete(input)">Supprimer</button>
+    <button appButton filled size="regular" color="blue" (click)="onConfirmDelete(input)">Supprimer</button>
   </div>
 </ng-template>
 

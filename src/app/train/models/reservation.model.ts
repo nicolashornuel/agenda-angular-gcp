@@ -60,5 +60,6 @@ export class TrajetStatus implements Selectable<string> {
   order!: number;
   public static readonly WAITING = { order: 1, name: 'En cours', value: 'waiting', color: Color.BLUE };
   public static readonly CANCELED = { order: 2, name: 'Annulé', value: 'canceled', color: Color.RED };
-  public static readonly REFUNDED = { order: 3, name: 'Remboursé', value: 'refunded', color: Color.GREEN };
+  public static readonly PAST = { order: 3, name: 'Passé', value: 'past', color: Color.ORANGE };
+  public static readonly REFUNDED = { order: 4, name: 'Remboursé', value: 'refunded', color: Color.GREEN };
 }

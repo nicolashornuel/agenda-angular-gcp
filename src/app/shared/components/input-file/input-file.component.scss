@@ -20,6 +20,11 @@ input[type='file'] {
   }
   .input-file-value {
     font-size: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 90%;
+    position: absolute;
   }
   button {
     position: absolute;

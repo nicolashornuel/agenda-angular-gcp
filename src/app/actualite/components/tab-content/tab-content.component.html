@@ -4,7 +4,7 @@
 >
   <app-card *ngFor="let card of cards" backgroundColor="hsl(0, 0%, 95%)" [isMiniCard]="true">
     <div class="relative h-100">
-      <a [href]="card.link">
+      <a [href]="card.link" target="_blank">
         <p class="date">{{ card.pubDate | date : 'fullDate' }}</p>
         <img [src]="card.img" />
         <p>{{ card.title }}</p>

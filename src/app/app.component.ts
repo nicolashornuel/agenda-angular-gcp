@@ -13,10 +13,10 @@ export class AppComponent {
       title: 'Agenda',
       route: 'agenda'
     },
-    {
+/*     {
       title: 'À faire',
       route: 'memo/todo'
-    },
+    }, */
     {
       title: 'Musique',
       route: 'musique'
@@ -33,10 +33,10 @@ export class AppComponent {
       title: 'Trading',
       route: 'trading'
     }, */
-    {
+/*     {
       title: 'GPS',
       route: 'location'
-    }
+    } */
   ]
 
   constructor(public auth: AuthService) {}

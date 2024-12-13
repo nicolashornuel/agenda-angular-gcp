@@ -13,7 +13,6 @@ textarea {
   @extend %input-box;
 }
 .input-textarea-container {
-  display: inline-block;
   @extend %show-input-label;
   label {
     padding: 0 8px;

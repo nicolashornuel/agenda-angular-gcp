@@ -9,11 +9,10 @@ import {
   ColumnSet,
   ColumnString
 } from '@shared/models/tableSet.interface';
-import { ColSorted } from '@shared/services/columnsortable.service';
 import { ListeController } from 'app/train/abstracts/listeController.abstract';
 import { Reservation, TrajetStatus } from 'app/train/models/reservation.model';
 import { ReservationService } from 'app/train/services/reservation.service';
-import { takeUntil } from 'rxjs';
+import { Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-liste-reservation',
@@ -25,15 +24,11 @@ export class ListeReservationComponent extends ListeController<Reservation> impl
     super();
   }
 
+  private list$?: Subscription;
+  public isShowAll = false;
+
   protected override initData(): void {
-    this.isLoading = true;
-    this.reservationService
-      .getWhereByOrder(Reservation.STATUS.key, TrajetStatus.WAITING, Reservation.START_AT.key)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((reservations: Reservation[]) => {
-        this.tableSet.data = reservations;
-        this.isLoading = false;
-      });
+    this.getList({ key: Reservation.STATUS.key, value: TrajetStatus.WAITING });
   }
 
   protected override getColumnSet(): ColumnSet[] {
@@ -86,6 +81,19 @@ export class ListeReservationComponent extends ListeController<Reservation> impl
     this.alertService.success('sauvegarde réussie');
   }
 
-  public filter(value: boolean): void {
+  public showAll(): void {
+    this.list$?.unsubscribe();
+    this.isShowAll ? this.getList() : this.getList({ key: Reservation.STATUS.key, value: TrajetStatus.WAITING });
+  }
+
+  private getList(fieldToWhere?: { key: string; value: any }): void {
+    this.isLoading = true;
+    this.list$ = this.reservationService
+      .getByQuery(Reservation.START_AT.key, fieldToWhere)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((reservations: Reservation[]) => {
+        this.tableSet.data = reservations;
+        this.isLoading = false;
+      });
   }
 }
