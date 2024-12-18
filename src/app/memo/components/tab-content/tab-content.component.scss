@@ -1,0 +1,32 @@
+@import 'variables.scss';
+
+.memo-container {
+    display: table;
+    border-collapse: collapse;
+    font-size: 14px;
+
+    .memo-row {
+        display: table-row;
+        .memo-cell {
+            display: table-cell;
+        }
+    }
+
+    .memo-label {
+        font-weight: 600;
+        color: $grey-50;
+    }    
+
+    .memo-actions {
+        opacity: 0;
+    }
+    
+    .memo-row {
+        .memo-actions {
+            opacity: 0;
+        }
+        &:hover .memo-actions {
+            opacity: 1;
+        }
+    }
+}

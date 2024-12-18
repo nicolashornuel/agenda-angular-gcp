@@ -10,7 +10,8 @@
     list="id-options"
   />
   <label>
-    {{ label + asterix }}
+    <span>{{ label }}</span>
+    <span class="red">{{ asterix }}</span>
   </label>
   <datalist id="id-options">
     <option *ngFor="let option of options" [value]="option">{{ option }}</option>

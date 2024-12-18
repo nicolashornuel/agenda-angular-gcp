@@ -40,6 +40,7 @@ import { PopoverDirective } from './directives/popover.directive';
 import { TooltipDirective } from './directives/tooltip.directive';
 import { BadgeLinkComponent } from './components/badge-link/badge-link.component';
 import { InputFileComponent } from './components/input-file/input-file.component';
+import { AccordionComponent } from './components/accordion/accordion.component';
 
 const sharedComponents = [
   TableComponent,
@@ -75,7 +76,8 @@ const sharedComponents = [
   InputDateComponent,
   InputNumberComponent,
   BadgeLinkComponent,
-  InputFileComponent
+  InputFileComponent,
+  AccordionComponent
 ]
 
 const sharedModules = [

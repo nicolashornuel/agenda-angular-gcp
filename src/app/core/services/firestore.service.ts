@@ -20,7 +20,6 @@ import {
   startAfter,
   where
 } from '@angular/fire/firestore';
-import { AlertService } from '@shared/services/alert.service';
 import { Identifiable } from 'app/train/models/reservation.model';
 import { Observable } from 'rxjs';
 
@@ -38,7 +37,11 @@ export abstract class FirestoreService<T> {
   public hasNext!: boolean;
   public hasPrevious!: boolean;
 
-  constructor(path: string) {
+  constructor(path?: string) {
+   if (path) this.collectionRef = collection(this.firestore, path) as CollectionReference<T>;
+  }
+  
+  public setCollection(path: string): void {    
     this.collectionRef = collection(this.firestore, path) as CollectionReference<T>;
   }
 

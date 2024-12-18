@@ -27,7 +27,9 @@ export class FirestoreStorageService extends SubjectService<string> {
 
   public async storeFile(path: string, fileStorage: FileStorage): Promise<void> {    
     if (fileStorage && fileStorage.isDirty && fileStorage.file) {
-      fileStorage.link = await this.store(path, fileStorage.file);
+      const { newFilename, link } = await this.store(path, fileStorage.file);
+      fileStorage.link = link;
+      fileStorage.name = newFilename;
       delete fileStorage.file;
       fileStorage.isDirty = false;
     }
@@ -37,15 +39,16 @@ export class FirestoreStorageService extends SubjectService<string> {
     return `${Date.now()}_${file.name}`;
   }
 
-  private async store(path: string, file: File): Promise<string> {
+  private async store(path: string, file: File): Promise<{newFilename: string, link: string}> {
     const newFilename = this.generateFileName(file);
     const imagePath = `${path}/${newFilename}`;
     const storageRef = ref(this.storage, imagePath);
     await uploadBytesResumable(storageRef, file);
-    return await getDownloadURL(storageRef);
+    const link = await getDownloadURL(storageRef);
+    return { newFilename, link }
   }
 
-  private async delete(path: string, fileName: string): Promise<void> {
+  public async delete(path: string, fileName: string): Promise<void> {
     //fileName with path
     const imagePath = `${path}/${fileName}`;
     const storageRef = ref(this.storage, imagePath);

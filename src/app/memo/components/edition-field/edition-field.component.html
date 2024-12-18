@@ -1,0 +1,81 @@
+<form #form="ngForm" class="col">
+    <app-select
+      class="py-3"
+      [options]="type.options"
+      [(selected)]="input.type"
+      [label]="type.name"
+      (selectedChange)="onSelectChange()"
+    ></app-select>
+  
+    <app-input-text
+      class="py-3"
+      label="label"
+      [(ngModel)]="input.name"
+      name="name"
+      [required]="true"
+    ></app-input-text>
+  
+    <ng-container [ngSwitch]="input.type.value">
+      <app-input-file
+        *ngSwitchCase="'file'"
+        class="py-3"
+        label="valeur"
+        [(fileStorage)]="input.value"
+        name="value"
+        [required]="true"
+      ></app-input-file>
+  
+      <app-input-text
+        *ngSwitchCase="'link'"
+        class="py-3"
+        label="valeur"
+        [(ngModel)]="input.value"
+        name="value"
+        [required]="true"
+      ></app-input-text>
+  
+      <app-input-date
+        *ngSwitchCase="'date'"
+        class="py-3"
+        label="valeur"
+        [(ngModel)]="input.value"
+        name="value"
+        [required]="true"
+      ></app-input-date>
+  
+      <app-input-textarea
+        *ngSwitchCase="'text'"
+        class="py-3"
+        label="valeur"
+        [(ngModel)]="input.value"
+        name="value"
+        rows="5"
+        [required]="true"
+      ></app-input-textarea>
+      
+      <app-input-textarea
+        *ngSwitchDefault
+        class="py-3"
+        label="valeur"
+        [(ngModel)]="input.value"
+        name="value"
+        rows="5"
+        [required]="true"
+      ></app-input-textarea>
+    </ng-container>
+  </form>
+  
+  <div class="row-end-center gap-2">
+    <button appButton outline size="regular" color="blue" (click)="onClose()">Annuler</button>
+    <button
+      appButton
+      filled
+      size="regular"
+      color="blue"
+      (click)="onSave()"
+      [disabled]="form.valid ? false : true"
+    >
+      Enregistrer
+    </button>
+  </div>
+  

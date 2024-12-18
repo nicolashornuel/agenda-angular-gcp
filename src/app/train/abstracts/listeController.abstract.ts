@@ -25,7 +25,6 @@ export abstract class ListeController<T extends Identifiable> implements OnInit 
   public modalService = inject(ModalService);
   public alertService = inject(AlertService);
   public colSortable = inject(ColumnsortableService);
-  //public firestoreService!: FirestoreService<T>;
 
   ngOnInit(): void {
     this.initComponents();

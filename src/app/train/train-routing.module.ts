@@ -21,7 +21,7 @@ const routes: Routes = [
       { path: 'arrivals', component: ListeArrivalComponent },
       { path: 'arrivals/:id', component: ListeArrivalComponent },
       { path: 'departures', component: ListeDepartureComponent },
-      { path: 'departures/:id', component: ListeDepartureComponent },
+      { path: 'departures/:id', component: ListeDepartureComponent }
     ]
   }
 ];

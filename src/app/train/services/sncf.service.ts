@@ -80,7 +80,7 @@ export class SncfService {
       headsign: schedule.display_informations.headsign,
       network: schedule.display_informations.network,
       date_times: schedule.date_times.map(date_time => ({
-        baseHour: this.formatBaseHour(date_time.base_date_time),
+        baseHour: this.formatBaseDate(date_time.base_date_time),
         trajetId: date_time.links.filter(link => link.type === 'vehicle_journey')[0].id
       })),
       routeId: schedule.route.id,
@@ -148,5 +148,9 @@ export class SncfService {
   private formatBaseHour(apiDate: string): string {
     const date = this.convertDate(apiDate);
     return this.datePipe.transform(date, 'HH:mm')!.replace(':', 'h');
+  }
+  private formatBaseDate(apiDate: string): string {
+    const date = this.convertDate(apiDate);
+    return this.datePipe.transform(date, 'EE d MMM y à HH:mm')!.replace(':', 'h');
   }
 }

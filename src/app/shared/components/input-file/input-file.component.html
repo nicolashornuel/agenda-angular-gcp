@@ -12,7 +12,8 @@
   />
   <span *ngIf="fileStorage && fileStorage.name" class="input-file-value">{{ fileStorage.name }}</span>
   <label>
-    {{ label + asterix }}
+    <span>{{ label }}</span>
+    <span class="red">{{ asterix }}</span>
   </label>
   <button appButton ghost size="tiny"><i class="fas fa-plus"></i></button>
 </div>

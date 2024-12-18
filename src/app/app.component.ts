@@ -13,10 +13,10 @@ export class AppComponent {
       title: 'Agenda',
       route: 'agenda'
     },
-/*     {
-      title: 'À faire',
-      route: 'memo/todo'
-    }, */
+    {
+      title: 'Memo',
+      route: 'memo'
+    },
     {
       title: 'Musique',
       route: 'musique'

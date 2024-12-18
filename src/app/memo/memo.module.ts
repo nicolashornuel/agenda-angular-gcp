@@ -6,12 +6,18 @@ import { SharedModule } from '@shared/shared.module';
 
 import { ToDoComponent } from './components/to-do/to-do.component';
 import { PageMemoComponent } from './page/page-memo.component';
+import { TabContentComponent } from './components/tab-content/tab-content.component';
+import { EditionSectionComponent } from './components/edition-section/edition-section.component';
+import { EditionFieldComponent } from './components/edition-field/edition-field.component';
 
 
 @NgModule({
   declarations: [
     ToDoComponent,
     PageMemoComponent,
+    TabContentComponent,
+    EditionSectionComponent,
+    EditionFieldComponent,
   ],
   imports: [
     CommonModule,

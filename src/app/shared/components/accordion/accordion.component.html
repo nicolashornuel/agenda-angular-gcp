@@ -1,0 +1,8 @@
+<section class="header row-between-center my-2" (click)="onToggleOpen()">
+  <span class="w-100"> {{ title }}</span>
+  <app-icon [path]="isOpen ? 'chevron-left' : 'chevron-right'"></app-icon>
+</section>
+
+<section class="content" [ngClass]="isOpen ? 'open' : 'close'">
+  <ng-content></ng-content>
+</section>

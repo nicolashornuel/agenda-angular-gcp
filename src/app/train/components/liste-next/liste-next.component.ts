@@ -19,8 +19,6 @@ export class ListeNextComponent implements OnInit {
   public isLoading!: boolean;
   public isTimeDisplay!: boolean;
   public select = new DataSelect<StopArea>({ name: 'choix de la gare' }, Object.values(StopArea));
-  public hasNext!: boolean;
-  public hasPrev!: boolean;
   private sncfService = inject(SncfService);
   private activatedRoute = inject(ActivatedRoute);
   private destroy$ = inject(DestroyService);
@@ -35,22 +33,6 @@ export class ListeNextComponent implements OnInit {
       this.isLoading = false;
       this.initData();
     });
-    this.enTest();
-  }
-
-  private enTest(): void {
-    /* this.sncfService
-      .getByRoute(StopArea.BAILLARGUES.value)
-      .pipe(take(1))
-      .subscribe(liste => {
-        console.log(liste);
-      }); */
-    /* this.sncfService
-      .getByTerminus(StopArea.BAILLARGUES.value)
-      .pipe(take(1))
-      .subscribe(liste => {
-        console.log(liste);
-      }); */
   }
 
   private initData(): void {
