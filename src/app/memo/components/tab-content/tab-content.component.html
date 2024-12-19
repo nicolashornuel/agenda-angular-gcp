@@ -32,19 +32,18 @@
     <button appButton ghost size="tiny" (click)="onUp(i)" [disabled]="i <= 0"><i class="fa-solid fa-chevron-up"></i></button>
     <button appButton ghost size="tiny" (click)="onDown(i)" [disabled]="i >= this.list.length - 1"><i class="fa-solid fa-chevron-down"></i></button>
     <button appButton ghost size="tiny" disabled><i class="fas fa-pencil-alt"></i></button>
-
   </div>
   <span class="separator my-2 absolute"></span>
 </ng-template>
 
 <ng-template #abstractTitle let-item="item" let-i="index">
-  <div class="memo-cell memo-actions">
+  <div class="memo-cell memo-actions title-actions">
     <button appButton ghost size="tiny" (click)="onDelete(item)"><i class="fas fa-trash-alt"></i></button>
     <button appButton ghost size="tiny" (click)="onUp(i)" [disabled]="i <= 0"><i class="fa-solid fa-chevron-up"></i></button>
     <button appButton ghost size="tiny" (click)="onDown(i)" [disabled]="i >= this.list.length - 1"><i class="fa-solid fa-chevron-down"></i></button>
     <button appButton ghost size="tiny" (click)="onEditTitle(item)"><i class="fas fa-pencil-alt"></i></button>
   </div>
-  <span class="title">{{ item.value }}</span>
+  <span class="title absolute">{{ item.value }}</span>
 </ng-template>
 
 <ng-template #abstractField let-item="item" let-i="index">

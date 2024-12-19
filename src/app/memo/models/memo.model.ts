@@ -15,13 +15,15 @@ export class AbstractItem {
 
 export class AbstractSeparator extends AbstractItem {
   constructor(list: AbstractItem[]) {
-    super({ name: 'Séparation', value: 'separator' }, ++list[list.length - 1].order)
+    const order = list.length > 0 ? ++list[list.length - 1].order : 0;
+    super({ name: 'Séparation', value: 'separator' }, order)
   }
 }
 
 export class AbstractTitle extends AbstractItem {
   constructor(list: AbstractItem[]) {
-    super({ name: 'Titre de section', value: 'title' }, ++list[list.length - 1].order)
+    const order = list.length > 0 ? ++list[list.length - 1].order : 0;
+    super({ name: 'Titre de section', value: 'title' }, order)
   }
 }
 
@@ -31,6 +33,7 @@ export class AbstractField extends AbstractItem {
   public static readonly FILE = { name: 'Fichier', value: 'file' };
   public static readonly LINK = { name: 'Lien', value: 'link' };
   constructor(list: AbstractItem[]) {
-    super(AbstractField.TEXT, ++list[list.length - 1].order);
+    const order = list.length > 0 ? ++list[list.length - 1].order : 0;
+    super(AbstractField.TEXT, order);
   }
 }
