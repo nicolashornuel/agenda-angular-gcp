@@ -1,14 +1,14 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import { MemoRoutingModule } from './memo-routing.module';
 import { SharedModule } from '@shared/shared.module';
+import { MemoRoutingModule } from './memo-routing.module';
 
+import { EditionFieldComponent } from './components/edition-field/edition-field.component';
+import { EditionTitleComponent } from './components/edition-title/edition-title.component';
+import { TabContentComponent } from './components/tab-content/tab-content.component';
 import { ToDoComponent } from './components/to-do/to-do.component';
 import { PageMemoComponent } from './page/page-memo.component';
-import { TabContentComponent } from './components/tab-content/tab-content.component';
-import { EditionSectionComponent } from './components/edition-section/edition-section.component';
-import { EditionFieldComponent } from './components/edition-field/edition-field.component';
 
 
 @NgModule({
@@ -16,8 +16,8 @@ import { EditionFieldComponent } from './components/edition-field/edition-field.
     ToDoComponent,
     PageMemoComponent,
     TabContentComponent,
-    EditionSectionComponent,
     EditionFieldComponent,
+    EditionTitleComponent,
   ],
   imports: [
     CommonModule,

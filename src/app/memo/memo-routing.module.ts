@@ -12,7 +12,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'maison',
+        redirectTo: 'romane',
         pathMatch: 'full'
       },
       { path: 'romane', component: TabContentComponent },

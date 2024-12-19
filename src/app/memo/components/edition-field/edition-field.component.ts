@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { ModalService } from '@shared/services/shared.observable.service';
-import { AbstractField } from 'app/memo/service/memo.service';
+import { AbstractField } from 'app/memo/models/memo.model';
 
 @Component({
   selector: 'app-edition-field',

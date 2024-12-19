@@ -1,16 +1,13 @@
 <div class="row-end-center mb-3">
   <app-button-group class="row-end-center">
-    <button appButton outline size="small" (click)="onCreate()">
-      <i class="fas fa-plus"></i>
-      Donnée
+    <button appButton outline size="small" (click)="onAddField()">
+      <i class="fas fa-plus pr-1"></i>Donnée
     </button>
-    <button appButton outline size="small" (click)="onAddSectionTitle()">
-      <i class="fas fa-plus"></i>
-      Titre
+    <button appButton outline size="small" (click)="onAddTitle()">
+      <i class="fas fa-plus pr-1"></i>Titre
     </button>
     <button appButton outline size="small" (click)="onAddSeparator()">
-      <i class="fas fa-plus"></i>
-      Séparation
+      <i class="fas fa-plus pr-1"></i>Séparation
     </button>
   </app-button-group>
 </div>
@@ -19,31 +16,44 @@
   <section class="memo-container">
     <ng-container *ngFor="let item of list; let i = index">
       <article class="memo-row">
-
-        <div class="memo-cell memo-actions">
-          <button appButton ghost size="tiny" (click)="onEdit(item)"><i class="fas fa-pencil-alt"></i></button>
-          <button appButton ghost size="tiny" (click)="onDelete(item)"><i class="fas fa-trash-alt"></i></button>
-          <button appButton ghost size="tiny" (click)="onUp(i)" [disabled]="i <= 0"><i class="fa-solid fa-chevron-up"></i></button>
-          <button appButton ghost size="tiny" (click)="onDown(i)" [disabled]="i >= this.list.length - 1"><i class="fa-solid fa-chevron-down"></i></button>
-        </div>
-
-        <!-- <div class="memo-cell">
-          {{i}} - {{item.order}}
-        </div> -->
-
         <ng-container [ngSwitch]="item.type.value">
-          <span *ngSwitchCase="'separator'" class="separator my-2 absolute"></span>
-          <span *ngSwitchCase="'title'" class="title">{{ item.value }}</span>
-          <ng-container *ngSwitchDefault [ngTemplateOutlet]="abstractField" [ngTemplateOutletContext]="{item: item}"></ng-container>
+          <ng-container *ngSwitchCase="'separator'" [ngTemplateOutlet]="abstractSeparator" [ngTemplateOutletContext]="{item: item, index: i}"></ng-container>
+          <ng-container *ngSwitchCase="'title'" [ngTemplateOutlet]="abstractTitle" [ngTemplateOutletContext]="{item: item, index: i}"></ng-container>
+          <ng-container *ngSwitchDefault [ngTemplateOutlet]="abstractField" [ngTemplateOutletContext]="{item: item, index: i}"></ng-container>
         </ng-container>
-
       </article>
-
     </ng-container>
   </section>
 </ng-container>
 
-<ng-template #abstractField let-item="item">
+<ng-template #abstractSeparator let-item="item" let-i="index">
+  <div class="memo-cell memo-actions">
+    <button appButton ghost size="tiny" (click)="onDelete(item)"><i class="fas fa-trash-alt"></i></button>
+    <button appButton ghost size="tiny" (click)="onUp(i)" [disabled]="i <= 0"><i class="fa-solid fa-chevron-up"></i></button>
+    <button appButton ghost size="tiny" (click)="onDown(i)" [disabled]="i >= this.list.length - 1"><i class="fa-solid fa-chevron-down"></i></button>
+    <button appButton ghost size="tiny" disabled><i class="fas fa-pencil-alt"></i></button>
+
+  </div>
+  <span class="separator my-2 absolute"></span>
+</ng-template>
+
+<ng-template #abstractTitle let-item="item" let-i="index">
+  <div class="memo-cell memo-actions">
+    <button appButton ghost size="tiny" (click)="onDelete(item)"><i class="fas fa-trash-alt"></i></button>
+    <button appButton ghost size="tiny" (click)="onUp(i)" [disabled]="i <= 0"><i class="fa-solid fa-chevron-up"></i></button>
+    <button appButton ghost size="tiny" (click)="onDown(i)" [disabled]="i >= this.list.length - 1"><i class="fa-solid fa-chevron-down"></i></button>
+    <button appButton ghost size="tiny" (click)="onEditTitle(item)"><i class="fas fa-pencil-alt"></i></button>
+  </div>
+  <span class="title">{{ item.value }}</span>
+</ng-template>
+
+<ng-template #abstractField let-item="item" let-i="index">
+  <div class="memo-cell memo-actions">
+    <button appButton ghost size="tiny" (click)="onDelete(item)"><i class="fas fa-trash-alt"></i></button>
+    <button appButton ghost size="tiny" (click)="onUp(i)" [disabled]="i <= 0"><i class="fa-solid fa-chevron-up"></i></button>
+    <button appButton ghost size="tiny" (click)="onDown(i)" [disabled]="i >= this.list.length - 1"><i class="fa-solid fa-chevron-down"></i></button>
+    <button appButton ghost size="tiny" (click)="onEditField(item)"><i class="fas fa-pencil-alt"></i></button>
+  </div>
   <div class="memo-cell memo-label txt-nowrap pr-3">{{ item.name }} :</div>
   <div class="memo-cell memo-value" [ngSwitch]="item.type.value">
     <a *ngSwitchCase="'file'" [href]="item.value.link" target="_blank">{{ item.value.name }}</a>
@@ -57,8 +67,8 @@
   <app-edition-field [input]="input" (output)="onSave($event)"></app-edition-field>
 </ng-template>
 
-<ng-template #editionSection let-input>
-  <app-edition-section [input]="input" (output)="onSave($event)"></app-edition-section>
+<ng-template #editionTitle let-input>
+  <app-edition-title [input]="input" (output)="onSave($event)"></app-edition-title>
 </ng-template>
 
 <ng-template #spinner>

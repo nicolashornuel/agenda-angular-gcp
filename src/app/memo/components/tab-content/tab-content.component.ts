@@ -1,12 +1,12 @@
 import { Component, HostBinding, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FirestoreStorageService } from '@core/services/firebasestorage.service';
-import { Selectable } from '@shared/models/fieldSet.model';
 import { Modal, ModalParam } from '@shared/models/modalParam.interface';
 import { AlertService } from '@shared/services/alert.service';
 import { DestroyService } from '@shared/services/destroy.service';
 import { ModalService } from '@shared/services/shared.observable.service';
-import { AbstractDisplay, AbstractField, AbstractItem, AbstractSection, MemoService } from 'app/memo/service/memo.service';
+import { AbstractField, AbstractTitle, AbstractSeparator, AbstractItem } from 'app/memo/models/memo.model';
+import { MemoService } from 'app/memo/service/memo.service';
 import { takeUntil } from 'rxjs';
 
 @Component({
@@ -25,16 +25,16 @@ export class TabContentComponent implements OnInit {
   private firebaseStorage = inject(FirestoreStorageService);
   private routePath!: string;
   @ViewChild('editionField') editionField!: TemplateRef<Modal>;
-  @ViewChild('editionSection') editionSection!: TemplateRef<Modal>;
+  @ViewChild('editionTitle') editionTitle!: TemplateRef<Modal>;
   @HostBinding('class')
   get additionalClasses() {
-    return "relative";
-}
+    return 'relative';
+  }
 
   ngOnInit(): void {
-      this.routePath = this.activatedRoute.snapshot.routeConfig!.path!;
-      this.memoService.setCollection(this.routePath);
-      this.initData();
+    this.routePath = this.activatedRoute.snapshot.routeConfig!.path!;
+    this.memoService.setCollection(this.routePath);
+    this.initData();
   }
 
   private initData(): void {
@@ -48,45 +48,56 @@ export class TabContentComponent implements OnInit {
       });
   }
 
-  public onCreate(): void {
-    this.onOpenFieldModal('Créer une donnée', new AbstractField(this.list));
+  /////////////////////////////////////// EVENTS
+
+  public onAddField(): void {
+    this.openItemModal(this.editionField, 'Créer une donnée', new AbstractField(this.list));
   }
 
-  private addDisplayItem(type: Selectable<string>): void {
-    const item = new AbstractDisplay(this.list, type);
-    this.saveDocument(item);
+  public onAddTitle(): void {
+    this.openItemModal(this.editionTitle, 'Créer un titre de section', new AbstractTitle(this.list));
   }
 
   public onAddSeparator(): void {
-    this.addDisplayItem(AbstractDisplay.SEPARATOR);
+    this.saveDocument(new AbstractSeparator(this.list));
   }
 
-  public onAddSectionTitle(): void {
-    this.onOpenSectiondModal('Créer un titre de section', new AbstractSection(this.list, AbstractSection.TITLE));
+  public async onUp(index: number) {
+    await this.reorder(index, index - 1);
   }
 
-  public onOpenFieldModal(title: string, t?: AbstractItem): void {
-    const modalParam: ModalParam<AbstractItem> = {
-      title,
-      context: { $implicit: t },
-      template: this.editionField,
-      maxWidth: '400px'
-    };
-    this.modalService.set$(modalParam);
-  }
-
-  public onOpenSectiondModal(title: string, t?: AbstractItem): void {
-    const modalParam: ModalParam<AbstractItem> = {
-      title,
-      context: { $implicit: t },
-      template: this.editionSection,
-      maxWidth: '400px'
-    };
-    this.modalService.set$(modalParam);
+  public async onDown(index: number) {
+    await this.reorder(index + 1, index);
   }
 
   public onSave(document: AbstractField): void {
     this.saveDocument(document);
+  }
+
+  public onEditField(item: AbstractField) {
+    this.openItemModal(this.editionField, 'Modifier une donnée', item);
+  }
+
+  public onEditTitle(item: AbstractField) {
+    this.openItemModal(this.editionTitle, 'Modifier une donnée', item);
+  }
+
+  public async onDelete(item: AbstractField) {
+    await this.memoService.delete(item.id!);
+    if (item.type === AbstractField.FILE) await this.firebaseStorage.delete(this.routePath, item.value.name);
+    this.alertService.success('suppression réussie');
+  }
+
+  /////////////////////////////////////// SHARED PRIVATE
+
+  private openItemModal(modal: TemplateRef<Modal>, title: string, t: AbstractItem): void {
+    const modalParam: ModalParam<AbstractItem> = {
+      title,
+      context: { $implicit: t },
+      template: modal,
+      maxWidth: '400px'
+    };
+    this.modalService.set$(modalParam);
   }
 
   private async saveDocument(document: AbstractItem): Promise<void> {
@@ -101,14 +112,6 @@ export class TabContentComponent implements OnInit {
     this.list = list.sort((a, b) => a.order - b.order);
   }
 
-  public async onUp(index: number) {
-    await this.reorder(index, index - 1);
-  }
-
-  public async onDown(index: number) {
-    await this.reorder(index + 1, index);
-  }
-
   private async reorder(toUp: number, toDown: number): Promise<void> {
     const prevOrder = this.list[toDown].order;
     const nextOrder = this.list[toUp].order;
@@ -116,15 +119,5 @@ export class TabContentComponent implements OnInit {
     this.list[toDown].order = nextOrder;
     this.saveDocument(this.list[toUp]);
     this.saveDocument(this.list[toDown]);
-  }
-
-  public onEdit(item: AbstractField) {
-    this.onOpenFieldModal('Modifier une donnée', item);
-  }
-
-  public async onDelete(item: AbstractField) {
-    await this.memoService.delete(item.id!);
-    if (item.type === AbstractField.FILE) await this.firebaseStorage.delete(this.routePath, item.value.name);
-    this.alertService.success('suppression réussie');
   }
 }

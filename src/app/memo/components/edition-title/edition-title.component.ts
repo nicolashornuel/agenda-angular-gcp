@@ -1,15 +1,15 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { ModalService } from '@shared/services/shared.observable.service';
-import { AbstractSection } from 'app/memo/service/memo.service';
+import { AbstractTitle } from 'app/memo/models/memo.model';
 
 @Component({
-  selector: 'app-edition-section',
-  templateUrl: './edition-section.component.html',
-  styleUrls: ['./edition-section.component.scss']
+  selector: 'app-edition-title',
+  templateUrl: './edition-title.component.html',
+  styleUrls: ['./edition-title.component.scss']
 })
-export class EditionSectionComponent {
-  @Input() input!: AbstractSection;
-  @Output() output = new EventEmitter<AbstractSection>();
+export class EditionTitleComponent {
+  @Input() input!: AbstractTitle;
+  @Output() output = new EventEmitter<AbstractTitle>();
   private modalService = inject(ModalService);
 
   public onClose(): void {
