@@ -5,10 +5,12 @@
       Donnée
     </button>
     <button appButton outline size="small" (click)="onAddSectionTitle()">
-      Ajouter un titre de section
+      <i class="fas fa-plus"></i>
+      Titre
     </button>
     <button appButton outline size="small" (click)="onAddSeparator()">
-      Ajouter une séparation
+      <i class="fas fa-plus"></i>
+      Séparation
     </button>
   </app-button-group>
 </div>
@@ -17,26 +19,39 @@
   <section class="memo-container">
     <ng-container *ngFor="let item of list; let i = index">
       <article class="memo-row">
-        <div class="memo-cell memo-label txt-nowrap pr-1">{{ item.name }} :</div>
-        <div class="memo-cell memo-value" [ngSwitch]="item.type.value">
-          <a *ngSwitchCase="'file'" [href]="item.value.link" target="_blank">{{ item.value.name }}</a>
-          <a *ngSwitchCase="'link'"[href]="item.value" target="_blank">{{ item.value }}</a>
-          <span *ngSwitchCase="'text'">{{ item.value }}</span>
-          <span *ngSwitchCase="'date'">{{ item.value | date : 'fullDate' }}</span>
-          <span *ngSwitchCase="'separator'"><br/><br/><br/></span>
-          <span *ngSwitchCase="'title'">{{ item.value }}</span>
-          <span *ngSwitchDefault>{{ item.value }}</span>
-        </div>
+
         <div class="memo-cell memo-actions">
           <button appButton ghost size="tiny" (click)="onEdit(item)"><i class="fas fa-pencil-alt"></i></button>
           <button appButton ghost size="tiny" (click)="onDelete(item)"><i class="fas fa-trash-alt"></i></button>
           <button appButton ghost size="tiny" (click)="onUp(i)" [disabled]="i <= 0"><i class="fa-solid fa-chevron-up"></i></button>
           <button appButton ghost size="tiny" (click)="onDown(i)" [disabled]="i >= this.list.length - 1"><i class="fa-solid fa-chevron-down"></i></button>
         </div>
+
+        <!-- <div class="memo-cell">
+          {{i}} - {{item.order}}
+        </div> -->
+
+        <ng-container [ngSwitch]="item.type.value">
+          <span *ngSwitchCase="'separator'" class="separator my-2 absolute"></span>
+          <span *ngSwitchCase="'title'" class="title">{{ item.value }}</span>
+          <ng-container *ngSwitchDefault [ngTemplateOutlet]="abstractField" [ngTemplateOutletContext]="{item: item}"></ng-container>
+        </ng-container>
+
       </article>
+
     </ng-container>
   </section>
 </ng-container>
+
+<ng-template #abstractField let-item="item">
+  <div class="memo-cell memo-label txt-nowrap pr-3">{{ item.name }} :</div>
+  <div class="memo-cell memo-value" [ngSwitch]="item.type.value">
+    <a *ngSwitchCase="'file'" [href]="item.value.link" target="_blank">{{ item.value.name }}</a>
+    <a *ngSwitchCase="'link'"[href]="item.value" target="_blank">{{ item.value }}</a>
+    <span *ngSwitchCase="'text'">{{ item.value }}</span>
+    <span *ngSwitchCase="'date'">{{ item.value | date : 'fullDate' }}</span>
+  </div>
+</ng-template>
 
 <ng-template #editionField let-input>
   <app-edition-field [input]="input" (output)="onSave($event)"></app-edition-field>

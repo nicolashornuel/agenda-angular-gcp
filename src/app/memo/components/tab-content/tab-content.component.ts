@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, HostBinding, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FirestoreStorageService } from '@core/services/firebasestorage.service';
 import { Selectable } from '@shared/models/fieldSet.model';
@@ -26,6 +26,10 @@ export class TabContentComponent implements OnInit {
   private routePath!: string;
   @ViewChild('editionField') editionField!: TemplateRef<Modal>;
   @ViewChild('editionSection') editionSection!: TemplateRef<Modal>;
+  @HostBinding('class')
+  get additionalClasses() {
+    return "relative";
+}
 
   ngOnInit(): void {
       this.routePath = this.activatedRoute.snapshot.routeConfig!.path!;
@@ -110,8 +114,8 @@ export class TabContentComponent implements OnInit {
     const nextOrder = this.list[toUp].order;
     this.list[toUp].order = prevOrder;
     this.list[toDown].order = nextOrder;
-    await this.saveDocument(this.list[toUp]);
-    await this.saveDocument(this.list[toDown]);
+    this.saveDocument(this.list[toUp]);
+    this.saveDocument(this.list[toDown]);
   }
 
   public onEdit(item: AbstractField) {
