@@ -1,51 +1,64 @@
 @import 'variables.scss';
 
-
 $width-action: 110px;
 
 .memo-container {
-    display: table;
-    border-collapse: collapse;
-    font-size: 14px;
+  display: table;
+  border-collapse: collapse;
+  font-size: 14px;
 
-    .memo-row {
-        display: table-row;
-        .memo-cell {
-            display: table-cell;
-        }
+  .memo-row {
+    display: table-row;
+    .memo-cell {
+      display: table-cell;
     }
+  }
 
-    .memo-label {
-        font-weight: 600;
-        color: $grey-50;
-    }    
-    
-    .memo-row {
-        height: 1.5rem;
-        
-        .memo-actions {
-            opacity: 0;
-            width: $width-action;
-            vertical-align: middle;
-        }
-        &:hover .memo-actions {
-            opacity: 1;
-        }
+  .memo-label {
+    font-weight: 600;
+    color: $grey-50;
+  }
+
+  .memo-row {
+    height: 1.5rem;
+
+    .memo-actions {
+      opacity: 0;
+      width: $width-action;
+      vertical-align: middle;
     }
-
-
-    .title-actions {
-        height: 36px;
+    &:hover .memo-actions {
+      opacity: 1;
     }
+  }
 
-    .title {
-        height: 36px;
-        font-weight: 600;
-        font-size: 1.5rem;
-    }
+  .title-actions {
+    height: 36px;
+  }
 
-    .separator {
-        width: calc(100% - $width-action);
-        border-bottom: 2px solid $grey-90;
-    }
+  .title {
+    height: 36px;
+    font-weight: 600;
+    font-size: 1.5rem;
+  }
+
+  .separator {
+    width: calc(100% - $width-action);
+    border-bottom: 2px solid $grey-90;
+  }
 }
+
+@media (max-width: 576px) {
+    .memo-cell {
+        max-width: calc((var(--innerWidth) / 2 * 1px) - 8px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .memo-container .memo-row .memo-cell.memo-actions {
+        display: none;
+    }
+    .memo-container .separator {
+        width: 100%;
+      }
+  }

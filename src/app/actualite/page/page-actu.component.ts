@@ -14,9 +14,13 @@ export class PageActuComponent implements OnInit {
   //https://www.cnews.fr/les-flux-rss-de-cnewsfr
   //https://www.bfmtv.com/rss/
   private feeds: RssFeed[] = [
-    {
+ /*    {
       url: 'https://www.cnews.fr/rss.xml',
       name: 'CNEWS'
+    }, */
+    {
+      url: 'https://www.france24.com/fr/rss',
+      name: 'france24.com'
     },
     {
       url: 'https://www.bfmtv.com/rss/news-24-7/',
@@ -25,10 +29,6 @@ export class PageActuComponent implements OnInit {
     {
       url: 'https://www.developpez.com/index/rss',
       name: 'developpez.com'
-    },
-    {
-      url: 'https://www.france24.com/fr/rss',
-      name: 'france24.com'
     },
     {
       url: 'https://www.usinenouvelle.com/rss/',

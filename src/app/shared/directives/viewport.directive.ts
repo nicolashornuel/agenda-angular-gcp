@@ -1,24 +1,23 @@
 import { Directive, HostListener, OnInit } from '@angular/core';
-import { IsMobileService, ViewPortService } from '@shared/services/shared.observable.service';
+import { IsMobileService } from '@shared/services/shared.observable.service';
 
 @Directive({
   selector: '[isMobile]'
 })
 export class IsMobileDirective implements OnInit {
 
-  constructor(private isMobileService: IsMobileService, private viewPortService: ViewPortService) {}
+  constructor(private isMobileService: IsMobileService) {}
 
   @HostListener('window:resize', ['$event'])
   onResize(_event: Event) {
-    this.check();
+    this.checkIsMobile();
   }
 
   ngOnInit() {
-    this.check();
+    this.checkIsMobile();
   }
 
-  private check() {
+  private checkIsMobile() {
     this.isMobileService.set$(window.innerWidth < 576);
-    this.viewPortService.set$(window.innerWidth);
   }
 }

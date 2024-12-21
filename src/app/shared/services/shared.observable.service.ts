@@ -25,6 +25,15 @@ export class IsMobileService extends BehaviorSubjectService<boolean> {
 @Injectable({
   providedIn: 'root'
 })
+export class ViewPortService extends BehaviorSubjectService<number> {
+  constructor() {
+    super(window.innerWidth)
+  }
+}
+
+@Injectable({
+  providedIn: 'root'
+})
 export class RightBarIsOpenedService extends BehaviorSubjectService<boolean> {
   constructor() {
     super(false);

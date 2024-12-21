@@ -4,10 +4,10 @@ import { FirestoreStorageService } from '@core/services/firebasestorage.service'
 import { Modal, ModalParam } from '@shared/models/modalParam.interface';
 import { AlertService } from '@shared/services/alert.service';
 import { DestroyService } from '@shared/services/destroy.service';
-import { ModalService } from '@shared/services/shared.observable.service';
+import { ModalService, ViewPortService } from '@shared/services/shared.observable.service';
 import { AbstractField, AbstractTitle, AbstractSeparator, AbstractItem } from 'app/memo/models/memo.model';
 import { MemoService } from 'app/memo/service/memo.service';
-import { takeUntil } from 'rxjs';
+import { combineLatest, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tab-content',
@@ -16,13 +16,15 @@ import { takeUntil } from 'rxjs';
 })
 export class TabContentComponent implements OnInit {
   public isLoading!: boolean;
-  public list!: AbstractField[];
+  public list: AbstractField[] = [];
+  public innerWidth!: number
   private activatedRoute = inject(ActivatedRoute);
   private destroy$ = inject(DestroyService);
   private modalService = inject(ModalService);
   private alertService = inject(AlertService);
   private memoService = inject(MemoService);
   private firebaseStorage = inject(FirestoreStorageService);
+  private viewPortService = inject(ViewPortService);
   private routePath!: string;
   @ViewChild('editionField') editionField!: TemplateRef<Modal>;
   @ViewChild('editionTitle') editionTitle!: TemplateRef<Modal>;
@@ -39,13 +41,13 @@ export class TabContentComponent implements OnInit {
 
   private initData(): void {
     this.isLoading = true;
-    this.memoService
-      .getAll()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(list => {
-        this.sortDesc(list);
-        this.isLoading = false;
-      });
+    combineLatest([this.memoService.getAll(), this.viewPortService.get$])
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(values => {
+      this.sortDesc(values[0]);
+      this.innerWidth = values[1]!;
+      this.isLoading = false;
+    });
   }
 
   /////////////////////////////////////// EVENTS

@@ -33,6 +33,11 @@ export class PageMemoComponent {
       name: 'Maison',
       closable: false,
       link: 'maison',
+    },
+    {
+      name: 'À faire',
+      closable: false,
+      link: 'to-do',
     }
   ];
   

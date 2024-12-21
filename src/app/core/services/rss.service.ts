@@ -47,21 +47,16 @@ export class RssService {
   }
 
   public createCard(item: any): RssCard {
-/*     const description: string = item.querySelector('description').textContent;
-    const indexOf = description.indexOf('<br />');
-    const finalDescription = indexOf != -1 ? description.substring(0, indexOf) : description; */
-
-    
     let img = item.querySelector('content') ? item.querySelector('content').getAttribute('url') : undefined;
     img = item.querySelector('enclosure') ? item.querySelector('enclosure').getAttribute('url') : img;
 
     return {
-      title: item.querySelector('title').textContent,
-      link: item.querySelector('link').textContent,
-      description: item.querySelector('description').textContent,
+      title: item.querySelector('title')?.textContent || '',
+      link: item.querySelector('link')?.textContent || '',
+      description: item.querySelector('description')?.textContent || '',
       img,
-      pubDate: item.querySelector('pubDate') ? item.querySelector('pubDate').textContent : undefined,
-      category: item.querySelector('category') ? item.querySelector('category').textContent : undefined
+      pubDate: item.querySelector('pubDate')?.textContent || undefined,
+      category: item.querySelector('category')?.textContent || undefined
     };
   }
 }
