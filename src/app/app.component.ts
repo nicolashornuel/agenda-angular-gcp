@@ -29,14 +29,14 @@ export class AppComponent {
       title: 'Train',
       route: 'train'
     },
+    {
+      title: 'GPS',
+      route: 'location'
+    }
   /*   {
       title: 'Trading',
       route: 'trading'
     }, */
-/*     {
-      title: 'GPS',
-      route: 'location'
-    } */
   ]
 
   constructor(public auth: AuthService) {}

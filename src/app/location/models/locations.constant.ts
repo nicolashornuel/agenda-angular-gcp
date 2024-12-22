@@ -52,10 +52,17 @@ const wikiMaps: Leaflet.Layer = tileLayer('http://maps.wikimedia.org/osm-intl/{z
 
 const mobileIcon = Leaflet.icon({
   iconUrl: '/assets/icons/mobile.png',
-  iconAnchor:   [10, 30], // point of the icon which will correspond to marker's location
+  iconAnchor:   [10, 30],
 });
 
-export const markerOptions: Leaflet.MarkerOptions = { draggable: false, icon: mobileIcon };
+const dotIcon = Leaflet.divIcon({
+  className: 'far fa-circle white',
+  iconAnchor:   [6, 6],
+});
+
+export const mobileMarkerOptions: Leaflet.MarkerOptions = { draggable: false, icon: mobileIcon };
+
+export const dotMarkerOptions: Leaflet.MarkerOptions = { draggable: false, icon: dotIcon };
 
 export const polylineOptions: Leaflet.PolylineOptions = {
   color: 'green',
