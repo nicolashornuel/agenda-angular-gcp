@@ -1,8 +1,9 @@
 import { Component, ComponentRef, OnInit } from '@angular/core';
 import { TabParam } from '@shared/components/tabs/tabs.component';
+import { Selectable } from '@shared/models/fieldSet.model';
 import { DestroyService } from '@shared/services/destroy.service';
 import { IsMobileService } from '@shared/services/shared.observable.service';
-import { combineLatest, take, takeUntil } from 'rxjs';
+import { take, takeUntil } from 'rxjs';
 import { ListSavedComponent } from '../components/list-saved/list-saved.component';
 import { SearchResultComponent } from '../components/search-result/search-result.component';
 import { TabResultService } from '../services/musique.observable.service';
@@ -22,19 +23,24 @@ export class PageMusiqueComponent implements OnInit {
     }
   ];
   public tabSelected = 0;
-  public orderYoutubeOptions = Object.values(OrderYoutube);
-  public orderYoutubeSelected = this.orderYoutubeOptions.find(order => order.value === OrderYoutube.VIEWCOUNT);
+  public orderYoutubeOptions: Selectable<string>[] = Object.values(OrderYoutube);
+  public orderYoutubeSelected = OrderYoutube.VIEWCOUNT;
   public isMobile!: boolean;
 
-  constructor(private destroy$: DestroyService, private tabService: TabResultService, private isMobileService: IsMobileService,) {}
+  constructor(
+    private destroy$: DestroyService,
+    private tabService: TabResultService,
+    private isMobileService: IsMobileService
+  ) {}
 
   ngOnInit(): void {
-    combineLatest([this.tabService.get$.pipe(takeUntil(this.destroy$)), this.isMobileService.get$.pipe(take(1))])
-    .subscribe(values => {
-      this.tabs.push(this.createTabResult(values[0]));
+    this.isMobileService.get$.pipe(take(1)).subscribe(isMobile => (this.isMobile = isMobile!));
+
+    this.tabService.get$.pipe(takeUntil(this.destroy$)).subscribe(keyword => {
+      this.tabs.push(this.createTabResult(keyword));
       this.tabSelected = this.tabs.length - 1;
-      this.isMobile = values[1]!;
     });
+
     this.checkNavigation();
   }
 
@@ -49,10 +55,11 @@ export class PageMusiqueComponent implements OnInit {
   private createTabResult(keyword: string): TabParam {
     const param = {
       keyword,
-      order: this.orderYoutubeSelected!.value
+      order: this.orderYoutubeSelected
     };
+
     return {
-      name: [param.keyword, param.order].join(' '),
+      name: param.keyword,
       closable: true,
       content: SearchResultComponent,
       bind: (componentRef: ComponentRef<SearchResultComponent>) => (componentRef.instance.param = param)

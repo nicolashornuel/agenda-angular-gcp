@@ -23,7 +23,7 @@ export const emptyFields: CalEventField[] = [
         description: "Emilie travaille ce soir"
       }
     },
-    {
+/*     {
       title: 'Nounou',
       meta: {
         start: '8:00:00',
@@ -33,7 +33,7 @@ export const emptyFields: CalEventField[] = [
         daysWhenNotHoliday: [1, 2, 3, 4, 5],
         description: "Romane va chez nounou aujourd'hui"
       }
-    },
+    }, */
     {
       title: 'GM',
       meta: {

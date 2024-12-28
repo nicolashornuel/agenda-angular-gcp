@@ -43,6 +43,18 @@
     }
     @media (max-width: 576px) {
         padding: 8px;
+        .header {
+          flex-direction: column;
+          align-items: flex-end;
+          .text-center {
+            text-align: right;
+          }
+          .network {
+            width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
     }
     .show {
       position: absolute;
