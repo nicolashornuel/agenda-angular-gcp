@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilService } from '@shared/services/util.service';
 import * as Leaflet from 'leaflet';
-import { GeoLocation, baseLayers, dotMarkerOptions, mapOptions, mobileMarkerOptions } from '../models/locations.constant';
+import {
+  GeoLocation,
+  baseLayers,
+  dotMarkerOptions,
+  mapOptions,
+  mobileMarkerOptions
+} from '../models/locations.constant';
 import { LocationFunctionService } from '../services/location.firestore.service';
 
 @Component({
@@ -70,7 +76,7 @@ export class PageLocationComponent implements OnInit {
     this.locationFunctionService
       .findByDateRange('time', new Date(this.periode.start).getTime(), new Date(this.periode.end).getTime())
       .then(locations => {
-        this.locations = locations.data.length > 0 ? this.util.sortInByDesc(locations.data, 'time') : [];
+        this.locations = locations.data.length > 0 ? this.util.sortInByAsc(locations.data, 'time') : [];
         this.isLoading = false;
       })
       .catch(() => {
@@ -93,7 +99,10 @@ export class PageLocationComponent implements OnInit {
 
   private markersLayer(locations: GeoLocation[]): Leaflet.Layer {
     const markers: Leaflet.Marker[] = locations.map((location, index) => {
-      const marker = this.generateMarker(location, locations.length === index + 1 ? mobileMarkerOptions : dotMarkerOptions);
+      const marker = this.generateMarker(
+        location,
+        locations.length === index + 1 ? mobileMarkerOptions : dotMarkerOptions
+      );
       marker.bindPopup(
         `<b>${this.getDisplayDate(location)}</b> <br /> ${location.address} <br /> ${location.lat},  ${location.lng}`
       );

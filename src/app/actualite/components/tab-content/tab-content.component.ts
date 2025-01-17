@@ -20,4 +20,9 @@ export class TabContentComponent implements OnInit {
     this.cards.push(...this.rss.createCards(data));
     this.loading = false;
   }
+
+  public onImageLoad(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.classList.remove('img-placeholder');
+  }
 }
