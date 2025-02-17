@@ -1,4 +1,6 @@
-import {EventService} from '@agenda/services/event.service';
+import { EventService } from '@agenda/services/event.service';
+import { Holiday } from '@agenda/services/holiday.service';
+import { DatePipe } from '@angular/common';
 import {
   Component,
   Input,
@@ -9,18 +11,17 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import {AlertService} from '@shared/services/alert.service';
-import {DestroyService} from '@shared/services/destroy.service';
-import {CalendarEvent, CalendarMonthViewDay} from 'angular-calendar';
-import {isSameDay, isSameMonth} from 'date-fns';
-import {takeUntil} from 'rxjs';
-import {CalEventDTO, CalEventField, CalEventType} from '../../models/calEvent.model';
-import {emptyFields} from '../../models/emptyFields.constant';
-import {DayClickedService} from '../../services/day-clicked.service';
-import {MapperService} from '../../services/mapper.service';
-import { DatePipe } from '@angular/common';
-import { ModalService } from '@shared/services/shared.observable.service';
 import { Modal, ModalParam } from '@shared/models/modalParam.interface';
+import { AlertService } from '@shared/services/alert.service';
+import { DestroyService } from '@shared/services/destroy.service';
+import { ModalService } from '@shared/services/shared.observable.service';
+import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
+import { isSameDay, isSameMonth } from 'date-fns';
+import { takeUntil } from 'rxjs';
+import { CalEventDTO, CalEventField, CalEventType } from '../../models/calEvent.model';
+import { emptyFields } from '../../models/emptyFields.constant';
+import { DayClickedService } from '../../services/day-clicked.service';
+import { MapperService } from '../../services/mapper.service';
 
 @Component({
   selector: 'app-cal-month-cell',
@@ -32,7 +33,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   @Input() locale!: string;
   @Input() isLocked!: boolean;
   @Input() viewDate!: Date;
-  @ViewChild('modal', {read: ViewContainerRef}) target!: ViewContainerRef;
+  @ViewChild('modal', { read: ViewContainerRef }) target!: ViewContainerRef;
   public isActive: boolean = false;
   public formFields: CalEventField[] = [];
   public comments: CalEventDTO[] = [];
@@ -54,7 +55,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   ngOnChanges(_changes: SimpleChanges): void {
     if (isSameMonth(new Date(), this.viewDate) && isSameDay(this.day.date, this.viewDate)) this.isActive = true;
     this.comments = this.day.events
-      .map((dayEvent: CalendarEvent) => ({...dayEvent}))
+      .map((dayEvent: CalendarEvent) => ({ ...dayEvent }))
       .filter((eventField: CalEventDTO) => eventField.meta!.type === CalEventType.COMMENT);
   }
 
@@ -66,8 +67,8 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
 
       let formField: CalEventField =
         existField != undefined
-          ? {...field, id: existField.id as string, meta: {...field.meta, value: true}}
-          : {...field, meta: {...field.meta, value: false}};
+          ? { ...field, id: existField.id as string, meta: { ...field.meta, value: true } }
+          : { ...field, meta: { ...field.meta, value: false } };
 
       if (this.day.cssClass === 'holiday' && field.meta?.daysWhenHoliday?.includes(this.day.day)) {
         this.formFields.push(formField);
@@ -102,7 +103,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   public onOpenModal(templateRef: TemplateRef<Modal>): void {
     const modalParam: ModalParam<CalendarMonthViewDay> = {
       title: this.datePipe.transform(this.day.date, 'fullDate')!,
-      context: {$implicit: this.day},
+      context: { $implicit: this.day },
       template: templateRef
     };
     this.modalService.set$(modalParam);
@@ -115,5 +116,4 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
       this.alert.success('save ok');
     }
   }
-
 }

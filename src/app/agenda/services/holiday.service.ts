@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, map, take, tap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 interface Record {
   datasetid: string;
@@ -43,17 +43,14 @@ export class HolidayService {
     const year = date.getMonth() == 0 ? date.getFullYear() - 1 : date.getFullYear();
     this.openAPI.params['refine.start_date'] = year;
     return this.http
-      .get<{records: Record[]}>(this.openAPI.url, {params: this.openAPI.params})
-      .pipe(
-        map(({records}) => 
-      records.map(record => this.mapperHoliday(record)))
-      );
+      .get<{ records: Record[] }>(this.openAPI.url, { params: this.openAPI.params })
+      .pipe(map(({ records }) => records.map(record => this.mapperHoliday(record))));
   }
 
-  private mapperHoliday({fields}: Record): Holiday {
+  private mapperHoliday({ fields }: Record): Holiday {
     return {
-      start: new Date(fields.start_date.substring(0,10)),
-      end: new Date(fields.end_date.substring(0,10)),
+      start: new Date(fields.start_date.substring(0, 10)),
+      end: new Date(fields.end_date.substring(0, 10)),
       description: fields.description
     };
   }

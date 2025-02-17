@@ -1,10 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
-import { isSameDay, isSameMonth } from 'date-fns';
-import { Subject, combineLatest, take, takeUntil } from 'rxjs';
 import { EventService } from '@agenda/services/event.service';
 import { Holiday, HolidayService } from '@agenda/services/holiday.service';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { DestroyService } from '@shared/services/destroy.service';
+import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
+import { isSameDay, isSameMonth } from 'date-fns';
+import { combineLatest, take, takeUntil } from 'rxjs';
 import { CalEventEntity } from '../../models/calEvent.model';
 import { DayClickedService } from '../../services/day-clicked.service';
 import { MapperService } from '../../services/mapper.service';
@@ -22,7 +22,6 @@ export class CalBodyComponent implements OnInit, OnChanges {
   private holidays: Holiday[] = [];
   public loading = false;
   public activeDayIsOpen: boolean = true;
-  public refresh = new Subject<void>();
 
   constructor(
     private eventService: EventService,
@@ -30,32 +29,30 @@ export class CalBodyComponent implements OnInit, OnChanges {
     private dayService: DayClickedService,
     private destroy$: DestroyService,
     private mapper: MapperService
-    ) { }
-
+  ) {}
 
   ngOnInit(): void {
     this.initializeData();
   }
 
   ngOnChanges(_changes: SimpleChanges): void {
-    this.holidayService.getByYear(this.viewDate).pipe(take(1)).subscribe(holidays => this.holidays = holidays);
-     this.activeDayIsOpen = isSameMonth(new Date(), this.viewDate) ? true : false;
+    this.loading = true;
+    this.holidayService.getByYear(this.viewDate).pipe(take(1)).subscribe(holidays => {
+      this.holidays = holidays;
+      this.loading = false;
+    });
+    this.activeDayIsOpen = isSameMonth(new Date(), this.viewDate) ? true : false;
   }
 
-  /**
-   * fetch events & holidays 
-   *
-   * @private
-   * @memberof CalendarComponent
-   */
   private initializeData(): void {
     this.loading = true;
     combineLatest([this.eventService.getAll(), this.holidayService.getByYear(this.viewDate)])
-      .pipe(takeUntil(this.destroy$)).subscribe(([events, holidays]) => {
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([events, holidays]) => {
         this.events = this.mapper.entitiesToDTOs(events as CalEventEntity[]);
         this.holidays = holidays;
         this.loading = false;
-      })
+      });
     this.dayService.getDayClicked$.pipe(takeUntil(this.destroy$)).subscribe((date: Date | null) => {
       if (date) {
         if (!isSameDay(this.viewDate, date)) this.viewDate = date;
@@ -63,15 +60,9 @@ export class CalBodyComponent implements OnInit, OnChanges {
       } else {
         this.activeDayIsOpen = false;
       }
-    })
+    });
   }
 
-  /**
-   * bind holiday by month current
-   *
-   * @param {{ body: CalendarMonthViewDay[] }} { body }
-   * @memberof CalendarComponent
-   */
   public beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): void {
     body.forEach((day: CalendarMonthViewDay) => {
       this.holidays.forEach((holiday: Holiday) => {
@@ -83,5 +74,4 @@ export class CalBodyComponent implements OnInit, OnChanges {
   public eventTimesChanged(calendarEventTimesChangedEvent: CalendarEventTimesChangedEvent): void {
     this.events = this.eventService.eventTimesChanged(calendarEventTimesChangedEvent);
   }
-
 }

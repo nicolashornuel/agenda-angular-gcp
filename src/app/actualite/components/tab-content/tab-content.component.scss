@@ -27,6 +27,8 @@
     }
     img {
       width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
     }
     .img-placeholder {
       aspect-ratio: 16 / 9;
@@ -37,7 +39,7 @@
     position: absolute;
     bottom: 0;
     right: 1rem;
-    color:$green;
+    color: $green;
   }
 
 }
