@@ -1,5 +1,4 @@
 import { EventService } from '@agenda/services/event.service';
-import { Holiday } from '@agenda/services/holiday.service';
 import { DatePipe } from '@angular/common';
 import {
   Component,
@@ -69,15 +68,15 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
         existField != undefined
           ? { ...field, id: existField.id as string, meta: { ...field.meta, value: true } }
           : { ...field, meta: { ...field.meta, value: false } };
-
+          
       if (this.day.cssClass === 'holiday' && field.meta?.daysWhenHoliday?.includes(this.day.day)) {
         this.formFields.push(formField);
       } else if (this.day.cssClass != 'holiday' && field.meta?.daysWhenNotHoliday?.includes(this.day.day)) {
         this.formFields.push(formField);
       }
     });
-    this.dayService.getDayClicked$.pipe(takeUntil(this.destroy$)).subscribe((date: Date) => {
-      this.isActive = isSameDay(this.day.date, date) ? true : false;
+    this.dayService.get$.pipe(takeUntil(this.destroy$)).subscribe(date => {
+      this.isActive = date && isSameDay(this.day.date, date) ? true : false;
     });
   }
 
@@ -97,7 +96,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   }
 
   public onDisplayComment(): void {
-    this.dayService.setDayClicked$(this.isActive ? null : this.day.date);
+    this.dayService.set$(this.isActive ? null : this.day.date);
   }
 
   public onOpenModal(templateRef: TemplateRef<Modal>): void {

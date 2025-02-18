@@ -1,6 +1,6 @@
 import { EventService } from '@agenda/services/event.service';
 import { Holiday, HolidayService } from '@agenda/services/holiday.service';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DestroyService } from '@shared/services/destroy.service';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
 import { isSameDay, isSameMonth } from 'date-fns';
@@ -14,12 +14,12 @@ import { MapperService } from '../../services/mapper.service';
   templateUrl: './cal-body.component.html',
   styleUrls: ['./cal-body.component.scss']
 })
-export class CalBodyComponent implements OnInit, OnChanges {
+export class CalBodyComponent implements OnChanges {
   @Input() view!: CalendarView;
   @Input() viewDate!: Date;
   @Input() isLocked!: boolean;
   public events: CalendarEvent[] = [];
-  private holidays: Holiday[] = [];
+  public holidays: Holiday[] = [];
   public loading = false;
   public activeDayIsOpen: boolean = true;
 
@@ -31,29 +31,22 @@ export class CalBodyComponent implements OnInit, OnChanges {
     private mapper: MapperService
   ) {}
 
-  ngOnInit(): void {
-    this.initializeData();
-  }
-
-  ngOnChanges(_changes: SimpleChanges): void {
-    this.loading = true;
-    this.holidayService.getByYear(this.viewDate).pipe(take(1)).subscribe(holidays => {
-      this.holidays = holidays;
-      this.loading = false;
-    });
-    this.activeDayIsOpen = isSameMonth(new Date(), this.viewDate) ? true : false;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['viewDate']) this.initializeData();
+    //this.activeDayIsOpen = isSameMonth(new Date(), this.viewDate) ? true : false;
   }
 
   private initializeData(): void {
     this.loading = true;
-    combineLatest([this.eventService.getAll(), this.holidayService.getByYear(this.viewDate)])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(([events, holidays]) => {
-        this.events = this.mapper.entitiesToDTOs(events as CalEventEntity[]);
-        this.holidays = holidays;
-        this.loading = false;
-      });
-    this.dayService.getDayClicked$.pipe(takeUntil(this.destroy$)).subscribe((date: Date | null) => {
+    combineLatest([
+      this.eventService.getAll().pipe(takeUntil(this.destroy$)),
+      this.holidayService.getByYear(this.viewDate).pipe(take(1))
+    ]).subscribe(([events, holidays]) => {
+      this.events = this.mapper.entitiesToDTOs(events as CalEventEntity[]);
+      this.holidays = holidays;
+      this.loading = false;
+    });
+    this.dayService.get$.pipe(takeUntil(this.destroy$)).subscribe(date => {
       if (date) {
         if (!isSameDay(this.viewDate, date)) this.viewDate = date;
         this.activeDayIsOpen = true;

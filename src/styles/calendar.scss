@@ -3,7 +3,7 @@
 $color-holiday: #f4cf9bb3;
 
 .holiday {
-  background: linear-gradient(to top, white 4%, $color-holiday 4% 7%, white 7% 12%);
+  background: linear-gradient(to top, transparent 4%, $color-holiday 4% 7%, transparent 7% 12%);
   &::before {
     content: 'Vacances Scolaires';
     color: rgb(244 207 155);
