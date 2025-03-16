@@ -32,6 +32,10 @@ export class AppComponent {
     {
       title: 'GPS',
       route: 'location'
+    },
+    {
+      title: 'Météo',
+      route: 'meteo'
     }
   /*   {
       title: 'Trading',

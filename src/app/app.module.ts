@@ -13,7 +13,6 @@ import { RadioModule } from 'app/radio/radio.module';
 import { environment } from '../environments/environment.prod';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { TradingModule } from './trading/trading.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,7 +29,7 @@ import { TradingModule } from './trading/trading.module';
       const firestore = getFirestore();
 
       // https://firebase.google.com/docs/firestore/manage-data/enable-offline?hl=fr
-      
+
       // This is the default behavior if no persistence is specified.
       // initializeFirestore(firestore.app, {localCache: memoryLocalCache()});
 
@@ -38,20 +37,17 @@ import { TradingModule } from './trading/trading.module';
       //initializeFirestore(firestore.app, {localCache: persistentLocalCache(/*settings*/{})});
 
       return firestore;
-
     }),
 
     provideStorage(() => {
       const firebaseStorage = getStorage();
       if (location.hostname === 'localhost') {
-              connectStorageEmulator(firebaseStorage, '127.0.0.1', 5001);
+        connectStorageEmulator(firebaseStorage, '127.0.0.1', 5001);
       }
       return firebaseStorage;
-}),
-
-    TradingModule,
+    })
   ],
-  providers: [{provide: LOCALE_ID, useValue: 'fr'}, DatePipe],
+  providers: [{ provide: LOCALE_ID, useValue: 'fr' }, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {

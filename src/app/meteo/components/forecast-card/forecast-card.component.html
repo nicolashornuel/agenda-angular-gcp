@@ -1,0 +1,38 @@
+<ng-container *ngIf="isBig; else small">
+  <div class="row-center-center">
+    <img [src]="'https://openweathermap.org/img/wn/' + forecast.weather[0].icon + '@4x.png'" />
+    <div class="col-center-center single">
+      <div>{{ forecast.dt * 1000 | date : 'EEEE d MMMM y à H' }}h</div>
+      <div>
+        <span class="temperature">{{ forecast.main.temp | number : '1.0-0' }}</span>
+        <span>°C</span>
+      </div>
+      <div><i class="fas fa-droplet"></i> {{ forecast.main.humidity | number : '1.0' }}%</div>
+      <div><i class="fas fa-wind"></i> {{ forecast.wind.speed * 3.6 | number : '1.0-0' }}km/h</div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #small>
+  
+  <div class="border"></div>
+
+    <img class="small-img" [src]="'https://openweathermap.org/img/wn/' + forecast.weather[0].icon + '@2x.png'" />
+    
+    <div class="col-start-start width gap-2 text">
+      <div >
+        <span>{{ forecast.main.temp | number : '1.0-0' }}</span>
+        <span>°</span>
+      </div>
+      <div class="description">{{ forecast.weather[0].description }}</div>
+      <div>
+        <div >{{ forecast.main.humidity | number : '1.0' }}%</div>
+        <div >{{ forecast.wind.speed * 3.6 | number : '1.0-0' }}km/h</div>
+      </div>
+    </div>
+
+    <div class="text border">{{ forecast.dt * 1000 | date : 'E HH:mm' }}</div>
+
+    <div class="border"></div>
+
+</ng-template>

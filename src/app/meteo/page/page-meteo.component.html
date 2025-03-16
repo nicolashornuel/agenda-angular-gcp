@@ -1,0 +1,20 @@
+<app-layout>
+  <section class="container" *ngIf="!loading; else spinner" class="">
+    <app-card [title]="city.name">
+      <app-forecast-card [forecast]="forecasts[0]" [isBig]="true"></app-forecast-card>
+    </app-card>
+    <app-carousel>
+      <div
+        appCarouselItem
+        *ngFor="let forecast of forecasts | slice : 1 : forecasts.length - 1"
+        class="col-center-center column-elt"
+      >
+        <app-forecast-card [forecast]="forecast"></app-forecast-card>
+      </div>
+    </app-carousel>
+  </section>
+</app-layout>
+
+<ng-template #spinner>
+  <app-spinner></app-spinner>
+</ng-template>

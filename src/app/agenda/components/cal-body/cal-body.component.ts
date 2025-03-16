@@ -3,7 +3,7 @@ import { Holiday, HolidayService } from '@agenda/services/holiday.service';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DestroyService } from '@shared/services/destroy.service';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
-import { isSameDay, isSameMonth } from 'date-fns';
+import { isSameDay } from 'date-fns';
 import { combineLatest, take, takeUntil } from 'rxjs';
 import { CalEventEntity } from '../../models/calEvent.model';
 import { DayClickedService } from '../../services/day-clicked.service';

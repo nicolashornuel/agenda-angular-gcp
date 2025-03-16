@@ -23,10 +23,19 @@ export class CarouselComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const itemWidth =  this.items.map(item => item.el.nativeElement.getBoundingClientRect().width).at(0);
+    //const itemWidth =  this.items.map(item => item.el.nativeElement.getBoundingClientRect().width).at(0);
     const carouselWidth = this.translateBloc.nativeElement.getBoundingClientRect().width;
+
+    let element = this.items.get(0)!.el.nativeElement;
+    let style = element.currentStyle || window.getComputedStyle(element)
+    let margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
+    let padding = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+    let border = parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
+    const rect = element.getBoundingClientRect();
+    const itemWidth = rect.width + margin + padding + border;
+    
     this.hiddenWidth = (this.items.length * itemWidth) - carouselWidth;
-    this.stepWidth = this.hiddenWidth / Math.floor(this.hiddenWidth / itemWidth);
+    this.stepWidth = this.hiddenWidth / Math.floor(this.hiddenWidth / itemWidth / 5);
     this.updateVisibility();
     this.loading = false;
   }
