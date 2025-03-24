@@ -2,6 +2,8 @@ import { BadgeLinkComponent } from '@shared/components/badge-link/badge-link.com
 import { TableCheckboxComponent } from '@shared/components/table-checkbox/table-checkbox.component';
 import { FieldSet, Nameable } from '@shared/models/fieldSet.model';
 import { Color } from './color.enum';
+import { TableInputComponent } from '@shared/components/table-input/table-input.component';
+import { InputTextComponent } from '@shared/components/input-text/input-text.component';
 
 export interface TableSet {
   title?: string;
@@ -19,9 +21,21 @@ export interface TableSet {
   openDetailByClickRow?: (row: any) => string | void;
 }
 
+export class TableSet implements TableSet {
+  constructor(height: string) {
+    this.height = height;
+    this.verticaltextHeader = false,
+    this.hover = false,
+    this.height = height, //  'calc(100vh - 240px)',
+    this.columnSet = [],
+    this.actionSet = [],
+    this.data = []
+  }
+}
+
 export interface ActionSet {
   icon: string;
-  method: (row: any) => Promise<any> | void;
+  method: (row: any, index?: number) => Promise<any> | void;
 }
 
 export class ActionSet {
@@ -29,7 +43,7 @@ export class ActionSet {
   public static readonly DELETE = "fas fa-trash-alt";
   public static readonly CANCEL = "fas fa-times";
   public static readonly SAVE = "fas fa-save";
-  constructor(icon: string, method: (row: any) => Promise<any> | void) {
+  constructor(icon: string, method: (row: any, index?: number) => Promise<any> | void) {
     this.icon = icon;
     this.method = method;
   }
@@ -61,6 +75,11 @@ class DataColumn<T> implements DataColumn<T> {
   constructor(fieldSet: FieldSet, visible: boolean, type: T) {
     (this.key = fieldSet.key!), (this.title = fieldSet.name), (this.visible = visible)
     , this.type = type;
+  }
+
+  setWidth(width: string) {
+    this.width = width;
+    return this;
   }
 }
 
@@ -123,6 +142,13 @@ export class CellRenderers {
   public static toCheckBox() {
     return {
       component: TableCheckboxComponent,
+      valuePrepare: (row: any, col: ColumnSet) => CellRenderers.toField(row, col)
+    };
+  }
+
+  public static toInputText() {
+    return {
+      component: TableInputComponent,
       valuePrepare: (row: any, col: ColumnSet) => CellRenderers.toField(row, col)
     };
   }

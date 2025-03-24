@@ -21,6 +21,7 @@ export class ModalComponent implements OnInit {
     this.modalService.get$.pipe(takeUntil(this.destroy$)).subscribe(param => this.param = param);
   }
 
+  @HostListener('document:keydown.escape', ['$event'])
   @HostListener('blur') 
   public onClose(): void {
     this.close.emit();

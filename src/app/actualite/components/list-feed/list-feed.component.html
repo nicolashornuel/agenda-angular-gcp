@@ -1,0 +1,21 @@
+<ng-container *ngIf="!isLoading; else spinner">
+  <section class="row-end-center mb-3">
+    <button appButton outline size="small" (click)="onAdd()">
+      <i class="fas fa-plus"></i>
+    </button>
+  </section>
+
+  <section class="col gap-3">
+    <section class="col">
+      <app-table [tableSet]="tableSet"></app-table>
+      <div class="row-end-center gap-3 mt-3">
+        <button appButton outline size="regular" color="blue" (click)="onClose()">Fermer</button>
+        <button appButton filled size="regular" color="blue" (click)="onSave()">Enregistrer</button>
+      </div>
+    </section>
+  </section>
+</ng-container>
+
+<ng-template #spinner>
+  <app-spinner></app-spinner>
+</ng-template>

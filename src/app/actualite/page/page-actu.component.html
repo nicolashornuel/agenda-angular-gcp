@@ -1,3 +1,17 @@
 <app-layout>
-  <app-tabs [items]="tabs" [selected]="tabSelected"></app-tabs>
+    <app-button-group class="row-end-center">
+      <button appButton outline (click)="onOpenModal('Liste des flux rss', list)">
+        <i class="fas fa-eye pr-1"></i>Liste
+      </button>
+    </app-button-group>
+  <app-tabs *ngIf="!isLoading; else spinner" [items]="tabs" [selected]="tabSelected"></app-tabs>
+  <router-outlet></router-outlet>
 </app-layout>
+
+<ng-template #list let-input>
+  <app-list-feed></app-list-feed>
+</ng-template>
+
+<ng-template #spinner>
+  <app-spinner></app-spinner>
+</ng-template>

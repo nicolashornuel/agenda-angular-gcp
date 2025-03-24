@@ -53,8 +53,10 @@ export class DataSelect<T extends Nameable> extends FieldSet {
 
 export interface FieldComponent {
   data: FieldSet;
-  output: EventEmitter<FieldSet>;
-  onSave: (value: string | number | boolean) => void;
+  dataChange: EventEmitter<FieldSet>;
+  readonly?: boolean;
+  parentForm?: NgForm;
+  //onSave: (value: string | number | boolean) => void;
 }
 
 export interface Selectable<T> extends Nameable {

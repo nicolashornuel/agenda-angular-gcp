@@ -1,7 +1,21 @@
+<ng-container *ngIf="!mono; else simple">
+  <div class="toggle-container row-center-center gap-2" (click)="input.click()">
+    <input #input type="checkbox" [(ngModel)]="value" (ngModelChange)="valueChange.emit(value)" />
+    <label *ngIf="labels?.false" class="false">{{ labels?.false }}</label>
+    <div class="bar">
+      <div class="cursor" [ngClass]="mono ? 'mono' : ''"></div>
+    </div>
+    <label *ngIf="labels?.true" class="true">{{ labels?.true }}</label>
+  </div>
+</ng-container>
+
+<ng-template #simple>
 <div class="toggle-container row-center-center gap-2" (click)="input.click()" [style.--rotate]="rotate + 'deg'">
   <input #input type="checkbox" [(ngModel)]="value" (ngModelChange)="valueChange.emit(value)" />
   <div class="bar">
     <div class="cursor" [ngClass]="mono ? 'mono' : ''"></div>
   </div>
-  <label *ngIf="label">{{ label }}</label>
+  <label *ngIf="labels">{{ labels.true }}</label>
 </div>
+</ng-template>
+

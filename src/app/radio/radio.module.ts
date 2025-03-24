@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { SharedModule } from '@shared/shared.module';
 import { GraphQLModule } from './graphql.module';
-import { RssFluxComponent } from './components/rss-flux/rss-flux.component';
 import { AudioHandlerComponent } from './components/audio-handler/audio-handler.component';
 import { AudioControlPadComponent } from './components/audio-control-pad/audio-control-pad.component';
 import { AudioControlPotComponent } from './components/audio-control-pot/audio-control-pot.component';
@@ -20,7 +18,6 @@ import { AudioPadFilterDirective } from './directives/audio-pad-filter.directive
 import { AudioPadReverbDirective } from './directives/audio-pad-reverb.directive';
 
 const RadioElements = [
-  RssFluxComponent,
   AudioHandlerComponent,
   AudioControlPadComponent,
   AudioControlPotComponent,

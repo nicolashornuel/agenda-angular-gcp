@@ -12,7 +12,8 @@ import {
 import { NgForm } from '@angular/forms';
 import { AlertService } from '../../services/alert.service';
 import { ColumnSet } from '@shared/models/tableSet.interface';
-import { FieldComponent } from '@shared/models/fieldSet.model';
+import { FieldComponent, FieldSet } from '@shared/models/fieldSet.model';
+import { AbstractInputComponent } from '@shared/abstracts/input.component';
 
 @Component({
   selector: 'app-table-cell',
@@ -24,8 +25,8 @@ export class TableCellComponent implements AfterViewInit, OnDestroy, OnChanges {
   @Input() rowData?: any;
   @Input() readonly?: boolean;
   @Input() parentForm?: NgForm;
-  @ViewChild('custom', {read: ViewContainerRef}) target!: ViewContainerRef;
-  private childComponent!: ComponentRef<any>;  
+  @ViewChild('custom', { read: ViewContainerRef }) target!: ViewContainerRef;
+  private childComponent!: ComponentRef<FieldComponent>;
 
   constructor(public alert: AlertService) {}
 
@@ -49,10 +50,13 @@ export class TableCellComponent implements AfterViewInit, OnDestroy, OnChanges {
     if (this.columnSet.render) {
       this.childComponent = this.target.createComponent<FieldComponent>(this.columnSet.render.component);
       this.childComponent.instance.data = this.columnSet.render.valuePrepare(this.rowData, this.columnSet);
+      if (this.childComponent.instance.dataChange)
+        this.childComponent.instance.dataChange.subscribe(
+          (fieldSet: FieldSet) => (this.rowData[this.childComponent.instance.data.name] = fieldSet)
+        );
       this.childComponent.instance.readonly = this.readonly;
-      this.childComponent.instance.parentForm = this.parentForm; 
+      this.childComponent.instance.parentForm = this.parentForm;
       this.childComponent.changeDetectorRef.detectChanges();
     }
   }
-
 }

@@ -6,4 +6,5 @@
   (blur)="onBlur.next()"
   (focus)="onFocus.next()"
   [(ngModel)]="data.value"
+  (ngModelChange)="dataChange.emit(data.value)"
 />

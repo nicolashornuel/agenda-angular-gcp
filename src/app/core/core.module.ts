@@ -17,3 +17,12 @@ import { RouterModule } from '@angular/router';
   ]
 })
 export class CoreModule { }
+
+/* 🚀 Bonnes pratiques
+✅ Importer CoreModule uniquement dans AppModule
+✅ Utiliser @SkipSelf() pour éviter plusieurs instances
+✅ Ne pas y mettre de composants ou de directives (ceux-ci vont dans SharedModule)
+✅ S'assurer que tous les services sont en providedIn: 'root' ou déclarés dans providers 
+🔹 En résumé :
+CoreModule sert à regrouper tout ce qui doit être global et singleton (services, guards, intercepteurs). 
+Cela améliore la modularité et la maintenance de l’application. 🎯*/

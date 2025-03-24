@@ -1,70 +1,44 @@
-import { Component, ComponentRef, OnInit } from '@angular/core';
-import { RssCard, RssFeed } from '@core/services/rss.service';
+import { Component, ComponentRef, inject } from '@angular/core';
+import { AbstractController } from '@shared/abstracts/abstract-controller.directive';
 import { TabParam } from '@shared/components/tabs/tabs.component';
+import { take, tap } from 'rxjs';
 import { TabContentComponent } from '../components/tab-content/tab-content.component';
-import { ListComponent } from '../components/list/list.component';
+import { RssCard } from '../models/rss-card.model';
+import { RssFeed } from '../models/rss-feed.model';
+import { RssFeedService } from '../services/rss-feed.service';
+import { RssObservableService } from '../services/rss-observable.service';
 
 @Component({
   selector: 'app-page-actu',
   templateUrl: './page-actu.component.html',
   styleUrls: ['./page-actu.component.scss']
 })
-export class PageActuComponent implements OnInit {
+export class PageActuComponent extends AbstractController<RssFeed> {
 
-  //https://www.cnews.fr/les-flux-rss-de-cnewsfr
-  //https://www.bfmtv.com/rss/
-  private feeds: RssFeed[] = [
- /*    {
-      url: 'https://www.cnews.fr/rss.xml',
-      name: 'CNEWS'
-    }, */
-    {
-      url: 'https://www.france24.com/fr/rss',
-      name: 'france24.com'
-    },
-    {
-      url: 'https://www.bfmtv.com/rss/news-24-7/',
-      name: 'BFMTV'
-    },
-    {
-      url: 'https://www.developpez.com/index/rss',
-      name: 'developpez.com'
-    },
-    {
-      url: 'https://www.usinenouvelle.com/rss/',
-      name: 'usinenouvelle'
-    },
-/*     {
-      url: 'https://www.sciencesetavenir.fr/rss.xml',
-      name: 'sciencesetavenir'
-    }, */
-    {
-      url: 'https://www.journaldunet.com/rss/',
-      name: 'journaldunet'
-    }
-  ];
-
-  public loading = false;
   public cards: RssCard[] = [];
   public tabs: TabParam[] = [];
   public tabSelected = 0;
+  private feedService = inject(RssFeedService);
+  private rssObservable = inject(RssObservableService);
 
-  ngOnInit(): void {
-    this.feeds.forEach(feed => this.tabs.push(this.createTab(feed)));
+  protected override initComponent(): void {
+    this.data.forEach(feed => this.tabs.push(this.createTab(feed)));
+  }
+
+  protected override get data$() {
+    return this.feedService.getAll().pipe(
+      take(1),
+      tap((feeds:RssFeed[])=> this.rssObservable.set$(feeds))
+    );
   }
 
   private createTab(feed: RssFeed): TabParam {
-    /* return {
-      name: feed.name,
-      closable: false,
-      content: ListComponent,
-      bind: (componentRef: ComponentRef<ListComponent>) => (componentRef.instance.url = feed.url)
-    }; */
     return {
       name: feed.name,
       closable: false,
-      content: TabContentComponent,
-      bind: (componentRef: ComponentRef<TabContentComponent>) => (componentRef.instance.url = feed.url)
+      link: feed.slug,
+      /* content: TabContentComponent,
+      bind: (componentRef: ComponentRef<TabContentComponent>) => (componentRef.instance.url = feed.url) */
     };
   }
 }

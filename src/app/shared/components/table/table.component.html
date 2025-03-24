@@ -1,5 +1,6 @@
 <section class="scrolling-table" [style.--maxiHeight]="tableSet.maxiHeight" [style.--height]="tableSet.height">
   <div class="table-container">
+    
     <div class="table-row header" [ngClass]="tableSet.verticaltextHeader ? 'vertical' : ' '">
       <ng-container *ngFor="let column of tableSet.columnSet">
         <app-table-cell-header
@@ -14,6 +15,8 @@
         <div class="table-cell">Actions</div>
       </ng-container>
     </div>
+
+
     <form
       #f="ngForm"
       class="table-row body"
@@ -21,8 +24,11 @@
       *ngFor="let row of tableSet.data; let i = index"
       (click)="tableSet.openDetailByClickRow ? tableSet.openDetailByClickRow(row) : null"
     >
+
+      <!-- ROW DATA -->
       <ng-container *ngFor="let column of tableSet.columnSet">
-        <app-table-cell
+        <ng-container *ngIf="enableEditIndex; else globalEdit">
+          <app-table-cell
           class="table-cell"
           [ngStyle]="{ width: column.width ?? null }"
           *ngIf="column.visible"
@@ -31,12 +37,26 @@
           [readonly]="enableEditIndex !== i"
           [parentForm]="f"
         ></app-table-cell>
+        </ng-container>
+        <ng-template #globalEdit>
+          <app-table-cell
+          class="table-cell"
+          [ngStyle]="{ width: column.width ?? null }"
+          *ngIf="column.visible"
+          [rowData]="tableSet.data[i]"
+          [columnSet]="column"
+          [readonly]="false"
+          [parentForm]="f"
+        ></app-table-cell>
+        </ng-template>
       </ng-container>
+
+      <!-- ROW ACTIONS -->
       <ng-container *ngIf="tableSet.actions || tableSet.actionSet">
         <div class="table-cell">
           <div class="row-center-center">
             <ng-container *ngFor="let action of tableSet.actionSet">
-              <button appButton ghost size="tiny" (click)="action.method(tableSet.data[i])"><i [ngClass]="action.icon"></i></button>
+              <button appButton ghost size="tiny" (click)="action.method(tableSet.data[i], i)"><i [ngClass]="action.icon"></i></button>
             </ng-container>
             <ng-container *ngIf="tableSet.actions">
               <ng-container *ngIf="enableEditIndex !== i; else edit">
@@ -51,6 +71,7 @@
           </div>
         </div>
       </ng-container>
+
     </form>
   </div>
 </section>

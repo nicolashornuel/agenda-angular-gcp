@@ -1,23 +1,29 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { ActualiteRoutingModule } from './actualite-routing.module';
 import { PageActuComponent } from './page/page-actu.component';
-import { SharedModule } from "../shared/shared.module";
+import { SharedModule } from '../shared/shared.module';
 import { TabContentComponent } from './components/tab-content/tab-content.component';
-import { ListComponent } from './components/list/list.component';
+import { ListFeedComponent } from './components/list-feed/list-feed.component';
+import { Routes, RouterModule } from '@angular/router';
 
+const routes: Routes = [
+  {
+    path: '',
+    component: PageActuComponent,
+    children: [
+      { path: ':slug', component: TabContentComponent }
+    ]
+  }
+];
 
 @NgModule({
-    declarations: [
-        PageActuComponent,
-        TabContentComponent,
-        ListComponent
-    ],
-    imports: [
-        CommonModule,
-        ActualiteRoutingModule,
-        SharedModule
-    ]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
-export class ActualiteModule { }
+export class ActualiteRoutingModule {}
+
+@NgModule({
+  declarations: [PageActuComponent, TabContentComponent, ListFeedComponent],
+  imports: [CommonModule, ActualiteRoutingModule, SharedModule]
+})
+export class ActualiteModule {}

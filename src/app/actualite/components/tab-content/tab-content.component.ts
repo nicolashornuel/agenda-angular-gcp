@@ -1,6 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { AbstractFetchFunctionService } from '@core/services/abstractFetchFunction.service';
-import { RssCard, RssService } from '@core/services/rss.service';
+import { DestroyService } from '@shared/services/destroy.service';
+import { RssCard } from 'app/actualite/models/rss-card.model';
+import { RssFeed } from 'app/actualite/models/rss-feed.model';
+import { RssMapperService } from 'app/actualite/services/rss-mapper.service';
+import { RssObservableService } from 'app/actualite/services/rss-observable.service';
+import { map, switchMap, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-tab-content',
@@ -11,14 +17,32 @@ export class TabContentComponent implements OnInit {
   @Input() url!: string;
   public loading = false;
   public cards: RssCard[] = [];
+  public activatedRoute = inject(ActivatedRoute);
+  public destroy$ = inject(DestroyService);
+  private rssObservable = inject(RssObservableService);
 
-  constructor(private rss: RssService, private fetchService: AbstractFetchFunctionService) {}
+  constructor(private mapper: RssMapperService, private fetchService: AbstractFetchFunctionService) {}
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     this.loading = true;
-    const { data } = await this.fetchService.getText(this.url);
-    this.cards.push(...this.rss.createCards(data));
-    this.loading = false;
+    this.activatedRoute.paramMap.pipe(
+      takeUntil(this.destroy$),
+      tap(h => console.log(h)),
+      switchMap((params: ParamMap) => this.rssObservable.get$.pipe(
+        map(feeds => {
+
+          const feed = feeds?.find(feed => feed.name === params.get('slug'))
+          console.log(feed);
+          return feed;
+          
+        })
+      ))
+    ).subscribe(async (feed: RssFeed | undefined) => {
+      if (!feed) return;
+      const { data } = await this.fetchService.getText(feed.url);
+      this.cards.push(...this.mapper.createCards(data));
+      this.loading = false;
+    });
   }
 
   public onImageLoad(event: Event): void {

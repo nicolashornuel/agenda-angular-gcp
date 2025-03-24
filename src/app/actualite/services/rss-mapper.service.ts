@@ -1,25 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { RssCard } from 'app/actualite/models/rss-card.model';
 import { Observable } from 'rxjs';
-
-export interface RssCard {
-  title: string;
-  link: string;
-  description: string;
-  img: string;
-  pubDate: Date;
-  creator?: string;
-  category?: string;
-}
-export interface RssFeed {
-  url: string;
-  name: string;
-}
 
 @Injectable({
   providedIn: 'root'
 })
-export class RssService {
+export class RssMapperService {
   constructor(private http: HttpClient) {}
 
   public getRSSFeedData(url: string): Observable<any> {

@@ -49,7 +49,7 @@
               [value]="isPersist"
               (valueChange)="onPersistChange($event)"
               [mono]="true"
-              label="Persist"
+              [labels]="{ true:'Persist' }"
             ></app-input-toggle>
           </section>
           <ng-container [ngSwitch]="effectSelected">

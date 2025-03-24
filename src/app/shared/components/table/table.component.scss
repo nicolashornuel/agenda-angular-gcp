@@ -18,7 +18,7 @@
     display: table-row;
     .table-cell {
       display: table-cell;
-      padding: 5px 12px;
+      padding: 5px 0 5px 12px;
       vertical-align: middle;
     }
     &:nth-child(2n) {

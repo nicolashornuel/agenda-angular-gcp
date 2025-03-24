@@ -1,7 +1,7 @@
-import { Component, Input, forwardRef } from '@angular/core';
+import { Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractInputComponent } from '@shared/abstracts/input.component';
-import { FieldSet } from '@shared/models/fieldSet.model';
+import { FieldComponent, FieldSet } from '@shared/models/fieldSet.model';
 
 @Component({
   selector: 'app-table-input',
@@ -15,6 +15,7 @@ import { FieldSet } from '@shared/models/fieldSet.model';
     }
   ]
 })
-export class TableInputComponent extends AbstractInputComponent {
+export class TableInputComponent extends AbstractInputComponent implements FieldComponent {
   @Input() data!: FieldSet;
+  @Output() dataChange = new EventEmitter<FieldSet>();
 }

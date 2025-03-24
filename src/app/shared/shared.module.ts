@@ -97,7 +97,7 @@ const sharedDirectives = [
 @NgModule({
   declarations: [
     sharedComponents,
-    sharedDirectives
+    sharedDirectives,
   ],
   imports: [
     sharedModules
