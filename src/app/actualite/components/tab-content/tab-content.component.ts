@@ -6,7 +6,8 @@ import { RssCard } from 'app/actualite/models/rss-card.model';
 import { RssFeed } from 'app/actualite/models/rss-feed.model';
 import { RssMapperService } from 'app/actualite/services/rss-mapper.service';
 import { RssObservableService } from 'app/actualite/services/rss-observable.service';
-import { map, switchMap, takeUntil, tap } from 'rxjs';
+import { Observable, map, switchMap, takeUntil, take, tap, filter, from } from 'rxjs';
+import { AbstractController } from '@shared/abstracts/abstract-controller.directive';
 
 @Component({
   selector: 'app-tab-content',
@@ -24,25 +25,26 @@ export class TabContentComponent implements OnInit {
   constructor(private mapper: RssMapperService, private fetchService: AbstractFetchFunctionService) {}
 
   ngOnInit(): void {
-    this.loading = true;
-    this.activatedRoute.paramMap.pipe(
-      takeUntil(this.destroy$),
-      tap(h => console.log(h)),
-      switchMap((params: ParamMap) => this.rssObservable.get$.pipe(
-        map(feeds => {
+    this.listenNavigation(this.route$);
+  }
 
-          const feed = feeds?.find(feed => feed.name === params.get('slug'))
-          console.log(feed);
-          return feed;
-          
-        })
-      ))
-    ).subscribe(async (feed: RssFeed | undefined) => {
-      if (!feed) return;
-      const { data } = await this.fetchService.getText(feed.url);
-      this.cards.push(...this.mapper.createCards(data));
+  public listenNavigation(getRoute$: (params: ParamMap) => Observable<RssCard[]>) {
+    this.loading = true;
+    this.activatedRoute.paramMap.pipe(takeUntil(this.destroy$), switchMap(getRoute$)).subscribe((t: RssCard[]) => {
+      this.cards = t;
       this.loading = false;
     });
+  }
+
+  protected get route$() {
+    return (params: ParamMap) =>
+      this.rssObservable.get$.pipe(
+        tap(() => (this.loading = true)),
+        take(1),
+        map(feeds => feeds?.find(feed => feed.slug === params.get('slug')) ?? feeds?.[0]),
+        switchMap((feed: RssFeed | undefined) => this.fetchService.getText(feed!.url)),
+        map(document => this.mapper.createCards(document.data))
+      );
   }
 
   public onImageLoad(event: Event): void {

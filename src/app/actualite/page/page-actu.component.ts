@@ -1,8 +1,7 @@
-import { Component, ComponentRef, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AbstractController } from '@shared/abstracts/abstract-controller.directive';
 import { TabParam } from '@shared/components/tabs/tabs.component';
 import { take, tap } from 'rxjs';
-import { TabContentComponent } from '../components/tab-content/tab-content.component';
 import { RssCard } from '../models/rss-card.model';
 import { RssFeed } from '../models/rss-feed.model';
 import { RssFeedService } from '../services/rss-feed.service';
@@ -23,6 +22,7 @@ export class PageActuComponent extends AbstractController<RssFeed> {
 
   protected override initComponent(): void {
     this.data.forEach(feed => this.tabs.push(this.createTab(feed)));
+    this.tabSelected = 0;
   }
 
   protected override get data$() {

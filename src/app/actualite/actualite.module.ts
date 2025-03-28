@@ -11,7 +11,8 @@ const routes: Routes = [
     path: '',
     component: PageActuComponent,
     children: [
-      { path: ':slug', component: TabContentComponent }
+      { path: ':slug', component: TabContentComponent },
+      { path: '', component: TabContentComponent }
     ]
   }
 ];
