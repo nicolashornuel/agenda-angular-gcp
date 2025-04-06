@@ -1,44 +1,44 @@
-import { Component, inject } from '@angular/core';
-import { AbstractController } from '@shared/abstracts/abstract-controller.directive';
-import { TabParam } from '@shared/components/tabs/tabs.component';
-import { take, tap } from 'rxjs';
-import { RssCard } from '../models/rss-card.model';
+import { Component, inject, OnInit, TemplateRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Modal, ModalParam } from '@shared/models/modalParam.interface';
+import { TabParam } from '@shared/models/tabParam.interface';
+import { ModalService } from '@shared/services/shared.observable.service';
+import { switchMap, take } from 'rxjs';
 import { RssFeed } from '../models/rss-feed.model';
-import { RssFeedService } from '../services/rss-feed.service';
-import { RssObservableService } from '../services/rss-observable.service';
+import { RssFeedResolver } from '../services/rss-feed.resolver';
 
 @Component({
   selector: 'app-page-actu',
   templateUrl: './page-actu.component.html',
   styleUrls: ['./page-actu.component.scss']
 })
-export class PageActuComponent extends AbstractController<RssFeed> {
-
-  public cards: RssCard[] = [];
+export class PageActuComponent implements OnInit {
   public tabs: TabParam[] = [];
   public tabSelected = 0;
-  private feedService = inject(RssFeedService);
-  private rssObservable = inject(RssObservableService);
+  public isLoading = false;
+  public activatedRoute = inject(ActivatedRoute);
+  public modalService = inject(ModalService);
+  public feedResolver = inject(RssFeedResolver);
 
-  protected override initComponent(): void {
-    this.data.forEach(feed => this.tabs.push(this.createTab(feed)));
-    this.tabSelected = 0;
+  ngOnInit(): void {
+    this.isLoading = true;
+    this.activatedRoute.paramMap
+      .pipe(
+        take(1),
+        switchMap(() => this.feedResolver.resolveTabs())
+      )
+      .subscribe(tabs => {
+        this.tabs = tabs;
+        this.isLoading = false;
+      });
   }
 
-  protected override get data$() {
-    return this.feedService.getAll().pipe(
-      take(1),
-      tap((feeds:RssFeed[])=> this.rssObservable.set$(feeds))
-    );
-  }
-
-  private createTab(feed: RssFeed): TabParam {
-    return {
-      name: feed.name,
-      closable: false,
-      link: feed.slug,
-      /* content: TabContentComponent,
-      bind: (componentRef: ComponentRef<TabContentComponent>) => (componentRef.instance.url = feed.url) */
+  public onOpenModal(title: string, templateRef: TemplateRef<Modal>, t?: RssFeed): void {
+    const modalParam: ModalParam<RssFeed> = {
+      title,
+      context: { $implicit: t },
+      template: templateRef
     };
+    this.modalService.set$(modalParam);
   }
 }

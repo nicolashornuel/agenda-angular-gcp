@@ -1,12 +1,7 @@
-import { Component, ComponentRef, Input, OnChanges, OnInit, SimpleChanges, ViewContainerRef } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewContainerRef } from '@angular/core';
+import { TabParam } from '@shared/models/tabParam.interface';
 
-export interface TabParam {
-  name: string;
-  closable: boolean;
-  content?: any;
-  link?: string;
-  bind?: (componentRef: ComponentRef<any>) => void;
-}
+
 @Component({
   selector: 'app-tabs',
   templateUrl: './tabs.component.html',

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TabParam } from '@shared/components/tabs/tabs.component';
+import { TabParam } from '@shared/models/tabParam.interface';
 
 @Component({
   selector: 'app-page-train',

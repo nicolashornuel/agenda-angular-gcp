@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { TabParam } from '@shared/components/tabs/tabs.component';
 import { ScreenerDetailComponent } from '../components/screener-detail/screener-detail.component';
 import { ScreenerListComponent } from '../components/screener-list/screener-list.component';
 import { ChartComponent } from '../components/chart/chart.component';
+import { TabParam } from '@shared/models/tabParam.interface';
 
 @Component({
   selector: 'app-page-trading',

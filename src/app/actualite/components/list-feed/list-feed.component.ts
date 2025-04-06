@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AbstractTable } from '@shared/abstracts/abstract-table.directive';
 import { ActionSet, CellRenderers, ColumnCustom, TableSet } from '@shared/models/tableSet.interface';
 import { RssFeed } from 'app/actualite/models/rss-feed.model';
@@ -12,9 +12,7 @@ import { Observable } from 'rxjs';
 })
 export class ListFeedComponent extends AbstractTable<RssFeed> {
 
-  constructor(private feedService: RssFeedService) {
-    super();
-  }
+  private feedService = inject(RssFeedService)
 
   protected override get data$(): Observable<RssFeed[]> {
     return this.feedService.getAll();

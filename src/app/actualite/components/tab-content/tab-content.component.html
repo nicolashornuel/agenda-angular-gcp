@@ -1,5 +1,5 @@
 <section
-  *ngIf="!loading; else spinner"
+  *ngIf="!isLoading; else spinner"
   class="scrolling row-between-stretch f-wrap cards-container"
 >
   <app-card *ngFor="let card of cards" backgroundColor="hsl(0, 0%, 95%)" [isMiniCard]="true">

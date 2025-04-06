@@ -1,10 +1,9 @@
 import { Directive, inject, OnInit, TemplateRef } from '@angular/core';
-import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { Modal, ModalParam } from '@shared/models/modalParam.interface';
 import { AlertService } from '@shared/services/alert.service';
 import { DestroyService } from '@shared/services/destroy.service';
 import { ModalService } from '@shared/services/shared.observable.service';
-import { Observable, ObservableInput, map, switchMap, takeUntil, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 
 export interface Identifiable {
   id?: string;
@@ -18,8 +17,6 @@ export abstract class AbstractController<T extends Identifiable> implements OnIn
   public destroy$ = inject(DestroyService);
   public modalService = inject(ModalService);
   public alertService = inject(AlertService);
-  public activatedRoute = inject(ActivatedRoute);
-  public router = inject(Router);
   public isLoading!: boolean;
   public data: T[] = [];
 
@@ -33,18 +30,6 @@ export abstract class AbstractController<T extends Identifiable> implements OnIn
       this.initComponent();
       this.isLoading = false;
     });
-  }
-
-  public listenNavigation(getRoute$: (params: ParamMap) => Observable<T[]>) {
-     this.isLoading = true;
-        this.activatedRoute.paramMap.pipe(
-          takeUntil(this.destroy$),
-          switchMap(getRoute$)
-        ).subscribe((t: T[]) => {
-          this.data = t;
-          this.initComponent();
-          this.isLoading = false;
-        });
   }
 
   public onOpenModal(title: string, templateRef: TemplateRef<Modal>, t?: T): void {

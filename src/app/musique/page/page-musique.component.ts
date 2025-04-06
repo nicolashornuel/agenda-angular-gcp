@@ -1,5 +1,4 @@
 import { Component, ComponentRef, OnInit } from '@angular/core';
-import { TabParam } from '@shared/components/tabs/tabs.component';
 import { Selectable } from '@shared/models/fieldSet.model';
 import { DestroyService } from '@shared/services/destroy.service';
 import { IsMobileService } from '@shared/services/shared.observable.service';
@@ -8,6 +7,7 @@ import { ListSavedComponent } from '../components/list-saved/list-saved.componen
 import { SearchResultComponent } from '../components/search-result/search-result.component';
 import { TabResultService } from '../services/musique.observable.service';
 import { OrderYoutube } from '../services/youtube.service';
+import { TabParam } from '@shared/models/tabParam.interface';
 
 @Component({
   selector: 'app-page-musique',
