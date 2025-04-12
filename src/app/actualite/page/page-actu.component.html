@@ -4,7 +4,7 @@
         <i class="fas fa-eye pr-1"></i>Liste
       </button>
     </app-button-group>
-  <app-tabs *ngIf="!isLoading; else spinner" [items]="tabs" [selected]="tabSelected"></app-tabs>
+  <app-tabs *ngIf="!resolvable.isLoading; else spinner" [items]="resolvable.data"></app-tabs>
   <router-outlet></router-outlet>
 </app-layout>
 

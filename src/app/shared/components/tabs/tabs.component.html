@@ -6,7 +6,7 @@
         <!-- avec routerLink -->
         <ng-container *ngIf="item.link; else noLink">
           <div class="nav-item"[routerLinkActive]="'active'">
-            <a *ngIf="item.link"class="nav-link" [routerLink]="[item.link]" [title]="item.name">{{ item.name }}</a>
+            <a *ngIf="item.link"class="nav-link" [routerLink]="item.link" [title]="item.name">{{ item.name }}</a>
           </div>
         </ng-container>
 

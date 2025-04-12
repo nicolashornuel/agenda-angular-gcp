@@ -19,8 +19,6 @@ export class PageMeteoComponent implements OnInit {
     this.meteoService.getMeteo().then(({ city, list }) => {
       this.city = city;
       this.forecasts = list;
-      console.log(this.forecasts);
-      
       this.loading = false;
     });
   }

@@ -1,8 +1,8 @@
 <section
-  *ngIf="!isLoading; else spinner"
+  *ngIf="!resolvable.isLoading; else spinner"
   class="scrolling row-between-stretch f-wrap cards-container"
 >
-  <app-card *ngFor="let card of cards" backgroundColor="hsl(0, 0%, 95%)" [isMiniCard]="true">
+  <app-card *ngFor="let card of resolvable.data" backgroundColor="hsl(0, 0%, 95%)" [isMiniCard]="true">
     <div class="relative h-100">
       <a [href]="card.link" target="_blank">
         <p class="date">{{ card.pubDate | date : 'fullDate' }}</p>
