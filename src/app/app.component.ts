@@ -37,10 +37,10 @@ export class AppComponent {
       title: 'Météo',
       route: 'meteo'
     },  
-    {
+/*     {
       title: 'Trading',
       route: 'trading'
-    },
+    }, */
   ]
 
   constructor(public auth: AuthService) {}

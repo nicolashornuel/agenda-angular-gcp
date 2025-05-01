@@ -35,7 +35,6 @@ export class RssFeedResolver<T = any> {
   private destroy$ = inject(DestroyService);
   private router = inject(Router);
 
-
   public resolveTabs(route: ActivatedRoute): Resolvable<T[]> {
     let resolvable = new Resolvable(route, []);
     const callback = (params: ParamMap) => this.feedRepository.getAll().pipe(
@@ -45,7 +44,7 @@ export class RssFeedResolver<T = any> {
           .map(feed => new TabParam(feed.name, false, feed.slug))
       ),
       tap((feeds) =>  {
-        if (params.get(RssFeed.SLUG_KEY.key)) 
+        if (!params.get(RssFeed.SLUG_KEY.key)) 
           this.router.navigate([feeds.at(0)?.link], { relativeTo: route })
         }
       )
