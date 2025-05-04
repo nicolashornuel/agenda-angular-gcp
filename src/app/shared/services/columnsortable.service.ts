@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
+import { OrderByDirection } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 export interface ColSorted {
-  colKey: string,
-  direction: 'up' | 'down',
+  fieldPath: string,
+  directionStr?: OrderByDirection,
 }
 @Injectable({
   providedIn: 'root'

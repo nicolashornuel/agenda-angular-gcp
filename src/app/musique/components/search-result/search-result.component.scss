@@ -44,11 +44,17 @@
   }
   .show-more {
     position: absolute;
-    bottom: 0;
+    bottom: -8px;
     height: 40px;
+    font-size: 24px;
     a {
         color: $red;
         cursor: pointer;
     }
   }
+}
+
+// YOUTUBE
+.information {
+  color: $grey-40;
 }

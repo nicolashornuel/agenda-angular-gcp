@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, ContentChildren, ElementRef, HostBinding, QueryList, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ContentChildren,
+  ElementRef,
+  HostBinding,
+  QueryList,
+  ViewChild
+} from '@angular/core';
 import { CarouselItemDirective } from './carousel-item.directive';
 
 @Component({
@@ -7,15 +15,14 @@ import { CarouselItemDirective } from './carousel-item.directive';
   styleUrls: ['./carousel.component.scss']
 })
 export class CarouselComponent implements AfterViewInit {
-
   @ContentChildren(CarouselItemDirective) items!: QueryList<CarouselItemDirective>;
   @ViewChild('translateBloc') translateBloc!: ElementRef<any>;
   public loading = true;
   public position: number = 0;
   public hasPrevious!: boolean;
   public hasNext!: boolean;
-  private stepWidth!: number;
-  private hiddenWidth!: number; 
+  private hiddenWidth!: number;
+  private itemWidth!: number;
 
   @HostBinding('class')
   get class(): string {
@@ -23,35 +30,38 @@ export class CarouselComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    //const itemWidth =  this.items.map(item => item.el.nativeElement.getBoundingClientRect().width).at(0);
-    const carouselWidth = this.translateBloc.nativeElement.getBoundingClientRect().width;
-
     let element = this.items.get(0)!.el.nativeElement;
-    let style = element.currentStyle || window.getComputedStyle(element)
+    let style = element.currentStyle || window.getComputedStyle(element);
     let margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
     let padding = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
     let border = parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
     const rect = element.getBoundingClientRect();
-    const itemWidth = rect.width + margin + padding + border;
-    
-    this.hiddenWidth = (this.items.length * itemWidth) - carouselWidth;
-    this.stepWidth = this.hiddenWidth / Math.floor(this.hiddenWidth / itemWidth / 5);
+    this.itemWidth = rect.width + margin + padding + border;
+    this.hiddenWidth = this.items.length * this.itemWidth - this.carouselWidth;
     this.updateVisibility();
     this.loading = false;
   }
 
   next(): void {
-    this.position -= this.stepWidth;
+    this.position -= Math.min(this.stepWidth, this.hiddenWidth - Math.abs(this.position));
     this.updateVisibility();
   }
 
   previous(): void {
-    this.position += this.stepWidth;
+    this.position += Math.min(this.stepWidth, Math.abs(this.position));
     this.updateVisibility();
   }
 
+  private get stepWidth(): number {
+    return Math.floor(this.carouselWidth / this.itemWidth) * this.itemWidth;
+  }
+
+  private get carouselWidth(): number {
+    return this.translateBloc.nativeElement.getBoundingClientRect().width;
+  }
+
   private updateVisibility(): void {
-    this.hasPrevious = Math.round(this.position) < 0;    
+    this.hasPrevious = Math.round(this.position) < 0;
     this.hasNext = Math.abs(Math.floor(this.position)) < this.hiddenWidth;
   }
 }

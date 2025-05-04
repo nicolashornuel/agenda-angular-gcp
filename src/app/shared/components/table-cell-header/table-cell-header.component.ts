@@ -1,21 +1,21 @@
-import {AfterViewInit, Component, Input} from '@angular/core';
-import {ColumnSet, TableSet} from '@shared/models/tableSet.interface';
-import {ColSorted, ColumnsortableService} from '@shared/services/columnsortable.service';
-import {DestroyService} from '@shared/services/destroy.service';
-import {UtilService} from '@shared/services/util.service';
-import {takeUntil} from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
+import { ColumnSet, TableSet } from '@shared/models/tableSet.interface';
+import { ColSorted, ColumnsortableService } from '@shared/services/columnsortable.service';
+import { DestroyService } from '@shared/services/destroy.service';
+import { UtilService } from '@shared/services/util.service';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-table-cell-header',
   templateUrl: './table-cell-header.component.html',
   styleUrls: ['./table-cell-header.component.scss']
 })
-export class TableCellHeaderComponent implements AfterViewInit {
+export class TableCellHeaderComponent implements OnInit {
   @Input() tableSet!: TableSet;
   @Input() columnSet!: ColumnSet;
   @Input() isEditing!: boolean;
   public colSorted?: ColSorted;
-  public sortClass = 'fas fa-sort hidden';
+  public sortClass!: string;
 
   constructor(
     private util: UtilService,
@@ -23,19 +23,21 @@ export class TableCellHeaderComponent implements AfterViewInit {
     private destroy$: DestroyService
   ) {}
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.colSortable.getColumnSort$.pipe(takeUntil(this.destroy$)).subscribe((colSorted: ColSorted | undefined) => {
       if (colSorted) {
         this.colSorted = colSorted;
-        if (colSorted.colKey != this.columnSet.key) {
+        if (colSorted.fieldPath != this.columnSet.key) {
           this.sortClass = 'fas fa-sort hidden';
+        } else {
+          this.sortClass = colSorted.directionStr == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down';
         }
       }
     });
   }
 
   public sort() {
-    if (!this.colSorted || this.colSorted.colKey != this.columnSet.key || this.colSorted?.direction == 'up') {
+    if (!this.colSorted || this.colSorted.fieldPath != this.columnSet.key || this.colSorted?.directionStr == 'desc') {
       this.sortInByDesc();
     } else {
       this.sortInByAsc();
@@ -44,13 +46,13 @@ export class TableCellHeaderComponent implements AfterViewInit {
 
   public sortInByDesc(): void {
     this.tableSet.data = this.util.sortInByDesc(this.tableSet.data, this.columnSet.key);
-    this.colSortable.setColumnSort$({colKey: this.columnSet.key, direction: 'down'});
+    this.colSortable.setColumnSort$({fieldPath: this.columnSet.key, directionStr: 'asc'});
     this.sortClass = 'fas fa-sort-down';
   }
 
   public sortInByAsc(): void {
     this.tableSet.data = this.util.sortInByAsc(this.tableSet.data, this.columnSet.key);
-    this.colSortable.setColumnSort$({colKey: this.columnSet.key, direction: 'up'});
+    this.colSortable.setColumnSort$({fieldPath: this.columnSet.key, directionStr: 'desc'});
     this.sortClass = 'fas fa-sort-up';
   }
 }

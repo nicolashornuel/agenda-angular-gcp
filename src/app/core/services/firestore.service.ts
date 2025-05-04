@@ -4,6 +4,7 @@ import {
   DocumentReference,
   FieldPath,
   Firestore,
+  OrderByDirection,
   QueryDocumentSnapshot,
   collection,
   collectionData,
@@ -61,10 +62,10 @@ export abstract class FirestoreService<T> {
     return snapshot.data().count;
   }
 
-  public async firstPage(fieldPath: string, pageSize: number): Promise<Pageable<T>> {
+  public async firstPage(order: { fieldPath: string | FieldPath; directionStr?: OrderByDirection }, pageSize: number): Promise<Pageable<T>> {
     const skip = 0;
     const take = pageSize + 1;
-    const q = query(this.collectionRef, orderBy(fieldPath), limit(take));
+    const q = query(this.collectionRef, orderBy(order.fieldPath, order.directionStr), limit(take));
     const documentSnapshots = await getDocs(q);
     const items = documentSnapshots.docs.map(doc => ({ ...doc.data(), id: doc.id }));
     const itemsCount = items.length;
@@ -75,13 +76,13 @@ export abstract class FirestoreService<T> {
     return {
       items: [...itemsVisible],
       hasPrevious: false,
-      hasNext: itemsCount > pageSize ?? false
+      hasNext: itemsCount > pageSize
     };
   }
 
-  public async prevPage(fieldPath: string | FieldPath, pageSize: number): Promise<Pageable<T>> {
+  public async prevPage(order: { fieldPath: string | FieldPath; directionStr?: OrderByDirection }, pageSize: number): Promise<Pageable<T>> {
     const take = pageSize + 1;
-    const q = query(this.collectionRef, orderBy(fieldPath), endBefore(this.firstVisible), limitToLast(take));
+    const q = query(this.collectionRef, orderBy(order.fieldPath, order.directionStr), endBefore(this.firstVisible), limitToLast(take));
     const documentSnapshots = await getDocs(q);
     const items = documentSnapshots.docs.map(doc => ({ ...doc.data(), id: doc.id }));
     const skip = items.length == pageSize ? 0 : 1;
@@ -90,15 +91,15 @@ export abstract class FirestoreService<T> {
     this.lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
     return {
       items: [...itemsVisible],
-      hasPrevious: items.length > pageSize ?? false,
+      hasPrevious: items.length > pageSize,
       hasNext: true
     };
   }
 
-  public async nextPage(fieldPath: string | FieldPath, pageSize: number): Promise<Pageable<T>> {
+  public async nextPage(order: { fieldPath: string | FieldPath; directionStr?: OrderByDirection }, pageSize: number): Promise<Pageable<T>> {
     const skip = 0;
     const take = pageSize + 1;
-    const q = query(this.collectionRef, orderBy(fieldPath), startAfter(this.lastVisible), limit(take));
+    const q = query(this.collectionRef, orderBy(order.fieldPath, order.directionStr), startAfter(this.lastVisible), limit(take));
     const documentSnapshots = await getDocs(q);
     const items = documentSnapshots.docs.map(doc => ({ ...doc.data(), id: doc.id }));
     const itemsCount = items.length;
@@ -109,15 +110,15 @@ export abstract class FirestoreService<T> {
     return {
       items: [...itemsVisible],
       hasPrevious: true,
-      hasNext: itemsCount > pageSize ?? false
+      hasNext: itemsCount > pageSize
     };
   }
 
-  public async lastPage(fieldPath: string | FieldPath, pageSize: number): Promise<Pageable<T>> {
+  public async lastPage(order: { fieldPath: string | FieldPath; directionStr?: OrderByDirection }, pageSize: number): Promise<Pageable<T>> {
     const skip = 1;
     const countTotal = await this.getCountFromServer();
     const take = countTotal % pageSize === 0 ? pageSize : countTotal % pageSize;
-    const q = query(this.collectionRef, orderBy(fieldPath), limitToLast(take + 1));
+    const q = query(this.collectionRef, orderBy(order.fieldPath, order.directionStr), limitToLast(take + 1));
     const documentSnapshots = await getDocs(q);
     const items = documentSnapshots.docs.map(doc => ({ ...doc.data(), id: doc.id }));
     const itemsVisible = items.slice(skip, take + skip);
@@ -125,7 +126,7 @@ export abstract class FirestoreService<T> {
     this.lastVisible = documentSnapshots.docs[take + skip - 1];
     return {
       items: [...itemsVisible],
-      hasPrevious: countTotal > take ?? false,
+      hasPrevious: countTotal > take,
       hasNext: false
     };
   }

@@ -7,6 +7,8 @@ import { VideoGAPI } from '../models/videoGAPI.interface';
 import { VideoService } from '../services/musique.firestore.service';
 import { Modal, ModalParam } from '@shared/models/modalParam.interface';
 import { ModalService } from '@shared/services/shared.observable.service';
+import { UtilService } from '@shared/services/util.service';
+import { DatePipe } from '@angular/common';
 
 @Component({template: ''})
 export abstract class VideoController {
@@ -16,7 +18,8 @@ export abstract class VideoController {
     private alertService: AlertService,
     private modalService: ModalService,
     public destroy$: DestroyService,
-    private _sanitizer: DomSanitizer
+    private _sanitizer: DomSanitizer,
+    private datePipe: DatePipe
   ) {}
 
   getVideos(): Observable<VideoGAPI[]> {
@@ -49,7 +52,7 @@ export abstract class VideoController {
 
   openModal(video: VideoGAPI, templateRef: TemplateRef<Modal>): void {
     const modalParam: ModalParam<VideoGAPI> = {
-      title: `${video.channelTitle} (${video.publishedAt})`,
+      title: `${video.channelTitle} (${this.datePipe.transform(new Date(video.publishedAt), 'MMMM y')})`,
       context: {$implicit: video},
       template: templateRef
     };

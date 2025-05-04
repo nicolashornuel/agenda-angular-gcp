@@ -40,10 +40,16 @@ export class RssMapperService {
     return {
       title: item.querySelector('title')?.textContent || '',
       link: item.querySelector('link')?.textContent || '',
-      description: item.querySelector('description')?.textContent || '',
+      description: this.cleanDescription(item.querySelector('description')?.textContent || ''),
       img,
       pubDate: item.querySelector('pubDate')?.textContent || undefined,
       category: item.querySelector('category')?.textContent || undefined
     };
+  }
+
+  private cleanDescription(description: string): string {
+    const doc = this.parseHTML(description);
+    const text = doc.body.textContent || '';
+    return text.replace(/<img[^>]*>/g, '');;
   }
 }

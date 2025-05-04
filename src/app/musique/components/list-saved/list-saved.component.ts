@@ -98,37 +98,41 @@ export class ListSavedComponent extends VideoController implements OnInit {
   private dataSource!: VideoGAPI[];
   public readonly pageSize = 20;
   private colSortable: ColumnsortableService = inject(ColumnsortableService);
-  private colSorted: ColSorted = { colKey: 'addedAt', direction: 'up' };
+  private colSorted: ColSorted = { fieldPath: 'addedAt', directionStr: 'desc' };
   public hasNext!: boolean;
   public hasPrev!: boolean;
 
   ngOnInit(): void {
+    this.colSortable.setColumnSort$(this.colSorted);
     this.onFirstPage();
     this.colSortable.getColumnSort$
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        (colSorted: ColSorted | undefined) => (colSorted ? this.colSorted = colSorted : undefined)
+        (colSorted: ColSorted | undefined) => {
+          (colSorted ? this.colSorted = colSorted : undefined)
+          this.onFirstPage();
+        }
       );
   }
 
   public onFirstPage(): void {
     this.loading = true;
-    this.videoService.firstPage(this.colSorted!.colKey, this.pageSize).then(videos => this.defineData(videos));
+    this.videoService.firstPage(this.colSorted, this.pageSize).then(videos => this.defineData(videos));
   }
 
   public onPrevPage(): void {
     this.loading = true;
-    this.videoService.prevPage(this.colSorted!.colKey, this.pageSize).then(videos => this.defineData(videos));
+    this.videoService.prevPage(this.colSorted, this.pageSize).then(videos => this.defineData(videos));
   }
 
   public onNextPage(): void {
     this.loading = true;
-   this.videoService.nextPage(this.colSorted!.colKey, this.pageSize).then(videos => this.defineData(videos));
+   this.videoService.nextPage(this.colSorted, this.pageSize).then(videos => this.defineData(videos));
   }
 
   public onLastPage(): void {
     this.loading = true;
-   this.videoService.lastPage(this.colSorted!.colKey, this.pageSize).then(videos => this.defineData(videos));
+   this.videoService.lastPage(this.colSorted, this.pageSize).then(videos => this.defineData(videos));
   }
 
   private defineData(page: Pageable<VideoGAPI>): void {

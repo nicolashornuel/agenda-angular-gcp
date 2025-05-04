@@ -6,12 +6,14 @@ export interface TabParam {
   content?: any;
   link?: string;
   bind?: (componentRef: ComponentRef<any>) => void;
+  queryParams?: { [key: string]: string };
 }
 
 export class TabParam {
-    constructor(name: string, isClosable: boolean, slug: string) {
+    constructor(name: string, isClosable: boolean, link: string, queryParams?: { [key: string]: string }) {
+        this.queryParams = queryParams,
         this.name = name,
         this.closable = isClosable,
-        this.link = slug
+        this.link = link
     }
 }

@@ -14,4 +14,6 @@ export interface VideoGAPI {
   extractWiki?: string;
   rating: number;
   discogs: any;
+  viewCount: number;
+  likeCount: number;
 }

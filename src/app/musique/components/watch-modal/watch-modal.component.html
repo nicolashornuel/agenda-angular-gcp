@@ -10,7 +10,12 @@
     >
     </iframe>
   </div>
-  <p class="f-grow word-break">{{ input.description }}</p>
+  <p class="f-grow word-break">    
+    {{ input.description }}
+    <span *ngIf="input.viewCount && !loading; else spinner" class="viewcount">
+      {{ input.viewCount | numberSuffix : 2 }} de vues
+    </span>
+  </p>
   <div *ngIf="input.extractWiki" class="row-end-center">
     <img [appTooltip]="input.extractWiki" src="assets/Wikipedia.svg" alt="logo Wikipedia" width="100px" />
   </div>
@@ -31,3 +36,8 @@
     <button appButton color="green" (click)="onSave()">Enregistrer</button>
   </div>
 </ng-container>
+
+
+<ng-template #spinner>
+  <app-spinner></app-spinner>
+</ng-template>

@@ -12,7 +12,7 @@ export const environment = {
   discogsKey: "lFqQfxurDTjYekydiilIbmdglWEdZqWinZMEnugw",
   discogsApi: "https://api.discogs.com/database/search?",
   youtubeToken: "AIzaSyDL_mFIhyWvHaC_auDh1xWpHMQ5nENbqnU",
-  urlApiYoutube: "https://www.googleapis.com/youtube/v3/search?",
+  urlApiYoutube: "https://www.googleapis.com/youtube/v3",
   urlFunctions: "https://us-central1-fourthproject-aff75.cloudfunctions.net/app/fire",
   sncfApi: 'https://api.sncf.com/v1',
   sncfKey: '9033880e-c8e1-4034-8818-d7a440bd1abc'

@@ -41,6 +41,7 @@ import { TooltipDirective } from './directives/tooltip.directive';
 import { BadgeLinkComponent } from './components/badge-link/badge-link.component';
 import { InputFileComponent } from './components/input-file/input-file.component';
 import { AccordionComponent } from './components/accordion/accordion.component';
+import { NumberSuffixPipe } from './pipes/number-suffix.pipe';
 
 const sharedComponents = [
   TableComponent,
@@ -91,7 +92,8 @@ const sharedDirectives = [
   TooltipDirective,
   PopoverDirective,
   ButtonDirective,
-  IsMobileDirective
+  IsMobileDirective,
+  NumberSuffixPipe
 ]
 
 @NgModule({
