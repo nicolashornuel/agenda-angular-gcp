@@ -43,7 +43,7 @@ export class DataList extends FieldSet {
   }
 }
 
-export class DataSelect<T extends Nameable> extends FieldSet {
+export class DataSelect<T> extends FieldSet {
   options: Selectable<T>[];
   constructor(fieldSet: FieldSet, options: Selectable<T>[]) {
     super(fieldSet);
@@ -61,4 +61,11 @@ export interface FieldComponent {
 
 export interface Selectable<T> extends Nameable {
   value?: T;
+}
+
+export class Selectable<T> {
+  constructor(name:string, value: T) {
+    this.name = name;
+    this.value = value;
+  }
 }

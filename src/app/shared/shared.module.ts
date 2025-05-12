@@ -42,6 +42,7 @@ import { BadgeLinkComponent } from './components/badge-link/badge-link.component
 import { InputFileComponent } from './components/input-file/input-file.component';
 import { AccordionComponent } from './components/accordion/accordion.component';
 import { NumberSuffixPipe } from './pipes/number-suffix.pipe';
+import { InputSelectComponent } from './components/input-select/input-select.component';
 
 const sharedComponents = [
   TableComponent,
@@ -78,7 +79,8 @@ const sharedComponents = [
   InputNumberComponent,
   BadgeLinkComponent,
   InputFileComponent,
-  AccordionComponent
+  AccordionComponent,
+  InputSelectComponent
 ]
 
 const sharedModules = [
@@ -99,7 +101,7 @@ const sharedDirectives = [
 @NgModule({
   declarations: [
     sharedComponents,
-    sharedDirectives,
+    sharedDirectives
   ],
   imports: [
     sharedModules

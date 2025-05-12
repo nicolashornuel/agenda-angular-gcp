@@ -1,0 +1,27 @@
+<div class="input-select-container">
+
+  <ng-container *ngIf="dataSelect; else loadingTpl">
+    <select
+    class="select"
+    required
+    placeholder=" "
+    (change)="selectedChange.emit(dataSelect.value)"
+    [(ngModel)]="dataSelect.value"
+    [compareWith]="compareFn"
+    [ngClass]="isDirty ? 'dirty' : ''"
+  >
+    <option *ngFor="let item of dataSelect.options" [ngValue]="item">{{ item.name }}</option>
+  </select>
+  <label class="row-start-center">
+    {{ dataSelect.name + asterix }}
+  </label>
+  </ng-container>
+
+  <ng-template #loadingTpl>
+    <div class="select">
+
+      <app-spinner></app-spinner>
+    </div>
+  </ng-template>
+
+</div>

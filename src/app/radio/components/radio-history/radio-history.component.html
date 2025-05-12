@@ -2,9 +2,9 @@
   <app-icon [path]="isOpen ? 'chevron-left' : 'chevron-right'"></app-icon>
 </span>
 
-<ng-container *ngIf="song && grid; else spinner">
 
   <section [ngClass]="isOpen ? 'open' : 'close'">
+    <ng-container *ngIf="song && grid; else spinner">
     <article >
       <h5 class="radio-divider">FIP</h5>
       <p class="countdown">{{ minutesLeft | number : '2.0' }} : {{ secondsLeft | number : '2.0' }}</p>
@@ -16,8 +16,8 @@
         {{ song.artist }}
       </p>
     </article>
-  </section>
-</ng-container>
+  </ng-container>
+  </section>    
 
 <ng-template #spinner>
   <app-spinner></app-spinner>

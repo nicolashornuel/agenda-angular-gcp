@@ -1,5 +1,5 @@
 import { Component, ComponentRef, OnInit } from '@angular/core';
-import { Selectable } from '@shared/models/fieldSet.model';
+import { TabParam } from '@shared/models/tabParam.interface';
 import { DestroyService } from '@shared/services/destroy.service';
 import { IsMobileService } from '@shared/services/shared.observable.service';
 import { take, takeUntil } from 'rxjs';
@@ -7,7 +7,6 @@ import { ListSavedComponent } from '../components/list-saved/list-saved.componen
 import { SearchResultComponent } from '../components/search-result/search-result.component';
 import { TabResultService } from '../services/musique.observable.service';
 import { OrderYoutube } from '../services/youtube.service';
-import { TabParam } from '@shared/models/tabParam.interface';
 
 @Component({
   selector: 'app-page-musique',
@@ -23,8 +22,6 @@ export class PageMusiqueComponent implements OnInit {
     }
   ];
   public tabSelected = 0;
-  public orderYoutubeOptions: Selectable<string>[] = Object.values(OrderYoutube);
-  public orderYoutubeSelected = OrderYoutube.VIEWCOUNT;
   public isMobile!: boolean;
 
   constructor(
@@ -55,7 +52,7 @@ export class PageMusiqueComponent implements OnInit {
   private createTabResult(keyword: string): TabParam {
     const param = {
       keyword,
-      order: this.orderYoutubeSelected
+      order: OrderYoutube.VIEWCOUNT
     };
 
     return {

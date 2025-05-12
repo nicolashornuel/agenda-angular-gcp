@@ -33,12 +33,12 @@ export class RadioHistoryComponent implements AfterViewInit {
     private tabService: TabResultService,
     private rightBarIsOpenedService: RightBarIsOpenedService,
     private router: Router,
-    private stationRadionService: StationRadioService,
+    private stationRadioService: StationRadioService,
     private destroy$: DestroyService
   ) {}
 
   ngAfterViewInit(): void {
-    this.stationRadionService.get$.pipe(takeUntil(this.destroy$)).subscribe(station => {
+    this.stationRadioService.get$.pipe(takeUntil(this.destroy$)).subscribe(station => {
       if (station) {
         this.station = station
         this.getLive(0);

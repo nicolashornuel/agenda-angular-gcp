@@ -1,13 +1,28 @@
 <div class="row-end-center mb-3">
-<app-input-text class="col-4 mr-3" label="Filtre" ngModel (ngModelChange)="applyFilter($event)"></app-input-text>
+  <app-input-select
+    class="col-3"
+    [dataSelect]="categoryFilter"
+    (selectedChange)="onCategoryFilterChange()"
+  ></app-input-select>
 
-  <app-button-group class="mx-3">
-    <button appButton outline size="small" (click)="onFirstPage()" [disabled]="!hasPrev"><i class="fas fa-angles-left"></i></button>
-    <button appButton outline size="small" (click)="onPrevPage()" [disabled]="!hasPrev"><i class="fas fa-angle-left"></i></button>
-    <button appButton outline size="small" (click)="onNextPage()" [disabled]="!hasNext"><i class="fas fa-angle-right"></i></button>
-    <button appButton outline size="small" (click)="onLastPage()" [disabled]="!hasNext"><i class="fas fa-angles-right"></i></button>
-  </app-button-group>
-  <button appButton outline size="small" [appPopover]="popoverRef"><i class="fas fa-columns"></i></button>
+    <app-button-group class="mx-3">
+      <button appButton outline (click)="onFirstPage()" [disabled]="!hasPrev">
+        <i class="fas fa-angles-left"></i>
+      </button>
+      <button appButton outline (click)="onPrevPage()" [disabled]="!hasPrev">
+        <i class="fas fa-angle-left"></i>
+      </button>
+      <button appButton outline (click)="onNextPage()" [disabled]="!hasNext">
+        <i class="fas fa-angle-right"></i>
+      </button>
+      <button appButton outline (click)="onLastPage()" [disabled]="!hasNext">
+        <i class="fas fa-angles-right"></i>
+      </button>
+    </app-button-group>
+    <button appButton outline [appPopover]="popoverRef">
+      <i class="fas fa-columns"></i>
+    </button>
+
 </div>
 
 <ng-container *ngIf="!loading; else spinner">
@@ -23,13 +38,12 @@
 </ng-template>
 
 <ng-template #popoverRef>
-  <h6>{{ popover.title }}</h6>
+  <h6>colonne visible</h6>
   <hr />
-  <div *ngFor="let fieldSet of popover.fieldSets">
+  <div *ngFor="let columnSet of tableSet.columnSet">
     <app-input-checkbox
-      [label]="fieldSet.name"
-      [value]="fieldSet.value"
-      (onModelChange)="onShowColumn($event, fieldSet)"
+      [label]="columnSet.title"
+      [(ngModel)]="columnSet.visible"
     ></app-input-checkbox>
   </div>
 </ng-template>

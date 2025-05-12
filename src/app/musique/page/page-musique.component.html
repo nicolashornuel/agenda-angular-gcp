@@ -1,11 +1,5 @@
 <app-layout>
   <section class="row-end-center pb-3 gap-3">
-    <app-select
-      class="musique-header-select"
-      [options]="orderYoutubeOptions"
-      [(selected)]="orderYoutubeSelected"
-    ></app-select>
-
     <ng-container *ngIf="!isMobile; else mobile">
       <app-input-text
         class="musique-header-input"

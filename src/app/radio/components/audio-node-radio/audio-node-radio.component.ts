@@ -38,6 +38,19 @@ export class AudioNodeRadioComponent extends AudioNodeController implements Afte
 
   public onSelectStation() {
     this.stationRadioService.set$(this.radioSelected.id);
+
+    if (this.isPlaying) {
+      const player = this.audio.nativeElement;
+
+      const playAudio = () => {
+        player.play().catch((err: any) => console.error('Erreur play:', err));
+        player.removeEventListener('canplay', playAudio);
+      };
+    
+      player.addEventListener('canplay', playAudio);
+      player.load();
+    }
+
   }
 
   protected override initNode(): void {

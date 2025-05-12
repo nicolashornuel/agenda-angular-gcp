@@ -29,7 +29,7 @@ export abstract class VideoController {
   getCategories(): Observable<Set<string>> {
     return this.videoService.getAll().pipe(
       takeUntil(this.destroy$),
-      map((videos: VideoGAPI[]) => new Set(videos.map(video => video.categorie)))
+      map((videos: VideoGAPI[]) => new Set(videos.map(video => video.categorie).filter(categorie => categorie)))
     );
   }
 

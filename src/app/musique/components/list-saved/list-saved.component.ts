@@ -1,13 +1,13 @@
 import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { Pageable } from '@core/services/firestore.service';
 import { PriorityComponent } from '@shared/components/priority/priority.component';
-import { FieldSet } from '@shared/models/fieldSet.model';
+import { DataSelect, Selectable } from '@shared/models/fieldSet.model';
 import { Modal } from '@shared/models/modalParam.interface';
 import { CellRenderers, ColumnSet, TableSet } from '@shared/models/tableSet.interface';
 import { ColSorted, ColumnsortableService } from '@shared/services/columnsortable.service';
 import { VideoController } from 'app/musique/abstracts/videoController.abstract';
 import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
-import { takeUntil } from 'rxjs';
+import { map, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-list-saved',
@@ -83,19 +83,7 @@ export class ListSavedComponent extends VideoController implements OnInit {
     data: []
   };
 
-  public popover = {
-    title: 'colonne visible',
-    fieldSets: this.tableSet.columnSet.map((col: ColumnSet) => {
-      return {
-        name: col.title,
-        value: col.visible,
-        disabled: false,
-        required: false
-      };
-    })
-  };
-
-  private dataSource!: VideoGAPI[];
+  public categoryFilter!: DataSelect<string>;
   public readonly pageSize = 20;
   private colSortable: ColumnsortableService = inject(ColumnsortableService);
   private colSorted: ColSorted = { fieldPath: 'addedAt', directionStr: 'desc' };
@@ -105,14 +93,12 @@ export class ListSavedComponent extends VideoController implements OnInit {
   ngOnInit(): void {
     this.colSortable.setColumnSort$(this.colSorted);
     this.onFirstPage();
-    this.colSortable.getColumnSort$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        (colSorted: ColSorted | undefined) => {
-          (colSorted ? this.colSorted = colSorted : undefined)
-          this.onFirstPage();
-        }
-      );
+    this.colSortable.getColumnSort$.pipe(takeUntil(this.destroy$)).subscribe((colSorted: ColSorted | undefined) => {
+      colSorted ? (this.colSorted = colSorted) : undefined;
+      this.onFirstPage();
+    });
+
+    this.getAllCategories();
   }
 
   public onFirstPage(): void {
@@ -127,29 +113,37 @@ export class ListSavedComponent extends VideoController implements OnInit {
 
   public onNextPage(): void {
     this.loading = true;
-   this.videoService.nextPage(this.colSorted, this.pageSize).then(videos => this.defineData(videos));
+    this.videoService.nextPage(this.colSorted, this.pageSize).then(videos => this.defineData(videos));
   }
 
   public onLastPage(): void {
     this.loading = true;
-   this.videoService.lastPage(this.colSorted, this.pageSize).then(videos => this.defineData(videos));
+    this.videoService.lastPage(this.colSorted, this.pageSize).then(videos => this.defineData(videos));
   }
 
   private defineData(page: Pageable<VideoGAPI>): void {
-    this.dataSource = page.items;
     this.tableSet.data = page.items;
     this.hasNext = page.hasNext;
     this.hasPrev = page.hasPrevious;
     this.loading = false;
   }
 
-  public onShowColumn(value: boolean, fieldSet: FieldSet) {
-    this.tableSet.columnSet.find((columnSet: ColumnSet) => columnSet.title === fieldSet.name)!.visible = value;
+  private getAllCategories(): void {
+    this.getCategories()
+      .pipe(
+        map(categories => [...categories].map(categorie => new Selectable(categorie, categorie))),
+        tap(options => options.unshift(new Selectable('Toutes catégories', 'Toutes catégories')))
+      )
+      .subscribe(options => {
+        this.categoryFilter = new DataSelect({ key: 'categorie', name: 'Filtrer par catégories' }, options);
+        this.categoryFilter.value = this.categoryFilter.options[0];
+      });
   }
 
-  public applyFilter(keyword: string): void {
-    keyword != ''
-      ? (this.tableSet.data = [...this.dataSource.filter((data: VideoGAPI) => data.title.includes(keyword))])
-      : (this.tableSet.data = [...this.dataSource]);
+  public onCategoryFilterChange(): void {
+    this.loading = true;
+    this.categoryFilter.value.value === 'Toutes catégories' ? this.onFirstPage() : this.videoService
+      .getByQuery('categorie', { key: this.categoryFilter.key!, value: this.categoryFilter.value.value })
+      .subscribe(videos => this.defineData({items: videos, hasNext: false, hasPrevious: false}));
   }
 }
