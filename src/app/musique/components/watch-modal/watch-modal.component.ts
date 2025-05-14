@@ -5,6 +5,7 @@ import { FieldSet } from '@shared/models/fieldSet.model';
 import { VideoController } from 'app/musique/abstracts/videoController.abstract';
 import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
 import { YoutubeService } from 'app/musique/services/youtube.service';
+import { YoutubeConvertService } from 'app/musique/services/youtube-convert.service';
 
 @Component({
   selector: 'app-watch-modal',
@@ -18,6 +19,7 @@ export class WatchModalComponent extends VideoController implements Modal, OnIni
   public categorie!: FieldSet;
   public categories!: Set<string>;
     private youtubeService = inject(YoutubeService);
+    private youtubeConvert = inject(YoutubeConvertService);
     public loading: boolean = false;
 
   ngOnInit(): void {
@@ -56,6 +58,12 @@ export class WatchModalComponent extends VideoController implements Modal, OnIni
     };
     delete inputChanged.sanitized;
     inputChanged.id ? this.updateVideo(inputChanged) : this.addVideo(inputChanged);
+  }
+
+  public onConvert(): void {
+    console.log(this.input);
+    
+    this.youtubeConvert.convertYoutubeToMp3(this.input.videoId).subscribe(res => console.log(res));
   }
 
 }

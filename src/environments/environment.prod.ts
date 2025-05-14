@@ -15,5 +15,6 @@ export const environment = {
   urlApiYoutube: "https://www.googleapis.com/youtube/v3",
   urlFunctions: "https://us-central1-fourthproject-aff75.cloudfunctions.net/app/fire",
   sncfApi: 'https://api.sncf.com/v1',
-  sncfKey: '9033880e-c8e1-4034-8818-d7a440bd1abc'
+  sncfKey: '9033880e-c8e1-4034-8818-d7a440bd1abc',
+  ffmpegService: 'https://service-cloud-run-ffmpeg-365822740048.europe-west9.run.app',
 };
