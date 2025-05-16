@@ -21,6 +21,7 @@ export class WatchModalComponent extends VideoController implements Modal, OnIni
     private youtubeService = inject(YoutubeService);
     private youtubeConvert = inject(YoutubeConvertService);
     public loading: boolean = false;
+    public isConverting: boolean = false;
 
   ngOnInit(): void {
     this.loading = true;
@@ -60,10 +61,34 @@ export class WatchModalComponent extends VideoController implements Modal, OnIni
     inputChanged.id ? this.updateVideo(inputChanged) : this.addVideo(inputChanged);
   }
 
-  public onConvert(): void {
-    console.log(this.input);
-    
-    this.youtubeConvert.convertYoutubeToMp3(this.input.videoId).subscribe(res => console.log(res));
+  public loadCookies(event: Event): void {
+    this.isConverting = true;
+
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
+
+    const file = input.files[0];
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      this.convertVideo(reader.result as string);
+
+    };
+
+    reader.readAsText(file);
+  }
+
+  private convertVideo(cookie: string): void {
+    this.youtubeConvert.convertYoutubeToMp3(this.input.videoId, cookie).subscribe(blob => {
+      // Créer un lien de téléchargement
+      const a = document.createElement('a');
+      const objectUrl = URL.createObjectURL(blob);
+      a.href = objectUrl;
+      a.download = `${this.input.title}.mp3`; // Nom du fichier
+      a.click();
+      URL.revokeObjectURL(objectUrl);
+      this.isConverting = false;
+    });
   }
 
 }

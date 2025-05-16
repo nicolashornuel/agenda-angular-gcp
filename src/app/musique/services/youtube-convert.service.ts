@@ -8,11 +8,12 @@ import { Observable } from 'rxjs';
 })
 export class YoutubeConvertService {
 
+  //private serviceUrl = 'http://localhost:8080';
   private serviceUrl = environment.ffmpegService;
 
   constructor(private http: HttpClient) {}
 
-  public convertYoutubeToMp3(videoId: string): Observable<any> {
-    return this.http.get(`${this.serviceUrl}/convert`, { params: { url: videoId } });
+  public convertYoutubeToMp3(videoId: string, cookie: string): Observable<any> {
+    return this.http.post(`${this.serviceUrl}/convert`, { cookie, url: videoId }, { responseType: 'blob' });
   }
 }

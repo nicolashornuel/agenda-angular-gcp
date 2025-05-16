@@ -1,27 +1,26 @@
 <ng-container *ngIf="input">
   <h3 class="mb-3">{{ input.title }}</h3>
   <div class="iframe-container">
-    <iframe
-      iframeTracker
-      class="responsive-iframe"
-      [src]="src"
-      allowfullscreen
-      frameborder="0"
-    >
+    <iframe iframeTracker class="responsive-iframe" [src]="src" allowfullscreen frameborder="0">
     </iframe>
   </div>
-  <p class="f-grow word-break">    
+  <p class="f-grow word-break">
     {{ input.description }}
     <span *ngIf="input.viewCount && !loading; else spinner" class="viewcount">
       {{ input.viewCount | numberSuffix : 2 }} de vues
     </span>
   </p>
   <div *ngIf="input.extractWiki" class="row-end-center">
-    <img [appTooltip]="input.extractWiki" src="assets/Wikipedia.svg" alt="logo Wikipedia" width="100px" />
+    <img
+      [appTooltip]="input.extractWiki"
+      src="assets/Wikipedia.svg"
+      alt="logo Wikipedia"
+      width="100px"
+    />
   </div>
   <div class="row-between-center my-3 gap-5">
     <app-priority [data]="rating"></app-priority>
-   <app-input-suggestion
+    <app-input-suggestion
       class="f-grow"
       [options]="categories"
       label="Catégorie"
@@ -34,10 +33,13 @@
       <button appButton color="red" (click)="onDelete()">Supprimer</button>
     </ng-container>
     <button appButton color="green" (click)="onSave()">Enregistrer</button>
-    <button appButton color="green" (click)="onConvert()">Convertir</button>
+    <button appButton (click)="fileInput.click()">
+      Convertir
+      <app-spinner *ngIf="isConverting" size="btn"></app-spinner>
+    </button>
   </div>
+  <input #fileInput type="file" (change)="loadCookies($event)" style="display: none" />
 </ng-container>
-
 
 <ng-template #spinner>
   <app-spinner></app-spinner>
