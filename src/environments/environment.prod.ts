@@ -16,5 +16,6 @@ export const environment = {
   urlFunctions: "https://us-central1-fourthproject-aff75.cloudfunctions.net/app/fire",
   sncfApi: 'https://api.sncf.com/v1',
   sncfKey: '9033880e-c8e1-4034-8818-d7a440bd1abc',
-  ffmpegService: 'https://service-cloud-run-node-365822740048.europe-west9.run.app'
+  nodeService: 'https://service-cloud-run-node-365822740048.europe-west9.run.app',
+  publicHolidayApi: 'https://date.nager.at/api/v3/publicholidays'
 };

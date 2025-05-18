@@ -2,6 +2,8 @@ import { EventService } from '@agenda/services/event.service';
 import { DatePipe } from '@angular/common';
 import {
   Component,
+  Host,
+  HostBinding,
   Input,
   OnChanges,
   OnInit,
@@ -37,6 +39,10 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   public formFields: CalEventField[] = [];
   public comments: CalEventDTO[] = [];
 
+  @HostBinding('class') get additionalClass() {
+    return `f-grow col-start-stretch ${this.day.cssClass}`;
+  }
+
   constructor(
     private eventService: EventService,
     private dayService: DayClickedService,
@@ -68,12 +74,15 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
         existField != undefined
           ? { ...field, id: existField.id as string, meta: { ...field.meta, value: true } }
           : { ...field, meta: { ...field.meta, value: false } };
-          
+
       if (this.day.cssClass === 'holiday' && field.meta?.daysWhenHoliday?.includes(this.day.day)) {
         this.formFields.push(formField);
-      } else if (this.day.cssClass != 'holiday' && field.meta?.daysWhenNotHoliday?.includes(this.day.day)) {
+      } else if (this.day.cssClass === 'public-holiday' && field.meta?.daysWhenPublicHoliday?.includes(this.day.day)) {
+        this.formFields.push(formField);
+      } else if (this.day.cssClass !== 'public-holiday' && this.day.cssClass !== 'holiday' && field.meta?.daysWhenNotHoliday?.includes(this.day.day)) {
         this.formFields.push(formField);
       }
+
     });
     this.dayService.get$.pipe(takeUntil(this.destroy$)).subscribe(date => {
       this.isActive = date && isSameDay(this.day.date, date) ? true : false;

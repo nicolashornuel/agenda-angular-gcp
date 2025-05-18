@@ -9,6 +9,7 @@ export const emptyFields: CalEventField[] = [
         type: CalEventType.FAMILY,
         daysWhenHoliday: [0, 1, 2, 3, 4, 5, 6],
         daysWhenNotHoliday: [0, 1, 2, 3, 4, 5, 6],
+        daysWhenPublicHoliday: [0, 1, 2, 3, 4, 5, 6],
         description: "Emilie travaille ce jour"
       }
     },
@@ -20,20 +21,10 @@ export const emptyFields: CalEventField[] = [
         type: CalEventType.FAMILY,
         daysWhenHoliday: [0, 1, 2, 3, 4, 5, 6],
         daysWhenNotHoliday: [0, 1, 2, 3, 4, 5, 6],
+        daysWhenPublicHoliday: [0, 1, 2, 3, 4, 5, 6],
         description: "Emilie travaille ce soir"
       }
     },
-/*     {
-      title: 'Nounou',
-      meta: {
-        start: '8:00:00',
-        end: '16:30:00',
-        type: CalEventType.FAMILY,
-        daysWhenHoliday: [1, 2, 3, 4, 5],
-        daysWhenNotHoliday: [1, 2, 3, 4, 5],
-        description: "Romane va chez nounou aujourd'hui"
-      }
-    }, */
     {
       title: 'GM',
       meta: {
@@ -42,6 +33,7 @@ export const emptyFields: CalEventField[] = [
         type: CalEventType.FAMILY,
         daysWhenHoliday: [],
         daysWhenNotHoliday: [1, 2, 4, 5],
+        daysWhenPublicHoliday: [],
         description: "Baptiste va à la garderie ce matin"
       }
     },
@@ -53,6 +45,7 @@ export const emptyFields: CalEventField[] = [
         type: CalEventType.FAMILY,
         daysWhenHoliday: [],
         daysWhenNotHoliday: [1, 2, 4, 5],
+        daysWhenPublicHoliday: [],
         description: "Baptiste mange à la cantine aujourd'hui"
       }
     },
@@ -64,20 +57,10 @@ export const emptyFields: CalEventField[] = [
         type: CalEventType.FAMILY,
         daysWhenHoliday: [],
         daysWhenNotHoliday: [1, 2, 4, 5],
+        daysWhenPublicHoliday: [],
         description: "Baptiste va à la garderie ce soir"
       }
     },
-/*     {
-      title: 'CLSH',
-      meta: {
-        start: '07:30:00',
-        end: '18:30:00',
-        type: CalEventType.FAMILY,
-        daysWhenHoliday: [1, 2, 3, 4, 5],
-        daysWhenNotHoliday: [3],
-        description: "Baptiste va au centre de loisir aujourd'hui"
-      }
-    }, */
     {
       title: 'CLSH Baptiste',
       meta: {
@@ -86,6 +69,7 @@ export const emptyFields: CalEventField[] = [
         type: CalEventType.FAMILY,
         daysWhenHoliday: [1, 2, 3, 4, 5],
         daysWhenNotHoliday: [3],
+        daysWhenPublicHoliday: [],
         description: "Baptiste va au centre de loisir aujourd'hui"
       }
     },
@@ -97,6 +81,7 @@ export const emptyFields: CalEventField[] = [
         type: CalEventType.FAMILY,
         daysWhenHoliday: [],
         daysWhenNotHoliday: [1, 2, 4, 5],
+        daysWhenPublicHoliday: [],
         description: "Romane va à la garderie ce matin"
       }
     },
@@ -108,6 +93,7 @@ export const emptyFields: CalEventField[] = [
         type: CalEventType.FAMILY,
         daysWhenHoliday: [],
         daysWhenNotHoliday: [1, 2, 4, 5],
+        daysWhenPublicHoliday: [],
         description: "Romane mange à la cantine aujourd'hui"
       }
     },
@@ -119,6 +105,7 @@ export const emptyFields: CalEventField[] = [
         type: CalEventType.FAMILY,
         daysWhenHoliday: [],
         daysWhenNotHoliday: [1, 2, 4, 5],
+        daysWhenPublicHoliday: [],
         description: "Romane va à la garderie ce soir"
       }
     },
@@ -130,6 +117,7 @@ export const emptyFields: CalEventField[] = [
         type: CalEventType.FAMILY,
         daysWhenHoliday: [1, 2, 3, 4, 5],
         daysWhenNotHoliday: [3],
+        daysWhenPublicHoliday: [],
         description: "Romane va au centre de loisir aujourd'hui"
       }
     }

@@ -8,6 +8,7 @@ import { combineLatest, take, takeUntil } from 'rxjs';
 import { CalEventEntity } from '../../models/calEvent.model';
 import { DayClickedService } from '../../services/day-clicked.service';
 import { MapperService } from '../../services/mapper.service';
+import { PublicHoliday, PublicHolidayService } from '@agenda/services/public-holiday.service';
 
 @Component({
   selector: 'app-cal-body',
@@ -20,6 +21,7 @@ export class CalBodyComponent implements OnChanges {
   @Input() isLocked!: boolean;
   public events: CalendarEvent[] = [];
   public holidays: Holiday[] = [];
+  private publicHolidays: PublicHoliday[] = [];
   public loading = false;
   public activeDayIsOpen: boolean = true;
 
@@ -28,7 +30,8 @@ export class CalBodyComponent implements OnChanges {
     private holidayService: HolidayService,
     private dayService: DayClickedService,
     private destroy$: DestroyService,
-    private mapper: MapperService
+    private mapper: MapperService,
+    private publicHolidayService: PublicHolidayService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -40,10 +43,12 @@ export class CalBodyComponent implements OnChanges {
     this.loading = true;
     combineLatest([
       this.eventService.getAll().pipe(takeUntil(this.destroy$)),
-      this.holidayService.getByYear(this.viewDate).pipe(take(1))
-    ]).subscribe(([events, holidays]) => {
+      this.holidayService.getByYear(this.viewDate).pipe(take(1)),
+      this.publicHolidayService.getByYear(this.viewDate).pipe(take(1))
+    ]).subscribe(([events, holidays, publicHolidays]) => {
       this.events = this.mapper.entitiesToDTOs(events as CalEventEntity[]);
       this.holidays = holidays;
+      this.publicHolidays = publicHolidays;
       this.loading = false;
     });
     this.dayService.get$.pipe(takeUntil(this.destroy$)).subscribe(date => {
@@ -58,8 +63,25 @@ export class CalBodyComponent implements OnChanges {
 
   public beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): void {
     body.forEach((day: CalendarMonthViewDay) => {
+
       this.holidays.forEach((holiday: Holiday) => {
-        if (day.date >= holiday.start && day.date <= holiday.end) day.cssClass = 'holiday';
+        if (day.date >= holiday.start && day.date <= holiday.end) {
+          day.cssClass = 'holiday';   
+          day.meta = {
+            ...day.meta,
+            publicEvent: holiday.description
+          };
+        };
+      });
+
+      this.publicHolidays.forEach((publicHoliday: PublicHoliday) => {
+        if (isSameDay(day.date, publicHoliday.date)) {
+          day.cssClass = 'public-holiday'
+          day.meta = {
+            ...day.meta,
+            publicEvent: publicHoliday.localName
+          };
+        };
       });
     });
   }

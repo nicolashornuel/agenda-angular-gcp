@@ -23,6 +23,7 @@ export type CalEventField = Pick<CalendarEvent<Partial<{
   end: string,
   daysWhenHoliday: number[],
   daysWhenNotHoliday: number[],
+  daysWhenPublicHoliday: number[],
   value: boolean,
   description: string,
 }>>, 'id' | 'title' | 'meta'>

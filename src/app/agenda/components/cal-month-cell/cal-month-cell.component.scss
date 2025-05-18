@@ -1,3 +1,7 @@
+
+$color-holiday: #f4cf9bb3;
+$color-public-holiday: #72cf78b3;
+
 .check-container {
     min-height: 188px;
 }
@@ -12,3 +16,35 @@
         position: relative; 
     }
 }
+
+.cal-cell-top {
+    flex-shrink: 1;
+    flex-grow: 0;
+}
+
+.holiday.check-container {
+    background: linear-gradient(to top, transparent 4%, $color-holiday 4% 7%, transparent 7% 12%);
+    &::before {
+      content: attr(data-publicEvent);
+      color: rgb(244 207 155);
+      position: absolute;
+      bottom: 10%;
+      right: 5%;
+      font-size: 14px;
+      transform: rotate(180deg);
+      writing-mode: tb;
+    }
+  }
+  .public-holiday.check-container {
+    background: linear-gradient(to top, transparent 4%, $color-public-holiday 4% 7%, transparent 7% 12%);
+    &::before {
+        content: attr(data-publicEvent);
+      color: $color-public-holiday;
+      position: absolute;
+      bottom: 10%;
+      right: 5%;
+      font-size: 14px;
+      transform: rotate(180deg);
+      writing-mode: tb;
+    }
+  }

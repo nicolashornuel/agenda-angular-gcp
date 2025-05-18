@@ -5,7 +5,7 @@
   </div>
 </div>
 
-<div class="p-3 check-container" *ngIf="day.inMonth">
+<div class="p-3 check-container f-grow" *ngIf="day.inMonth" [ngClass]="day.cssClass" [attr.data-publicEvent]="day.meta?.publicEvent">
   <ng-container *ngFor="let field of formFields">
     <app-input-checkbox
       [label]="field.title"

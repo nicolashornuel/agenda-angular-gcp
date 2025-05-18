@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 export class YoutubeConvertService {
 
   //private serviceUrl = 'http://localhost:8080';
-  private serviceUrl = environment.ffmpegService;
+  private serviceUrl = environment.nodeService;
 
   constructor(private http: HttpClient) {}
 
