@@ -89,7 +89,7 @@ export class ListeReservationComponent extends ListeController<Reservation> impl
   private getList(fieldToWhere?: { key: string; value: any }): void {
     this.isLoading = true;
     this.list$ = this.reservationService
-      .getByQuery(Reservation.START_AT.key, fieldToWhere)
+      .getByQuery({fieldPath: Reservation.START_AT.key}, fieldToWhere)
       .pipe(takeUntil(this.destroy$))
       .subscribe((reservations: Reservation[]) => {
         this.tableSet.data = reservations;

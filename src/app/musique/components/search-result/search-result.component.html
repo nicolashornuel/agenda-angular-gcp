@@ -42,7 +42,7 @@
       <div class="row-between-stretch f-wrap cards-container">
         <app-card
           *ngFor="let video of videos"
-          [title]="video.title"
+          [title]="video.channelTitle"
           backgroundColor="hsl(0, 0%, 95%)"
           [isMiniCard]="true"
           (click)="openModal(video, modal)"
@@ -51,7 +51,10 @@
           <img [src]="video.thumbnail" />
           <div class="information m-3 f-grow">
             <div>
-              {{ video.channelTitle }} - {{ video.publishedAt | date : 'MMMM y' }}
+              {{ video.title }}
+            </div>
+            <div>
+              {{ video.publishedAt | date : 'MMMM y' }}
             </div>
             <i class="fa-solid fa-thumbs-up"></i> {{ video.likeCount | numberSuffix : 2 }} •
             {{ video.viewCount | numberSuffix : 2 }} de vues

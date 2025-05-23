@@ -33,5 +33,5 @@ export const Stations: StationSelectable[] = [
   { id: StationsEnum.FIP_REGGAE, name: 'FIP_REGGAE', value: `${PREFIX}reggae${SUFFIX}` },
   { id: StationsEnum.FIP_ROCK, name: 'FIP_ROCK', value: `${PREFIX}rock${SUFFIX}` },
   { id: StationsEnum.FIP_WORLD, name: 'FIP_WORLD', value: `${PREFIX}world${SUFFIX}` },
-  { id: StationsEnum.Bassdrive, name: 'Bassdrive', value: 'http://chi.bassdrive.co/;stream/1' }
+  { id: StationsEnum.Bassdrive, name: 'Bassdrive', value: 'https://bassdrive.radioca.st/stream' } //http://chi.bassdrive.co/;stream/1
 ];

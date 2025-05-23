@@ -50,10 +50,10 @@ export abstract class FirestoreService<T> {
     return collectionData(this.collectionRef, { idField: 'id' });
   }
 
-  public getByQuery(fieldToOrder: string, fieldToWhere?: { key: string; value: any }): Observable<T[]> {
+  public getByQuery(order: { fieldPath: string | FieldPath; directionStr?: OrderByDirection }, fieldToWhere?: { key: string; value: any }): Observable<T[]> {
     const q = fieldToWhere
-      ? query(this.collectionRef, orderBy(fieldToOrder), where(fieldToWhere.key, '==', fieldToWhere.value))
-      : query(this.collectionRef, orderBy(fieldToOrder));
+      ? query(this.collectionRef, orderBy(order.fieldPath, order.directionStr), where(fieldToWhere.key, '==', fieldToWhere.value))
+      : query(this.collectionRef, orderBy(order.fieldPath, order.directionStr));
     return collectionData(q, { idField: 'id' });
   }
 

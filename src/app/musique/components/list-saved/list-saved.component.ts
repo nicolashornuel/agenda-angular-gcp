@@ -95,7 +95,8 @@ export class ListSavedComponent extends VideoController implements OnInit {
     this.onFirstPage();
     this.colSortable.getColumnSort$.pipe(takeUntil(this.destroy$)).subscribe((colSorted: ColSorted | undefined) => {
       colSorted ? (this.colSorted = colSorted) : undefined;
-      this.onFirstPage();
+
+      this.getByQuery();
     });
 
     this.getAllCategories();
@@ -141,9 +142,13 @@ export class ListSavedComponent extends VideoController implements OnInit {
   }
 
   public onCategoryFilterChange(): void {
+    this.getByQuery();
+  }
+
+  private getByQuery(): void {
     this.loading = true;
-    this.categoryFilter.value.value === 'Toutes catégories' ? this.onFirstPage() : this.videoService
-      .getByQuery('categorie', { key: this.categoryFilter.key!, value: this.categoryFilter.value.value })
+   this.categoryFilter === undefined || this.categoryFilter?.value.value === 'Toutes catégories' ? this.onFirstPage() : this.videoService
+      .getByQuery(this.colSorted, { key: this.categoryFilter.key!, value: this.categoryFilter.value.value })
       .subscribe(videos => this.defineData({items: videos, hasNext: false, hasPrevious: false}));
   }
 }

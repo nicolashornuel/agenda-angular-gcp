@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { AlertService } from '@shared/services/alert.service';
 import { DestroyService } from '@shared/services/destroy.service';
 import { RightBarIsOpenedService } from '@shared/services/shared.observable.service';
 import { TabResultService } from 'app/musique/services/musique.observable.service';
@@ -34,15 +35,16 @@ export class RadioHistoryComponent implements AfterViewInit {
     private rightBarIsOpenedService: RightBarIsOpenedService,
     private router: Router,
     private stationRadioService: StationRadioService,
-    private destroy$: DestroyService
+    private destroy$: DestroyService,
+    private alertService: AlertService
   ) {}
 
   ngAfterViewInit(): void {
     this.stationRadioService.get$.pipe(takeUntil(this.destroy$)).subscribe(station => {
       if (station) {
-        this.station = station
+        this.station = station;
         this.getLive(0);
-      };
+      }
     });
   }
 
@@ -68,15 +70,22 @@ export class RadioHistoryComponent implements AfterViewInit {
     timer(delay)
       .pipe(take(1))
       .subscribe(async () => {
-        const result = await this.radioService.getLive(this.station).refetch();
-        this.song = result.data.live ? this.transform.factory(result.data) : undefined;
-        if (this.song) {
-          this.titleService.setTitle([this.song.artist, this.song.title].join(' '));
-          this.setTicker(this.song);
-          this.getGrid();
-          this.getLive(this.delay(this.song.end) + 1000);
-        } else {
-          this.getLive(2000);
+        try {
+          const result = await this.radioService.getLive(this.station).refetch();
+          this.song = result.data.live ? this.transform.factory(result.data) : undefined;
+          if (this.song) {
+            this.titleService.setTitle([this.song.artist, this.song.title].join(' '));
+            this.setTicker(this.song);
+            this.getGrid();
+            this.getLive(this.delay(this.song.end) + 1000);
+          } else {
+            this.getLive(2000);
+          }
+        } catch (error: any) {
+          if (error.graphQLErrors?.length) {
+            let errorMessage = error.graphQLErrors.map((e: any) => e.message).join(', ');
+            this.alertService.error(errorMessage);
+          }
         }
       });
   }

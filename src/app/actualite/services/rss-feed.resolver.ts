@@ -81,7 +81,7 @@ export class RssFeedResolver<T = any> {
   }
 
   private getOrDefault(query: { key: string; value: any }): Observable<RssCard[]> {
-    return this.feedRepository.getByQuery(RssFeed.ORDER_KEY.key, query).pipe(
+    return this.feedRepository.getByQuery({fieldPath: RssFeed.ORDER_KEY.key}, query).pipe(
       map(feeds => feeds.at(0)),
       switchMap(feed => this.fetchFunction.getText(feed!.url)),
       map(doc => this.feedMapper.createCards(doc.data))
