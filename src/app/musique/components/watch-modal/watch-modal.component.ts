@@ -6,6 +6,7 @@ import { VideoController } from 'app/musique/abstracts/videoController.abstract'
 import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
 import { YoutubeService } from 'app/musique/services/youtube.service';
 import { YoutubeConvertService } from 'app/musique/services/youtube-convert.service';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-watch-modal',
@@ -18,10 +19,10 @@ export class WatchModalComponent extends VideoController implements Modal, OnIni
   public rating!: FieldSet;
   public categorie!: FieldSet;
   public categories!: Set<string>;
-    private youtubeService = inject(YoutubeService);
-    private youtubeConvert = inject(YoutubeConvertService);
-    public loading: boolean = false;
-    public isConverting: boolean = false;
+  private youtubeService = inject(YoutubeService);
+  private youtubeConvert = inject(YoutubeConvertService);
+  public loading: boolean = false;
+  public isConverting: boolean = false;
 
   ngOnInit(): void {
     this.loading = true;
@@ -55,7 +56,7 @@ export class WatchModalComponent extends VideoController implements Modal, OnIni
     const inputChanged: VideoGAPI = {
       ...this.input,
       categorie: this.categorie.value as string,
-      rating: this.rating.value as number ?? 0
+      rating: (this.rating.value as number) ?? 0
     };
     delete inputChanged.sanitized;
     inputChanged.id ? this.updateVideo(inputChanged) : this.addVideo(inputChanged);
@@ -70,25 +71,24 @@ export class WatchModalComponent extends VideoController implements Modal, OnIni
     const file = input.files[0];
     const reader = new FileReader();
 
-    reader.onload = () => {
-      this.convertVideo(reader.result as string);
-
-    };
+    reader.onload = () => this.convertVideo(reader.result as string);
 
     reader.readAsText(file);
   }
 
   private convertVideo(cookie: string): void {
-    this.youtubeConvert.convertYoutubeToMp3(this.input.videoId, cookie).subscribe(blob => {
-      // Créer un lien de téléchargement
-      const a = document.createElement('a');
-      const objectUrl = URL.createObjectURL(blob);
-      a.href = objectUrl;
-      a.download = `${this.input.title}.mp3`; // Nom du fichier
-      a.click();
-      URL.revokeObjectURL(objectUrl);
-      this.isConverting = false;
-    });
+    this.youtubeConvert.convertYoutubeToMp3(this.input.videoId, cookie).subscribe(
+      blob => {
+        // Créer un lien de téléchargement
+        const a = document.createElement('a');
+        const objectUrl = URL.createObjectURL(blob);
+        a.href = objectUrl;
+        a.download = `${this.input.title}.mp3`; // Nom du fichier
+        a.click();
+        URL.revokeObjectURL(objectUrl);
+        this.isConverting = false;
+      },
+      _error => (this.isConverting = false)
+    );
   }
-
 }

@@ -10,10 +10,11 @@ export class YoutubeConvertService {
 
   //private serviceUrl = 'http://localhost:8080';
   private serviceUrl = environment.nodeService;
+  
 
   constructor(private http: HttpClient) {}
 
   public convertYoutubeToMp3(videoId: string, cookie: string): Observable<any> {
-    return this.http.post(`${this.serviceUrl}/convert`, { cookie, url: videoId }, { responseType: 'blob' });
+    return this.http.post(`${this.serviceUrl}/youtube/convert`, { cookie, url: videoId }, { responseType: 'blob' });
   }
 }

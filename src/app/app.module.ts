@@ -13,6 +13,7 @@ import { RadioModule } from 'app/radio/radio.module';
 import { environment } from '../environments/environment.prod';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CoreModule } from '@core/core.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,6 +23,7 @@ import { AppComponent } from './app.component';
     HttpClientModule,
     RadioModule,
     SharedModule,
+    CoreModule,
     BrowserAnimationsModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
