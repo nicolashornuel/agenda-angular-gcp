@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { IsAdmin } from '@core/decorators/hasRole.decorator';
 import { AbstractTable } from '@shared/abstracts/abstract-table.directive';
 import { ActionSet, CellRenderers, ColumnCustom, TableSet } from '@shared/models/tableSet.interface';
 import { RssFeed } from 'app/actualite/models/rss-feed.model';
@@ -31,15 +32,18 @@ export class ListFeedComponent extends AbstractTable<RssFeed> {
     ];
   }
 
+  @IsAdmin()
   public onAdd() {
     this.tableSet.data.push(new RssFeed(this.tableSet.data.length + 1));    
   }
 
+  @IsAdmin()
   public override onSave() {
     let promises = this.tableSet.data.map( feed => this.feedService.saveOrUpdate(feed));
     Promise.all(promises).then(() => super.onSave());
   }
-
+  
+  @IsAdmin()
   private delete(rssFeed: RssFeed, index: number) {
     this.tableSet.data.splice(index, 1);
     if (rssFeed.id) this.feedService.delete(rssFeed.id!);

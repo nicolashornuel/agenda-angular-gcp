@@ -49,6 +49,12 @@ export class AuthService {
     );
   }
 
+  public signInLikeVisitor(): void{
+    this.storage.setLocalItem(KEY_STORAGE_USER, { uid: 'visitor', displayName: 'Visiteur' });
+    this.isLoggedIn$.next(true);
+    this.router.navigate(['/agenda']);
+  }
+
   public signOut(): Promise<void> {
     return signOut(this.auth).then(
       _response => {
@@ -78,7 +84,7 @@ export class AuthService {
     this.alert.error(error.message);
   }
 
-  private async checkUser(uid: string): Promise<boolean> {
+  public async checkUser(uid: string): Promise<boolean> {
     const userSaved = await this.userService.getOne(uid);
     return userSaved ? true : false;
   }

@@ -1,5 +1,6 @@
 import { Component, HostBinding, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { IsAdmin } from '@core/decorators/hasRole.decorator';
 import { FirestoreStorageService } from '@core/services/firebasestorage.service';
 import { Modal, ModalParam } from '@shared/models/modalParam.interface';
 import { AlertService } from '@shared/services/alert.service';
@@ -52,38 +53,47 @@ export class TabContentComponent implements OnInit {
 
   /////////////////////////////////////// EVENTS
 
+  @IsAdmin()
   public onAddField(): void {
     this.openItemModal(this.editionField, 'Créer une donnée', new AbstractField(this.list));
   }
 
+  @IsAdmin()
   public onAddTitle(): void {
     this.openItemModal(this.editionTitle, 'Créer un titre de section', new AbstractTitle(this.list));
   }
 
+  @IsAdmin()
   public onAddSeparator(): void {
     this.saveDocument(new AbstractSeparator(this.list));
   }
 
+  @IsAdmin()
   public async onUp(index: number) {
     await this.reorder(index, index - 1);
   }
 
+  @IsAdmin()
   public async onDown(index: number) {
     await this.reorder(index + 1, index);
   }
 
+  @IsAdmin()
   public onSave(document: AbstractField): void {
     this.saveDocument(document);
   }
 
+  @IsAdmin()
   public onEditField(item: AbstractField) {
     this.openItemModal(this.editionField, 'Modifier une donnée', item);
   }
 
+  @IsAdmin()
   public onEditTitle(item: AbstractField) {
     this.openItemModal(this.editionTitle, 'Modifier une donnée', item);
   }
 
+  @IsAdmin()
   public async onDelete(item: AbstractField) {
     await this.memoService.delete(item.id!);
     if (item.type === AbstractField.FILE) await this.firebaseStorage.delete(this.routePath, item.value.name);

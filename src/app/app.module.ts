@@ -1,7 +1,7 @@
 import { DatePipe, registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import localeFr from '@angular/common/locales/fr';
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { Injector, LOCALE_ID, NgModule } from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
@@ -14,6 +14,7 @@ import { environment } from '../environments/environment.prod';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from '@core/core.module';
+import { GlobalInjector } from '@core/decorators/global-injector';
 
 @NgModule({
   declarations: [AppComponent],
@@ -53,7 +54,8 @@ import { CoreModule } from '@core/core.module';
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor() {
+  constructor(injector: Injector) {
     registerLocaleData(localeFr);
+    GlobalInjector.injector = injector;
   }
 }

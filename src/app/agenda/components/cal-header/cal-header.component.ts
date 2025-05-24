@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { IsAdmin } from '@core/decorators/hasRole.decorator';
 import { CalendarView } from 'angular-calendar';
 
 @Component({
@@ -24,7 +25,8 @@ export class CalHeaderComponent {
 
   CalendarView = CalendarView;
 
-  onToggleLock(): void {
+  @IsAdmin()
+  public onToggleLock(): void {
     this.isLocked = !this.isLocked;
     this.isLockedChange.emit(this.isLocked)
   }

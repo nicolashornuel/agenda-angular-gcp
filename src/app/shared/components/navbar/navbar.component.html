@@ -10,9 +10,14 @@
     </div>
     <div class="row-center-center gap-2">
       <button appButton outline size="regular" color="light" (click)="signOut.next()">Déconnexion</button>
-      <ng-container *ngIf="userImg">
+      <ng-container *ngIf="userImg; else noUserImg">
           <img [src]="userImg" class="user-img">
       </ng-container>
+      <ng-template #noUserImg>
+        <div class="user-img">
+          <img src="assets/user-secret.png" class="">
+        </div>
+      </ng-template>
     </div>
 
 

@@ -1,4 +1,5 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
+import { IsAdmin } from '@core/decorators/hasRole.decorator';
 import { Selectable } from '@shared/models/fieldSet.model';
 import { Modal, ModalParam } from '@shared/models/modalParam.interface';
 import {DestroyService} from '@shared/services/destroy.service';
@@ -95,12 +96,14 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
       : this.audioSelectParamService.createOne(equalizerParam, 'equalizer');
   }
 
+
   public onResetSelected(): void {
     this.selected.value = this.equalizerParam!.list.find(selectParam => selectParam.name === this.selected.name)!.value;
     this.isDirty = false;
     this.updateNode();
   }
 
+  @IsAdmin()
   public async onSaveAll(): Promise<void> {
     this.modalService.set$(undefined);
     this.isDirty = false;
@@ -108,12 +111,14 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
     await this.saveParam(index);
   }
 
+  @IsAdmin()
   public async onDeleteSelected(): Promise<void> {
     const index = this.options.findIndex(option => option.name === this.selected.name);
     this.options.splice(index, 1);
     await this.saveParam(this.options.length - 1);
   }
 
+  @IsAdmin()
   public async onCreate(selectParam: Selectable<any>): Promise<void> {
     this.options.push(selectParam);
     this.selected = this.options[this.options.length - 1];
@@ -121,6 +126,7 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
     await this.saveParam(this.options.length - 1);
   }
 
+  @IsAdmin()
   public onOpenModal(templateRef: TemplateRef<Modal>): void {
     const selectParam: Selectable<any> = {
       name: this.MESSAGE_NEW,

@@ -38,4 +38,8 @@ export class SignInComponent implements OnInit {
     this.isLoading = false;
   }
 
+  public visit(): void {
+    this.auth.signInLikeVisitor();
+  }
+
 }

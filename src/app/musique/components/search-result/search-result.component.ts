@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
+import { IsAdmin } from '@core/decorators/hasRole.decorator';
 import { VideoController } from 'app/musique/abstracts/videoController.abstract';
 import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
 import { DiscogsService } from 'app/musique/services/discogs.service';
@@ -43,7 +44,8 @@ export class SearchResultComponent extends VideoController implements OnInit {
     }
   }
 
-  onAdd(video: VideoGAPI): void {
+  @IsAdmin()
+  public onAdd(video: VideoGAPI): void {
     const entity = { ...video };
     if (this.extractWiki) entity.extractWiki = this.extractWiki;
     delete entity.sanitized;

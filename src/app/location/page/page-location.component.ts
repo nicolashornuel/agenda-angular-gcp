@@ -9,6 +9,7 @@ import {
   mobileMarkerOptions
 } from '../models/locations.constant';
 import { LocationFunctionService } from '../services/location.firestore.service';
+import { IsAdmin } from '@core/decorators/hasRole.decorator';
 
 @Component({
   selector: 'app-page-location',
@@ -47,6 +48,7 @@ export class PageLocationComponent implements OnInit {
     new Leaflet.Popup().setLatLng(position).setContent(`${position}`).addTo(this.map);
   }
 
+  @IsAdmin()
   public onDeleteData(): void {
     this.isLoading = true;
     let promises = this.locations.map(location => this.locationFunctionService.delete(location.id));

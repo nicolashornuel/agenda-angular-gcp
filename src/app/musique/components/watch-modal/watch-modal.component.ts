@@ -1,12 +1,12 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
-import { Modal } from '@shared/models/modalParam.interface';
+import { IsAdmin } from '@core/decorators/hasRole.decorator';
 import { FieldSet } from '@shared/models/fieldSet.model';
+import { Modal } from '@shared/models/modalParam.interface';
 import { VideoController } from 'app/musique/abstracts/videoController.abstract';
 import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
-import { YoutubeService } from 'app/musique/services/youtube.service';
 import { YoutubeConvertService } from 'app/musique/services/youtube-convert.service';
-import { catchError, of } from 'rxjs';
+import { YoutubeService } from 'app/musique/services/youtube.service';
 
 @Component({
   selector: 'app-watch-modal',
@@ -48,10 +48,12 @@ export class WatchModalComponent extends VideoController implements Modal, OnIni
     this.getCategories().subscribe(categories => (this.categories = categories));
   }
 
+  @IsAdmin()
   public onDelete(): void {
     this.deleteVideo(this.input);
   }
 
+  @IsAdmin()
   public onSave(): void {
     const inputChanged: VideoGAPI = {
       ...this.input,
@@ -62,6 +64,7 @@ export class WatchModalComponent extends VideoController implements Modal, OnIni
     inputChanged.id ? this.updateVideo(inputChanged) : this.addVideo(inputChanged);
   }
 
+  @IsAdmin()
   public loadCookies(event: Event): void {
     this.isConverting = true;
 
