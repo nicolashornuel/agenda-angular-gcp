@@ -21,7 +21,7 @@ const routes: Routes = [
       { path: 'emilie', component: TabContentComponent },
       { path: 'nicolas', component: TabContentComponent },
       { path: 'maison', component: TabContentComponent },
-      { path: 'to-do', component: ToDoComponent },
+      /* { path: 'to-do', component: ToDoComponent }, */
     ]
   }
 ];

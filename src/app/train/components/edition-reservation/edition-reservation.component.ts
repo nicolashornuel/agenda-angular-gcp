@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { IsAdmin } from '@core/decorators/hasRole.decorator';
 import { DataField, DataFile, DataList, DataSelect, FieldSet } from '@shared/models/fieldSet.model';
 import { ModalService } from '@shared/services/shared.observable.service';
 import { Reservation, TrajetStatus } from 'app/train/models/reservation.model';
@@ -50,6 +51,7 @@ export class EditionReservationComponent implements OnInit {
     this.modalService.set$(undefined);
   }
 
+  @IsAdmin()
   public async onSave(): Promise<void> {
     this.output.emit(this.input);
     this.modalService.set$(undefined);

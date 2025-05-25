@@ -9,6 +9,10 @@ import { AudioSelectParam, AudioSelectParamService } from 'app/radio/services/au
 
 import {takeUntil} from 'rxjs';
 
+interface EqSelectable extends Selectable<any> {
+isDirty: boolean;
+  }
+
 @Component({
   selector: 'app-audio-control-equ',
   templateUrl: './audio-control-equ.component.html',
@@ -18,15 +22,15 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
   private readonly FREQS = [32, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];
   private readonly MESSAGE_DEFAULT = 'Défaut';
   private readonly MESSAGE_NEW = 'Nouveau';
-  public readonly DEFAULT_PARAM = {name: this.MESSAGE_DEFAULT, value: this.FREQS.map(_freq => 0)};
-/*   public readonly DEFAULT_PARAM = {name: this.MESSAGE_DEFAULT, value: this.FREQS.map(_freq => 0), isDirty: false};
- */
+  //public readonly DEFAULT_PARAM = {name: this.MESSAGE_DEFAULT, value: this.FREQS.map(_freq => 0)};
+  public readonly DEFAULT_PARAM = {name: this.MESSAGE_DEFAULT, value: this.FREQS.map(_freq => 0), isDirty: false};
+
   public equalizerParam?: AudioSelectParam;
   public eqs!: BiquadFilterNode[];
-  public options!: Selectable<any>[];
-  public selected!: Selectable<any>;
+  public options!: EqSelectable[];
+  public selected!: EqSelectable;
   public isLoading = true;
-  public isDirty = false;
+  //public isDirty = false;
 
   constructor(
     private audioSelectParamService: AudioSelectParamService,
@@ -67,12 +71,11 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
       .subscribe(equalizerParam => {
         if (equalizerParam) {
           this.equalizerParam = equalizerParam;
-          this.options = [this.DEFAULT_PARAM, ...equalizerParam.list];
-/*           this.options = [this.DEFAULT_PARAM, ...equalizerParam.list.map(selectParam => ({...selectParam, isDirty: false}))];
- */          this.selected = this.options[equalizerParam!.selected ?? 0 ];
+          this.options = [this.DEFAULT_PARAM, ...equalizerParam.list.map(selectParam => ({...selectParam, isDirty: false}))];
+          this.selected = this.options[equalizerParam!.selected ?? 0 ];
         } else {
           this.options = [this.DEFAULT_PARAM];
-          this.selected = this.options [0];
+          this.selected = this.options[0];
         }
         this.isLoading = false;
         this.updateNode();
@@ -98,15 +101,17 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
 
 
   public onResetSelected(): void {
+    this.selected.name = this.selected.name.replace('*', '');
     this.selected.value = this.equalizerParam!.list.find(selectParam => selectParam.name === this.selected.name)!.value;
-    this.isDirty = false;
+    this.selected.isDirty = false;
     this.updateNode();
   }
 
   @IsAdmin()
   public async onSaveAll(): Promise<void> {
     this.modalService.set$(undefined);
-    this.isDirty = false;
+    this.selected.isDirty = false;
+    this.selected.name = this.selected.name.replace('*', '');
     const index = this.options.findIndex(option => option.name === this.selected.name);
     await this.saveParam(index);
   }
@@ -119,7 +124,7 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
   }
 
   @IsAdmin()
-  public async onCreate(selectParam: Selectable<any>): Promise<void> {
+  public async onCreate(selectParam: EqSelectable): Promise<void> {
     this.options.push(selectParam);
     this.selected = this.options[this.options.length - 1];
     this.modalService.set$(undefined);
@@ -145,7 +150,9 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
   }
 
   public onSliderChange(): void {
-    this.isDirty = true;
+    this.selected.isDirty = true;
+    this.selected.name = this.selected.name.startsWith("*") ? `${ this.selected.name}` : `*${ this.selected.name}`;  
     this.selected.value = this.eqs.map(eq => eq.gain.value);
   }
+
 }

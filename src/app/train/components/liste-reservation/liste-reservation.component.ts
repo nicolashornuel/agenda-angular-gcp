@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { IsAdmin } from '@core/decorators/hasRole.decorator';
 import { FirestoreStorageService } from '@core/services/firebasestorage.service';
 import { Color } from '@shared/models/color.enum';
 import {
@@ -66,6 +67,7 @@ export class ListeReservationComponent extends ListeController<Reservation> impl
     this.onOpenModal('Créer une réservation', new Reservation());
   }
 
+  @IsAdmin()
   public onConfirmDelete(row: Reservation) {
     this.reservationService.delete(row.id!);
     this.modalService.set$(undefined);

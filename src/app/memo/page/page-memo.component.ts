@@ -34,11 +34,11 @@ export class PageMemoComponent {
       closable: false,
       link: 'maison',
     },
-    {
+/*     {
       name: 'À faire',
       closable: false,
       link: 'to-do',
-    }
+    } */
   ];
   
 
