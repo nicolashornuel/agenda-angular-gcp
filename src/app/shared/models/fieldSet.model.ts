@@ -61,6 +61,7 @@ export interface FieldComponent {
 
 export interface Selectable<T> extends Nameable {
   value?: T;
+  isDirty?: boolean;
 }
 
 export class Selectable<T> {

@@ -1,6 +1,6 @@
 <div class="col-between-stretch h-100" *ngIf="!isLoading; else spinner">
   <div class="row gap-2">
-    <app-select class="select-param" [options]="options" [(selected)]="selected" (selectedChange)="onSelect()" [isDirty]="selected.isDirty"></app-select>
+    <app-select class="select-param" [options]="options" [(selected)]="selected" (selectedChange)="onSelect()" dirtyType="dirtyOption"></app-select>
     <app-button-group>
       <button appButton outline (click)="onResetSelected()" [disabled]="!selected.isDirty || !equalizerParam">Reset</button>
       <button appButton outline (click)="onSaveAll()" [disabled]="!selected.isDirty">Save</button>

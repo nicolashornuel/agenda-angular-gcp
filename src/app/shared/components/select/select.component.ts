@@ -19,6 +19,7 @@ export class SelectComponent extends AbstractInputComponent {
   @Input() options!: Selectable<any>[];
   @Input() selected!: Selectable<any>;
   @Input() isDirty: boolean = false;
+  @Input() dirtyType: 'dirtySelect' | 'dirtyOption' = 'dirtySelect';
   @Output() selectedChange = new EventEmitter<any>();
 
   public compareFn(c1: Selectable<any>, c2: Selectable<any>): boolean {

@@ -12,6 +12,9 @@ $width-action: 110px;
     .memo-cell {
       display: table-cell;
     }
+    .memo-cell.memo-value  {
+        word-break: break-word;
+    }
   }
 
   .memo-label {

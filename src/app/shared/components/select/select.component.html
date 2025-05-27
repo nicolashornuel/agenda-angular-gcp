@@ -1,9 +1,38 @@
-<div class="input-select-container">
-  <select class="select" required placeholder=" " (change)="selectedChange.emit(selected)" [(ngModel)]="selected" [compareWith]="compareFn" [ngClass]="isDirty ? 'dirty' : ''">
-    <option *ngFor="let item of options" [ngValue]="item">{{ item.name }}</option>
-  </select>
+
+  <div [ngSwitch]="dirtyType" class="input-select-container">
+
+    <ng-container *ngSwitchCase="'dirtySelect'">
+    <select
+      class="select"
+      required
+      placeholder=" "
+      (change)="selectedChange.emit(selected)"
+      [(ngModel)]="selected"
+      [compareWith]="compareFn"
+      [ngClass]="selected.isDirty ? 'dirty' : ''"
+    >
+      <option *ngFor="let item of options" [ngValue]="item">{{ item.name }}</option>
+    </select>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'dirtyOption'">
+    <select
+      class="select"
+      required
+      placeholder=" "
+      (change)="selectedChange.emit(selected)"
+      [(ngModel)]="selected"
+      [compareWith]="compareFn"
+    >
+      <option *ngFor="let option of options" [ngValue]="option" [ngClass]="option.isDirty ? 'dirty' : ''">
+        {{ option.name }}
+      </option>
+    </select>
+    </ng-container>
+
   <label class="row-start-center">
     {{ label + asterix }}
   </label>
-</div>
 
+  </div>
+ 
