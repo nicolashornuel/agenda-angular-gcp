@@ -1,7 +1,5 @@
-import { EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { FileStorage } from '@core/services/firebasestorage.service';
-import { InputFileComponent } from '@shared/components/input-file/input-file.component';
 
 export interface Nameable {
   name: string;
@@ -49,14 +47,6 @@ export class DataSelect<T> extends FieldSet {
     super(fieldSet);
     this.options = options;
   }
-}
-
-export interface FieldComponent {
-  data: FieldSet;
-  dataChange: EventEmitter<FieldSet>;
-  readonly?: boolean;
-  parentForm?: NgForm;
-  //onSave: (value: string | number | boolean) => void;
 }
 
 export interface Selectable<T> extends Nameable {

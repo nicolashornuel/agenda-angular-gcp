@@ -9,7 +9,6 @@ export interface VideoGAPI {
   thumbnail: string;
   channelTitle: string;
   src: string;
-  sanitized?: string;
   categorie: string;
   extractWiki?: string;
   rating: number;

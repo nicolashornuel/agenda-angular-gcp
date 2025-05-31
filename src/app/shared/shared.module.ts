@@ -23,14 +23,10 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { PopoverComponent } from './components/popover/popover.component';
-import { PriorityComponent } from './components/priority/priority.component';
 import { RightBarComponent } from './components/right-bar/right-bar.component';
-import { SelectComponent } from './components/select/select.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { TableCellHeaderComponent } from './components/table-cell-header/table-cell-header.component';
 import { TableCellComponent } from './components/table-cell/table-cell.component';
-import { TableCheckboxComponent } from './components/table-checkbox/table-checkbox.component';
-import { TableInputComponent } from './components/table-input/table-input.component';
 import { TableComponent } from './components/table/table.component';
 import { TabsComponent } from './components/tabs/tabs.component';
 import { TooltipComponent } from './components/tooltip/tooltip.component';
@@ -43,20 +39,17 @@ import { InputFileComponent } from './components/input-file/input-file.component
 import { AccordionComponent } from './components/accordion/accordion.component';
 import { NumberSuffixPipe } from './pipes/number-suffix.pipe';
 import { InputSelectComponent } from './components/input-select/input-select.component';
+import { InputStarComponent } from './components/input-star/input-star.component';
 
 const sharedComponents = [
   TableComponent,
   TableCellComponent,
-  PriorityComponent,
-  SelectComponent,
   SpinnerComponent,
   TableCellHeaderComponent,
   AlertComponent,
   TooltipComponent,
   NavbarComponent,
   PopoverComponent,
-  TableInputComponent,
-  TableCheckboxComponent,
   LayoutComponent,
   AbstractNgModelComponent,
   AbstractInputComponent,
@@ -80,7 +73,8 @@ const sharedComponents = [
   BadgeLinkComponent,
   InputFileComponent,
   AccordionComponent,
-  InputSelectComponent
+  InputSelectComponent,
+  InputStarComponent
 ]
 
 const sharedModules = [

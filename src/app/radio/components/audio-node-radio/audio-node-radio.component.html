@@ -1,10 +1,22 @@
 <section class="row gap-2">
-  <app-select class="select-param" [options]="radioList" [(selected)]="radioSelected" (selectedChange)="onSelectStation()"></app-select>
+  <app-input-select
+    class="select-param"
+    [options]="radioList"
+    [(ngModel)]="radioSelected"
+    (ngModelChange)="onSelectStation()"
+  ></app-input-select>
   <button appButton outline (click)="onTooglePlay()">
     <app-icon [path]="isPlaying ? 'pause' : 'play'"></app-icon>
   </button>
 </section>
 
-<audio #audio [src]="radioSelected.value" preload="auto" controls style="display: none" crossorigin="anonymous">
+<audio
+  #audio
+  [src]="radioSelected.value"
+  preload="auto"
+  controls
+  style="display: none"
+  crossorigin="anonymous"
+>
   <source type="audio/mpeg" />
 </audio>

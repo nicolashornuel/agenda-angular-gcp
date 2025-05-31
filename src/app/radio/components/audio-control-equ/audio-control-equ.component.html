@@ -1,11 +1,31 @@
 <div class="col-between-stretch h-100" *ngIf="!isLoading; else spinner">
   <div class="row gap-2">
-    <app-select class="select-param" [options]="options" [(selected)]="selected" (selectedChange)="onSelect()" dirtyType="dirtyOption"></app-select>
+    <app-input-select
+      class="select-param"
+      [options]="options"
+      [(ngModel)]="selected"
+      (ngModelChange)="onSelect()"
+      dirtyType="dirtyOption"
+    ></app-input-select>
     <app-button-group>
-      <button appButton outline (click)="onResetSelected()" [disabled]="!selected.isDirty || !equalizerParam">Reset</button>
+      <button
+        appButton
+        outline
+        (click)="onResetSelected()"
+        [disabled]="!selected.isDirty || !equalizerParam"
+      >
+        Reset
+      </button>
       <button appButton outline (click)="onSaveAll()" [disabled]="!selected.isDirty">Save</button>
       <button appButton outline (click)="onOpenModal(modal)">Add</button>
-      <button appButton outline (click)="onDeleteSelected()" [disabled]="selected === DEFAULT_PARAM ">Delete</button>
+      <button
+        appButton
+        outline
+        (click)="onDeleteSelected()"
+        [disabled]="selected === DEFAULT_PARAM"
+      >
+        Delete
+      </button>
     </app-button-group>
   </div>
 
@@ -31,10 +51,10 @@
 
 <ng-template #modal let-selectParam>
   <app-input-text
-  class="d-block my-3"
-  #inputText
-  [(ngModel)]="selectParam.name"
-  label="Nom du paramêtre"
+    class="d-block my-3"
+    #inputText
+    [(ngModel)]="selectParam.name"
+    label="Nom du paramêtre"
   ></app-input-text>
   <div class="row-end-center gap-2">
     <button appButton color="green" (click)="onCreate(selectParam)">Create</button>

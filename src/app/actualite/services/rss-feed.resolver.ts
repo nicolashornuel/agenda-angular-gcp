@@ -3,7 +3,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AbstractFetchFunctionService } from '@core/services/abstractFetchFunction.service';
 import { TabParam } from '@shared/models/tabParam.interface';
 import { UtilService } from '@shared/services/util.service';
-import { map, Observable, switchMap, take, takeUntil, tap } from 'rxjs';
+import { filter, map, Observable, switchMap, take, takeUntil, tap } from 'rxjs';
 import { RssCard } from '../models/rss-card.model';
 import { RssFeed } from '../models/rss-feed.model';
 import { RssFeedService } from './rss-feed.service';
@@ -82,6 +82,8 @@ export class RssFeedResolver<T = any> {
 
   private getOrDefault(query: { key: string; value: any }): Observable<RssCard[]> {
     return this.feedRepository.getByQuery({fieldPath: RssFeed.ORDER_KEY.key}, query).pipe(
+      take(1),
+      filter(feeds => feeds.length > 0),
       map(feeds => feeds.at(0)),
       switchMap(feed => this.fetchFunction.getText(feed!.url)),
       map(doc => this.feedMapper.createCards(doc.data))

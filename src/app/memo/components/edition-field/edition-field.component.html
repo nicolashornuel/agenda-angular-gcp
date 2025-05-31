@@ -1,11 +1,12 @@
 <form #form="ngForm" class="col">
-    <app-select
+    <app-input-select
       class="py-3"
       [options]="type.options"
-      [(selected)]="input.type"
+      [(ngModel)]="input.type"
       [label]="type.name"
-      (selectedChange)="onSelectChange()"
-    ></app-select>
+      name="type"
+      (ngModelChange)="onSelectChange()"
+    ></app-input-select>
   
     <app-input-text
       class="py-3"

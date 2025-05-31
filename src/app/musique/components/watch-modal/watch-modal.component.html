@@ -19,12 +19,12 @@
     />
   </div>
   <div class="row-between-center my-3 gap-5">
-    <app-priority [data]="rating"></app-priority>
+    <app-input-star [(ngModel)]="input.rating"></app-input-star>
     <app-input-suggestion
       class="f-grow"
       [options]="categories"
       label="Catégorie"
-      [(ngModel)]="categorie.value"
+      [(ngModel)]="input.categorie"
     >
     </app-input-suggestion>
   </div>

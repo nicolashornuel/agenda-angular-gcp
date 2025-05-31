@@ -1,19 +1,43 @@
 <div class="input-select-container">
 
-  <ng-container *ngIf="dataSelect; else loadingTpl">
+  <ng-container *ngIf="options; else loadingTpl">
     <select
     class="select"
     required
     placeholder=" "
-    (change)="selectedChange.emit(dataSelect.value)"
-    [(ngModel)]="dataSelect.value"
+    (ngModelChange)="onModelChange.emit(value)"
+    [(ngModel)]="value"
     [compareWith]="compareFn"
-    [ngClass]="isDirty ? 'dirty' : ''"
   >
-    <option *ngFor="let item of dataSelect.options" [ngValue]="item">{{ item.name }}</option>
+    <option *ngFor="let item of options" [ngValue]="item">{{ item.name }}</option>
   </select>
   <label class="row-start-center">
-    {{ dataSelect.name + asterix }}
+    {{ label + asterix }}
+  </label>
+  </ng-container>
+
+  <ng-template #loadingTpl>
+    <div class="select">
+      <app-spinner></app-spinner>
+    </div>
+  </ng-template>
+
+</div>
+<!-- <div class="input-select-container">
+
+  <ng-container *ngIf="fieldSet; else loadingTpl">
+    <select
+    class="select"
+    required
+    placeholder=" "
+    (ngModelChange)="fieldSetChange.emit(fieldSet.value)"
+    [(ngModel)]="fieldSet.value"
+    [compareWith]="compareFn"
+  >
+    <option *ngFor="let item of fieldSet.options" [ngValue]="item">{{ item.name }}</option>
+  </select>
+  <label class="row-start-center">
+    {{ fieldSet.name + asterix }}
   </label>
   </ng-container>
 
@@ -24,4 +48,4 @@
     </div>
   </ng-template>
 
-</div>
+</div> -->

@@ -45,7 +45,6 @@ class YoutubeVideo {
   thumbnail!: string;
   channelTitle!: string;
   src!: string;
-  sanitized!: any;
   viewCount: number;
   likeCount: number;
   constructor(
@@ -71,7 +70,6 @@ class YoutubeVideo {
     this.thumbnail = url;
     this.channelTitle = channelTitle;
     this.src = `https://www.youtube.com/embed/${id}`;
-    this.sanitized = _sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${id}`);
     this.viewCount = parseInt(viewCount);
     this.likeCount = parseInt(likeCount);
   }

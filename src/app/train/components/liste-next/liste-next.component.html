@@ -1,13 +1,16 @@
 <div class="row-end-center my-3">
-  <app-select class="col-5" [options]="select.options" [(selected)]="select.value" [label]="select.name" (selectedChange)="onSelectChange()"></app-select>
+  <app-input-select
+    class="col-5"
+    [options]="select.options"
+    [(ngModel)]="select.value"
+    [label]="select.name"
+    (ngModelChange)="onSelectChange()"
+  ></app-input-select>
 </div>
 
 <ng-container *ngIf="!isLoading; else spinner">
-
   <section class="scrolling">
-
     <div *ngFor="let item of liste" class="journey">
-
       <div class="row-start-start f-wrap height-row-45 header">
         <div class="width-col-150 self-start relative">
           <div class="col-start-start network" [ngClass]="isTimeDisplay ? 'show' : 'hide'">
@@ -16,7 +19,10 @@
           </div>
           <div class="col-start-start network" [ngClass]="!isTimeDisplay ? 'show' : 'hide'">
             <span>{{ item.delay }}</span>
-            <app-disruption *ngIf="item.disruptionId" [disruptionId]="item.disruptionId"></app-disruption>
+            <!-- <app-disruption
+              *ngIf="item.disruptionId"
+              [disruptionId]="item.disruptionId"
+            ></app-disruption> -->
           </div>
         </div>
         <h1 class="width-col-150 text-center fw-semibold yellow">
@@ -28,11 +34,8 @@
       </div>
 
       <app-liste-arret [trajetId]="item.trajetId"></app-liste-arret>
-
     </div>
-
   </section>
-
 </ng-container>
 
 <ng-template #spinner>

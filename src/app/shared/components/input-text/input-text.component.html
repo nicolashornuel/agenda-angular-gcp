@@ -7,6 +7,7 @@
     (blur)="onBlur.next()"
     (focus)="onFocus.next()"
     [(ngModel)]="value"
+    (ngModelChange)="onModelChange.emit($event)"
   />
   <label>
     <span>{{ label }}</span>

@@ -1,17 +1,17 @@
 <input
   type="number"
   min="0"
-  max="3"
-  [name]="data.name"
+  max="5"
   [readonly]="inputReadonly"
   [required]="inputRequired"
   (blur)="onBlur.next()"
   (focus)="onFocus.next()"
-  [(ngModel)]="data.value"
+  [(ngModel)]="value"
+  (ngModelChange)="onModelChange.emit($event)"
 />
 <div
   class="rates"
-  *ngFor="let ratingId of ratingArr; index as i"
+  *ngFor="let ratingId of [0, 1, 2, 3, 4]; index as i"
   (click)="onClick(i + 1)"
   (mouseenter)="onPreview(i + 1)"
   (mouseleave)="onPreview(i + 1)"

@@ -1,6 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { Pageable } from '@core/services/firestore.service';
-import { PriorityComponent } from '@shared/components/priority/priority.component';
 import { DataSelect, Selectable } from '@shared/models/fieldSet.model';
 import { Modal } from '@shared/models/modalParam.interface';
 import { CellRenderers, ColumnSet, TableSet } from '@shared/models/tableSet.interface';
@@ -74,10 +73,7 @@ export class ListSavedComponent extends VideoController implements OnInit {
         title: 'Classement',
         type: 'custom',
         visible: true,
-        render: {
-          component: PriorityComponent,
-          valuePrepare: (row: VideoGAPI, col: ColumnSet) => CellRenderers.toField(row, col)
-        }
+        render: CellRenderers.toPriority()
       }
     ],
     data: []

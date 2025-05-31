@@ -1,14 +1,13 @@
+import { DatePipe } from '@angular/common';
 import { Component, TemplateRef } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Modal, ModalParam } from '@shared/models/modalParam.interface';
 import { AlertService } from '@shared/services/alert.service';
 import { DestroyService } from '@shared/services/destroy.service';
+import { ModalService } from '@shared/services/shared.observable.service';
 import { Observable, map, takeUntil } from 'rxjs';
 import { VideoGAPI } from '../models/videoGAPI.interface';
 import { VideoService } from '../services/musique.firestore.service';
-import { Modal, ModalParam } from '@shared/models/modalParam.interface';
-import { ModalService } from '@shared/services/shared.observable.service';
-import { UtilService } from '@shared/services/util.service';
-import { DatePipe } from '@angular/common';
 
 @Component({template: ''})
 export abstract class VideoController {

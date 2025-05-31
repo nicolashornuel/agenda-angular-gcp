@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment.prod';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, filter, map, tap } from 'rxjs';
 import { JourneyDTO, NavitiaResponse, Disruption, DisruptionDTO, ScheduleDTO, Schedule } from '../models/sncf.model';
 
 @Injectable({
@@ -56,7 +56,10 @@ export class SncfService {
    * get disruption by id
    */
   public getDisruption(id: string): Observable<DisruptionDTO> {
-    return this.get(`coverage/sncf/disruptions/${id}`).pipe(
+    //return this.get(`coverage/sncf/disruptions/${id}`).pipe(
+    return this.get(`coverage/sncf/disruptions/`).pipe(
+      filter(response => response.disruptions && response.disruptions.length > 0),
+      tap(response => console.log('Disruption response:', response)),
       map(response => this.mapperDisruption(response.disruptions[0]))
     );
   }
@@ -88,7 +91,7 @@ export class SncfService {
       networkId: schedule.route.line.network.id
     }));
   }
-  private mapperArrivals(response: NavitiaResponse): JourneyDTO[] {
+  private mapperArrivals(response: NavitiaResponse): JourneyDTO[] {    
     return response.arrivals!.map(arrival => ({
       disruptionId: arrival.display_informations.links[0]?.id,
       ...arrival.display_informations,

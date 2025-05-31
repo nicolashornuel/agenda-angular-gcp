@@ -1,8 +1,11 @@
 <div class="row-end-center mb-3">
+
   <app-input-select
+    *ngIf="categoryFilter; else spinner"
     class="col-3"
-    [dataSelect]="categoryFilter"
-    (selectedChange)="onCategoryFilterChange()"
+    [options]="categoryFilter.options"
+    [(ngModel)]="categoryFilter.value"
+    (ngModelChange)="onCategoryFilterChange()"
   ></app-input-select>
 
     <app-button-group class="mx-3">

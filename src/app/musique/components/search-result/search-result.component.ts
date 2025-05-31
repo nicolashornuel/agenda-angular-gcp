@@ -48,7 +48,6 @@ export class SearchResultComponent extends VideoController implements OnInit {
   public onAdd(video: VideoGAPI): void {
     const entity = { ...video };
     if (this.extractWiki) entity.extractWiki = this.extractWiki;
-    delete entity.sanitized;
     this.addVideo(entity);
   }
 }

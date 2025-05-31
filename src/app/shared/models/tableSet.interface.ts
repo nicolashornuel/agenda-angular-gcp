@@ -1,9 +1,11 @@
+import { ComponentRef, EventEmitter } from '@angular/core';
 import { BadgeLinkComponent } from '@shared/components/badge-link/badge-link.component';
-import { TableCheckboxComponent } from '@shared/components/table-checkbox/table-checkbox.component';
+import { InputCheckboxComponent } from '@shared/components/input-checkbox/input-checkbox.component';
+import { InputTextComponent } from '@shared/components/input-text/input-text.component';
 import { FieldSet, Nameable } from '@shared/models/fieldSet.model';
 import { Color } from './color.enum';
-import { TableInputComponent } from '@shared/components/table-input/table-input.component';
-import { InputTextComponent } from '@shared/components/input-text/input-text.component';
+import { AbstractInputComponent } from '@shared/abstracts/input.component';
+import { InputStarComponent } from '@shared/components/input-star/input-star.component';
 
 export interface TableSet {
   title?: string;
@@ -24,12 +26,12 @@ export interface TableSet {
 export class TableSet implements TableSet {
   constructor(height: string) {
     this.height = height;
-    this.verticaltextHeader = false,
-    this.hover = false,
-    this.height = height, //  'calc(100vh - 240px)',
-    this.columnSet = [],
-    this.actionSet = [],
-    this.data = []
+    (this.verticaltextHeader = false),
+      (this.hover = false),
+      (this.height = height), //  'calc(100vh - 240px)',
+      (this.columnSet = []),
+      (this.actionSet = []),
+      (this.data = []);
   }
 }
 
@@ -39,10 +41,10 @@ export interface ActionSet {
 }
 
 export class ActionSet {
-  public static readonly EDIT = "fas fa-pencil-alt";
-  public static readonly DELETE = "fas fa-trash-alt";
-  public static readonly CANCEL = "fas fa-times";
-  public static readonly SAVE = "fas fa-save";
+  public static readonly EDIT = 'fas fa-pencil-alt';
+  public static readonly DELETE = 'fas fa-trash-alt';
+  public static readonly CANCEL = 'fas fa-times';
+  public static readonly SAVE = 'fas fa-save';
   constructor(icon: string, method: (row: any, index?: number) => Promise<any> | void) {
     this.icon = icon;
     this.method = method;
@@ -56,11 +58,14 @@ export interface ColumnSet {
   visible: boolean;
   width?: string;
   innerHTML?: (row: any, col: ColumnSet) => string;
-  render?: {
-    component: any;
-    valuePrepare: (row: any, col: ColumnSet) => FieldSet | any;
-    valueSave?: (row: any) => any;
-  };
+  render?: ColumnCustomRenderer<any, any, any>;
+}
+
+export interface ColumnCustomRenderer<T, C, F> {
+    component: C;
+    bind: (row: T, key: string, componentRef: ComponentRef<C>) => void;
+    listener?: (componentRef: ComponentRef<C>) => EventEmitter<F>;
+    valueSave?: (row: T) => any;
 }
 
 interface DataColumn<T extends 'string' | 'custom' | 'html' | 'date'> {
@@ -73,8 +78,7 @@ interface DataColumn<T extends 'string' | 'custom' | 'html' | 'date'> {
 
 class DataColumn<T> implements DataColumn<T> {
   constructor(fieldSet: FieldSet, visible: boolean, type: T) {
-    (this.key = fieldSet.key!), (this.title = fieldSet.name), (this.visible = visible)
-    , this.type = type;
+    (this.key = fieldSet.key!), (this.title = fieldSet.name), (this.visible = visible), (this.type = type);
   }
 
   setWidth(width: string) {
@@ -96,15 +100,11 @@ export class ColumnString extends DataColumn<'string'> {
   }
 }
 export class ColumnCustom extends DataColumn<'custom'> {
-  render:
-    | { component: any; valuePrepare: (row: any, col: ColumnSet) => any; valueSave?: ((row: any) => any) | undefined }
-    | undefined;
+  render: ColumnCustomRenderer<any, any, any>; 
   constructor(
     name: Nameable,
     visible: boolean,
-    render:
-      | { component: any; valuePrepare: (row: any, col: ColumnSet) => any; valueSave?: (row: any) => any }
-      | undefined
+    render: ColumnCustomRenderer<any, any, any>
   ) {
     super(name, visible, 'custom');
     this.render = render;
@@ -112,13 +112,14 @@ export class ColumnCustom extends DataColumn<'custom'> {
 }
 
 export class CellRenderers {
-  
-  public static toField(row: any, col: ColumnSet, disabled?: boolean): FieldSet {
+
+  public static toInputComponent(component: any extends AbstractInputComponent ? AbstractInputComponent : any): ColumnCustomRenderer<any, any, any> {
     return {
-      name: col.key,
-      value: row[col.key],
-      disabled: disabled ?? true,
-      required: true
+      component,
+      bind: (row: any, key: string, componentRef: ComponentRef<AbstractInputComponent>) => {
+        componentRef.instance.value = row[key];
+      },
+      listener: (componentRef: ComponentRef<AbstractInputComponent>) => componentRef.instance.onModelChange
     };
   }
 
@@ -140,33 +141,30 @@ export class CellRenderers {
   }
 
   public static toCheckBox() {
-    return {
-      component: TableCheckboxComponent,
-      valuePrepare: (row: any, col: ColumnSet) => CellRenderers.toField(row, col)
-    };
+    return CellRenderers.toInputComponent(InputCheckboxComponent);
   }
 
   public static toInputText() {
-    return {
-      component: TableInputComponent,
-      valuePrepare: (row: any, col: ColumnSet) => CellRenderers.toField(row, col)
-    };
+    return CellRenderers.toInputComponent(InputTextComponent);
   }
 
   public static toSimpleBadge() {
     return {
       component: BadgeLinkComponent,
-      valuePrepare: (row: any, col: ColumnSet) => ({
-        text: (row[col.key] as Nameable).name,
-        color: (row[col.key] as any).color ?? 'light'
-      })
+      bind: (row: any, key: string, componentRef: ComponentRef<BadgeLinkComponent>) => {
+        componentRef.instance.data = {
+          text: (row[key] as Nameable).name,
+          color: (row[key] as any).color ?? 'light'
+        };
+      }
     };
   }
 
   public static toBoolean(): (row: any, col: ColumnSet) => string {
-    return (row: any, col: ColumnSet) => row[col.key] ? `<i class="fa-solid fa-check green"></i>`: `<i class="fa-solid fa-xmark red"></i>`;
+    return (row: any, col: ColumnSet) =>
+      row[col.key] ? `<i class="fa-solid fa-check green"></i>` : `<i class="fa-solid fa-xmark red"></i>`;
   }
-  
+
   public static toDevise(suffix: string): (row: any, col: ColumnSet) => string {
     return (row: any, col: ColumnSet) => `${row[col.key].toFixed(2)} ${suffix}`;
   }
@@ -174,13 +172,18 @@ export class CellRenderers {
   public static toBadgeLink(color: Color, prefix: string, tooltip: string) {
     return {
       component: BadgeLinkComponent,
-      valuePrepare: (row: any, col: ColumnSet) => ({
-        text: (row[col.key] as FieldSet).name,
-        link: prefix + (row[col.key] as FieldSet).value,
-        tooltip,
-        color
-      })
+      bind: (row: any, key: string, componentRef: ComponentRef<BadgeLinkComponent>) => {
+        componentRef.instance.data = {
+          text: (row[key] as FieldSet).name,
+          link: prefix + (row[key] as FieldSet).value,
+          tooltip,
+          color
+        };
+      }
     };
   }
-  
+
+  public static toPriority() {
+    return CellRenderers.toInputComponent(InputStarComponent);
+  }
 }
