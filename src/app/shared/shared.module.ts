@@ -40,6 +40,7 @@ import { AccordionComponent } from './components/accordion/accordion.component';
 import { NumberSuffixPipe } from './pipes/number-suffix.pipe';
 import { InputSelectComponent } from './components/input-select/input-select.component';
 import { InputStarComponent } from './components/input-star/input-star.component';
+import { DraggableDirective } from './directives/draggable.directive';
 
 const sharedComponents = [
   TableComponent,
@@ -89,13 +90,14 @@ const sharedDirectives = [
   PopoverDirective,
   ButtonDirective,
   IsMobileDirective,
-  NumberSuffixPipe
+  NumberSuffixPipe,
+  DraggableDirective
 ]
 
 @NgModule({
   declarations: [
     sharedComponents,
-    sharedDirectives
+    sharedDirectives,
   ],
   imports: [
     sharedModules

@@ -22,6 +22,7 @@
     "@asymmetrik/ngx-leaflet": "^15.0.1",
     "angular-calendar": "^0.31.0",
     "apollo-angular": "^5.0.2",
+    "chart.js": "^4.4.9",
     "date-fns": "^2.29.3",
     "graphql": "^16.8.1",
     "leaflet": "^1.9.4",

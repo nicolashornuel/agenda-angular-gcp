@@ -1,9 +1,13 @@
 <app-layout>
   <section class="container" *ngIf="!loading; else spinner" class="">
+    
     <app-card [title]="city.name">
-      <app-forecast-card [forecast]="forecasts[0]" [isBig]="true"></app-forecast-card>
+      <div class="gap-3 mt-3 card-header-container">
+        <app-forecast-map></app-forecast-map>
+        <app-forecast-card [forecast]="forecasts[0]" [isBig]="true"></app-forecast-card>
+      </div>
     </app-card>
-    <app-carousel>
+    <!-- <app-carousel>
       <div
         appCarouselItem
         *ngFor="let forecast of forecasts | slice : 1 : forecasts.length - 1"
@@ -11,7 +15,22 @@
       >
         <app-forecast-card [forecast]="forecast"></app-forecast-card>
       </div>
-    </app-carousel>
+    </app-carousel> -->
+
+    <!-- <app-forecast-chart [forecasts]="forecasts"></app-forecast-chart> -->
+
+    <div class="parent-container">
+      <div appDraggable class="col-center-start">
+        <div class="row-center-center">
+          <app-forecast-card
+            *ngFor="let forecast of forecasts | slice : 1 : forecasts.length - 1"
+            [forecast]="forecast"
+          ></app-forecast-card>
+        </div>
+        <app-forecast-chart [forecasts]="forecasts | slice : 1 : forecasts.length - 1" [isTempOnly]="true"></app-forecast-chart>
+      </div>
+    </div>
+
   </section>
 </app-layout>
 
