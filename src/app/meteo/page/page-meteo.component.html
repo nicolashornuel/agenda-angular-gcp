@@ -1,36 +1,52 @@
 <app-layout>
-  <section class="container" *ngIf="!loading; else spinner" class="">
-    
-    <app-card [title]="city.name">
-      <div class="gap-3 mt-3 card-header-container">
+
+  <section class="container" *ngIf="!loading; else spinner">
+
+    <ng-container *ngIf="isMobileService.get$ | async; else nomobile">
+      <div class="col-start-stretch gap-3 mt-3">
+        <app-card [title]="city.name"></app-card>
+        <app-forecast-card [forecast]="forecasts[0]" view="row"></app-forecast-card>
+        <app-pollutant [pollutants]="pollutants" view="row"></app-pollutant>
         <app-forecast-map></app-forecast-map>
-        <app-forecast-card [forecast]="forecasts[0]" [isBig]="true"></app-forecast-card>
       </div>
-    </app-card>
-    <!-- <app-carousel>
-      <div
-        appCarouselItem
-        *ngFor="let forecast of forecasts | slice : 1 : forecasts.length - 1"
-        class="col-center-center column-elt"
-      >
-        <app-forecast-card [forecast]="forecast"></app-forecast-card>
-      </div>
-    </app-carousel> -->
-
-    <!-- <app-forecast-chart [forecasts]="forecasts"></app-forecast-chart> -->
-
-    <div class="parent-container">
-      <div appDraggable class="col-center-start">
-        <div class="row-center-center">
-          <app-forecast-card
-            *ngFor="let forecast of forecasts | slice : 1 : forecasts.length - 1"
-            [forecast]="forecast"
-          ></app-forecast-card>
+      <app-carousel
+        ><div
+          appCarouselItem
+          *ngFor="let forecast of forecasts | slice : 1 : forecasts.length - 1"
+          class="col-center-center column-elt"
+        >
+          <app-forecast-card [forecast]="forecast"></app-forecast-card>
         </div>
-        <app-forecast-chart [forecasts]="forecasts | slice : 1 : forecasts.length - 1" [isTempOnly]="true"></app-forecast-chart>
-      </div>
-    </div>
+      </app-carousel>
+      <app-forecast-chart [forecasts]="forecasts"></app-forecast-chart>
+    </ng-container>
 
+    <ng-template #nomobile>
+      <app-card [title]="city.name">
+        <div class="row-start-stretch gap-3 mt-3">
+          <app-forecast-map class="col-6 row"></app-forecast-map>
+          <app-forecast-card class="col-4 card-header" [forecast]="forecasts[0]" view="col"></app-forecast-card>
+          <app-pollutant class="col-2 col-between-stretch" [pollutants]="pollutants" view="col"></app-pollutant>
+        </div>
+      </app-card>
+
+      <div id="legend-container" class="row-center-center gap-2"></div>
+
+      <div class="parent-container">
+        <div appDraggable class="col-center-start">
+          <div class="row-center-center">
+            <app-forecast-card
+              *ngFor="let forecast of forecasts | slice : 1 : forecasts.length - 1"
+              [forecast]="forecast"
+            ></app-forecast-card>
+          </div>
+          <app-forecast-chart
+            [forecasts]="forecasts | slice : 1 : forecasts.length - 1"
+            [isTempOnly]="true"
+          ></app-forecast-chart>
+        </div>
+      </div>
+    </ng-template>
   </section>
 </app-layout>
 

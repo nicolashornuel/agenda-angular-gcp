@@ -1,9 +1,8 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { DestroyService } from '@shared/services/destroy.service';
 import { IsMobileService } from '@shared/services/shared.observable.service';
-import { RadioPlayingService } from '@core/services/core.observable.service';
 import { AudioNodeController } from 'app/radio/abstracts/audioDirective.abstract';
-import { AudioVolumeService, StationRadioService } from 'app/radio/services/audio.observable.service';
+import { AudioVolumeService, RadioPlayingService, StationRadioService } from 'app/radio/services/audio.observable.service';
 
 import { combineLatest, takeUntil } from 'rxjs';
 import { StationSelectable, Stations } from 'app/radio/enums/radioFrance.enum';

@@ -1,5 +1,11 @@
-<ng-container *ngIf="isBig; else small">
-  <div class="row-center-center">
+<ng-container [ngSwitch]="view">
+  <ng-container *ngSwitchCase="'row'" [ngTemplateOutlet]="row"></ng-container>
+  <ng-container *ngSwitchCase="'col'" [ngTemplateOutlet]="col"></ng-container>
+  <ng-container *ngSwitchCase="'small'" [ngTemplateOutlet]="small"></ng-container>
+</ng-container>
+
+<ng-template #row>
+  <div class="row-around-center">
     <img [src]="'https://openweathermap.org/img/wn/' + forecast.weather[0].icon + '@4x.png'" />
     <div class="col-center-center single">
       <div>{{ forecast.dt * 1000 | date : 'EEEE d MMMM y à H' }}h</div>
@@ -11,14 +17,26 @@
       <div><i class="fas fa-wind"></i> {{ forecast.wind.speed * 3.6 | number : '1.0-0' }}km/h</div>
     </div>
   </div>
-</ng-container>
+</ng-template>
+
+<ng-template #col>
+  <div class="col-center-center">
+    <img [src]="'https://openweathermap.org/img/wn/' + forecast.weather[0].icon + '@4x.png'" />
+    <div class="col-center-center single">
+      <div>{{ forecast.dt * 1000 | date : 'EEEE d MMMM y à H' }}h</div>
+      <div>
+        <span class="temperature">{{ forecast.main.temp | number : '1.0-0' }}</span>
+        <span>°C</span>
+      </div>
+      <div><i class="fas fa-droplet"></i> {{ forecast.main.humidity | number : '1.0' }}%</div>
+      <div><i class="fas fa-wind"></i> {{ forecast.wind.speed * 3.6 | number : '1.0-0' }}km/h</div>
+    </div>
+  </div>
+</ng-template>
 
 <ng-template #small>
-  
   <div class="border"></div>
-
     <img class="small-img" [src]="'https://openweathermap.org/img/wn/' + forecast.weather[0].icon + '@2x.png'" />
-    
     <div class="col-start-start width gap-2 text">
       <div >
         <span>{{ forecast.main.temp | number : '1.0-0' }}</span>
@@ -30,9 +48,9 @@
         <div >{{ forecast.wind.speed * 3.6 | number : '1.0-0' }}km/h</div>
       </div>
     </div>
-
     <div class="text border">{{ forecast.dt * 1000 | date : 'E HH:mm' }}</div>
-
     <div class="border"></div>
-
 </ng-template>
+
+
+

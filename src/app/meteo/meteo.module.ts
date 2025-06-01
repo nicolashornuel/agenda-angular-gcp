@@ -6,6 +6,7 @@ import { ForecastCardComponent } from './components/forecast-card/forecast-card.
 import { PageMeteoComponent } from './page/page-meteo.component';
 import { ForecastChartComponent } from './components/forecast-chart/forecast-chart.component';
 import { ForecastMapComponent } from './components/forecast-map/forecast-map.component';
+import { PollutantComponent } from './components/pollutant/pollutant.component';
 
 const routes: Routes = [
   {path: '', component: PageMeteoComponent},
@@ -22,7 +23,8 @@ export class MeteoRoutingModule { }
     ForecastCardComponent,
     PageMeteoComponent,
     ForecastChartComponent,
-    ForecastMapComponent
+    ForecastMapComponent,
+    PollutantComponent
   ],
   imports: [MeteoRoutingModule, CommonModule, SharedModule],
 })

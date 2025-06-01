@@ -8,6 +8,6 @@ import { Forecast } from 'app/meteo/models/meteo.interface';
 })
 export class ForecastCardComponent {
   @Input() forecast!:Forecast;
-  @Input() isBig = false;
+  @Input() view: 'col' | 'row' | 'small' = 'small';
 
 }

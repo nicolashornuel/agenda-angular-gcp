@@ -1,18 +1,12 @@
 import { Injectable } from '@angular/core';
-import {
-  Auth,
-  GoogleAuthProvider,
-  UserCredential,
-  UserInfo,
-  signInWithPopup,
-  signOut
-} from '@angular/fire/auth';
+import { Auth, GoogleAuthProvider, UserCredential, UserInfo, signInWithPopup, signOut } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { AlertService } from '@shared/services/alert.service';
 import { Observable, of } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { StorageService } from './storage.service';
 import { UserService } from './user.service';
+import { VisitService } from './visit.service';
 
 export const KEY_STORAGE_USER = 'user';
 
@@ -20,9 +14,6 @@ export const KEY_STORAGE_USER = 'user';
   providedIn: 'root'
 })
 export class AuthService {
-  /*   user$ = user(this.auth);
-  authState$ = authState(this.auth);
-  idToken$ = idToken(this.auth); */
 
   private readonly isLoggedIn$ = new BehaviorSubject<boolean>(false);
   public isLoggedIn = false;
@@ -33,7 +24,8 @@ export class AuthService {
     private storage: StorageService,
     private alert: AlertService,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private visitService: VisitService
   ) {}
 
   public get getUserLoggedIn$(): Observable<boolean> {
@@ -49,7 +41,8 @@ export class AuthService {
     );
   }
 
-  public signInLikeVisitor(): void{
+  public signInLikeVisitor(): void {
+    this.visitService.save({ browser: navigator.userAgent, time: new Date().getTime(), date: new Date() });
     this.storage.setLocalItem(KEY_STORAGE_USER, { uid: 'visitor', displayName: 'Visiteur' });
     this.isLoggedIn$.next(true);
     this.router.navigate(['/agenda']);

@@ -71,7 +71,7 @@ export class ForecastChartComponent implements AfterViewInit {
             display: false
           }
         }
-      }
+      },
     }
   }
 

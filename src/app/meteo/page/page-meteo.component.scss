@@ -20,23 +20,9 @@
     overflow: hidden;    /* cache tout dépassement */
   }
 
-
-  .card-header-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    * {
-      flex-basis: 50%;
-    }
-  }
-  @media (max-width: 768px) {
-    .card-header-container {
-      display: flex;
-      flex-direction: column-reverse;
-      align-items: stretch;
-      * {
-        flex-basis: 100%;
-      }
-    }
+  .card-header {
+    border: 1px solid $grey-90;
+    border-radius: 16px;
+    padding: 16px;
+    background-color: $grey-98;
   }

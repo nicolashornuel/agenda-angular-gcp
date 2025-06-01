@@ -1,0 +1,36 @@
+@import 'variables.scss';
+
+  .good {
+    color: $green;
+  }
+  .fair {
+    color: $orange-hover;
+  }
+  .moderate {
+    color: $orange-active;
+  }
+  .poor {
+    color: $red-hover;
+  }
+  .very_poor {
+    color: $red-active;
+  }
+
+  .pollutant-name {
+    color: $grey-0;
+  }
+
+  .pollutant-description  {
+    font-weight: 400;
+    font-size: 12px;
+    color: $grey-60;
+  }
+
+  .pollutant-header {
+    font-weight: 600;
+    font-size: 15px;
+    border-bottom: 1px solid $grey-80;
+  }
+  .pollutant-container {
+    border: 1px solid $grey-80;
+  }

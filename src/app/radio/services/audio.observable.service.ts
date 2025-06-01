@@ -37,3 +37,12 @@ export class StationRadioService extends BehaviorSubjectService<StationsEnum> {
     super(StationsEnum.FIP);
   }
 }
+
+@Injectable({
+  providedIn: 'root'
+})
+export class RadioPlayingService extends BehaviorSubjectService<boolean> {
+  constructor() {
+    super(false);
+  }
+}
