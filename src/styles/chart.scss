@@ -1,0 +1,31 @@
+@import 'variables.scss';
+
+.chart-legend {
+	display: flex;
+	position: relative;
+	color: grey;
+}
+
+.chart-legend.right {
+	flex-direction: column;
+	justify-content: center;
+	row-gap: .5rem;
+}
+
+.chart-legend .chart-legend-row {
+	display: flex;
+	align-items: center;
+}
+
+.chart-legend .chart-legend-puce {
+	border-radius: 50%;
+	padding: .5rem;
+	margin-right: .5rem;
+	cursor: pointer;
+}
+
+.chart-legend .chart-legend-text {
+	margin-right: .5rem;
+	white-space: preserve-spaces;
+	pointer-events: none;
+}

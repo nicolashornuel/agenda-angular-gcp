@@ -14,5 +14,6 @@
       "extensions": []
     }
   },
-  "postCreateCommand": "npm install"
+  "postCreateCommand": "npm install",
+  "postStartCommand": "npm run start"
 }
