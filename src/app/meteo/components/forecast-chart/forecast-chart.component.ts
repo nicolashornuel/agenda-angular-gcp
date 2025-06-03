@@ -210,8 +210,6 @@ export class ForecastChartComponent implements AfterViewInit {
         }
 
         row.onclick = () => {
-          console.log(chart);
-          
           const meta = chart.getDatasetMeta(index);
           meta.hidden = meta.hidden === null ? true : !meta.hidden;
           chart.update();

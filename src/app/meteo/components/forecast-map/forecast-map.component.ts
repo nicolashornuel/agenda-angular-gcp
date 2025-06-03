@@ -12,7 +12,7 @@ private _sanitizer = inject(DomSanitizer);
 
   async ngOnInit(): Promise<void> {
     const { coords }: GeolocationPosition = await this.getCurrentPositionAsync();
-    const src = `https://embed.windy.com/embed2.html?lat=${coords.latitude}&lon=${coords.longitude}&zoom=10`;
+    const src = `https://embed.windy.com/embed2.html?lat=${coords.latitude}&lon=${coords.longitude}&zoom=5`;
     this.src = this._sanitizer.bypassSecurityTrustResourceUrl(src);
   }
 
