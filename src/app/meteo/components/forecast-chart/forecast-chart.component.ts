@@ -43,32 +43,30 @@ export class ForecastChartComponent implements AfterViewInit {
           padding: {
             top: 0,
             bottom: 0,
-            left: 30,
-            right: 70
+            left: 0,
+            right: 0
           }
         },
         responsive: true,
         scales: {
           y: {
+            ticks: {
+              display: false,
+            },
+            grid: {
+              drawTicks: false,
+            },
             beginAtZero: false // 👈 Cette ligne évite de forcer le zéro
           },
-          x1: {
-           ticks: {
-              display: false // ❌ cache les labels de l'axe X
-            },
-          },
-          x2: {
+          x: {
             ticks: {
-              display: false // ❌ cache les labels de l'axe X
+              display: false // ou true selon ce que tu veux afficher
             },
-            grid: { drawOnChartArea: false } // ne pas afficher les lignes de grille
+            grid: {
+              drawOnChartArea: true
+            }
           },
-          x3: {
-            ticks: {
-              display: false // ❌ cache les labels de l'axe X
-            },
-            grid: { drawOnChartArea: false } // ne pas afficher les lignes de grille
-          }
+
         },
         maintainAspectRatio: false, // 👈 pour que le graphique prenne toute la hauteur du conteneur
         plugins: {
@@ -110,11 +108,11 @@ export class ForecastChartComponent implements AfterViewInit {
               Math.min(...forecasts.map(forecast => forecast.temp)),
               Math.max(...forecasts.map(forecast => forecast.temp))
             )
-          ), // Couleur de fond basée sur la température
+          ),
           tension: 0.2,
           borderWidth: 1,
           order: 1,
-          xAxisID: 'x1'
+          xAxisID: 'x'
         },
         {
           type: 'line',
@@ -122,7 +120,7 @@ export class ForecastChartComponent implements AfterViewInit {
           data: forecasts.map(forecast => forecast.windSpeed),
           tension: 0.2,
           order: 2,
-          xAxisID: 'x2'
+          xAxisID: 'x'
         },
         {
           type: 'bar',
@@ -132,7 +130,7 @@ export class ForecastChartComponent implements AfterViewInit {
           backgroundColor: 'rgba(99, 174, 255, 0.2)',
           borderWidth: 1,
           order: 3,
-          xAxisID: 'x3'
+          xAxisID: 'x'
         }
       ]
     };
@@ -211,7 +209,9 @@ export class ForecastChartComponent implements AfterViewInit {
           chart.update();
         }
 
-        row.onclick = function (e) {
+        row.onclick = () => {
+          console.log(chart);
+          
           const meta = chart.getDatasetMeta(index);
           meta.hidden = meta.hidden === null ? true : !meta.hidden;
           chart.update();
