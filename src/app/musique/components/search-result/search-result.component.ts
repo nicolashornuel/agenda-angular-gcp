@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { IsAdmin } from '@core/decorators/hasRole.decorator';
+import { WikipediaService } from '@core/services/wikipedia.service';
 import { VideoController } from 'app/musique/abstracts/videoController.abstract';
 import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
 import { DiscogsService } from 'app/musique/services/discogs.service';
-import { WikipediaService } from 'app/musique/services/wikipedia.service';
 import { OrderYoutube, YoutubeService } from 'app/musique/services/youtube.service';
 import { forkJoin, take } from 'rxjs';
 

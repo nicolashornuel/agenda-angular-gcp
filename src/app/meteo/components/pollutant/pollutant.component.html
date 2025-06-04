@@ -3,27 +3,33 @@
     <div *ngFor="let pollutant of pollutants" class="f-grow pollutant-container">
       <div class="row-center-start pollutant-header px-2">
         <span class="pollutant-name mr-1">{{ pollutant.name }} :</span>
-        <span [ngClass]="pollutant.level.class" [appTooltip]="pollutant.value">{{ pollutant.level.label }}</span>
-      </div>
-      <span class="row-center-start pollutant-description px-2">{{ pollutant.description }}</span>
-    </div>
-  </div>
-  <ng-container *ngSwitchCase="'col'">
-    <div *ngFor="let pollutant of pollutants">
-      <div class="row-between-center pollutant-header px-1">
-        <span class="pollutant-name">{{ pollutant.name }} : </span>
-
-
-      <div>
         <span [ngClass]="pollutant.level.class" [appTooltip]="pollutant.value">{{
           pollutant.level.label
         }}</span>
       </div>
+      <span class="row-center-start pollutant-description px-2">{{ pollutant.description }}</span>
+    </div>
+  </div>
 
+  <ng-container *ngSwitchCase="'col'">
+    <div *ngFor="let pollutant of pollutants">
+      <div class="row-between-center pollutant-header px-1">
+        <div>
+          <ng-container *ngIf="!isLoading">
+            <span class="pollutant-name d-block" [appTooltip]="pollutant.wikiContent"
+              >{{ pollutant.name }} :
+            </span>
+          </ng-container>
+        </div>
 
+        <div>
+          <span [ngClass]="pollutant.level.class" [appTooltip]="pollutant.value">{{
+            pollutant.level.label
+          }}</span>
+        </div>
       </div>
-      <span class="pollutant-description d-block px-1">{{ pollutant.description }}</span>
+
+      <span class="pollutant-description px-1">{{ pollutant.description }}</span>
     </div>
   </ng-container>
-
 </ng-container>

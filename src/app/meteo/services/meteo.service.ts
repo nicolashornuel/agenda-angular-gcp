@@ -43,7 +43,8 @@ export class MeteoService {
           name: key,
           value: element,
           level: this.getPollutionLevel(element, Object.values(this.abaque[abaqueKey].range)),
-          description: this.abaque[abaqueKey].description
+          description: this.abaque[abaqueKey].description,
+          wiki: this.abaque[abaqueKey].wiki,
         });
       }
     }
@@ -59,14 +60,14 @@ export class MeteoService {
   private readonly VERY_POOR = {label:'Très élevé', class: 'very_poor'};
 
   private abaque = {
-    co: {range: [4400, 9400, 12400, 15400], description: "monoxyde de carbone"},
-    nh3: {range: [0, 0, 0, 200], description: "ammoniac"},
-    no: {range: [0, 0, 0, 100], description: "monoxyde d'azote"},
-    no2: {range: [40, 70, 150, 200], description: "dioxyde d'azote"},
-    o3: {range: [60, 100, 140, 180], description: "ozone"},
-    pm2_5: {range: [10, 25, 50, 75], description: "particules fines PM2.5"},
-    pm10: {range: [20, 50, 100, 200], description: "particules fines PM10"},
-    so2: {range: [20, 80, 250, 350], description: "dioxyde de soufre"},
+    co: {range: [4400, 9400, 12400, 15400], description: "monoxyde de carbone", wiki: "Monoxyde de carbone"},
+    nh3: {range: [0, 0, 0, 200], description: "ammoniac", wiki: "Ammoniac"},
+    no: {range: [0, 0, 0, 100], description: "monoxyde d'azote", wiki: "Monoxyde d'azote"},
+    no2: {range: [40, 70, 150, 200], description: "dioxyde d'azote", wiki: "Dioxyde d'azote"},
+    o3: {range: [60, 100, 140, 180], description: "ozone", wiki: "Ozone"},
+    pm2_5: {range: [10, 25, 50, 75], description: "particules fines PM2.5", wiki: "Particules en suspension"},
+    pm10: {range: [20, 50, 100, 200], description: "particules fines PM10", wiki: "Particules en suspension"},
+    so2: {range: [20, 80, 250, 350], description: "dioxyde de soufre", wiki: "Dioxyde de soufre"},
   };
 
   private getPollutionLevel(component: number, list: number[]): {label: string, class: string} {
