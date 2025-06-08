@@ -1,4 +1,5 @@
 import { Component, HostBinding, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { IsAdmin } from '@core/decorators/hasRole.decorator';
 import { FirestoreStorageService } from '@core/services/firebasestorage.service';
@@ -18,7 +19,7 @@ import { combineLatest, takeUntil } from 'rxjs';
 export class TabContentComponent implements OnInit {
   public isLoading!: boolean;
   public list: AbstractField[] = [];
-  public innerWidth!: number
+  public innerWidth!: number;
   private activatedRoute = inject(ActivatedRoute);
   private destroy$ = inject(DestroyService);
   private modalService = inject(ModalService);
@@ -26,6 +27,7 @@ export class TabContentComponent implements OnInit {
   private memoService = inject(MemoService);
   private firebaseStorage = inject(FirestoreStorageService);
   private viewPortService = inject(ViewPortService);
+  private _sanitizer = inject(DomSanitizer);
   private routePath!: string;
   @ViewChild('editionField') editionField!: TemplateRef<Modal>;
   @ViewChild('editionTitle') editionTitle!: TemplateRef<Modal>;
@@ -43,12 +45,12 @@ export class TabContentComponent implements OnInit {
   private initData(): void {
     this.isLoading = true;
     combineLatest([this.memoService.getAll(), this.viewPortService.get$])
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(values => {
-      this.sortDesc(values[0]);
-      this.innerWidth = values[1]!;
-      this.isLoading = false;
-    });
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(values => {
+        this.sortDesc(values[0]);
+        this.innerWidth = values[1]!;
+        this.isLoading = false;
+      });
   }
 
   /////////////////////////////////////// EVENTS
@@ -117,11 +119,21 @@ export class TabContentComponent implements OnInit {
       await this.firebaseStorage.storeFile(this.routePath, document.value);
       document.value = { ...document.value };
     }
+    if (document.type.name === AbstractField.HTML.name) {
+      delete document.safeHtml;
+      
+    }
     await this.memoService.saveOrUpdate(document);
   }
 
   private sortDesc(list: AbstractField[]): void {
-    this.list = list.sort((a, b) => a.order - b.order);
+    this.list = [...list] // éviter la mutation de l’original
+      .sort((a, b) => a.order - b.order)
+      .map(item =>
+        item.type.name === AbstractField.HTML.name && typeof item.value === 'string'
+          ? { ...item, safeHtml: this._sanitizer.bypassSecurityTrustHtml(item.value) }
+          : item
+      );
   }
 
   private async reorder(toUp: number, toDown: number): Promise<void> {

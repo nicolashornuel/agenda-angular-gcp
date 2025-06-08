@@ -1,3 +1,4 @@
+import { SafeHtml } from "@angular/platform-browser";
 import { FieldSet, Selectable } from "@shared/models/fieldSet.model";
 
 export interface AbstractItem extends FieldSet {
@@ -7,6 +8,7 @@ export interface AbstractItem extends FieldSet {
 }
 
 export class AbstractItem {
+  safeHtml?: SafeHtml;
   constructor(type: Selectable<string>, order: number) {
     this.type = type;
     this.order = order;
@@ -32,6 +34,7 @@ export class AbstractField extends AbstractItem {
   public static readonly DATE = { name: 'Date', value: 'date' };
   public static readonly FILE = { name: 'Fichier', value: 'file' };
   public static readonly LINK = { name: 'Lien', value: 'link' };
+  public static readonly HTML = { name: 'Html', value: 'html' };
   constructor(list: AbstractItem[]) {
     const order = list.length > 0 ? ++list[list.length - 1].order : 0;
     super(AbstractField.TEXT, order);

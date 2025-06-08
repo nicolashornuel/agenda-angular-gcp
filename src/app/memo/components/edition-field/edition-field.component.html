@@ -53,9 +53,9 @@
         rows="5"
         [required]="true"
       ></app-input-textarea>
-      
+
       <app-input-textarea
-        *ngSwitchDefault
+        *ngSwitchCase="'html'"
         class="py-3"
         label="valeur"
         [(ngModel)]="input.value"
@@ -63,6 +63,7 @@
         rows="5"
         [required]="true"
       ></app-input-textarea>
+
     </ng-container>
   </form>
   

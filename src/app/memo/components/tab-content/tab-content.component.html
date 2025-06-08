@@ -53,11 +53,12 @@
     <button appButton ghost size="tiny" (click)="onDown(i)" [disabled]="i >= list.length - 1"><i class="fa-solid fa-chevron-down"></i></button>
     <button appButton ghost size="tiny" (click)="onEditField(item)"><i class="fas fa-pencil-alt"></i></button>
   </div>
-  <div class="memo-cell memo-label txt-nowrap pr-3">{{ item.name }} :</div>
+  <div class="memo-cell memo-label txt-nowrap pr-3">{{ item.name }} : {{ item.order }}</div>
   <div class="memo-cell memo-value" [ngSwitch]="item.type.value">
     <a *ngSwitchCase="'file'" [href]="item.value.link" target="_blank">{{ item.value.name }}</a>
     <a *ngSwitchCase="'link'"[href]="item.value" target="_blank">{{ item.value }}</a>
     <span *ngSwitchCase="'text'">{{ item.value }}</span>
+    <span *ngSwitchCase="'html'" [innerHTML]="item.safeHtml"></span>
     <span *ngSwitchCase="'date'">{{ item.value | date : 'fullDate' }}</span>
   </div>
 </ng-template>
