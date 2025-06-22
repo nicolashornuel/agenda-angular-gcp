@@ -2,6 +2,8 @@
 
 textarea {
   width: 100%;
+  max-width: 100%;
+  min-width: 100%;
   background-color: $grey-97;
   border: 1px solid $grey-70;
   border-radius: 0.25rem;

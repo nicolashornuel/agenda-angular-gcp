@@ -14,12 +14,13 @@ $width-action: 110px;
     }
     .memo-cell.memo-value  {
         word-break: break-word;
+        white-space: pre-line;
     }
   }
 
   .memo-label {
     font-weight: 600;
-    color: $grey-50;
+    color: $grey-60;
   }
 
   .memo-row {
