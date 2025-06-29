@@ -5,7 +5,7 @@
     </iframe>
   </div>
   <p class="f-grow word-break">
-    {{ input.description }}
+    <app-read-more [text]="input.description"></app-read-more>
     <span *ngIf="input.viewCount && !loading; else spinner" class="viewcount">
       {{ input.viewCount | numberSuffix : 2 }} de vues
     </span>

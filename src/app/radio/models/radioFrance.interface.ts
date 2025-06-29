@@ -102,6 +102,7 @@ export interface SongDTO {
   artist: string | null;
   start: number;
   end: number;
+  type: 'track' | 'diffusion' | 'blank';
 }
 export interface BrandDTO {
   value: string;

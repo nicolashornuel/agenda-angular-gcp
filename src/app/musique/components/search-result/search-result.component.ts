@@ -19,7 +19,6 @@ export class SearchResultComponent extends VideoController implements OnInit {
   public discogs: any[] = [];
   public extractWiki?: string;
   public videos: VideoGAPI[] = [];
-  public showMore: boolean = false;
 
   private discogsService = inject(DiscogsService);
   private wikipediaService = inject(WikipediaService);

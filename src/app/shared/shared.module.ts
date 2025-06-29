@@ -41,6 +41,7 @@ import { NumberSuffixPipe } from './pipes/number-suffix.pipe';
 import { InputSelectComponent } from './components/input-select/input-select.component';
 import { InputStarComponent } from './components/input-star/input-star.component';
 import { DraggableDirective } from './directives/draggable.directive';
+import { ReadMoreComponent } from './components/read-more/read-more.component';
 
 const sharedComponents = [
   TableComponent,
@@ -75,7 +76,8 @@ const sharedComponents = [
   InputFileComponent,
   AccordionComponent,
   InputSelectComponent,
-  InputStarComponent
+  InputStarComponent,
+  ReadMoreComponent
 ]
 
 const sharedModules = [
@@ -97,7 +99,7 @@ const sharedDirectives = [
 @NgModule({
   declarations: [
     sharedComponents,
-    sharedDirectives,
+    sharedDirectives
   ],
   imports: [
     sharedModules

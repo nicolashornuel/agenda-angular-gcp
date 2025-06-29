@@ -2,22 +2,24 @@
   <app-icon [path]="isOpen ? 'chevron-left' : 'chevron-right'"></app-icon>
 </span>
 
-
-  <section [ngClass]="isOpen ? 'open' : 'close'">
-    <ng-container *ngIf="song && grid; else spinner">
-    <article >
+<section [ngClass]="isOpen ? 'open' : 'close'">
+  <ng-container *ngIf="song && grid; else spinner">
+    <article>
       <h5 class="radio-divider">FIP</h5>
-      <p class="countdown">{{ minutesLeft | number : '2.0' }} : {{ secondsLeft | number : '2.0' }}</p>
+      <p class="countdown">
+        {{ minutesLeft | number : '2.0' }} : {{ secondsLeft | number : '2.0' }}
+      </p>
       <p class="track-live performers ellipsis">{{ song!.artist }}</p>
       <p class="track-live title ellipsis">{{ song!.title }}</p>
       <h6 class="radio-divider">Derniers titres diffusés :</h6>
-      <p *ngFor="let song of grid" class="song-option ellipsis" (click)="onSearch(song)">
-        {{ song.start * 1000 | date : 'HH:mm' }} - {{ song.title }} -
-        {{ song.artist }}
-      </p>
+
+      <div *ngFor="let song of grid" class="song-option ellipsis" (click)="onSearch(song)">
+        <span class="song-description">{{ song.start * 1000 | date : 'HH:mm' }} - {{ song.title }} - {{ song.artist }}</span>
+        <!-- <span class="song-type"> - {{ song.type }}</span> -->
+      </div>
     </article>
   </ng-container>
-  </section>    
+</section>
 
 <ng-template #spinner>
   <app-spinner></app-spinner>

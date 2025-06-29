@@ -1,0 +1,6 @@
+<div #textWrapper class="text" [ngClass]="{'expanded': isExpanded}">
+  {{ text }}
+</div>
+<div *ngIf="showMore" class="row-center-end w-100 show-more">
+  <a (click)="isExpanded = !isExpanded">...</a>
+</div>

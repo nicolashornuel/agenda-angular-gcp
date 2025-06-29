@@ -28,12 +28,7 @@
       <div class="row-between-center">
         <img class="logo" src="assets/Wikipedia.svg" />
       </div>
-      <div class="col-start-stretch wikipedia-container pb-3" [ngClass]="showMore ? '' : 'close'">
-        <span class="wikipedia-content">{{ extractWiki }}</span>
-        <div class="row-center-end w-100 show-more">
-          <a (click)="showMore = !showMore">...</a>
-        </div>
-      </div>
+      <app-read-more [text]="extractWiki"></app-read-more>
     </ng-container>
     <ng-container *ngIf="videos.length > 0">
       <div class="row-between-center">

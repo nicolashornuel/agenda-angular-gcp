@@ -1,0 +1,25 @@
+@import 'variables.scss';
+
+.text {
+  overflow: hidden;
+  transition: all .5s ease;
+
+  &:not(.expanded) {
+    max-height: 72px; /* Limite à environ 3 lignes */
+    background: linear-gradient(to bottom, $grey-15, transparent);
+    color: transparent;
+    background-clip: text;
+  }
+  &.expanded {
+    max-height: 1000px; /* suffisant pour le contenu complet */
+  }
+}
+
+.show-more {
+  height: 24px;
+  font-size: 24px;
+  a {
+    color: $red;
+    cursor: pointer;
+  }
+}

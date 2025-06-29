@@ -30,30 +30,6 @@
   color: $red;
 }
 
-// WIKIPEDIA
-.wikipedia-container {
-  position: relative;
-  &.close {
-    .wikipedia-content {
-        max-height: 100px;
-        overflow: hidden;
-    }
-    .show-more {
-      background: linear-gradient(to bottom, transparent, $grey-100, $grey-100);
-    }
-  }
-  .show-more {
-    position: absolute;
-    bottom: -8px;
-    height: 40px;
-    font-size: 24px;
-    a {
-        color: $red;
-        cursor: pointer;
-    }
-  }
-}
-
 // YOUTUBE
 .information {
   color: $grey-40;

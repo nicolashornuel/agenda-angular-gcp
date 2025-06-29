@@ -38,6 +38,7 @@ export class RadioTransformService {
       artist: step.diffusion?.standFirst,
       start: step.start,
       end: step.end,
+      type: 'diffusion'
     }
   }
 
@@ -47,6 +48,7 @@ export class RadioTransformService {
       artist: null,
       start: step.start,
       end: step.end,
+      type: 'blank'
     }
   }
 
@@ -56,6 +58,7 @@ export class RadioTransformService {
       artist: step.track.performers.join(' & '),
       start: step.start,
       end: step.end,
+      type: 'track'
     }
   }
 
