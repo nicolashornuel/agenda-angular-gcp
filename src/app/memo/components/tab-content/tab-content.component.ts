@@ -98,7 +98,7 @@ export class TabContentComponent implements OnInit {
   @IsAdmin()
   public async onDelete(item: AbstractField) {
     await this.memoService.delete(item.id!);
-    if (item.type === AbstractField.FILE) await this.firebaseStorage.delete(this.routePath, item.value.name);
+    if (item.type.name === AbstractField.FILE.name) await this.firebaseStorage.delete(this.routePath, item.value.name);
     this.alertService.success('suppression réussie');
   }
 
@@ -115,7 +115,7 @@ export class TabContentComponent implements OnInit {
   }
 
   private async saveDocument(document: AbstractItem): Promise<void> {
-    if (document.type === AbstractField.FILE) {
+    if (document.type.name === AbstractField.FILE.name || document.type.name === AbstractField.IMG.name) {
       await this.firebaseStorage.storeFile(this.routePath, document.value);
       document.value = { ...document.value };
     }

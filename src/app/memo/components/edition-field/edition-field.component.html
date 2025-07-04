@@ -25,6 +25,15 @@
         name="value"
         [required]="true"
       ></app-input-file>
+
+      <app-input-file
+        *ngSwitchCase="'image'"
+        class="py-3"
+        label="valeur"
+        [(fileStorage)]="input.value"
+        name="value"
+        [required]="true"
+      ></app-input-file>
   
       <app-input-text
         *ngSwitchCase="'link'"

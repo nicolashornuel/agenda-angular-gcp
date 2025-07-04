@@ -55,6 +55,7 @@
   </div>
   <div class="memo-cell memo-label txt-nowrap pr-3">{{ item.name }} :</div>
   <div class="memo-cell memo-value" [ngSwitch]="item.type.value">
+    <img *ngSwitchCase="'image'" [src]="item.value.link" class="w-100"/>
     <a *ngSwitchCase="'file'" [href]="item.value.link" target="_blank">{{ item.value.name }}</a>
     <a *ngSwitchCase="'link'"[href]="item.value" target="_blank">{{ item.value }}</a>
     <div *ngSwitchCase="'text'">{{ item.value }}</div>

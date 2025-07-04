@@ -35,6 +35,7 @@ export class AbstractField extends AbstractItem {
   public static readonly FILE = { name: 'Fichier', value: 'file' };
   public static readonly LINK = { name: 'Lien', value: 'link' };
   public static readonly HTML = { name: 'Html', value: 'html' };
+  public static readonly IMG = { name: 'Image', value: 'image' };
   constructor(list: AbstractItem[]) {
     const order = list.length > 0 ? ++list[list.length - 1].order : 0;
     super(AbstractField.TEXT, order);
