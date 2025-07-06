@@ -8,7 +8,7 @@
         <p class="date">{{ card.pubDate | date : 'fullDate' }}</p>
         <img [src]="card.img" (load)="onImageLoad($event)" class="img-placeholder"/>
         <p>{{ card.title }}</p>
-        <!-- <p [innerHTML]="card.description"></p> -->
+<!--         <p [innerHTML]="card.description"></p> -->
       </a>
       <div *ngIf="card.description" class="description">
         <i [appTooltip]="card.description" class="fa-solid fa-ellipsis"></i>

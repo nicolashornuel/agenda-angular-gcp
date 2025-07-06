@@ -37,6 +37,8 @@ export abstract class FirestoreService<T> {
   private firstVisible!: QueryDocumentSnapshot<T>;
   public hasNext!: boolean;
   public hasPrevious!: boolean;
+    // https://github.com/angular/angularfire/blob/master/docs/version-7-upgrade.md
+  // https://github.com/javebratt/angularfire-idField/blob/main/src/app/home/home.page.ts
 
   constructor(path?: string) {
    if (path) this.collectionRef = collection(this.firestore, path) as CollectionReference<T>;
@@ -48,6 +50,27 @@ export abstract class FirestoreService<T> {
 
   public getAll(): Observable<T[]> {
     return collectionData(this.collectionRef, { idField: 'id' });
+  }
+
+  public async save(document: T): Promise<string> {
+    const docRef: DocumentReference<T> = doc(this.collectionRef);
+    await setDoc(docRef, { ...document });
+    (document as Identifiable).id = docRef.id;
+    return docRef.id;
+  }
+
+  public async update(document: T, id: string): Promise<void> {
+    const docRef: DocumentReference<T> = doc(this.collectionRef, id);
+    await setDoc(docRef, { ...document });
+  }
+
+  public async delete(id: string): Promise<void> {
+    const docRef: DocumentReference<T> = doc(this.collectionRef, id);
+    await deleteDoc(docRef);
+  }
+
+  public async saveOrUpdate(document: Identifiable): Promise<any> {
+    document.id ? await this.update(document as T, document.id) : await this.save(document as T);
   }
 
   public getByQuery(order: { fieldPath: string | FieldPath; directionStr?: OrderByDirection }, fieldToWhere?: { key: string; value: any }): Observable<T[]> {
@@ -129,25 +152,5 @@ export abstract class FirestoreService<T> {
       hasPrevious: countTotal > take,
       hasNext: false
     };
-  }
-
-  public async save(document: T): Promise<void> {
-    const docRef: DocumentReference<T> = doc(this.collectionRef);
-    await setDoc(docRef, { ...document });
-    (document as Identifiable).id = docRef.id;
-  }
-
-  public async update(document: T, id: string): Promise<void> {
-    const docRef: DocumentReference<T> = doc(this.collectionRef, id);
-    await setDoc(docRef, { ...document });
-  }
-
-  public async delete(id: string): Promise<void> {
-    const docRef: DocumentReference<T> = doc(this.collectionRef, id);
-    await deleteDoc(docRef);
-  }
-
-  public async saveOrUpdate(document: Identifiable): Promise<any> {
-    document.id ? await this.update(document as T, document.id) : await this.save(document as T);
   }
 }

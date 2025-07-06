@@ -1,14 +1,14 @@
-import { Component, Inject, inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AbstractFetchFunctionService } from '@core/services/abstractFetchFunction.service';
 import { TabParam } from '@shared/models/tabParam.interface';
+import { DestroyService } from '@shared/services/destroy.service';
 import { UtilService } from '@shared/services/util.service';
 import { filter, map, Observable, switchMap, take, takeUntil, tap } from 'rxjs';
 import { RssCard } from '../models/rss-card.model';
 import { RssFeed } from '../models/rss-feed.model';
 import { RssFeedService } from './rss-feed.service';
 import { RssMapperService } from './rss-mapper.service';
-import { DestroyService } from '@shared/services/destroy.service';
 
 export interface Resolvable<T = any> {
   route: ActivatedRoute;

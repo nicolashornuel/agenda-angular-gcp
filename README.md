@@ -6,33 +6,15 @@ https://agenda-bf245.web.app/
 
 # Compatibility
 
-If you want to see what versions are available to install:
-
 ```sh
+#If you want to see what versions are available to install:
 nvm ls-remote
-```
-
-To install a specific version of node:
-
-```sh
+#To install a specific version of node:
 nvm install 16.13
-```
-
-If you want to see what versions are installed
-
-```sh
+#If you want to see what versions are installed
 nvm ls
-```
-
-```sh
 nvm use v16.13.2
 ```
-
-firebase functions:config:set <key>=<value>
-firebase deploy --only functions
-firebase functions:config:get
-firebase functions:secrets:set SECRET_NAME=value
-https://firebase.google.com/docs/functions/config-env?hl=fr
 
 ## @angular/fire
 
@@ -59,6 +41,12 @@ https://firebase.google.com/docs/auth/web/firebaseui?hl=fr&authuser=0
 https://firebase.google.com/docs/functions/manage-functions?hl=fr&gen=2nd
 fetch fourni nativement avec node.js v18 :
 https://nodejs.org/en/blog/announcements/v18-release-announce
+
+firebase functions:config:set <key>=<value>
+firebase deploy --only functions
+firebase functions:config:get
+firebase functions:secrets:set SECRET_NAME=value
+https://firebase.google.com/docs/functions/config-env?hl=fr
 
 Dépendances
 

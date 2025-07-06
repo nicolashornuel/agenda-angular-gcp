@@ -19,7 +19,7 @@ export class AlertComponent implements OnInit {
   ngOnInit(): void {
     this.alertService.getAlerts$.pipe(takeUntil(this.destroy$)).subscribe((alert: Alert) => {
       this.alerts.push(alert);
-      if (alert.title === 'Success')
+      if (alert.title === 'Success' || alert.title === 'Info')
         setTimeout(() => this.close(this.alerts.length -1), 2500);
     });
   }

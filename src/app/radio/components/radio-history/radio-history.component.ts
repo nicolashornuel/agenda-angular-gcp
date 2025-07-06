@@ -84,7 +84,7 @@ export class RadioHistoryComponent implements AfterViewInit {
         } catch (error: any) {
           if (error.graphQLErrors?.length) {
             let errorMessage = error.graphQLErrors.map((e: any) => e.message).join(', ');
-            this.alertService.error(errorMessage);
+            this.alertService.info(errorMessage);
           }
         }
       });

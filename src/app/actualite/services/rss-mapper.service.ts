@@ -34,7 +34,7 @@ export class RssMapperService {
   }
 
   public createCard(item: any): RssCard {
-    let img = item.querySelector('content') ? item.querySelector('content').getAttribute('url') : undefined;
+    let img = item.querySelector('content') ? item.querySelector('content').getAttribute('url') : 'assets/placeholder-image.webp';
     img = item.querySelector('enclosure') ? item.querySelector('enclosure').getAttribute('url') : img;
 
     return {

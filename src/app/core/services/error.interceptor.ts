@@ -3,7 +3,9 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse
 import { catchError, Observable, throwError } from 'rxjs';
 import { AlertService } from '@shared/services/alert.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(private alert: AlertService) {}
 

@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { City, Forecast } from '../models/meteo.interface';
+import { environment } from 'environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MeteoService {
-  private apiUrl = 'https://api.openweathermap.org/data/2.5/';
-  private apiKey = '35595a57302ef787310ab42e25caee5b';
+
+  private apiUrl = environment.weatherApi.url;
+  private apiKey = environment.weatherApi.key;
 
   public async getMeteo() {
     const { coords }: GeolocationPosition = await this.getCurrentPositionAsync();

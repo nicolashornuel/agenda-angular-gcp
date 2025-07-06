@@ -17,5 +17,9 @@ export const environment = {
   sncfApi: 'https://api.sncf.com/v1',
   sncfKey: '9033880e-c8e1-4034-8818-d7a440bd1abc',
   nodeService: 'https://service-cloud-run-node-365822740048.europe-west9.run.app',
-  publicHolidayApi: 'https://date.nager.at/api/v3/publicholidays'
+  publicHolidayApi: 'https://date.nager.at/api/v3/publicholidays',
+  weatherApi: {
+      url: 'https://api.openweathermap.org/data/2.5/',
+      key: '35595a57302ef787310ab42e25caee5b'
+  }
 };

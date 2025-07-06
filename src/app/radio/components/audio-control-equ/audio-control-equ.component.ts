@@ -7,7 +7,7 @@ import { ModalService } from '@shared/services/shared.observable.service';
 import { AudioNodeController } from 'app/radio/abstracts/audioDirective.abstract';
 import { AudioSelectParam, AudioSelectParamService } from 'app/radio/services/audio.firestore.service';
 
-import {takeUntil} from 'rxjs';
+import {take, takeUntil} from 'rxjs';
 
 interface EqSelectable extends Selectable<any> {
 isDirty: boolean;
@@ -67,7 +67,7 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
 
     this.audioSelectParamService
       .findFirstByType('equalizer')
-      .pipe(takeUntil(this.destroy$))
+      .pipe(take(1))
       .subscribe(equalizerParam => {
         if (equalizerParam) {
           this.equalizerParam = equalizerParam;

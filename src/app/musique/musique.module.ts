@@ -7,28 +7,7 @@ import { SearchResultComponent } from './components/search-result/search-result.
 import { WatchModalComponent } from './components/watch-modal/watch-modal.component';
 import { IframeTrackerDirective } from './directives/iframe-tracker.directive';
 import { PageMusiqueComponent } from './page/page-musique.component';
-import { Routes, RouterModule } from '@angular/router';
-
-
-const routes: Routes = [
-  { path: '', component: PageMusiqueComponent,
-/*     children: [
-      {
-        path: '',
-        redirectTo: 'playlist',
-        pathMatch: 'full'
-      },
-      { path: 'playlist', component: ListSavedComponent },
-      { path: 'search', component: SearchResultComponent }
-    ] */
-   },
-];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class MusiqueRoutingModule { }
+import { MusiqueRoutingModule } from './musique-routing.module';
 
 @NgModule({
   declarations: [

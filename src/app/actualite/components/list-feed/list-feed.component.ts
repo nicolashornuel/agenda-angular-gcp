@@ -34,7 +34,8 @@ export class ListFeedComponent extends AbstractTable<RssFeed> {
 
   @IsAdmin()
   public onAdd() {
-    this.tableSet.data.push(new RssFeed(this.tableSet.data.length + 1));    
+    const lastOrder = Math.max(...this.tableSet.data.map(feed => feed.order || 0));
+    this.tableSet.data.push(new RssFeed(lastOrder + 1));    
   }
 
   @IsAdmin()

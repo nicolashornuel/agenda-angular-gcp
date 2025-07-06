@@ -10,5 +10,4 @@ export class RssFeedService extends FirestoreService<RssFeed> {
   constructor() {
     super('rssFeed');
   }
-
 }

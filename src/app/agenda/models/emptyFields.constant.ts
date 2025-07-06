@@ -26,7 +26,7 @@ export const emptyFields: CalEventField[] = [
       }
     },
     {
-      title: 'GM',
+      title: 'GM Baptiste',
       meta: {
         start: '07:30:00',
         end: '09:00:00',
@@ -38,7 +38,7 @@ export const emptyFields: CalEventField[] = [
       }
     },
     {
-      title: 'Cantine',
+      title: 'Cantine Baptiste',
       meta: {
         start: '12:00:00',
         end: '14:00:00',
@@ -50,7 +50,7 @@ export const emptyFields: CalEventField[] = [
       }
     },
     {
-      title: 'GS',
+      title: 'GS Baptiste',
       meta: {
         start: '17:00:00',
         end: '19:00:00',

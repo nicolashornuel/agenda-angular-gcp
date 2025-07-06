@@ -42,15 +42,17 @@ export class CalBodyComponent implements OnChanges {
   private initializeData(): void {
     this.loading = true;
     combineLatest([
-      this.eventService.getAll().pipe(takeUntil(this.destroy$)),
-      this.holidayService.getByYear(this.viewDate).pipe(take(1)),
-      this.publicHolidayService.getByYear(this.viewDate).pipe(take(1))
-    ]).subscribe(([events, holidays, publicHolidays]) => {
-      this.events = this.mapper.entitiesToDTOs(events as CalEventEntity[]);
-      this.holidays = holidays;
-      this.publicHolidays = publicHolidays;
-      this.loading = false;
-    });
+      this.eventService.getByYear(this.viewDate),
+      this.holidayService.getByYear(this.viewDate),
+      this.publicHolidayService.getByYear(this.viewDate)
+    ])
+      .pipe(take(1))
+      .subscribe(([events, holidays, publicHolidays]) => {
+        this.events = this.mapper.entitiesToDTOs(events as CalEventEntity[]);
+        this.holidays = holidays;
+        this.publicHolidays = publicHolidays;
+        this.loading = false;
+      });
     this.dayService.get$.pipe(takeUntil(this.destroy$)).subscribe(date => {
       if (date) {
         if (!isSameDay(this.viewDate, date)) this.viewDate = date;
@@ -63,25 +65,24 @@ export class CalBodyComponent implements OnChanges {
 
   public beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): void {
     body.forEach((day: CalendarMonthViewDay) => {
-
       this.holidays.forEach((holiday: Holiday) => {
         if (day.date >= holiday.start && day.date <= holiday.end) {
-          day.cssClass = 'holiday';   
+          day.cssClass = 'holiday';
           day.meta = {
             ...day.meta,
             publicEvent: holiday.description
           };
-        };
+        }
       });
 
       this.publicHolidays.forEach((publicHoliday: PublicHoliday) => {
         if (isSameDay(day.date, publicHoliday.date)) {
-          day.cssClass = 'public-holiday'
+          day.cssClass = 'public-holiday';
           day.meta = {
             ...day.meta,
             publicEvent: publicHoliday.localName
           };
-        };
+        }
       });
     });
   }
