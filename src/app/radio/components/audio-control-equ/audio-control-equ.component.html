@@ -11,18 +11,18 @@
       <button
         appButton
         outline
-        (click)="onResetSelected()"
-        [disabled]="!selected.isDirty || !equalizerParam"
+        (click)="onReset()"
+        [disabled]="!selected.isDirty || selected === defaultEqualizer"
       >
         Reset
       </button>
-      <button appButton outline (click)="onSaveAll()" [disabled]="!selected.isDirty">Save</button>
+      <button appButton outline (click)="onSave()" [disabled]="!selected.isDirty  || selected === defaultEqualizer">Save</button>
       <button appButton outline (click)="onOpenModal(modal)">Add</button>
       <button
         appButton
         outline
-        (click)="onDeleteSelected()"
-        [disabled]="selected === DEFAULT_PARAM"
+        (click)="onDelete()"
+        [disabled]="selected === defaultEqualizer"
       >
         Delete
       </button>

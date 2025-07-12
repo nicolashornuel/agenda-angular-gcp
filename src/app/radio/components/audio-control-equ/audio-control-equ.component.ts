@@ -1,17 +1,13 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import { Component, inject, OnInit, TemplateRef } from '@angular/core';
 import { IsAdmin } from '@core/decorators/hasRole.decorator';
+import { StorageService } from '@core/services/storage.service';
 import { Selectable } from '@shared/models/fieldSet.model';
 import { Modal, ModalParam } from '@shared/models/modalParam.interface';
-import {DestroyService} from '@shared/services/destroy.service';
+import { DestroyService } from '@shared/services/destroy.service';
 import { ModalService } from '@shared/services/shared.observable.service';
 import { AudioNodeController } from 'app/radio/abstracts/audioDirective.abstract';
-import { AudioSelectParam, AudioSelectParamService } from 'app/radio/services/audio.firestore.service';
-
-import {take, takeUntil} from 'rxjs';
-
-interface EqSelectable extends Selectable<any> {
-isDirty: boolean;
-  }
+import { AudioEqualizerService, EqualizerSelectable } from 'app/radio/services/audio.firestore.service';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-audio-control-equ',
@@ -20,25 +16,17 @@ isDirty: boolean;
 })
 export class AudioControlEquComponent extends AudioNodeController implements OnInit {
   private readonly FREQS = [32, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];
-  private readonly MESSAGE_DEFAULT = 'Défaut';
-  private readonly MESSAGE_NEW = 'Nouveau';
-  //public readonly DEFAULT_PARAM = {name: this.MESSAGE_DEFAULT, value: this.FREQS.map(_freq => 0)};
-  public readonly DEFAULT_PARAM = {name: this.MESSAGE_DEFAULT, value: this.FREQS.map(_freq => 0), isDirty: false};
-
-  public equalizerParam?: AudioSelectParam;
+  private readonly KEY_STORAGE_EQ_SELECTED = 'audioEqualizerSelected';
+  public defaultEqualizer!: EqualizerSelectable;
   public eqs!: BiquadFilterNode[];
-  public options!: EqSelectable[];
-  public selected!: EqSelectable;
-  public isLoading = true;
-  //public isDirty = false;
+  public options!: EqualizerSelectable[];
+  public selected!: EqualizerSelectable;
+  public isLoading!: boolean;
+  private audioEqualizerService = inject(AudioEqualizerService);
+  private modalService = inject(ModalService);
+  private storage = inject(StorageService);
+  private destroy$ = inject(DestroyService);
 
-  constructor(
-    private audioSelectParamService: AudioSelectParamService,
-    private modalService: ModalService,
-    private destroy$: DestroyService
-  ) {
-    super();
-  }
   ngOnInit(): void {
     this.initNode();
     this.connectNode();
@@ -64,95 +52,75 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
   }
 
   private async initSelect(): Promise<void> {
-
-    this.audioSelectParamService
-      .findFirstByType('equalizer')
-      .pipe(take(1))
-      .subscribe(equalizerParam => {
-        if (equalizerParam) {
-          this.equalizerParam = equalizerParam;
-          this.options = [this.DEFAULT_PARAM, ...equalizerParam.list.map(selectParam => ({...selectParam, isDirty: false}))];
-          this.selected = this.options[equalizerParam!.selected ?? 0 ];
-        } else {
-          this.options = [this.DEFAULT_PARAM];
-          this.selected = this.options[0];
-        }
+    this.isLoading = true;
+    this.audioEqualizerService
+      .findAll()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(audioEqualizer => {
+        this.defaultEqualizer = { name: 'Défaut', value: this.FREQS.map(_freq => 0), isDirty: false, id: 'default' };
+        this.options = [this.defaultEqualizer, ...audioEqualizer];
+        const selectedId = this.storage.getLocalItem(this.KEY_STORAGE_EQ_SELECTED);
+        this.selected = this.options.find(option => option.id === selectedId) ?? this.options[0];
         this.isLoading = false;
         this.updateNode();
       });
   }
 
   private updateNode(): void {
-    this.eqs.forEach((eq, i) => (eq.gain.value = this.selected.value.at(i) as number));
-  }
-
-  private async saveParam(index: number): Promise<void> {
-    const equalizerParam: AudioSelectParam = {
-      ...this.equalizerParam!,
-      list: this.options
-        .filter(option => option.name !== this.MESSAGE_DEFAULT)
-        .map(option => ({name: option.name, value: option.value})),
-      selected: index
-    };
-    equalizerParam.id
-      ? this.audioSelectParamService.updateOne(equalizerParam)
-      : this.audioSelectParamService.createOne(equalizerParam, 'equalizer');
-  }
-
-
-  public onResetSelected(): void {
-    this.selected.name = this.selected.name.replace('*', '');
-    this.selected.value = this.equalizerParam!.list.find(selectParam => selectParam.name === this.selected.name)!.value;
-    this.selected.isDirty = false;
-    this.updateNode();
-  }
-
-  @IsAdmin()
-  public async onSaveAll(): Promise<void> {
-    this.modalService.set$(undefined);
-    this.selected.isDirty = false;
-    this.selected.name = this.selected.name.replace('*', '');
-    const index = this.options.findIndex(option => option.name === this.selected.name);
-    await this.saveParam(index);
-  }
-
-  @IsAdmin()
-  public async onDeleteSelected(): Promise<void> {
-    const index = this.options.findIndex(option => option.name === this.selected.name);
-    this.options.splice(index, 1);
-    await this.saveParam(this.options.length - 1);
-  }
-
-  @IsAdmin()
-  public async onCreate(selectParam: EqSelectable): Promise<void> {
-    this.options.push(selectParam);
-    this.selected = this.options[this.options.length - 1];
-    this.modalService.set$(undefined);
-    await this.saveParam(this.options.length - 1);
+    this.eqs.forEach((eq, i) => (eq.gain.value = this.selected.value[i]));
   }
 
   @IsAdmin()
   public onOpenModal(templateRef: TemplateRef<Modal>): void {
-    const selectParam: Selectable<any> = {
-      name: this.MESSAGE_NEW,
+    const equalizerSelectable: EqualizerSelectable = {
+      name: 'Nouveau',
       value: this.eqs.map(eq => eq.gain.value)
     };
     const modalParam: ModalParam<Selectable<any>> = {
       title: `Paramêtre d'equaliser prédéfini`,
-      context: {$implicit: selectParam},
+      context: { $implicit: equalizerSelectable },
       template: templateRef
     };
     this.modalService.set$(modalParam);
   }
 
+  @IsAdmin()
+  public async onCreate(equalizerSelectable: EqualizerSelectable): Promise<void> {
+    await this.audioEqualizerService.createOne(equalizerSelectable);
+    this.options.push(equalizerSelectable);
+    this.selected = this.options[this.options.length - 1];
+    this.storage.setLocalItem(this.KEY_STORAGE_EQ_SELECTED, this.selected.id);
+    this.modalService.set$(undefined);
+  }
+
+  @IsAdmin()
+  public async onSave(): Promise<void> {
+    this.modalService.set$(undefined);
+    this.selected.isDirty = false;
+    this.selected.name = this.selected.name.replace('*', '');
+    const entity = { ...this.selected };
+    delete entity.isDirty;
+    this.audioEqualizerService.updateOne(entity)
+  }
+
+  @IsAdmin()
+  public async onDelete(): Promise<void> {
+    this.storage.removeLocalItem(this.KEY_STORAGE_EQ_SELECTED);
+    await this.audioEqualizerService.delete(this.selected.id!);
+  }
+
+  public onReset(): void {
+    this.initSelect();
+  }
+
   public onSelect(): void {
+    this.storage.setLocalItem(this.KEY_STORAGE_EQ_SELECTED, this.selected.id);
     this.updateNode();
   }
 
   public onSliderChange(): void {
     this.selected.isDirty = true;
-    this.selected.name = this.selected.name.startsWith("*") ? `${ this.selected.name}` : `*${ this.selected.name}`;  
+    this.selected.name = this.selected.name.startsWith('*') ? `${this.selected.name}` : `*${this.selected.name}`;
     this.selected.value = this.eqs.map(eq => eq.gain.value);
   }
-
 }

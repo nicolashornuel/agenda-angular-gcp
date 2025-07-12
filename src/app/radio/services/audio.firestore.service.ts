@@ -1,47 +1,48 @@
-import {Injectable} from '@angular/core';
-import {UserInfo} from '@angular/fire/auth';
-import {collectionData, query, where} from '@angular/fire/firestore';
-import {AlertService} from '@shared/services/alert.service';
-import {KEY_STORAGE_USER} from '@core/services/auth.service';
-import {FirestoreService} from '@core/services/firestore.service';
-import {StorageService} from '@core/services/storage.service';
-import {Observable, map} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { UserInfo } from '@angular/fire/auth';
+import { collectionData, query, where } from '@angular/fire/firestore';
+import { AlertService } from '@shared/services/alert.service';
+import { KEY_STORAGE_USER } from '@core/services/auth.service';
+import { FirestoreService } from '@core/services/firestore.service';
+import { StorageService } from '@core/services/storage.service';
+import { Observable, map, of } from 'rxjs';
 import { Selectable } from '@shared/models/fieldSet.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AudioSelectParamService extends FirestoreService<AudioSelectParam> {
+export class AudioEqualizerService extends FirestoreService<EqualizerSelectable> {
+
   constructor(private alertService: AlertService, private storage: StorageService) {
-    super('audioSelectParam');
+    super('equalizerSelectable');
   }
 
-  public findFirstByType(type: AudioParamType): Observable<AudioSelectParam | undefined> {
-    const q = query(this.collectionRef, where('type', '==', type));
-    return collectionData(q, {idField: 'id'}).pipe(map(res => res.at(0)));
+  public async updateOne(equalizerSelectable: EqualizerSelectable): Promise<void> {
+    await this.update(equalizerSelectable, equalizerSelectable.id!);
+    this.alertService.success(`${equalizerSelectable.name} modifié`);
   }
 
-  public async updateOne(audioSelectParam: AudioSelectParam): Promise<void> {
-    await this.update(audioSelectParam, audioSelectParam.id!);
-    this.alertService.success(`${audioSelectParam.type} modifié`);
-  }
-
-  public async createOne(audioSelectParam: AudioSelectParam, type: AudioParamType): Promise<void> {
-    audioSelectParam.type = type;
+  public async createOne(equalizerSelectable: EqualizerSelectable): Promise<void> {
     const userStored: UserInfo | undefined = this.storage.getLocalItem(KEY_STORAGE_USER);
-    if (userStored && userStored.uid) audioSelectParam.uid = userStored.uid;
-    await this.save(audioSelectParam);
-    this.alertService.success(`${audioSelectParam.type} ajouté`);
+    if (userStored && userStored.uid) equalizerSelectable.uid = userStored.uid;
+    await this.save(equalizerSelectable);
+    this.alertService.success(`${equalizerSelectable.name} ajouté`);
+  }
+
+  public findAll(): Observable<EqualizerSelectable[]> {
+    const userStored: UserInfo | undefined = this.storage.getLocalItem(KEY_STORAGE_USER);
+    return userStored && userStored.uid ? this.findByUser(userStored.uid) : of([]);
+  }
+
+  public findByUser(uid: string): Observable<EqualizerSelectable[]> {
+    const q = query(this.collectionRef, where('uid', '==', uid));
+    return collectionData(q, { idField: 'id' }).pipe(map(res => res.map(item => ({ ...item, isDirty: false }))));
   }
 }
 
-export declare type AudioParamType = 'radio' | 'equalizer';
-
-export interface AudioSelectParam {
+export interface EqualizerSelectable extends Selectable<number[]> {
   id?: string;
-  list: Selectable<number>[];
-  selected: number;
+  name: string;
+  value: number[];
   uid?: string;
-  type: AudioParamType;
-  updateAt?: Date;
 }

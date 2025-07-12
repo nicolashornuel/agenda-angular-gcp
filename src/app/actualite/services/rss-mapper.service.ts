@@ -29,22 +29,26 @@ export class RssMapperService {
   public createCards(document: Document): RssCard[] {
     let cards: RssCard[] = [];
     const xml = this.parseXML(document);
-    xml.querySelectorAll('item').forEach((item: any) => cards.push(this.createCard(item)));
+    xml.querySelectorAll('item').forEach((item: any) => {
+      const card = this.createCard(item);
+      if (card)
+      cards.push(card)
+    });
     return cards;
   }
 
-  public createCard(item: any): RssCard {
+  public createCard(item: any): RssCard | null {
     let img = item.querySelector('content') ? item.querySelector('content').getAttribute('url') : 'assets/placeholder-image.webp';
-    img = item.querySelector('enclosure') ? item.querySelector('enclosure').getAttribute('url') : img;
+    img = item.querySelector('enclosure') ? item.querySelector('enclosure').getAttribute('url') : img;    
 
-    return {
+    return item.querySelector('enclosure') ? {
       title: item.querySelector('title')?.textContent || '',
       link: item.querySelector('link')?.textContent || '',
       description: this.cleanDescription(item.querySelector('description')?.textContent || ''),
       img,
       pubDate: item.querySelector('pubDate')?.textContent || undefined,
       category: item.querySelector('category')?.textContent || undefined
-    };
+    } : null;
   }
 
   private cleanDescription(description: string): string {
