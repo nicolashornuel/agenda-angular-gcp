@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubjectService } from '@shared/abstracts/observable.abstract';
-import { StationSelectable, StationsEnum } from '../enums/radioFrance.enum';
+import { StationsEnum } from '../enums/radioFrance.enum';
 
 @Injectable({
   providedIn: 'root'

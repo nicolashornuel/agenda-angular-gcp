@@ -100,6 +100,7 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
     this.selected.name = this.selected.name.replace('*', '');
     const entity = { ...this.selected };
     delete entity.isDirty;
+    delete entity.id;
     this.audioEqualizerService.updateOne(entity)
   }
 

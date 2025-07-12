@@ -129,10 +129,10 @@ export abstract class AudioNodeAnalyser extends AudioNodeController implements A
 
   protected initNode(): void {
     this.analyser = this.audioCtx.createAnalyser();
-    this.analyser.minDecibels = -90; // [-100db-0db]
-    this.analyser.maxDecibels = -10; // [-100db-0db]
-    this.analyser.smoothingTimeConstant = 0.85; // [0-1]
-    this.analyser.fftSize = 128; // [32-32768]
+    this.analyser.minDecibels = -90; //            [-100db-0db]  Plus bas pour capter les sons faibles
+    this.analyser.maxDecibels = -10; //            [-100db-0db]  Plus bas pour plus de sensibilité
+    this.analyser.smoothingTimeConstant = 0.85; // [0-1]         Moins de lissage = plus réactif
+    this.analyser.fftSize = 128; //                [32-32768]    Plus de précision
   }
 
   protected connectNode(): void {
