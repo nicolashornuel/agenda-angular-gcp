@@ -5,7 +5,6 @@ import { AudioNodeAnalyser } from '../abstracts/audioDirective.abstract';
   selector: '[audioAnalyserWave]'
 })
 export class AudioAnalyserWaveDirective extends AudioNodeAnalyser {
-
   @Input() sensitivity: number = 10; // Nouveau paramètre d'entrée
 
   protected draw(bufferLength: number, dataArray: Uint8Array): void {

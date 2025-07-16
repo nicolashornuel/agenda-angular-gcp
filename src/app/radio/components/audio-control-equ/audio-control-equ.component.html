@@ -29,12 +29,12 @@
     </app-button-group>
   </div>
 
-  <div class="row-between-stretch eq-slider-container mt-3 test">
+  <div class="row-between-stretch eq-slider-container mt-3">
     <ng-container *ngFor="let eq of eqs">
       <app-input-slider
         class="col-1"
-        [min]="0"
-        [max]="30"
+        [min]="-12"
+        [max]="12"
         [step]="1"
         [(value)]="eq.gain.value"
         (valueChange)="onSliderChange()"

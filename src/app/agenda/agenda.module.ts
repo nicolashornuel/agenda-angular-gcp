@@ -14,6 +14,9 @@ import { CalHeaderComponent } from './components/cal-header/cal-header.component
 import { CalBodyComponent } from './components/cal-body/cal-body.component';
 import { ScrollTodayDirective } from './directives/scroll-today.directive';
 import { PageAgendaComponent } from './page/page-agenda.component';
+import { TabRecurrentEventComponent } from './components/tab-recurrent-event/tab-recurrent-event.component';
+import { TabCalendarComponent } from './components/tab-calendar/tab-calendar.component';
+import { RecurrentEventEditComponent } from './components/recurrent-event-edit/recurrent-event-edit.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,10 @@ import { PageAgendaComponent } from './page/page-agenda.component';
     CalHeaderComponent,
     CalBodyComponent,
     ScrollTodayDirective,
-    PageAgendaComponent
+    PageAgendaComponent,
+    TabRecurrentEventComponent,
+    TabCalendarComponent,
+    RecurrentEventEditComponent
   ],
   imports: [
     CommonModule,

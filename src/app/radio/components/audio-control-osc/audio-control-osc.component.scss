@@ -1,0 +1,43 @@
+@import 'variables.scss';
+
+$color-primary: $green;
+$color-dark: $grey-40;
+$color-light: $grey-97;
+
+fieldset {
+  width: max-content;
+}
+
+.canvas-container {
+    position: relative;
+    background-color: $color-dark;
+    color: $color-primary;
+    width: var(--width);
+    height: var(--height);
+    #scalling {
+      position: absolute;
+      opacity: .3;
+    }
+    #control {
+        position: relative;
+    }
+    .scalling-legend {
+      position: absolute;
+      opacity: .7;
+      font-size: 10px;
+      &.attack {
+        bottom: 0;
+        left: 1.5rem;
+      }
+      &.release {
+        bottom: 0;
+        right: 1.5rem;
+      }
+      &.sustain {
+        writing-mode: vertical-lr;
+        transform: rotate(180deg);
+        top: 1.5rem;
+        right:0;
+      }
+    }
+  }

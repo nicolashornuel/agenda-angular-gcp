@@ -23,6 +23,7 @@ export class InputSliderComponent extends AbstractInputComponent {
   @Input() step: number = 1;
   @Input() format: string = '1.1';
 
+
   onIncrease(): void {
     if (Number(this.value) < Number(this.max)) {
       this.value = Number(this.value) + Number(this.step);

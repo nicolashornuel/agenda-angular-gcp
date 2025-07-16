@@ -132,9 +132,13 @@ export class CellRenderers {
       hour: '2-digit',
       minute: '2-digit'
     };
-    const date: Date = new Date(row[col.key]);
+    const date: Date = new Date(this.getNestedValue(row, col.key));
     return `<div class="txt-nowrap">${date.toLocaleDateString('fr-FR', options)}</div>`;
   }
+
+  private static getNestedValue(obj: any, path: any) {
+  return path.split('.').reduce((acc: any, part: any) => acc?.[part], obj);
+}
 
   public static toShortDate() {
     return (row: any, col: ColumnSet) => CellRenderers.toDate(row, col);

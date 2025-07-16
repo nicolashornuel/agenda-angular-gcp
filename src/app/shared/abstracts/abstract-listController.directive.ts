@@ -1,18 +1,17 @@
 import { Directive, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
-import { FirestoreService } from '@core/services/firestore.service';
 import { FieldSet } from '@shared/models/fieldSet.model';
 import { Modal, ModalParam } from '@shared/models/modalParam.interface';
 import { ActionSet, ColumnSet, TableSet } from '@shared/models/tableSet.interface';
-import { DestroyService } from '@shared/services/destroy.service';
-import { ModalService } from '@shared/services/shared.observable.service';
-import { Identifiable } from '../models/reservation.model';
 import { AlertService } from '@shared/services/alert.service';
 import { ColumnsortableService } from '@shared/services/columnsortable.service';
+import { DestroyService } from '@shared/services/destroy.service';
+import { ModalService } from '@shared/services/shared.observable.service';
+import { Identifiable } from '../../train/models/reservation.model';
 
 @Directive({
   selector: '[appListe]'
 })
-export abstract class ListeController<T extends Identifiable> implements OnInit {
+export abstract class ListController<T extends Identifiable> implements OnInit {
 
   @ViewChild('modal') modal!: TemplateRef<Modal>;
   @ViewChild('confirm') confirm!: TemplateRef<Modal>;

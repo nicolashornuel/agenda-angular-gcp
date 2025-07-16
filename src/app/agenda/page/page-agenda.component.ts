@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TabParam } from '@shared/models/tabParam.interface';
 import { CalendarView } from 'angular-calendar';
 
 @Component({
@@ -7,8 +8,18 @@ import { CalendarView } from 'angular-calendar';
   styleUrls: ['./page-agenda.component.scss']
 })
 export class PageAgendaComponent {
-  view: CalendarView = CalendarView.Month;
-  viewDate: Date = new Date();
-  isLocked: boolean = true;
+
+    public tabs: TabParam[] = [
+           {
+        name: 'Mon Calendrier',
+        closable: false,
+        link: 'calendar',
+      },
+      {
+        name: 'Evènements Récurrents',
+        closable: false,
+        link: 'recurrent-event',
+      }
+    ];
 
 }

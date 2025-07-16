@@ -1,3 +1,5 @@
+import { CalEventType } from "./calEvent.model"
+
 export const annivDuJour = {
   january: [
     {
@@ -157,3 +159,120 @@ export const annivDuJour = {
     }
   ]
 }
+
+export const birthday = [
+    {
+      title: 'Anniversaire Jacques HORNUEL',
+      meta: {
+        date: new Date(1949, 11, 4),
+      }
+    },
+    {
+      title: 'Anniversaire Rose HORNUEL',
+      meta: {
+        date: new Date(2007, 10, 16),
+      }
+    },
+    {
+      title: 'Anniversaire Aden HORNUEL',
+      meta: {
+        date: new Date(2013, 10, 3),
+      }
+    },
+    {
+      title: 'Anniversaire Emilie',
+      meta: {
+        date: new Date(1986, 9, 9),
+      }
+    },
+    {
+      title: 'Anniversaire Joseph CAVAGNY',
+      meta: {
+        date: new Date(2012, 9, 2),
+      }
+    },
+    {
+      title: 'Anniversaire Anne HORNUEL',
+      meta: {
+        date: new Date(1975, 7, 14),
+      }
+    },
+    {
+      title: 'Anniversaire Myriam SHANINE',
+      meta: {
+        date: new Date(1982, 7, 10),
+      }
+    },
+    {
+      title: 'Anniversaire Benoit DELADERRIERE',
+      meta: {
+        date: new Date(1979, 6, 20),
+      }
+    },
+    {
+      title: 'Anniversaire Béranger CAVAGNY',
+      meta: {
+        date: new Date(2009, 6, 11),
+      }
+    },
+    {
+      title: 'Anniversaire Noémie BAR',
+      meta: {
+        date: new Date(2001, 5, 26),
+      }
+    },
+    {
+      title: 'Anniversaire Juline BAR',
+      meta: {
+        date: new Date(2004, 5, 14),
+      }
+    },
+    {
+      title: 'Anniversaire Nicolas LEGRAND',
+      meta: {
+        date: new Date(1980, 3, 12),
+      }
+    },
+    {
+      title: 'Anniversaire Sébastien BRUN (TCHEP)',
+      meta: {
+        date: new Date(1981, 3, 29),
+      }
+    },
+    {
+      title: 'Anniversaire Florian BRUAND (BLOND)',
+      meta: {
+        date: new Date(1981, 3, 9),
+      }
+    },
+    {
+      title: 'Anniversaire PACS',
+      meta: {
+        date: new Date(2015, 3, 7),
+      }
+    },
+    {
+      title: 'Anniversaire ELiott HORNUEL',
+      meta: {
+        date: new Date(2009, 2, 31),
+      }
+    },
+    {
+      title: 'Anniversaire Pauline (Karine PARMENTIER)',
+      meta: {
+        date: new Date(2011, 2, 11),
+      }
+    },
+    {
+      title: 'Anniversaire Mathilde HORNUEL',
+      meta: {
+        date: new Date(2004, 1, 26),
+      }
+    },
+    {
+      title: 'Anniversaire Meïlya HORNUEL',
+      meta: {
+        date: new Date(2016, 1, 28),
+      }
+    },
+  ]

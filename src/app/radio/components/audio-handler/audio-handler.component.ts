@@ -12,36 +12,38 @@ import { combineLatest, takeUntil } from 'rxjs';
 export class AudioHandlerComponent implements OnInit {
   public audioCtx!: AudioContext;
   public gainNode!: GainNode;
-  public effectList: string[] = ['highpass', 'lowpass', 'Reverb', 'Delay'];
+  public effectList: string[] = ['highpass', 'Reverb', 'Delay'];
   public effectSelected: string = this.effectList[0];
   public isPersist: boolean = false;
   public isMobile!: boolean;
   public isLoading!: boolean;
-
 
   constructor(
     private volumeService: AudioVolumeService,
     private persistService: EffectPersistService,
     private isMobileService: IsMobileService,
     private rightBarIsOpenedService: RightBarIsOpenedService,
-    private destroy$: DestroyService,
+    private destroy$: DestroyService
   ) {}
 
   ngOnInit(): void {
     this.isLoading = true;
-    window.onload = () => {
-      this.audioCtx = new AudioContext();
-      this.gainNode = new GainNode(this.audioCtx);
-      combineLatest([this.volumeService.get$, this.persistService.get$, this.isMobileService.get$, this.rightBarIsOpenedService.get$])
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(values => {
-          this.gainNode.gain.value = values[0];
-          this.isPersist = values[1];
-          this.isMobile = values[2]!;
-          if (values[3]) this.audioCtx.resume();
-          this.isLoading = false;
-        });
-    }
+    this.audioCtx = new AudioContext();
+    this.gainNode = new GainNode(this.audioCtx);
+    combineLatest([
+      this.volumeService.get$,
+      this.persistService.get$,
+      this.isMobileService.get$,
+      this.rightBarIsOpenedService.get$
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(values => {
+        this.gainNode.gain.value = values[0];
+        this.isPersist = values[1];
+        this.isMobile = values[2]!;
+        if (values[3]) this.audioCtx.resume();
+        this.isLoading = false;
+      });
   }
 
   onGainChange(value: number): void {

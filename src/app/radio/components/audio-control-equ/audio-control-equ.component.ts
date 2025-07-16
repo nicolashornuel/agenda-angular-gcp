@@ -38,7 +38,7 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
       const biquad = new BiquadFilterNode(this.audioCtx);
       biquad.type = 'peaking';
       biquad.frequency.value = freq;
-      biquad.Q.value = 1.4;
+      biquad.Q.value = 1; //1.4
       return biquad;
     });
   }
@@ -98,10 +98,7 @@ export class AudioControlEquComponent extends AudioNodeController implements OnI
     this.modalService.set$(undefined);
     this.selected.isDirty = false;
     this.selected.name = this.selected.name.replace('*', '');
-    const entity = { ...this.selected };
-    delete entity.isDirty;
-    delete entity.id;
-    this.audioEqualizerService.updateOne(entity)
+    this.audioEqualizerService.updateOne({ ...this.selected }, this.selected.id!);
   }
 
   @IsAdmin()

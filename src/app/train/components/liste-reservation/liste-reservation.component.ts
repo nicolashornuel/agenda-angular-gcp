@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IsAdmin } from '@core/decorators/hasRole.decorator';
 import { FirestoreStorageService } from '@core/services/firebasestorage.service';
+import { ListController } from '@shared/abstracts/abstract-listController.directive';
 import { Color } from '@shared/models/color.enum';
 import {
   ActionSet,
@@ -10,7 +11,6 @@ import {
   ColumnSet,
   ColumnString
 } from '@shared/models/tableSet.interface';
-import { ListeController } from 'app/train/abstracts/listeController.abstract';
 import { Reservation, TrajetStatus } from 'app/train/models/reservation.model';
 import { ReservationService } from 'app/train/services/reservation.service';
 import { Subscription, takeUntil } from 'rxjs';
@@ -20,7 +20,7 @@ import { Subscription, takeUntil } from 'rxjs';
   templateUrl: './liste-reservation.component.html',
   styleUrls: ['./liste-reservation.component.scss']
 })
-export class ListeReservationComponent extends ListeController<Reservation> implements OnInit {
+export class ListeReservationComponent extends ListController<Reservation> {
   constructor(private reservationService: ReservationService, private firebaseStorage: FirestoreStorageService) {
     super();
   }

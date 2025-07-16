@@ -1,8 +1,8 @@
 <div class="slide-container row-center-center">
     <div class="range-slider col-between-center">
-      <div class="col-center-center">
+      <div class="col-center-center gap-1">
         <span class="scope">{{ value | number : format }}</span>
-        <button appButton ghost color="green" (click)="onIncrease()" tabindex="-1"><i class="fas fa-plus fa-lg"></i></button>
+        <button appButton ghost color="green" size="tiny" (click)="onIncrease()" tabindex="-1"><i class="fas fa-plus fa-lg"></i></button>
       </div>
   
       <input
@@ -19,8 +19,8 @@
         (ngModelChange)="valueChange.emit(value)"
       />
   
-      <div class="col-center-center">
-        <button appButton ghost color="green" (click)="onDecreases()" tabindex="-1"><i class="fas fa-minus fa-lg"></i></button>
+      <div class="col-center-center gap-1">
+        <button appButton ghost color="green" size="tiny" (click)="onDecreases()" tabindex="-1"><i class="fas fa-minus fa-lg"></i></button>
         <span class="scope">{{ name }}</span>
       </div>
     </div>

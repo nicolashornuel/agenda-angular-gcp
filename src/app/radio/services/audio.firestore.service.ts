@@ -17,8 +17,10 @@ export class AudioEqualizerService extends FirestoreService<EqualizerSelectable>
     super('equalizerSelectable');
   }
 
-  public async updateOne(equalizerSelectable: EqualizerSelectable): Promise<void> {
-    await this.update(equalizerSelectable, equalizerSelectable.id!);
+  public async updateOne(equalizerSelectable: EqualizerSelectable, id: string): Promise<void> {
+    delete equalizerSelectable.isDirty;
+    delete equalizerSelectable.id;
+    await this.update(equalizerSelectable, id);
     this.alertService.success(`${equalizerSelectable.name} modifié`);
   }
 

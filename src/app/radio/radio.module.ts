@@ -16,12 +16,15 @@ import { AudioAnalyserWaveDirective } from './directives/audio-analyser-wave.dir
 import { AudioPadDelayDirective } from './directives/audio-pad-delay.directive';
 import { AudioPadFilterDirective } from './directives/audio-pad-filter.directive';
 import { AudioPadReverbDirective } from './directives/audio-pad-reverb.directive';
+import { AudioAnalyserParticleDirective } from './directives/audio-analyser-particle.directive';
+import { AudioControlOscComponent } from './components/audio-control-osc/audio-control-osc.component';
 
 const RadioElements = [
   AudioHandlerComponent,
   AudioControlPadComponent,
   AudioControlPotComponent,
   AudioControlEquComponent,
+  AudioControlOscComponent,
   TruncateFreqPipe,
   AudioNodeDistortionComponent,
   AudioNodeRadioComponent,
@@ -31,7 +34,8 @@ const RadioElements = [
   AudioPadDelayDirective,
   AudioNodeAnalyserComponent,
   AudioAnalyserBarsDirective,
-  AudioAnalyserWaveDirective
+  AudioAnalyserWaveDirective,
+  AudioAnalyserParticleDirective
 ]
 @NgModule({
   declarations: RadioElements,

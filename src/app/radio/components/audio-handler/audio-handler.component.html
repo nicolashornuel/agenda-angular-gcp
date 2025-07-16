@@ -4,7 +4,7 @@
       <fieldset>
         <legend>Analyzer</legend>
         <div [ngClass]="isMobile ? 'col gap-2' : 'row-between-center'">
-          <app-audio-node-analyser audioAnalyserWave [gainNode]="gainNode" [context]="audioCtx"></app-audio-node-analyser>
+          <app-audio-node-analyser audioAnalyserWave audioAnalyserParticle [gainNode]="gainNode" [context]="audioCtx"></app-audio-node-analyser>
           <app-audio-node-analyser audioAnalyserBars [gainNode]="gainNode" [context]="audioCtx"></app-audio-node-analyser>
         </div>
       </fieldset>
