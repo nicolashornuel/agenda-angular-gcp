@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Timestamp } from '@angular/fire/firestore';
-import { CalEventDTO, CalEventEntity, CalEventField, CalEventType } from '../models/calEvent.model';
+import { CalEventDTO, CalEventEntity, CalEventField, CalEventTypeEnum } from '../models/calEvent.model';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +35,7 @@ export class MapperService {
     return {
       title: value,
       meta: {
-        type: CalEventType.COMMENT,
+        type: CalEventTypeEnum.COMMENT,
         start: Timestamp.fromDate(date)
       }
     }

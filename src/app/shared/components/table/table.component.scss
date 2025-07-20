@@ -18,7 +18,7 @@
     display: table-row;
     .table-cell {
       display: table-cell;
-      padding: 5px 0 5px 12px;
+      padding: 5px 12px;
       vertical-align: middle;
     }
     &:nth-child(2n) {
@@ -30,6 +30,13 @@
       writing-mode: vertical-lr;
       transform: rotate(180deg);
       vertical-align: middle;
+      padding: 12px 5px;
+    }
+    .horizontal.table-cell  {
+      writing-mode: unset;
+      transform: unset;
+      vertical-align: bottom;
+      padding: 5px 12px;
     }
     .table-cell {
       background-color: $grey-80;

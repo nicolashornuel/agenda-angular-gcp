@@ -1,0 +1,15 @@
+<div class="input-date-container">
+  <input
+    type="time"
+    [readonly]="inputReadonly"
+    [required]="inputRequired"
+    (blur)="onBlur.next()"
+    (focus)="onFocus.next()"
+    [ngModel]="value"
+    (ngModelChange)="value = $event; onModelChange.next($event)"
+  />
+  <label>
+    <span>{{ label }}</span>
+    <span class="red">{{ asterix }}</span>
+  </label>
+</div>

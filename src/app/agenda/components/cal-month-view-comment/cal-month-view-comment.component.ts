@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges, ViewChild, ViewContainerRef
 import { CalendarEvent } from 'angular-calendar';
 import { EventService } from '@agenda/services/event.service';
 import { collapseAnimation } from '@shared/models/triggerAnimation.constant';
-import { CalEventDTO, CalEventEntity, CalEventType } from '../../models/calEvent.model';
+import { CalEventDTO, CalEventEntity, CalEventTypeEnum } from '../../models/calEvent.model';
 import { AnnivDuJour, AnnivDuJourService } from '../../services/annivDuJour.service';
 import { SaintDuJourService } from '../../services/saintDuJour.service';
 import { MapperService } from '../../services/mapper.service';
@@ -37,7 +37,7 @@ export class CalMonthViewCommentComponent implements OnChanges {
     this.saintDuJour = await this.saint.getWithDate(this.viewDate);
     this.annivList = this.anniv.getWithDate(this.viewDate);
     if (this.events) {
-      this.comments = this.events.filter((eventField: CalEventDTO) => eventField.meta!.type === CalEventType.COMMENT);
+      this.comments = this.events.filter((eventField: CalEventDTO) => eventField.meta!.type === CalEventTypeEnum.COMMENT);
     }
   }
 

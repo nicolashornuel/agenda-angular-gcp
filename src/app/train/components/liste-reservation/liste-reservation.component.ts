@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { IsAdmin } from '@core/decorators/hasRole.decorator';
 import { FirestoreStorageService } from '@core/services/firebasestorage.service';
+import { FirestoreService } from '@core/services/firestore.service';
 import { ListController } from '@shared/abstracts/abstract-listController.directive';
 import { Color } from '@shared/models/color.enum';
 import {
@@ -21,7 +22,8 @@ import { Subscription, takeUntil } from 'rxjs';
   styleUrls: ['./liste-reservation.component.scss']
 })
 export class ListeReservationComponent extends ListController<Reservation> {
-  constructor(private reservationService: ReservationService, private firebaseStorage: FirestoreStorageService) {
+  protected override firestoreService = inject(ReservationService);
+  constructor(private firebaseStorage: FirestoreStorageService) {
     super();
   }
 
@@ -68,18 +70,12 @@ export class ListeReservationComponent extends ListController<Reservation> {
   }
 
   @IsAdmin()
-  public onConfirmDelete(row: Reservation) {
-    this.reservationService.delete(row.id!);
-    this.modalService.set$(undefined);
-    this.alertService.success('suppression réussie');
-  }
-
-  public async onSave(row: Reservation): Promise<void> {
+  public override async onSave(row: Reservation): Promise<void> {
     await this.firebaseStorage.storeFile('trainReservation', row.fileStorage!);
     row.endAt = row.endAt.toString();
     row.startAt = row.startAt.toString();
     row.fileStorage = { ...row.fileStorage! };
-    await this.reservationService.saveOrUpdate(row);
+    await this.firestoreService.saveOrUpdate(row);
     this.alertService.success('sauvegarde réussie');
   }
 
@@ -90,7 +86,7 @@ export class ListeReservationComponent extends ListController<Reservation> {
 
   private getList(fieldToWhere?: { key: string; value: any }): void {
     this.isLoading = true;
-    this.list$ = this.reservationService
+    this.list$ = this.firestoreService
       .getByQuery({fieldPath: Reservation.START_AT.key}, fieldToWhere)
       .pipe(takeUntil(this.destroy$))
       .subscribe((reservations: Reservation[]) => {

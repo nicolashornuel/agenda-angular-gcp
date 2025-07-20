@@ -16,10 +16,10 @@ import { Selectable } from '@shared/models/fieldSet.model';
   ]
 })
 export class InputSelectComponent<T> extends AbstractInputComponent {
- @Input() options?: Selectable<T>[];
+ @Input() options!: Selectable<T>[];
 
   public compareFn(c1: Selectable<T>, c2: Selectable<T>): boolean {
-    return c1 && c2 ? c1.value === c2.value : c1 === c2;
+    return c1 && c2 ? c1.name === c2.name : c1 === c2;
   }
 
   /* @Input() fieldSet?: DataSelect<T>;

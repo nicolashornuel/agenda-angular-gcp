@@ -1,4 +1,6 @@
-import { Directive, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Directive, OnChanges, OnInit, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';
+import { IsAdmin } from '@core/decorators/hasRole.decorator';
+import { FirestoreService } from '@core/services/firestore.service';
 import { FieldSet } from '@shared/models/fieldSet.model';
 import { Modal, ModalParam } from '@shared/models/modalParam.interface';
 import { ActionSet, ColumnSet, TableSet } from '@shared/models/tableSet.interface';
@@ -11,11 +13,10 @@ import { Identifiable } from '../../train/models/reservation.model';
 @Directive({
   selector: '[appListe]'
 })
-export abstract class ListController<T extends Identifiable> implements OnInit {
-
+export abstract class ListController<T extends Identifiable> implements OnInit, OnChanges {
   @ViewChild('modal') modal!: TemplateRef<Modal>;
   @ViewChild('confirm') confirm!: TemplateRef<Modal>;
-  
+
   public isLoading!: boolean;
   public tableSet!: TableSet;
   public popoverTitle!: string;
@@ -28,6 +29,10 @@ export abstract class ListController<T extends Identifiable> implements OnInit {
   ngOnInit(): void {
     this.initComponents();
     this.initData();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['input'] && !changes['input'].firstChange) this.initData();
   }
 
   public onShowColumn(value: boolean, fieldSet: FieldSet) {
@@ -57,12 +62,26 @@ export abstract class ListController<T extends Identifiable> implements OnInit {
     this.modalService.set$(undefined);
   }
 
+  @IsAdmin()
+  public async onConfirmDelete(row: T): Promise<void> {
+    await this.firestoreService!.delete(row.id!);
+    this.modalService.set$(undefined);
+    this.alertService.success('suppression réussie');
+  }
+
+  @IsAdmin()
+  public async onSave(t: T): Promise<void> {
+    await this.firestoreService!.saveOrUpdate(t);
+    this.modalService.set$(undefined);
+    this.alertService.success('Enregistrement réussie');
+  }
+
   protected abstract getColumnSet(): ColumnSet[];
   protected abstract getActionSet(): ActionSet[];
   protected abstract initData(): void;
   public abstract onCreate(): void;
-  public abstract onSave(t: T): Promise<void>;
- 
+  protected abstract firestoreService?: FirestoreService<T>;
+
   private initComponents() {
     this.tableSet = {
       verticaltextHeader: false,
@@ -74,7 +93,7 @@ export abstract class ListController<T extends Identifiable> implements OnInit {
     };
     this.popoverTitle = 'colonne visible';
     this.popoverFieldSets = this.tableSet.columnSet.map(
-      (col: ColumnSet) => new FieldSet({name: col.title}, col.visible)
+      (col: ColumnSet) => new FieldSet({ name: col.title }, col.visible)
     );
   }
 }

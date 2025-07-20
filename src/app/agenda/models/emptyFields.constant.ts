@@ -1,4 +1,4 @@
-import { CalEventField, CalEventType } from "./calEvent.model";
+import { CalEventField, CalEventTypeEnum } from "./calEvent.model";
 
 export const emptyFields: CalEventField[] = [
     {
@@ -6,7 +6,7 @@ export const emptyFields: CalEventField[] = [
       meta: {
         start: '07:00:00',
         end: '19:00:00',
-        type: CalEventType.FAMILY,
+        type: CalEventTypeEnum.FAMILY,
         daysWhenHoliday: [0, 1, 2, 3, 4, 5, 6],
         daysWhenNotHoliday: [0, 1, 2, 3, 4, 5, 6],
         daysWhenPublicHoliday: [0, 1, 2, 3, 4, 5, 6],
@@ -18,7 +18,7 @@ export const emptyFields: CalEventField[] = [
       meta: {
         start: '19:00:00',
         end: '23:59:59',
-        type: CalEventType.FAMILY,
+        type: CalEventTypeEnum.FAMILY,
         daysWhenHoliday: [0, 1, 2, 3, 4, 5, 6],
         daysWhenNotHoliday: [0, 1, 2, 3, 4, 5, 6],
         daysWhenPublicHoliday: [0, 1, 2, 3, 4, 5, 6],
@@ -30,7 +30,7 @@ export const emptyFields: CalEventField[] = [
       meta: {
         start: '07:30:00',
         end: '09:00:00',
-        type: CalEventType.FAMILY,
+        type: CalEventTypeEnum.FAMILY,
         daysWhenHoliday: [],
         daysWhenNotHoliday: [1, 2, 4, 5],
         daysWhenPublicHoliday: [],
@@ -42,7 +42,7 @@ export const emptyFields: CalEventField[] = [
       meta: {
         start: '12:00:00',
         end: '14:00:00',
-        type: CalEventType.FAMILY,
+        type: CalEventTypeEnum.FAMILY,
         daysWhenHoliday: [],
         daysWhenNotHoliday: [1, 2, 4, 5],
         daysWhenPublicHoliday: [],
@@ -54,7 +54,7 @@ export const emptyFields: CalEventField[] = [
       meta: {
         start: '17:00:00',
         end: '19:00:00',
-        type: CalEventType.FAMILY,
+        type: CalEventTypeEnum.FAMILY,
         daysWhenHoliday: [],
         daysWhenNotHoliday: [1, 2, 4, 5],
         daysWhenPublicHoliday: [],
@@ -66,7 +66,7 @@ export const emptyFields: CalEventField[] = [
       meta: {
         start: '07:30:00',
         end: '18:30:00',
-        type: CalEventType.FAMILY,
+        type: CalEventTypeEnum.FAMILY,
         daysWhenHoliday: [1, 2, 3, 4, 5],
         daysWhenNotHoliday: [3],
         daysWhenPublicHoliday: [],
@@ -78,7 +78,7 @@ export const emptyFields: CalEventField[] = [
       meta: {
         start: '07:30:00',
         end: '09:00:00',
-        type: CalEventType.FAMILY,
+        type: CalEventTypeEnum.FAMILY,
         daysWhenHoliday: [],
         daysWhenNotHoliday: [1, 2, 4, 5],
         daysWhenPublicHoliday: [],
@@ -90,7 +90,7 @@ export const emptyFields: CalEventField[] = [
       meta: {
         start: '12:00:00',
         end: '14:00:00',
-        type: CalEventType.FAMILY,
+        type: CalEventTypeEnum.FAMILY,
         daysWhenHoliday: [],
         daysWhenNotHoliday: [1, 2, 4, 5],
         daysWhenPublicHoliday: [],
@@ -102,7 +102,7 @@ export const emptyFields: CalEventField[] = [
       meta: {
         start: '17:00:00',
         end: '19:00:00',
-        type: CalEventType.FAMILY,
+        type: CalEventTypeEnum.FAMILY,
         daysWhenHoliday: [],
         daysWhenNotHoliday: [1, 2, 4, 5],
         daysWhenPublicHoliday: [],
@@ -114,7 +114,7 @@ export const emptyFields: CalEventField[] = [
       meta: {
         start: '07:30:00',
         end: '18:30:00',
-        type: CalEventType.FAMILY,
+        type: CalEventTypeEnum.FAMILY,
         daysWhenHoliday: [1, 2, 3, 4, 5],
         daysWhenNotHoliday: [3],
         daysWhenPublicHoliday: [],

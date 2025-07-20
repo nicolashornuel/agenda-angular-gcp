@@ -51,10 +51,23 @@ export class TableCellComponent implements AfterViewInit, OnDestroy, OnChanges {
       this.childComponent = this.target.createComponent<any>(this.columnSet.render.component);
       this.columnSet.render.bind(this.rowData, this.columnSet.key, this.childComponent);
       if (this.columnSet.render.listener) {
-        this.columnSet.render.listener(this.childComponent).pipe(takeUntil(this.destroy$)).subscribe(
-          (value: any) => this.rowData[this.columnSet.key] = value);
+        this.columnSet.render
+          .listener(this.childComponent)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((value: any) => (this.rowData[this.columnSet.key] = value));
       }
       this.childComponent.changeDetectorRef.detectChanges();
     }
   }
+
+/*   private getNestedValue(obj: any, path: any) {
+    return path.split('.').reduce((acc: any, part: any) => acc?.[part], obj);
+  }
+
+  private setNestedValue(obj: any, path: string, value: any): void {
+    const keys = path.split('.');
+    const lastKey = keys.pop()!;
+    const target = keys.reduce((acc, key) => (acc[key] = acc[key] ?? {}), obj);
+    target[lastKey] = value;
+  } */
 }

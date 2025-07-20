@@ -16,7 +16,10 @@ import { ScrollTodayDirective } from './directives/scroll-today.directive';
 import { PageAgendaComponent } from './page/page-agenda.component';
 import { TabRecurrentEventComponent } from './components/tab-recurrent-event/tab-recurrent-event.component';
 import { TabCalendarComponent } from './components/tab-calendar/tab-calendar.component';
-import { RecurrentEventEditComponent } from './components/recurrent-event-edit/recurrent-event-edit.component';
+import { ListRecurringEventComponent } from './components/list-recurring-event/list-recurring-event.component';
+import { EditRecurringEventComponent } from './components/edit-recurring-event/edit-recurring-event.component';
+import { EditRecurringEventTypeComponent } from './components/edit-recurring-event-type/edit-recurring-event-type.component';
+import { ListRecurringEventTypeComponent } from './components/list-recurring-event-type/list-recurring-event-type.component';
 
 @NgModule({
   declarations: [
@@ -29,8 +32,11 @@ import { RecurrentEventEditComponent } from './components/recurrent-event-edit/r
     PageAgendaComponent,
     TabRecurrentEventComponent,
     TabCalendarComponent,
-    RecurrentEventEditComponent
-  ],
+    ListRecurringEventComponent,
+    EditRecurringEventComponent,
+    EditRecurringEventTypeComponent,
+    ListRecurringEventTypeComponent
+    ],
   imports: [
     CommonModule,
     AgendaRoutingModule,

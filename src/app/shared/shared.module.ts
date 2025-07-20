@@ -42,6 +42,8 @@ import { InputSelectComponent } from './components/input-select/input-select.com
 import { InputStarComponent } from './components/input-star/input-star.component';
 import { DraggableDirective } from './directives/draggable.directive';
 import { ReadMoreComponent } from './components/read-more/read-more.component';
+import { InputTimeComponent } from './components/input-time/input-time.component';
+import { TitleComponent } from './components/title/title.component';
 
 const sharedComponents = [
   TableComponent,
@@ -77,7 +79,9 @@ const sharedComponents = [
   AccordionComponent,
   InputSelectComponent,
   InputStarComponent,
-  ReadMoreComponent
+  ReadMoreComponent,
+  InputTimeComponent,
+  TitleComponent
 ]
 
 const sharedModules = [
@@ -99,7 +103,7 @@ const sharedDirectives = [
 @NgModule({
   declarations: [
     sharedComponents,
-    sharedDirectives
+    sharedDirectives,
   ],
   imports: [
     sharedModules

@@ -79,6 +79,9 @@ $height-header: 60px;
 $height-rss: 40px;
 
 //input
+.edit-container > * {
+  padding: 15px;
+}
 
 %show-input-text {
   padding: 0.25rem 0;

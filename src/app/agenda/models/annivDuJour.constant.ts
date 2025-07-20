@@ -1,5 +1,3 @@
-import { CalEventType } from "./calEvent.model"
-
 export const annivDuJour = {
   january: [
     {

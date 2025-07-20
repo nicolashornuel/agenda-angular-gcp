@@ -1,11 +1,4 @@
-import {
-  ComponentRef,
-  Directive,
-  HostListener,
-  Input,
-  OnDestroy,
-  ViewContainerRef
-} from '@angular/core';
+import { ComponentRef, Directive, HostListener, Input, OnDestroy, ViewContainerRef } from '@angular/core';
 import { TooltipComponent } from '../components/tooltip/tooltip.component';
 
 @Directive({
@@ -18,12 +11,14 @@ export class TooltipDirective implements OnDestroy {
 
   @HostListener('mouseenter')
   onMouseEnter(): void {
-    this.childComponent = this.el.createComponent<TooltipComponent>(TooltipComponent);
-    const {height, width, x, y} = this.el.element.nativeElement.getBoundingClientRect();    
-    this.childComponent.instance.param = {
-      position: {top: `${y + height}px`, left: `${x + width / 2}px`},
-      content: this.appTooltip
-    };
+    if (this.appTooltip !== '') {
+      this.childComponent = this.el.createComponent<TooltipComponent>(TooltipComponent);
+      const { height, width, x, y } = this.el.element.nativeElement.getBoundingClientRect();
+      this.childComponent.instance.param = {
+        position: { top: `${y + height}px`, left: `${x + width / 2}px` },
+        content: this.appTooltip
+      };
+    }
   }
 
   @HostListener('mouseleave')

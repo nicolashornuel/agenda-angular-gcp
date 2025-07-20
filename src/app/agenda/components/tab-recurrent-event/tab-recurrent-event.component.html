@@ -1,26 +1,9 @@
-<div class="row-end-center mb-3">
-  <app-button-group class="row-end-center">
-    <button appButton outline size="small" (click)="onCreate()">
-      <i class="fas fa-plus"></i>
-    </button>
-  </app-button-group>
-</div>
-
 <ng-container *ngIf="!isLoading; else spinner">
-  <app-table [tableSet]="tableSet"></app-table>
+  <section class="col-between-stretch gap-5 p-5">
+    <app-list-recurring-event-type></app-list-recurring-event-type>
+    <app-list-recurring-event></app-list-recurring-event>
+  </section>
 </ng-container>
-
-
-<ng-template #modal let-input>
-  <app-recurrent-event-edit [input]="input" (output)="onSave($event)"></app-recurrent-event-edit>
-</ng-template>
-
-<ng-template #confirm let-input>
-  <div class="row-end-center gap-2">
-    <button appButton outline size="regular" color="blue" (click)="onClose()">Annuler</button>
-    <button appButton filled size="regular" color="blue" (click)="onConfirmDelete(input)">Supprimer</button>
-  </div>
-</ng-template>
 
 <ng-template #spinner>
   <app-spinner></app-spinner>

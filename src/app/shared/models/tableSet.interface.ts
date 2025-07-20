@@ -1,11 +1,13 @@
 import { ComponentRef, EventEmitter } from '@angular/core';
+import { AbstractInputComponent } from '@shared/abstracts/input.component';
 import { BadgeLinkComponent } from '@shared/components/badge-link/badge-link.component';
 import { InputCheckboxComponent } from '@shared/components/input-checkbox/input-checkbox.component';
-import { InputTextComponent } from '@shared/components/input-text/input-text.component';
-import { FieldSet, Nameable } from '@shared/models/fieldSet.model';
-import { Color } from './color.enum';
-import { AbstractInputComponent } from '@shared/abstracts/input.component';
+import { InputSelectComponent } from '@shared/components/input-select/input-select.component';
 import { InputStarComponent } from '@shared/components/input-star/input-star.component';
+import { InputTextComponent } from '@shared/components/input-text/input-text.component';
+import { FieldSet, Nameable, Selectable } from '@shared/models/fieldSet.model';
+import { Color } from './color.enum';
+import { InputNumberComponent } from '@shared/components/input-number/input-number.component';
 
 export interface TableSet {
   title?: string;
@@ -25,7 +27,6 @@ export interface TableSet {
 
 export class TableSet implements TableSet {
   constructor(height: string) {
-    this.height = height;
     (this.verticaltextHeader = false),
       (this.hover = false),
       (this.height = height), //  'calc(100vh - 240px)',
@@ -62,10 +63,10 @@ export interface ColumnSet {
 }
 
 export interface ColumnCustomRenderer<T, C, F> {
-    component: C;
-    bind: (row: T, key: string, componentRef: ComponentRef<C>) => void;
-    listener?: (componentRef: ComponentRef<C>) => EventEmitter<F>;
-    valueSave?: (row: T) => any;
+  component: C;
+  bind: (row: T, key: string, componentRef: ComponentRef<C>) => void;
+  listener?: (componentRef: ComponentRef<C>) => EventEmitter<F>;
+  valueSave?: (row: T) => any;
 }
 
 interface DataColumn<T extends 'string' | 'custom' | 'html' | 'date'> {
@@ -73,7 +74,7 @@ interface DataColumn<T extends 'string' | 'custom' | 'html' | 'date'> {
   title: string;
   type: T;
   visible: boolean;
-  width: string | undefined;
+  width?: string;
 }
 
 class DataColumn<T> implements DataColumn<T> {
@@ -100,20 +101,17 @@ export class ColumnString extends DataColumn<'string'> {
   }
 }
 export class ColumnCustom extends DataColumn<'custom'> {
-  render: ColumnCustomRenderer<any, any, any>; 
-  constructor(
-    name: Nameable,
-    visible: boolean,
-    render: ColumnCustomRenderer<any, any, any>
-  ) {
+  render: ColumnCustomRenderer<any, any, any>;
+  constructor(name: Nameable, visible: boolean, render: ColumnCustomRenderer<any, any, any>) {
     super(name, visible, 'custom');
     this.render = render;
   }
 }
 
 export class CellRenderers {
-
-  public static toInputComponent(component: any extends AbstractInputComponent ? AbstractInputComponent : any): ColumnCustomRenderer<any, any, any> {
+  public static toInputComponent(
+    component: any extends AbstractInputComponent ? AbstractInputComponent : any
+  ): ColumnCustomRenderer<any, any, any> {
     return {
       component,
       bind: (row: any, key: string, componentRef: ComponentRef<AbstractInputComponent>) => {
@@ -132,13 +130,9 @@ export class CellRenderers {
       hour: '2-digit',
       minute: '2-digit'
     };
-    const date: Date = new Date(this.getNestedValue(row, col.key));
+    const date: Date = new Date(row[col.key]);
     return `<div class="txt-nowrap">${date.toLocaleDateString('fr-FR', options)}</div>`;
   }
-
-  private static getNestedValue(obj: any, path: any) {
-  return path.split('.').reduce((acc: any, part: any) => acc?.[part], obj);
-}
 
   public static toShortDate() {
     return (row: any, col: ColumnSet) => CellRenderers.toDate(row, col);
@@ -152,6 +146,21 @@ export class CellRenderers {
     return CellRenderers.toInputComponent(InputTextComponent);
   }
 
+  public static toInputNumber() {
+    return CellRenderers.toInputComponent(InputNumberComponent);
+  }
+
+  public static toInputSelect(options: Selectable<any>[]): ColumnCustomRenderer<any, any, any> {
+    return {
+      component: InputSelectComponent,
+      bind: (row: any, key: string, componentRef: ComponentRef<InputSelectComponent<any>>) => {
+        componentRef.instance.value = row[key];
+        componentRef.instance.options = options;
+      },
+      listener: (componentRef: ComponentRef<InputSelectComponent<any>>) => componentRef.instance.onModelChange
+    };
+  }
+
   public static toSimpleBadge() {
     return {
       component: BadgeLinkComponent,
@@ -163,6 +172,9 @@ export class CellRenderers {
       }
     };
   }
+  public static toName() {
+    return (row: any, col: ColumnSet) => (row[col.key] as Nameable).name;
+  }
 
   public static toBoolean(): (row: any, col: ColumnSet) => string {
     return (row: any, col: ColumnSet) =>
@@ -173,7 +185,7 @@ export class CellRenderers {
     return (row: any, col: ColumnSet) => `${row[col.key].toFixed(2)} ${suffix}`;
   }
 
-  public static toBadgeLink(color: Color, prefix: string, tooltip: string) {
+  public static toBadgeLink(color: Color, prefix: string, tooltip?: string) {
     return {
       component: BadgeLinkComponent,
       bind: (row: any, key: string, componentRef: ComponentRef<BadgeLinkComponent>) => {

@@ -19,7 +19,7 @@ import { ModalService } from '@shared/services/shared.observable.service';
 import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
 import { isSameDay, isSameMonth } from 'date-fns';
 import { takeUntil } from 'rxjs';
-import { CalEventDTO, CalEventField, CalEventType } from '../../models/calEvent.model';
+import { CalEventDTO, CalEventField, CalEventTypeEnum } from '../../models/calEvent.model';
 import { emptyFields } from '../../models/emptyFields.constant';
 import { DayClickedService } from '../../services/day-clicked.service';
 import { MapperService } from '../../services/mapper.service';
@@ -61,13 +61,13 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
     if (isSameMonth(new Date(), this.viewDate) && isSameDay(this.day.date, this.viewDate)) this.isActive = true;
     this.comments = this.day.events
       .map((dayEvent: CalendarEvent) => ({ ...dayEvent }))
-      .filter((eventField: CalEventDTO) => eventField.meta!.type === CalEventType.COMMENT);
+      .filter((eventField: CalEventDTO) => eventField.meta!.type === CalEventTypeEnum.COMMENT);
   }
 
   private initializeData(): void {
     emptyFields.forEach((field: CalEventField) => {
       let existField: CalendarEvent | undefined = this.day.events
-        .filter((eventField: CalEventDTO) => eventField.meta!.type === CalEventType.FAMILY)
+        .filter((eventField: CalEventDTO) => eventField.meta!.type === CalEventTypeEnum.FAMILY)
         .find((dayEvent: CalendarEvent) => dayEvent.title === field.title);
 
       let formField: CalEventField =

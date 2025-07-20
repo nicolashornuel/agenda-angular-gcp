@@ -1,7 +1,5 @@
 <div class="row col-mobile">
-  <div class="row-start-center f-grow">
-    <h3 class="title">{{ viewDate | calendarDate : view + 'ViewTitle' : locale }}</h3>
-  </div>
+  <app-title [title]="viewDate | calendarDate : view + 'ViewTitle' : locale"></app-title>
   <div class="row-end-center gap-2">
     <ng-container [ngTemplateOutlet]="btnGroupViewDateChange"></ng-container>
     <ng-container [ngTemplateOutlet]="btnGroupViewChange"></ng-container>

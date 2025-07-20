@@ -5,7 +5,7 @@
     class="select"
     required
     placeholder=" "
-    (ngModelChange)="onModelChange.emit(value)"
+    (ngModelChange)="onModelChange.emit($event);"
     [(ngModel)]="value"
     [compareWith]="compareFn"
   >

@@ -13,7 +13,9 @@ const routes: Routes = [
         pathMatch: 'full'
       },
       { path: 'calendar', component: TabCalendarComponent },
-      { path: 'recurrent-event', component: TabRecurrentEventComponent }
+      { path: 'recurrent-event', component: TabRecurrentEventComponent },
+      { path: 'family', component: TabRecurrentEventComponent },
+      { path: 'family/:id', component: TabRecurrentEventComponent }
     ]
    },
 ];

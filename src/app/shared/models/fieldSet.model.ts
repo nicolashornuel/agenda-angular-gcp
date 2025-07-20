@@ -52,6 +52,7 @@ export class DataSelect<T> extends FieldSet {
 export interface Selectable<T> extends Nameable {
   value?: T;
   isDirty?: boolean;
+  key?: string;
 }
 
 export class Selectable<T> {

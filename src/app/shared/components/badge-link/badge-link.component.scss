@@ -63,7 +63,6 @@
   @extend %link;
   @extend %status;
   .status-content {
-    border: 1px solid $grey-100;
-    background-color: transparent;
+    background-color: $grey-60;
   }
 }

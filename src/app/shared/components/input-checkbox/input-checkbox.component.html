@@ -8,5 +8,8 @@
     [(ngModel)]="value"
     (ngModelChange)="onModelChange.next($event)"
   />
-  <label class="ml-2">{{ label + asterix }}</label>
+  <ng-container *ngIf="label">
+    <label class="ml-2">{{ label + asterix }}</label>
+  </ng-container>
+
 </div>

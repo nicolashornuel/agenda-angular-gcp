@@ -35,8 +35,7 @@ export class ListSavedComponent extends VideoController implements OnInit {
         key: 'title',
         title: 'Titre',
         type: 'string',
-        visible: true,
-        width: '40%'
+        visible: true
       },
       {
         key: 'channelTitle',
@@ -50,14 +49,14 @@ export class ListSavedComponent extends VideoController implements OnInit {
         title: 'Date de publication',
         type: 'date',
         visible: false,
-        width: '20%'
+        width: '10%'
       },
       {
         key: 'addedAt',
         title: "Date d'ajout",
         type: 'date',
         visible: true,
-        width: '20%'
+        width: '10%'
       },
       {
         key: 'extractWiki',
@@ -73,6 +72,7 @@ export class ListSavedComponent extends VideoController implements OnInit {
         title: 'Classement',
         type: 'custom',
         visible: true,
+        width: '10%',
         render: CellRenderers.toPriority()
       }
     ],
