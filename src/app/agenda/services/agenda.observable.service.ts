@@ -18,3 +18,11 @@ export class CalRecurringEvent$ extends BehaviorSubjectService<any> {
     super(undefined);
   }
 }
+@Injectable({
+  providedIn: 'root'
+})
+export class AgendaUser$ extends BehaviorSubjectService<any> {
+  constructor() {
+    super(undefined);
+  }
+}

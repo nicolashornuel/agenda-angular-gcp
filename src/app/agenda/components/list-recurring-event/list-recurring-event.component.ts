@@ -1,6 +1,9 @@
-import { CalRecurringEvent, CalRecurringEventDto, CalRecurringEventType } from '@agenda/models/calEvent.model';
-import { CalRecurringEventService } from '@agenda/services/agenda.firestore.service';
-import { CalRecurringEvent$, CalRecurringEventType$ } from '@agenda/services/agenda.observable.service';
+import { CalRecurringEvent } from '@agenda/models/calEvent.model';
+import {
+  AgendaUserGroupService,
+  AgendaUserService,
+  CalRecurringEventService
+} from '@agenda/services/agenda.firestore.service';
 import { Component, inject } from '@angular/core';
 import { ListController } from '@shared/abstracts/abstract-listController.directive';
 import {
@@ -12,8 +15,7 @@ import {
   ColumnString
 } from '@shared/models/tableSet.interface';
 import { UtilService } from '@shared/services/util.service';
-import { combineLatest, takeUntil } from 'rxjs';
-import { AgendaUser } from '../tab-recurrent-event/tab-recurrent-event.component';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-list-recurring-event',
@@ -22,14 +24,14 @@ import { AgendaUser } from '../tab-recurrent-event/tab-recurrent-event.component
 })
 export class ListRecurringEventComponent extends ListController<CalRecurringEvent> {
   protected override firestoreService = inject(CalRecurringEventService);
-  private calRecurringEventType$ = inject(CalRecurringEventType$);
-  private calRecurringEvent$ = inject(CalRecurringEvent$);
+  protected agendaUserGroupService = inject(AgendaUserGroupService);
+  protected agendaUserService = inject(AgendaUserService);
   private utilService = inject(UtilService);
 
   protected override getColumnSet(): ColumnSet[] {
     return [
-      new ColumnCustom(CalRecurringEvent.CAL_RECURRING_EVENT_TYPE, true, CellRenderers.toSimpleBadge()).setWidth("40%"),
-      new ColumnHtml(CalRecurringEvent.AGENDA_USER, true, CellRenderers.toName()).setWidth("40%"),
+      new ColumnHtml(CalRecurringEvent.AGENDA_USER, true, CellRenderers.toName()).setWidth('40%'),
+      new ColumnCustom(CalRecurringEvent.CAL_RECURRING_EVENT_TYPE, true, CellRenderers.toSimpleBadge()).setWidth('40%'),
       new ColumnString(CalRecurringEvent.ORDER, true)
     ];
   }
@@ -41,54 +43,20 @@ export class ListRecurringEventComponent extends ListController<CalRecurringEven
     ];
   }
 
-  protected override initData(): void {
+  protected override async initData(): Promise<void> {
     this.tableSet.height = 'auto';
-    combineLatest([this.calRecurringEventType$.get$, this.calRecurringEvent$.get$])
+    this.isLoading = true;
+    this.firestoreService
+      .getDocs$()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(([recurrentEventTypes, recurrentEvents]) => {
-        let list = recurrentEvents
-          .map((event: CalRecurringEvent) => {
-            const type = recurrentEventTypes.find(
-              (type: CalRecurringEventType) => type.id === event.calRecurringEventTypeId
-            );
-            const agendaUser = AgendaUser.AGENDA_USERS.find(user => user.id === event.agendaUserId);
-            return this.toDto(event, type, agendaUser!);
-          });
-          this.tableSet.data = this.utilService.sortInByAsc(list, 'order');
+      .subscribe(recurrentEvents => {
+        this.tableSet.data = recurrentEvents.length > 0 ? this.utilService.sortInByAsc(recurrentEvents, 'order') : [];
+        this.isLoading = false;
       });
   }
 
   public override onCreate(): void {
-    const lastOrder = Math.max(...this.tableSet.data.map(feed => feed.order || 0));
-    this.onOpenModal('Créer un évènement récurrent', new CalRecurringEventDto(lastOrder + 1));
-  }
-
-  public override onSave(t: CalRecurringEvent): Promise<void> {
-    const entity = this.toEntity(t as unknown as CalRecurringEventDto);
-    return super.onSave(entity);
-  }
-
-  private toEntity(dto: CalRecurringEventDto): CalRecurringEvent {
-    let entity: CalRecurringEvent = {
-      agendaUserId: dto.agendaUser.id,
-      calRecurringEventTypeId: dto.calRecurringEventType.id!,
-      order: dto.order
-    };
-    if (dto.id) entity.id = dto.id;
-
-    return entity;
-  }
-
-  private toDto(
-    entity: CalRecurringEvent,
-    calRecurringEventType: CalRecurringEventType,
-    agendaUser: AgendaUser
-  ): CalRecurringEventDto {
-    return {
-      id: entity.id,
-      agendaUser: agendaUser,
-      calRecurringEventType: calRecurringEventType,
-      order: entity.order || 0
-    };
+    const lastOrder = this.tableSet.data.reduce((max, feed) => Math.max(max, feed.order || 0), 0);
+    this.onOpenModal('Créer un évènement récurrent', new CalRecurringEvent(lastOrder + 1));
   }
 }

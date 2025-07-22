@@ -1,7 +1,6 @@
-import { AgendaUser } from '@agenda/components/tab-recurrent-event/tab-recurrent-event.component';
-import { Timestamp } from '@angular/fire/firestore';
+import { DocumentReference, Timestamp } from '@angular/fire/firestore';
 import { Identifiable } from '@shared/abstracts/abstract-controller.directive';
-import { FieldSet, Nameable, Selectable } from '@shared/models/fieldSet.model';
+import { Nameable, Selectable } from '@shared/models/fieldSet.model';
 import { CalendarEvent } from 'angular-calendar';
 
 export enum CalEventTypeEnum {
@@ -98,23 +97,30 @@ export class CalRecurringEventRule {
   }
 }
 
-export class CalRecurringEvent implements Identifiable {
+export class CalRecurringEvent {
   public static readonly AGENDA_USER = { key: 'agendaUser', name: 'Qui' };
   public static readonly CAL_RECURRING_EVENT_TYPE = { key: 'calRecurringEventType', name: 'Type' };
   public static readonly ORDER = { key: 'order', name: 'ordre' };
-
-  id?: string;
-  agendaUserId?: string;
-  calRecurringEventTypeId?: string;
-  order?: number;
-}
-
-export class CalRecurringEventDto implements Identifiable {
   constructor(order: number) {
     this.order = order;
   }
-  id?: string;
-  agendaUser!: AgendaUser;
-  calRecurringEventType!: CalRecurringEventType;
-  order!: number;
 }
+
+export interface Orderable {
+  order: number;
+}
+
+export interface CalRecurringEvent extends Identifiable, Orderable {
+  agendaUser: AgendaUser | DocumentReference<AgendaUser>;
+  calRecurringEventType: CalRecurringEventType | DocumentReference<CalRecurringEventType>;
+}
+
+export interface AgendaUserGroup extends Identifiable, Nameable {
+  agendaUser?: DocumentReference<AgendaUser>[];
+}
+
+export interface AgendaUser extends Identifiable, Nameable {
+  agendaUserGroup: AgendaUserGroup | DocumentReference<AgendaUserGroup>;
+  uid?: string;
+}
+

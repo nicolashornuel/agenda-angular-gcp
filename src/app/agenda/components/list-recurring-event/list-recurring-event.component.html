@@ -1,3 +1,4 @@
+<ng-container *ngIf="!isLoading; else spinner">
 <div class="row-end-center mb-3">
     <app-title title="Associations"></app-title>
   <app-button-group class="row-end-center">
@@ -7,6 +8,7 @@
   </app-button-group>
 </div>
 <app-table [tableSet]="tableSet"></app-table>
+</ng-container>
 
 <ng-template #modal let-input>
   <app-edit-recurring-event
@@ -22,4 +24,8 @@
       Supprimer
     </button>
   </div>
+</ng-template>
+
+<ng-template #spinner>
+  <app-spinner></app-spinner>
 </ng-template>

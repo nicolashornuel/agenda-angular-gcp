@@ -31,7 +31,7 @@ export type Pageable<T> = {
 };
 
 export abstract class FirestoreService<T> {
-  private firestore = inject(Firestore);
+  protected firestore = inject(Firestore);
   protected collectionRef!: CollectionReference<T>;
   private lastVisible!: QueryDocumentSnapshot<T>;
   private firstVisible!: QueryDocumentSnapshot<T>;
