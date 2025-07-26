@@ -1,9 +1,6 @@
 import { CalRecurringEvent } from '@agenda/models/calEvent.model';
-import {
-  AgendaUserGroupService,
-  AgendaUserService,
-  CalRecurringEventService
-} from '@agenda/services/agenda.firestore.service';
+import { CalRecurringEventService } from '@agenda/services/agenda.firestore.service';
+import { CalRecurringEvent$ } from '@agenda/services/agenda.observable.service';
 import { Component, inject } from '@angular/core';
 import { ListController } from '@shared/abstracts/abstract-listController.directive';
 import {
@@ -14,7 +11,6 @@ import {
   ColumnSet,
   ColumnString
 } from '@shared/models/tableSet.interface';
-import { UtilService } from '@shared/services/util.service';
 import { takeUntil } from 'rxjs';
 
 @Component({
@@ -24,9 +20,7 @@ import { takeUntil } from 'rxjs';
 })
 export class ListRecurringEventComponent extends ListController<CalRecurringEvent> {
   protected override firestoreService = inject(CalRecurringEventService);
-  protected agendaUserGroupService = inject(AgendaUserGroupService);
-  protected agendaUserService = inject(AgendaUserService);
-  private utilService = inject(UtilService);
+  private calRecurringEvent$ = inject(CalRecurringEvent$);
 
   protected override getColumnSet(): ColumnSet[] {
     return [
@@ -46,13 +40,10 @@ export class ListRecurringEventComponent extends ListController<CalRecurringEven
   protected override async initData(): Promise<void> {
     this.tableSet.height = 'auto';
     this.isLoading = true;
-    this.firestoreService
-      .getDocs$()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(recurrentEvents => {
-        this.tableSet.data = recurrentEvents.length > 0 ? this.utilService.sortInByAsc(recurrentEvents, 'order') : [];
-        this.isLoading = false;
-      });
+    this.calRecurringEvent$.get$.pipe(takeUntil(this.destroy$)).subscribe(recurrentEvents => {
+      this.tableSet.data = recurrentEvents.length > 0 ? this.utilService.sortInByAsc(recurrentEvents, 'order') : [];
+      this.isLoading = false;
+    });
   }
 
   public override onCreate(): void {

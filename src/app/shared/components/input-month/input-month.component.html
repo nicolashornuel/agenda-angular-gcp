@@ -1,15 +1,12 @@
-<div class="input-text-container">
+<div class="input-date-container">
   <input
-    type="number"
-    placeholder=" "
-    [max]="max"
-    [min]="min"
-    [step]="step"
+    type="month"
     [readonly]="inputReadonly"
     [required]="inputRequired"
     (blur)="onBlur.next()"
     (focus)="onFocus.next()"
-    [(ngModel)]="value"
+    [ngModel]="value"
+    (ngModelChange)="value = $event; onModelChange.next($event)"
   />
   <label>
     <span>{{ label }}</span>

@@ -1,13 +1,15 @@
 import { Directive, OnChanges, OnInit, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';
 import { IsAdmin } from '@core/decorators/hasRole.decorator';
-import { FirestoreService } from '@core/services/firestore.service';
-import { FieldSet } from '@shared/models/fieldSet.model';
+import { FirestoreService, Pageable } from '@core/services/firestore.service';
+import { DataSelect, FieldSet, Selectable } from '@shared/models/fieldSet.model';
 import { Modal, ModalParam } from '@shared/models/modalParam.interface';
 import { ActionSet, ColumnSet, TableSet } from '@shared/models/tableSet.interface';
 import { AlertService } from '@shared/services/alert.service';
-import { ColumnsortableService } from '@shared/services/columnsortable.service';
+import { ColSorted, ColumnsortableService } from '@shared/services/columnsortable.service';
 import { DestroyService } from '@shared/services/destroy.service';
 import { ModalService } from '@shared/services/shared.observable.service';
+import { UtilService } from '@shared/services/util.service';
+import { map, takeUntil, tap } from 'rxjs';
 import { Identifiable } from '../../train/models/reservation.model';
 
 @Directive({
@@ -18,6 +20,7 @@ export abstract class ListController<T extends Identifiable> implements OnInit, 
   @ViewChild('confirm') confirm!: TemplateRef<Modal>;
 
   public isLoading!: boolean;
+  public isSaving!: boolean;
   public tableSet!: TableSet;
   public popoverTitle!: string;
   public popoverFieldSets!: FieldSet[];
@@ -25,6 +28,7 @@ export abstract class ListController<T extends Identifiable> implements OnInit, 
   public modalService = inject(ModalService);
   public alertService = inject(AlertService);
   public colSortable = inject(ColumnsortableService);
+  public utilService = inject(UtilService);
 
   ngOnInit(): void {
     this.initComponents();
@@ -64,23 +68,27 @@ export abstract class ListController<T extends Identifiable> implements OnInit, 
 
   @IsAdmin()
   public async onConfirmDelete(row: T): Promise<void> {
+    this.isSaving = true;
     await this.firestoreService!.delete(row.id!);
     this.modalService.set$(undefined);
     this.alertService.success('suppression réussie');
+    this.isSaving = false;
   }
 
   @IsAdmin()
   public async onSave(t: T): Promise<void> {
+    this.isSaving = true;
     await this.firestoreService!.saveOrUpdate(t);
     this.modalService.set$(undefined);
     this.alertService.success('Enregistrement réussie');
+    this.isSaving = false;
   }
 
   protected abstract getColumnSet(): ColumnSet[];
   protected abstract getActionSet(): ActionSet[];
   protected abstract initData(): void;
   public abstract onCreate(): void;
-  protected abstract firestoreService?: FirestoreService<T>;
+  protected abstract firestoreService: FirestoreService<T>;
 
   private initComponents() {
     this.tableSet = {
@@ -95,5 +103,82 @@ export abstract class ListController<T extends Identifiable> implements OnInit, 
     this.popoverFieldSets = this.tableSet.columnSet.map(
       (col: ColumnSet) => new FieldSet({ name: col.title }, col.visible)
     );
+  }
+
+  // ------------------------------- PAGINATION & FILTER :
+
+  public filter!: DataSelect<string>;
+  private readonly pageSize = 20;
+  protected colSorted!: ColSorted;
+  public hasNext!: boolean;
+  public hasPrev!: boolean;
+  protected toDto?(t: T[]): any[];
+
+  protected initColSorted(colSorted: ColSorted): void {
+    this.colSorted = colSorted;
+  }
+
+  protected initPagination(): void {
+    this.colSortable.setColumnSort$(this.colSorted);
+    this.onFirstPage();
+    this.colSortable.getColumnSort$.pipe(takeUntil(this.destroy$)).subscribe((colSorted: ColSorted | undefined) => {
+      colSorted ? (this.colSorted = colSorted) : undefined;
+      this.getByQuery();
+    });
+    this.firestoreService.getCountFromServer().then(count => console.log(count))
+  }
+
+  protected initDataFilter(toSelectable: (t: T[]) => Selectable<string>[]): void {
+    this.firestoreService
+      .getAll()
+      .pipe(
+        takeUntil(this.destroy$),
+        map(t => toSelectable(t)),
+        tap(options => options.unshift(new Selectable('Toutes catégories', 'Toutes catégories')))
+      )
+      .subscribe(options => {
+        this.filter = new DataSelect({ key: 'categorie', name: 'Filtrer par catégories' }, options);
+        this.filter.value = this.filter.options[0];
+      });
+  }
+
+  protected getByQuery(): void {
+    this.isLoading = true;
+    this.filter === undefined || this.filter?.value.value === 'Toutes catégories'
+      ? this.onFirstPage()
+      : this.firestoreService
+          .getByQuery(this.colSorted, { key: this.filter.value.value, value: this.filter.value.name })
+          .subscribe(items => this.defineData({ items: items, hasNext: false, hasPrevious: false }));
+  }
+
+  public onFirstPage(): void {
+    this.isLoading = true;
+    this.firestoreService.firstPage(this.colSorted, this.pageSize).then(t => this.defineData(t));
+  }
+
+  public onPrevPage(): void {
+    this.isLoading = true;
+    this.firestoreService.prevPage(this.colSorted, this.pageSize).then(t => this.defineData(t));
+  }
+
+  public onNextPage(): void {
+    this.isLoading = true;
+    this.firestoreService.nextPage(this.colSorted, this.pageSize).then(t => this.defineData(t));
+  }
+
+  public onLastPage(): void {
+    this.isLoading = true;
+    this.firestoreService.lastPage(this.colSorted, this.pageSize).then(t => this.defineData(t));
+  }
+
+  private defineData(page: Pageable<T>): void {
+    this.tableSet.data = this.toDto ? this.toDto(page.items) : page.items;
+    this.hasNext = page.hasNext;
+    this.hasPrev = page.hasPrevious;
+    this.isLoading = false;
+  }
+
+  public onFilterChange(): void {
+    this.getByQuery();
   }
 }

@@ -1,12 +1,11 @@
 import { Component, Input, OnChanges, SimpleChanges, ViewChild, ViewContainerRef } from '@angular/core';
-import { CalendarEvent } from 'angular-calendar';
-import { EventService } from '@agenda/services/event.service';
 import { collapseAnimation } from '@shared/models/triggerAnimation.constant';
-import { CalEventDTO, CalEventEntity, CalEventTypeEnum } from '../../models/calEvent.model';
-import { AnnivDuJour, AnnivDuJourService } from '../../services/annivDuJour.service';
-import { SaintDuJourService } from '../../services/saintDuJour.service';
-import { MapperService } from '../../services/mapper.service';
 import { AlertService } from '@shared/services/alert.service';
+import { CalendarEvent } from 'angular-calendar';
+import { CalBirthday, CalEventDTO, CalEventEntity, CalEventTypeEnum } from '../../models/calEvent.model';
+import { MapperService } from '../../services/mapper.service';
+import { SaintDuJourService } from '../../services/saintDuJour.service';
+import { CalEventService } from '@agenda/services/agenda.firestore.service';
 
 @Component({
   selector: 'app-cal-month-view-comment',
@@ -19,23 +18,23 @@ export class CalMonthViewCommentComponent implements OnChanges {
   @Input() isOpen!: boolean;
   @Input() events!: CalendarEvent[];
   @Input() isLocked!: boolean;
+  @Input() birthdays!: CalBirthday[];
   @ViewChild('modal', {read: ViewContainerRef}) target!: ViewContainerRef;
   public comments: CalEventDTO[] = [];
   public saintDuJour?: string;
-  public annivList?: AnnivDuJour[];
+  public annivDuJour?: CalBirthday[];
   public enableEditIndex: number | undefined | null = null;
 
   constructor(
-    private eventService: EventService,
+    private eventService: CalEventService,
     private saint: SaintDuJourService,
-    private anniv: AnnivDuJourService,
     private mapper: MapperService,
     private alert: AlertService
   ) {}
 
   async ngOnChanges(_changes: SimpleChanges): Promise<void> {
     this.saintDuJour = await this.saint.getWithDate(this.viewDate);
-    this.annivList = this.anniv.getWithDate(this.viewDate);
+    this.annivDuJour = this.birthdays.filter(birthday => birthday.day === this.viewDate.getDate());
     if (this.events) {
       this.comments = this.events.filter((eventField: CalEventDTO) => eventField.meta!.type === CalEventTypeEnum.COMMENT);
     }

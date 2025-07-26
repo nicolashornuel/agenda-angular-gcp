@@ -1,8 +1,17 @@
-import { EventService } from '@agenda/services/event.service';
+import {
+  CalCheckboxEvent,
+  CalEventDTO,
+  CalEventField,
+  CalEventTypeEnum,
+  CalRecurringEvent,
+  CalRecurringEventRuleCondition
+} from '@agenda/models/calEvent.model';
+import { CalEventService } from '@agenda/services/agenda.firestore.service';
+import { DayClickedService } from '@agenda/services/agenda.observable.service';
+import { MapperService } from '@agenda/services/mapper.service';
 import { DatePipe } from '@angular/common';
 import {
   Component,
-  Host,
   HostBinding,
   Input,
   OnChanges,
@@ -19,10 +28,6 @@ import { ModalService } from '@shared/services/shared.observable.service';
 import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
 import { isSameDay, isSameMonth } from 'date-fns';
 import { takeUntil } from 'rxjs';
-import { CalEventDTO, CalEventField, CalEventTypeEnum } from '../../models/calEvent.model';
-import { emptyFields } from '../../models/emptyFields.constant';
-import { DayClickedService } from '../../services/day-clicked.service';
-import { MapperService } from '../../services/mapper.service';
 
 @Component({
   selector: 'app-cal-month-cell',
@@ -34,6 +39,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   @Input() locale!: string;
   @Input() isLocked!: boolean;
   @Input() viewDate!: Date;
+  @Input() calRecurringEvents!: CalRecurringEvent[];
   @ViewChild('modal', { read: ViewContainerRef }) target!: ViewContainerRef;
   public isActive: boolean = false;
   public formFields: CalEventField[] = [];
@@ -44,7 +50,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   }
 
   constructor(
-    private eventService: EventService,
+    private eventService: CalEventService,
     private dayService: DayClickedService,
     private destroy$: DestroyService,
     private mapper: MapperService,
@@ -65,28 +71,37 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   }
 
   private initializeData(): void {
-    emptyFields.forEach((field: CalEventField) => {
-      let existField: CalendarEvent | undefined = this.day.events
+    this.calRecurringEvents.forEach(calRecurringEvent => {
+      const checkboxEvent = new CalCheckboxEvent(calRecurringEvent);
+      if (this.isReadyRule(checkboxEvent.meta!.rules)) this.formFields.push(checkboxEvent);
+
+      const existField = this.day.events
         .filter((eventField: CalEventDTO) => eventField.meta!.type === CalEventTypeEnum.FAMILY)
-        .find((dayEvent: CalendarEvent) => dayEvent.title === field.title);
+        .find((dayEvent: CalendarEvent) => dayEvent.title === checkboxEvent.title);
 
-      let formField: CalEventField =
-        existField != undefined
-          ? { ...field, id: existField.id as string, meta: { ...field.meta, value: true } }
-          : { ...field, meta: { ...field.meta, value: false } };
-
-      if (this.day.cssClass === 'holiday' && field.meta?.daysWhenHoliday?.includes(this.day.day)) {
-        this.formFields.push(formField);
-      } else if (this.day.cssClass === 'public-holiday' && field.meta?.daysWhenPublicHoliday?.includes(this.day.day)) {
-        this.formFields.push(formField);
-      } else if (this.day.cssClass !== 'public-holiday' && this.day.cssClass !== 'holiday' && field.meta?.daysWhenNotHoliday?.includes(this.day.day)) {
-        this.formFields.push(formField);
-      }
-
+      checkboxEvent.meta!.value = existField ? true : false;
     });
+
     this.dayService.get$.pipe(takeUntil(this.destroy$)).subscribe(date => {
       this.isActive = date && isSameDay(this.day.date, date) ? true : false;
     });
+  }
+
+  private isReadyRule(rules: Record<string, boolean[]>): boolean {
+    return (
+      (this.day.cssClass === 'holiday' &&
+        rules[CalRecurringEventRuleCondition.HOLIDAY.key] &&
+        rules[CalRecurringEventRuleCondition.HOLIDAY.key][this.day.day]) ||
+      (this.day.cssClass === 'public-holiday' &&
+        rules[CalRecurringEventRuleCondition.PUBLIC_HOLIDAY.key] &&
+        rules[CalRecurringEventRuleCondition.PUBLIC_HOLIDAY.key][this.day.day]) ||
+      (this.day.cssClass !== 'public-holiday' &&
+        this.day.cssClass !== 'holiday' &&
+        rules[CalRecurringEventRuleCondition.NOT_HOLIDAY.key] &&
+        rules[CalRecurringEventRuleCondition.NOT_HOLIDAY.key][this.day.day]) ||
+      (rules[CalRecurringEventRuleCondition.DEFAULT.key] &&
+        rules[CalRecurringEventRuleCondition.DEFAULT.key][this.day.day])
+    );
   }
 
   public onCheckChange(value: boolean, formField: CalEventField): void {

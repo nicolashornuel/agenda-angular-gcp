@@ -1,0 +1,14 @@
+@import 'variables.scss';
+
+input[type='month' i] {
+  @extend %show-input-value;
+  &::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+  }
+}
+input[type='month' i] {
+  font-family: sans-serif;
+}
+.input-date-container {
+  @extend %show-input-label;
+}

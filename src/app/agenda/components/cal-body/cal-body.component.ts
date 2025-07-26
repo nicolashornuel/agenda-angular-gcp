@@ -1,14 +1,15 @@
-import { EventService } from '@agenda/services/event.service';
 import { Holiday, HolidayService } from '@agenda/services/holiday.service';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DestroyService } from '@shared/services/destroy.service';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
 import { isSameDay } from 'date-fns';
 import { combineLatest, take, takeUntil } from 'rxjs';
-import { CalEventEntity } from '../../models/calEvent.model';
-import { DayClickedService } from '../../services/day-clicked.service';
+import { CalBirthday, CalEventEntity, CalRecurringEvent } from '../../models/calEvent.model';
 import { MapperService } from '../../services/mapper.service';
 import { PublicHoliday, PublicHolidayService } from '@agenda/services/public-holiday.service';
+import { CalBirthdayService, CalEventService, CalRecurringEventService } from '@agenda/services/agenda.firestore.service';
+import { UtilService } from '@shared/services/util.service';
+import { DayClickedService } from '@agenda/services/agenda.observable.service';
 
 @Component({
   selector: 'app-cal-body',
@@ -20,18 +21,23 @@ export class CalBodyComponent implements OnChanges {
   @Input() viewDate!: Date;
   @Input() isLocked!: boolean;
   public events: CalendarEvent[] = [];
+  public calRecurringEvents: CalRecurringEvent[] = [];
   public holidays: Holiday[] = [];
+  public birthdays: CalBirthday[] = [];
   private publicHolidays: PublicHoliday[] = [];
   public loading = false;
   public activeDayIsOpen: boolean = true;
 
   constructor(
-    private eventService: EventService,
+    private calEventService: CalEventService,
     private holidayService: HolidayService,
+    private calBirthdayService: CalBirthdayService,
     private dayService: DayClickedService,
     private destroy$: DestroyService,
     private mapper: MapperService,
-    private publicHolidayService: PublicHolidayService
+    private publicHolidayService: PublicHolidayService,
+    private calRecurringEventService: CalRecurringEventService,
+    private utilService: UtilService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -42,15 +48,19 @@ export class CalBodyComponent implements OnChanges {
   private initializeData(): void {
     this.loading = true;
     combineLatest([
-      this.eventService.getByYear(this.viewDate),
+      this.calEventService.getByYear(this.viewDate),
       this.holidayService.getByYear(this.viewDate),
-      this.publicHolidayService.getByYear(this.viewDate)
+      this.publicHolidayService.getByYear(this.viewDate),
+      this.calBirthdayService.getByMonth(this.viewDate),
+      this.calRecurringEventService.getDocs$()
     ])
       .pipe(take(1))
-      .subscribe(([events, holidays, publicHolidays]) => {
+      .subscribe(([events, holidays, publicHolidays, birthdays, calRecurringEvents]) => {
         this.events = this.mapper.entitiesToDTOs(events as CalEventEntity[]);
         this.holidays = holidays;
         this.publicHolidays = publicHolidays;
+        this.birthdays = birthdays;
+        this.calRecurringEvents = calRecurringEvents.length > 0 ? this.utilService.sortInByAsc(calRecurringEvents, 'order') : [];
         this.loading = false;
       });
     this.dayService.get$.pipe(takeUntil(this.destroy$)).subscribe(date => {
@@ -88,6 +98,6 @@ export class CalBodyComponent implements OnChanges {
   }
 
   public eventTimesChanged(calendarEventTimesChangedEvent: CalendarEventTimesChangedEvent): void {
-    this.events = this.eventService.eventTimesChanged(calendarEventTimesChangedEvent);
+    this.events = this.calEventService.eventTimesChanged(calendarEventTimesChangedEvent);
   }
 }

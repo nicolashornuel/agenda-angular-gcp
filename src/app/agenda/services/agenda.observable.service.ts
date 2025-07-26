@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubjectService } from '@shared/abstracts/observable.abstract';
+import { BehaviorSubjectService, SubjectService } from '@shared/abstracts/observable.abstract';
 
 @Injectable({
   providedIn: 'root'
@@ -26,3 +26,9 @@ export class AgendaUser$ extends BehaviorSubjectService<any> {
     super(undefined);
   }
 }
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DayClickedService extends SubjectService<Date> {}
+

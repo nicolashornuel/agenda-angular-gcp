@@ -1,4 +1,4 @@
-import { CalRecurringEventRule, CalRecurringEventType } from '@agenda/models/calEvent.model';
+import { CalRecurringEventRule, CalRecurringEventRuleCondition, CalRecurringEventType } from '@agenda/models/calEvent.model';
 import { Component } from '@angular/core';
 import { EditController } from '@shared/abstracts/abstract-editController.directive';
 import { DataField, FieldSet, Nameable } from '@shared/models/fieldSet.model';
@@ -27,7 +27,7 @@ export class EditRecurringEventTypeComponent extends EditController<CalRecurring
       new ColumnCustom(
         CalRecurringEventRule.CONDITION,
         true,
-        CellRenderers.toInputSelect(CalRecurringEventRule.CONDITIONS)
+        CellRenderers.toInputSelect(CalRecurringEventRuleCondition.CONDITIONS)
       ).setWidth('100%'),
       ...CalRecurringEventRule.DAYS_OF_WEEK.map(
         (day: string, index: number) =>
@@ -35,7 +35,7 @@ export class EditRecurringEventTypeComponent extends EditController<CalRecurring
       )
     ];
     this.ruleTable.actionSet = [new ActionSet(ActionSet.DELETE, (row, index) => this.delete(row, index!))];
-    this.ruleTable.data = this.input.rules;
+    this.ruleTable.data = this.input.rules as CalRecurringEventRule[];
   }
 
   public onAddRule() {

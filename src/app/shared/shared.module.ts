@@ -44,6 +44,7 @@ import { DraggableDirective } from './directives/draggable.directive';
 import { ReadMoreComponent } from './components/read-more/read-more.component';
 import { InputTimeComponent } from './components/input-time/input-time.component';
 import { TitleComponent } from './components/title/title.component';
+import { InputMonthComponent } from './components/input-month/input-month.component';
 
 const sharedComponents = [
   TableComponent,
@@ -81,6 +82,7 @@ const sharedComponents = [
   InputStarComponent,
   ReadMoreComponent,
   InputTimeComponent,
+  InputMonthComponent,
   TitleComponent
 ]
 
@@ -103,7 +105,7 @@ const sharedDirectives = [
 @NgModule({
   declarations: [
     sharedComponents,
-    sharedDirectives,
+    sharedDirectives
   ],
   imports: [
     sharedModules

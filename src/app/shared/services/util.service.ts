@@ -43,16 +43,4 @@ export class UtilService {
       });
     }
   }
-
-  public formatDate(date: Date): string {
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: 'short',
-      day: '2-digit',
-      month: 'short',
-      year: '2-digit',
-      hour: "2-digit",
-      minute: "2-digit"
-  };
-    return date ? date.toLocaleDateString("fr-FR", options) : '';
-  }
 }

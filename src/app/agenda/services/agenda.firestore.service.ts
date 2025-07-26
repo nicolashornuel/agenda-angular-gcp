@@ -1,4 +1,12 @@
-import { AgendaUser, AgendaUserGroup, CalRecurringEvent, CalRecurringEventType } from '@agenda/models/calEvent.model';
+import {
+  AgendaUser,
+  AgendaUserGroup,
+  CalBirthday,
+  CalEventEntity,
+  CalRecurringEvent,
+  CalRecurringEventRule,
+  CalRecurringEventType
+} from '@agenda/models/calEvent.model';
 import { Injectable } from '@angular/core';
 import {
   addDoc,
@@ -8,15 +16,20 @@ import {
   docData,
   DocumentReference,
   getDoc,
-  setDoc
+  query,
+  setDoc,
+  where
 } from '@angular/fire/firestore';
 import { FirestoreService } from '@core/services/firestore.service';
-import { combineLatest, map, Observable, of, switchMap } from 'rxjs';
+import { CalendarEvent, CalendarEventTimesChangedEvent } from 'angular-calendar';
+import { combineLatest, concatMap, from, map, Observable, of, switchMap, tap } from 'rxjs';
 
 const CAL_RECURRING_EVENT_TYPE = 'calRecurringEventType';
 const CAL_RECURRING_EVENT = 'calRecurringEvent';
 const AGENDA_USER = 'agendaUser';
 const AGENDA_USER_GROUP = 'agendaUserGroup';
+const CAL_BIRTHDAY = 'calBirthday';
+const CAL_EVENT = 'calendarEvent';
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +68,24 @@ export class AgendaUserService extends FirestoreService<AgendaUser> {
 export class CalRecurringEventTypeService extends FirestoreService<CalRecurringEventType> {
   constructor() {
     super(CAL_RECURRING_EVENT_TYPE);
+  }
+
+  public override getAll(): Observable<CalRecurringEventType[]> {
+    return super.getAll().pipe(
+      map(types =>
+        types.map(type => ({
+          ...type,
+          rules: CalRecurringEventRule.toArray(type.rules as Record<string, boolean[]>)
+        }))
+      )
+    );
+  }
+
+  public override async saveOrUpdate(calRecurringEventType: CalRecurringEventType): Promise<void> {
+    await super.saveOrUpdate({
+      ...calRecurringEventType,
+      rules: CalRecurringEventRule.toRecord(calRecurringEventType.rules as CalRecurringEventRule[])
+    } as CalRecurringEventType);
   }
 }
 
@@ -125,5 +156,52 @@ export class CalRecurringEventService extends FirestoreService<CalRecurringEvent
     const docRef = await addDoc(this.collectionRef, entity);
     entity.id = docRef.id;
     return docRef.id;
+  }
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CalBirthdayService extends FirestoreService<CalBirthday> {
+  constructor() {
+    super(CAL_BIRTHDAY);
+  }
+
+  public getByMonth(date: Date): Observable<CalBirthday[]> {
+    const month = date.getMonth() + 1;
+    return this.getByQuery({ fieldPath: CalBirthday.MONTH.key }, { key: CalBirthday.MONTH.key, value: month });
+  }
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CalEventService extends FirestoreService<CalEventEntity> {
+  private events: CalendarEvent[] = [];
+
+  constructor() {
+    super(CAL_EVENT);
+  }
+
+  public deleteByYear(year: Date): void {
+    this.getByYear(year).pipe(
+      switchMap(events => from(events).pipe(concatMap(event => from(this.delete(event.id! as string)))))
+    );
+  }
+
+  public getByYear(year: Date): Observable<CalEventEntity[]> {
+    const currentYear = year.getFullYear();
+    const startOfYear = new Date(currentYear, 0, 1); // 1er janvier à minuit
+    const endOfYear = new Date(currentYear + 1, 0, 1); // 1er janvier de l'année suivante
+    const q = query(this.collectionRef, where('meta.start', '>=', startOfYear), where('meta.start', '<', endOfYear));
+    return collectionData(q, { idField: 'id' });
+  }
+
+  public eventTimesChanged({ event, newStart, allDay }: CalendarEventTimesChangedEvent): CalendarEvent[] {
+    if (typeof allDay !== 'undefined') event.allDay = allDay;
+    event.start = newStart;
+    this.events.push(event);
+    this.events = [...this.events];
+    return this.events;
   }
 }

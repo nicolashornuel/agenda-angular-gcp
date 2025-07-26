@@ -121,7 +121,13 @@ export class CellRenderers {
     };
   }
 
-  public static toDate(row: any, col: ColumnSet): string {
+  public static toDate(row: any, col: ColumnSet, options: Intl.DateTimeFormatOptions): string {
+    return `<div class="txt-nowrap">${
+      row[col.key] ? new Date(row[col.key]).toLocaleDateString('fr-FR', options) : ''
+    }</div>`;
+  }
+
+  public static toShortDate() {
     const options: Intl.DateTimeFormatOptions = {
       weekday: 'short',
       day: '2-digit',
@@ -130,12 +136,19 @@ export class CellRenderers {
       hour: '2-digit',
       minute: '2-digit'
     };
-    const date: Date = new Date(row[col.key]);
-    return `<div class="txt-nowrap">${date.toLocaleDateString('fr-FR', options)}</div>`;
+    return (row: any, col: ColumnSet) => CellRenderers.toDate(row, col, options);
   }
 
-  public static toShortDate() {
-    return (row: any, col: ColumnSet) => CellRenderers.toDate(row, col);
+  public static toLongDate() {
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      day: 'numeric',
+      year: 'numeric',
+      month: 'short',
+      hour: '2-digit',
+      minute: '2-digit'
+    };
+    return (row: any, col: ColumnSet) => CellRenderers.toDate(row, col, options);
   }
 
   public static toCheckBox() {

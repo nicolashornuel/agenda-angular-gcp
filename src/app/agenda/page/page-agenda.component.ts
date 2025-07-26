@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { TabParam } from '@shared/models/tabParam.interface';
-import { CalendarView } from 'angular-calendar';
 
 @Component({
   selector: 'app-page-agenda',
@@ -19,6 +18,16 @@ export class PageAgendaComponent {
         name: 'Evènements Récurrents',
         closable: false,
         link: 'recurrent-event',
+      },
+      {
+        name: 'Anniversaires',
+        closable: false,
+        link: 'birthday',
+      },
+      {
+        name: 'Evènements',
+        closable: false,
+        link: 'event',
       }
     ];
 
