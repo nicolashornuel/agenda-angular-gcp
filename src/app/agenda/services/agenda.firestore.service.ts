@@ -22,6 +22,7 @@ import {
 } from '@angular/fire/firestore';
 import { FirestoreService } from '@core/services/firestore.service';
 import { CalendarEvent, CalendarEventTimesChangedEvent } from 'angular-calendar';
+import { Identifiable } from 'app/train/models/reservation.model';
 import { combineLatest, concatMap, from, map, Observable, of, switchMap, tap } from 'rxjs';
 
 const CAL_RECURRING_EVENT_TYPE = 'calRecurringEventType';
@@ -188,12 +189,24 @@ export class CalEventService extends FirestoreService<CalEventEntity> {
       switchMap(events => from(events).pipe(concatMap(event => from(this.delete(event.id! as string)))))
     );
   }
+  public deleteByMonth(date: Date): Observable<void> {
+    return this.getByMonth(date).pipe(
+      switchMap(events => from(events).pipe(concatMap(event => from(this.delete(event.id! as string)))))
+    );
+  }
 
   public getByYear(year: Date): Observable<CalEventEntity[]> {
     const currentYear = year.getFullYear();
     const startOfYear = new Date(currentYear, 0, 1); // 1er janvier à minuit
     const endOfYear = new Date(currentYear + 1, 0, 1); // 1er janvier de l'année suivante
     const q = query(this.collectionRef, where('meta.start', '>=', startOfYear), where('meta.start', '<', endOfYear));
+    return collectionData(q, { idField: 'id' });
+  }
+
+  public getByMonth(date: Date): Observable<CalEventEntity[]> {
+    const start = new Date(date.getFullYear(), date.getMonth(), 1);
+    const end = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+    const q = query(this.collectionRef, where('meta.start', '>=', start), where('meta.start', '<', end));
     return collectionData(q, { idField: 'id' });
   }
 
@@ -204,4 +217,5 @@ export class CalEventService extends FirestoreService<CalEventEntity> {
     this.events = [...this.events];
     return this.events;
   }
+  
 }

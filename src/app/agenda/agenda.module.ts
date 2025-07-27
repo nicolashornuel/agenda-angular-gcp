@@ -23,6 +23,7 @@ import { TabRecurrentEventComponent } from './components/tab-recurrent-event/tab
 import { ScrollTodayDirective } from './directives/scroll-today.directive';
 import { PageAgendaComponent } from './page/page-agenda.component';
 import { ListEventComponent } from './components/list-event/list-event.component';
+import { EditEventComponent } from './components/edit-event/edit-event.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { ListEventComponent } from './components/list-event/list-event.component
     ListRecurringEventTypeComponent,
     ListBirthdayComponent,
     EditBirthdayComponent,
-    ListEventComponent
+    ListEventComponent,
+    EditEventComponent
     ],
   imports: [
     CommonModule,

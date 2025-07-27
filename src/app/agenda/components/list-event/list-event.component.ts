@@ -23,7 +23,7 @@ export class ListEventComponent extends ListController<CalEventEntity> {
 
   protected override getColumnSet(): ColumnSet[] {
     return [
-      new ColumnString(CalEventEntity.TITLE, true).setWidth('40%'),
+      new ColumnHtml(CalEventEntity.TITLE, true, CellRenderers.toName()).setWidth('40%'),
       new ColumnHtml(CalEventEntity.START_AT, true, CellRenderers.toShortDate()),
       new ColumnHtml(CalEventEntity.END_AT, true, CellRenderers.toShortDate()),
       new ColumnCustom(CalEventEntity.TYPE, true, CellRenderers.toSimpleBadge())
@@ -31,7 +31,9 @@ export class ListEventComponent extends ListController<CalEventEntity> {
   }
 
   protected override getActionSet(): ActionSet[] {
-    return [new ActionSet(ActionSet.DELETE, row => this.onOpenConfirm('Supprimer un évènement', row))];
+    return [
+      new ActionSet(ActionSet.EDIT, row => this.onOpenModal("Editer un évènement", row)),
+      new ActionSet(ActionSet.DELETE, row => this.onOpenConfirm('Supprimer un évènement', row))];
   }
 
   protected override async initData(): Promise<void> {
@@ -39,15 +41,15 @@ export class ListEventComponent extends ListController<CalEventEntity> {
     super.initColSorted({ fieldPath: 'meta.start', directionStr: 'asc' });
     super.initPagination();
     super.initDataFilter((entities: CalEventEntity[]) => {
-      const set = new Set(entities.map(entity => entity.meta!.type.toString()));
-      return [...set].map(type => new Selectable(type, 'meta.type'));
+      const set = new Set(entities.map(entity => entity.title));
+      return [...set].map(type => new Selectable(type, 'title'));
     });
   }
 
   protected override toDto(entities: CalEventEntity[]) {
     return entities.map(calEventEntity => ({
       id: calEventEntity.id,
-      title: calEventEntity.title,
+      title: {name: calEventEntity.title, value: calEventEntity.title},
       start: calEventEntity.meta!.start.toDate(),
       end: calEventEntity.meta!.end?.toDate(),
       type: { name: calEventEntity.meta!.type, color: CalEventEntity.toColor(calEventEntity.meta!.type) }

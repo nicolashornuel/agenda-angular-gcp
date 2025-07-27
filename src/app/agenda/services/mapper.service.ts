@@ -7,8 +7,6 @@ import { CalEventDTO, CalEventEntity, CalEventField, CalEventTypeEnum } from '..
 })
 export class MapperService {
 
-  constructor() { }
-
   public entitiesToDTOs(events: CalEventEntity[]): CalEventDTO[] {
     return events.map(event => {
       const newEvent: CalEventDTO = {
@@ -40,6 +38,4 @@ export class MapperService {
       }
     }
   }
-  
-
 }

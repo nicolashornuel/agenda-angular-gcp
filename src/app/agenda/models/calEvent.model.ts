@@ -77,7 +77,7 @@ export class CalCheckboxEvent {
   constructor(calRecurringEvent: CalRecurringEvent) {
     const calRecurringEventType = calRecurringEvent.calRecurringEventType as CalRecurringEventType;
     this.id = calRecurringEvent.id;
-    this.title = calRecurringEventType.name + ' ' + (calRecurringEvent.agendaUser as AgendaUser).name;
+    this.title = CalRecurringEvent.toTitle(calRecurringEvent);
     this.meta = {
       type: CalEventTypeEnum.FAMILY,
       start: calRecurringEventType.startAt,
@@ -174,6 +174,14 @@ export class CalRecurringEvent {
   public static readonly ORDER = { key: 'order', name: 'ordre' };
   constructor(order: number) {
     this.order = order;
+  }
+
+  public static toTitle(calRecurringEvent: CalRecurringEvent): string {
+    return (
+      (calRecurringEvent.calRecurringEventType as CalRecurringEventType).name +
+      ' ' +
+      (calRecurringEvent.agendaUser as AgendaUser).name
+    );
   }
 }
 

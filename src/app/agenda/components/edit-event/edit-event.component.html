@@ -1,0 +1,38 @@
+<ng-container *ngIf="!isLoading; else spinner">
+  <div class="row-between-start f-wrap edit-container">
+    <app-input-select
+      class="col-6"
+      [options]="titleField.options"
+      [(ngModel)]="input.title"
+      [label]="titleField.name"
+    ></app-input-select>
+
+    <app-input-select
+      class="col-6"
+      [options]="typeField.options"
+      [(ngModel)]="input.type"
+      [label]="typeField.name"
+    ></app-input-select>
+
+    <app-input-date
+      class="col-6"
+      [label]="startAtField.name"
+      [(ngModel)]="input.start"
+    ></app-input-date>
+
+    <app-input-date
+      class="col-6"
+      [label]="endAtField.name"
+      [(ngModel)]="input.end"
+    ></app-input-date>
+  </div>
+</ng-container>
+
+<div class="row-end-center gap-2">
+  <button appButton outline size="regular" color="blue" (click)="onClose()">Annuler</button>
+  <button appButton filled size="regular" color="blue" (click)="onSave()">Enregistrer</button>
+</div>
+
+<ng-template #spinner>
+  <app-spinner></app-spinner>
+</ng-template>
