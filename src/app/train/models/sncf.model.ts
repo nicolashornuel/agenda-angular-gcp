@@ -1,12 +1,12 @@
-import { Selectable } from "@shared/models/fieldSet.model";
+import { Selectable } from '@shared/models/fieldSet.model';
 
 export interface NavitiaResponse {
   pagination: {
-    total_result: number,
-    start_page: number,
-    items_per_page: number,
-    items_on_page: number
-  },
+    total_result: number;
+    start_page: number;
+    items_per_page: number;
+    items_on_page: number;
+  };
   disruptions: Disruption[];
   exceptions: any[];
   departures?: Journey[];
@@ -17,16 +17,16 @@ export interface NavitiaResponse {
 }
 
 export interface Schedule {
-  date_times: {date_time: string, base_date_time: string, links: {id: string, type: string}[]}[];
-  display_informations: { headsign: string; network: string; direction: string;};
-  route: {id: string, line: {id: string, network: {id: string}}};
+  date_times: { date_time: string; base_date_time: string; links: { id: string; type: string }[] }[];
+  display_informations: { headsign: string; network: string; direction: string };
+  route: { id: string; line: { id: string; network: { id: string } } };
 }
 
 export interface ScheduleDTO {
-  headsign: string; 
-  network: string; 
+  headsign: string;
+  network: string;
   direction: string;
-  date_times: {baseHour: string, trajetId: string}[];
+  date_times: { baseHour: string; trajetId: string }[];
   routeId: string;
   lineId: string;
   networkId: string;
@@ -52,14 +52,14 @@ export interface Disruption {
 }
 
 export interface DisruptionDTO {
-  status: string,
-  message: string,
-  severityEffect: string,
-  severityName: string
+  status: string;
+  message: string;
+  severityEffect: string;
+  severityName: string;
 }
 
 export interface Stop_point {
-  id: string; 
+  id: string;
   name: string;
 }
 
@@ -104,7 +104,9 @@ export enum StopAreaEnum {
   AVIGNON_TGV = 'Avignon TGV',
   MARSEILLE_SAINT_CHARLES = 'Marseille Saint-Charles',
   MACON_LOCHE_TGV = 'Mâcon Loché TGV',
-  MACON = 'Mâcon'
+  MACON = 'Mâcon',
+  TOULOUSE_MATABIAU = 'Toulouse-Matabiau',
+  MERENS_LES_VALS = 'Mérens-les-Vals'
 }
 export class StopArea implements Selectable<string> {
   value!: string;
@@ -115,7 +117,7 @@ export class StopArea implements Selectable<string> {
     name: StopAreaEnum.BAILLARGUES
   };
   public static readonly BOURG_EN_BRESSE = {
-    value: "stop_area:SNCF:87743005",
+    value: 'stop_area:SNCF:87743005',
     name: StopAreaEnum.BOURG_EN_BRESSE
   };
   public static readonly MONTPELLIER_SAINT_ROCK = {
@@ -157,6 +159,14 @@ export class StopArea implements Selectable<string> {
   public static readonly MACON = {
     value: 'stop_area:SNCF:87725689',
     name: StopAreaEnum.MACON
+  };
+  public static readonly TOULOUSE_MATABIAU = {
+    value: 'stop_area:SNCF:87611004',
+    name: StopAreaEnum.TOULOUSE_MATABIAU
+  };
+  public static readonly MERENS_LES_VALS = {
+    value: 'stop_area:SNCF:87611525',
+    name: StopAreaEnum.MERENS_LES_VALS
   };
 }
 export const STATIONS = [
@@ -203,5 +213,13 @@ export const STATIONS = [
   {
     value: 'stop_area:SNCF:87725689',
     name: StopAreaEnum.MACON
+  },
+  {
+    value: 'stop_area:SNCF:87611004',
+    name: StopAreaEnum.TOULOUSE_MATABIAU
+  },
+  {
+    value: 'stop_area:SNCF:87611525',
+    name: StopAreaEnum.MERENS_LES_VALS
   }
 ];
