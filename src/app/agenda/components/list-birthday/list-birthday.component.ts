@@ -2,7 +2,7 @@ import { CalBirthday } from '@agenda/models/calEvent.model';
 import { CalBirthdayService } from '@agenda/services/agenda.firestore.service';
 import { Component, inject } from '@angular/core';
 import { ListController } from '@shared/abstracts/abstract-listController.directive';
-import { ActionSet, ColumnSet, ColumnString } from '@shared/models/tableSet.interface';
+import { ActionSet, CellRenderers, ColumnHtml, ColumnSet, ColumnString } from '@shared/models/tableSet.interface';
 import { takeUntil } from 'rxjs';
 
 @Component({
@@ -17,7 +17,7 @@ export class ListBirthdayComponent extends ListController<CalBirthday> {
     return [
       new ColumnString(CalBirthday.NAME, true),
       new ColumnString(CalBirthday.DAY, true),
-      new ColumnString(CalBirthday.MONTH, true),
+      new ColumnHtml(CalBirthday.MONTH, true, CellRenderers.toMonthName()),
       new ColumnString(CalBirthday.YEAR, true),
 
     ];
@@ -29,13 +29,13 @@ export class ListBirthdayComponent extends ListController<CalBirthday> {
     ];
   }
   protected override initData(): void {
-    this.tableSet.height = 'auto';
+    this.tableSet.height = 'calc(100vh - 272px)';
     this.isLoading = true;
     this.firestoreService
       .getAll()
       .pipe(takeUntil(this.destroy$))
       .subscribe(calBirthdays => {
-        this.tableSet.data = calBirthdays.length > 0 ? this.utilService.sortInByAsc(calBirthdays, 'month') : [];
+        this.tableSet.data = calBirthdays.length > 0 ? this.utilService.sortInByAsc(this.utilService.sortInByAsc(calBirthdays, 'day'), 'month') : [];
         this.isLoading = false;
       });
   }

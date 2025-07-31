@@ -1,0 +1,36 @@
+<div class="row-end-center mb-3">
+  <app-button-group class="row-end-center">
+    <button appButton outline size="small" (click)="onCreate()">
+      <i class="fas fa-plus"></i>
+    </button>
+  </app-button-group>
+</div>
+
+<ng-container *ngIf="!isLoading; else spinner">
+  <app-table [tableSet]="tableSet"></app-table>
+</ng-container>
+
+<ng-template #modal let-input>
+  <app-edit-checkbox-event [input]="input" (output)="onSave($event)"></app-edit-checkbox-event>
+</ng-template>
+
+<ng-template #confirm let-input>
+  <div class="row-end-center gap-2">
+    <button appButton outline size="regular" color="blue" (click)="onClose()">Annuler</button>
+    <ng-container *ngIf="!isSaving; else loadingTpl">
+      <button appButton filled size="regular" color="blue" (click)="onConfirmDelete(input)">
+        Supprimer
+      </button>
+    </ng-container>
+    <ng-template #loadingTpl>
+      <button appButton filled size="regular" color="blue" disabled class="relative">
+        Supprimer
+        <app-spinner size="btn"></app-spinner>
+      </button>
+    </ng-template>
+  </div>
+</ng-template>
+
+<ng-template #spinner>
+  <app-spinner></app-spinner>
+</ng-template>

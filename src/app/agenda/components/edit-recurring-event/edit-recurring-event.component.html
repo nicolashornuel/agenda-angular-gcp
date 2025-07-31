@@ -1,20 +1,22 @@
 <div class="row-between-start f-wrap edit-container">
   <app-input-select
-    class="col-4"
-    [options]="agendaUserField.options"
-    [(ngModel)]="input.agendaUser"
-    [label]="agendaUserField.name"
-  ></app-input-select>
-
-  <app-input-select
-    class="col-4"
+    class="col-6"
     [options]="calRecurringEventTypeField.options"
     [(ngModel)]="input.calRecurringEventType"
     [label]="calRecurringEventTypeField.name"
   ></app-input-select>
 
+  <app-input-select
+    class="col-6"
+    [options]="agendaUserField.options"
+    [(ngModel)]="input.agendaUser"
+    [label]="agendaUserField.name"
+  ></app-input-select>
+
+  <app-input-text class="col-9" [label]="nameField.name" [(ngModel)]="input.name"></app-input-text>
+
   <app-input-number
-    class="col-4"
+    class="col-3"
     [label]="orderField.name"
     [(ngModel)]="input.order"
     [min]="0"

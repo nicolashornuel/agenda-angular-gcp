@@ -20,6 +20,11 @@ export class PageAgendaComponent {
         link: 'recurrent-event',
       },
       {
+        name: 'A valider',
+        closable: false,
+        link: 'checkbox-event',
+      },
+      {
         name: 'Anniversaires',
         closable: false,
         link: 'birthday',

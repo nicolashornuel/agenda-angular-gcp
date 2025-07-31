@@ -5,6 +5,7 @@ import { TabRecurrentEventComponent } from './components/tab-recurrent-event/tab
 import { PageAgendaComponent } from './page/page-agenda.component';
 import { ListBirthdayComponent } from './components/list-birthday/list-birthday.component';
 import { ListEventComponent } from './components/list-event/list-event.component';
+import { ListCheckboxEventComponent } from './components/list-checkbox-event/list-checkbox-event.component';
 
 const routes: Routes = [
   { path: '', component: PageAgendaComponent,
@@ -16,6 +17,7 @@ const routes: Routes = [
       },
       { path: 'calendar', component: TabCalendarComponent },
       { path: 'recurrent-event', component: TabRecurrentEventComponent },
+      { path: 'checkbox-event', component: ListCheckboxEventComponent },
       { path: 'birthday', component: ListBirthdayComponent },
       { path: 'event', component: ListEventComponent },
       { path: 'family', component: TabRecurrentEventComponent },

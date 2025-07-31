@@ -8,8 +8,7 @@ import {
   CellRenderers,
   ColumnCustom,
   ColumnHtml,
-  ColumnSet,
-  ColumnString
+  ColumnSet
 } from '@shared/models/tableSet.interface';
 
 @Component({

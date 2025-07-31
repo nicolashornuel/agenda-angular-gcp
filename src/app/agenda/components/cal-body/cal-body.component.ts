@@ -4,10 +4,15 @@ import { DestroyService } from '@shared/services/destroy.service';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
 import { isSameDay } from 'date-fns';
 import { combineLatest, take, takeUntil } from 'rxjs';
-import { CalBirthday, CalEventEntity, CalRecurringEvent } from '../../models/calEvent.model';
+import { CalBirthday, CalendarCheckboxEvent, CalEventEntity, CalRecurringEvent } from '../../models/calEvent.model';
 import { MapperService } from '../../services/mapper.service';
 import { PublicHoliday, PublicHolidayService } from '@agenda/services/public-holiday.service';
-import { CalBirthdayService, CalEventService, CalRecurringEventService } from '@agenda/services/agenda.firestore.service';
+import {
+  CalBirthdayService,
+  CalendarCheckboxEventService,
+  CalEventService,
+  CalRecurringEventService
+} from '@agenda/services/agenda.firestore.service';
 import { UtilService } from '@shared/services/util.service';
 import { DayClickedService } from '@agenda/services/agenda.observable.service';
 
@@ -21,8 +26,9 @@ export class CalBodyComponent implements OnChanges {
   @Input() viewDate!: Date;
   @Input() isLocked!: boolean;
   public events: CalendarEvent[] = [];
-  public calRecurringEvents: CalRecurringEvent[] = [];
-  public holidays: Holiday[] = [];
+  public calRecurringEvents: CalendarCheckboxEvent[] = [];
+/*   public calRecurringEvents: CalRecurringEvent[] = [];
+ */  public holidays: Holiday[] = [];
   public birthdays: CalBirthday[] = [];
   private publicHolidays: PublicHoliday[] = [];
   public loading = false;
@@ -37,6 +43,7 @@ export class CalBodyComponent implements OnChanges {
     private mapper: MapperService,
     private publicHolidayService: PublicHolidayService,
     private calRecurringEventService: CalRecurringEventService,
+    private calendarCheckboxEventService: CalendarCheckboxEventService,
     private utilService: UtilService
   ) {}
 
@@ -52,15 +59,19 @@ export class CalBodyComponent implements OnChanges {
       this.holidayService.getByYear(this.viewDate),
       this.publicHolidayService.getByYear(this.viewDate),
       this.calBirthdayService.getByMonth(this.viewDate),
-      this.calRecurringEventService.getDocs$()
+      this.calRecurringEventService.getDocs$(),
+      this.calendarCheckboxEventService.getAll()
     ])
       .pipe(take(1))
-      .subscribe(([events, holidays, publicHolidays, birthdays, calRecurringEvents]) => {
+      .subscribe(([events, holidays, publicHolidays, birthdays, calRecurringEvents, calendarCheckboxEvents]) => {
         this.events = this.mapper.entitiesToDTOs(events as CalEventEntity[]);
         this.holidays = holidays;
         this.publicHolidays = publicHolidays;
         this.birthdays = birthdays;
-        this.calRecurringEvents = calRecurringEvents.length > 0 ? this.utilService.sortInByAsc(calRecurringEvents, 'order') : [];
+        /* this.calRecurringEvents =
+          calRecurringEvents.length > 0 ? this.utilService.sortInByAsc(calRecurringEvents, 'order') : []; */
+        this.calRecurringEvents =
+          calendarCheckboxEvents.length > 0 ? this.utilService.sortInByAsc(calendarCheckboxEvents, 'order') : [];
         this.loading = false;
       });
     this.dayService.get$.pipe(takeUntil(this.destroy$)).subscribe(date => {

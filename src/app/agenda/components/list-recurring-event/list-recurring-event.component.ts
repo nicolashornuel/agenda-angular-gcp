@@ -24,9 +24,10 @@ export class ListRecurringEventComponent extends ListController<CalRecurringEven
 
   protected override getColumnSet(): ColumnSet[] {
     return [
-      new ColumnHtml(CalRecurringEvent.AGENDA_USER, true, CellRenderers.toName()).setWidth('40%'),
-      new ColumnCustom(CalRecurringEvent.CAL_RECURRING_EVENT_TYPE, true, CellRenderers.toSimpleBadge()).setWidth('40%'),
-      new ColumnString(CalRecurringEvent.ORDER, true)
+      new ColumnString(CalRecurringEvent.NAME, true).setWidth('25%'),
+      new ColumnHtml(CalRecurringEvent.AGENDA_USER, true, CellRenderers.toName()).setWidth('25%'),
+      new ColumnCustom(CalRecurringEvent.CAL_RECURRING_EVENT_TYPE, true, CellRenderers.toSimpleBadge()).setWidth('25%'),
+      new ColumnString(CalRecurringEvent.ORDER, true).setWidth('15%')
     ];
   }
 

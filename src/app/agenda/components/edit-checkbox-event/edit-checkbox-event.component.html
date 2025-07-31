@@ -1,0 +1,32 @@
+<div class="row-between-start f-wrap edit-container">
+  <app-input-text class="col-6" [label]="nameField.name" [(ngModel)]="input.name"></app-input-text>
+
+  <app-input-number
+    class="col-6"
+    [label]="orderField.name"
+    [(ngModel)]="input.order"
+    [min]="0"
+    [step]="1"
+  ></app-input-number>
+
+  <div class="col-12">
+    <app-input-textarea
+      class="col-12"
+      [label]="descriptionField.name"
+      [(ngModel)]="input.description"
+      rows="3"
+    ></app-input-textarea>
+
+    <section class="row-between-start my-3 gap-3">
+      <app-table class="w-100" [tableSet]="ruleTable"></app-table>
+      <button appButton outline size="small" (click)="onAddRule()">
+        <i class="fas fa-plus"></i>
+      </button>
+    </section>
+  </div>
+</div>
+
+<div class="row-end-center gap-2">
+  <button appButton outline size="regular" color="blue" (click)="onClose()">Annuler</button>
+  <button appButton filled size="regular" color="blue" (click)="onSave()">Enregistrer</button>
+</div>

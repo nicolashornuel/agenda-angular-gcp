@@ -1,4 +1,4 @@
-<div class="row-end-center mb-3">
+<div class="row-end-center mb-3 gap-3">
   <app-input-select
     *ngIf="filter; else spinner"
     class="col-3"
@@ -7,7 +7,7 @@
     (ngModelChange)="onFilterChange()"
   ></app-input-select>
 
-  <app-button-group class="mx-3">
+  <app-button-group>
     <button appButton outline (click)="onFirstPage()" [disabled]="!hasPrev">
       <i class="fas fa-angles-left"></i>
     </button>

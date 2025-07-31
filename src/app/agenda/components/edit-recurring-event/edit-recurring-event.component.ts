@@ -14,6 +14,7 @@ export class EditRecurringEventComponent extends EditController<CalRecurringEven
   public agendaUserField!: DataSelect<AgendaUser>;
   public calRecurringEventTypeField!: DataSelect<CalRecurringEventType>;
   public orderField!: FieldSet;
+  public nameField!: FieldSet;
   private calRecurringEventType$ = inject(CalRecurringEventType$);
   private agendaUser$ = inject(AgendaUser$);
 
@@ -27,6 +28,7 @@ export class EditRecurringEventComponent extends EditController<CalRecurringEven
           recurrentEventTypes
         );
         this.orderField = new DataField(CalRecurringEvent.ORDER);
+        this.nameField = new DataField(CalRecurringEvent.NAME);
       });
   }
 }

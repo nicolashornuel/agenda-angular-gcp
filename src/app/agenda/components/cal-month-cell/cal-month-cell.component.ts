@@ -1,7 +1,7 @@
 import {
   CalCheckboxEvent,
+  CalendarCheckboxEvent,
   CalEventDTO,
-  CalEventField,
   CalEventTypeEnum,
   CalRecurringEvent,
   CalRecurringEventRuleCondition
@@ -39,10 +39,10 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   @Input() locale!: string;
   @Input() isLocked!: boolean;
   @Input() viewDate!: Date;
-  @Input() calRecurringEvents!: CalRecurringEvent[];
+  @Input() calRecurringEvents!: CalendarCheckboxEvent[];
   @ViewChild('modal', { read: ViewContainerRef }) target!: ViewContainerRef;
   public isActive: boolean = false;
-  public formFields: CalEventField[] = [];
+  public formFields: CalendarCheckboxEvent[] = [];
   public comments: CalEventDTO[] = [];
 
   @HostBinding('class') get additionalClass() {
@@ -71,6 +71,24 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   }
 
   private initializeData(): void {
+    this.calRecurringEvents.forEach(calendarCheckboxEvent => {
+      const existField = this.day.events
+        .filter((eventField: CalEventDTO) => eventField.meta!.type === CalEventTypeEnum.FAMILY)
+        .find((dayEvent: CalendarEvent) => dayEvent.title === calendarCheckboxEvent.name);
+        
+      const item = {
+        ...calendarCheckboxEvent,
+        meta: {...calendarCheckboxEvent},
+        value: existField ? true : false,
+        id: existField?.id as string
+      };
+      if (this.isReadyRule(calendarCheckboxEvent.rules as Record<string, boolean[]>)) this.formFields.push(item);
+    });
+    this.dayService.get$.pipe(takeUntil(this.destroy$)).subscribe(date => {
+      this.isActive = date && isSameDay(this.day.date, date) ? true : false;
+    });
+  }
+  /*   private initializeData(): void {
     this.calRecurringEvents.forEach(calRecurringEvent => {
       const checkboxEvent = new CalCheckboxEvent(calRecurringEvent);
       if (this.isReadyRule(checkboxEvent.meta!.rules)) this.formFields.push(checkboxEvent);
@@ -79,13 +97,14 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
         .filter((eventField: CalEventDTO) => eventField.meta!.type === CalEventTypeEnum.FAMILY)
         .find((dayEvent: CalendarEvent) => dayEvent.title === checkboxEvent.title);
 
+      if (existField) checkboxEvent.id = existField.id;
       checkboxEvent.meta!.value = existField ? true : false;
     });
 
     this.dayService.get$.pipe(takeUntil(this.destroy$)).subscribe(date => {
       this.isActive = date && isSameDay(this.day.date, date) ? true : false;
     });
-  }
+  } */
 
   private isReadyRule(rules: Record<string, boolean[]>): boolean {
     return (
@@ -104,19 +123,16 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
     );
   }
 
-  public onCheckChange(value: boolean, formField: CalEventField): void {
-    formField.meta!.value = value;
-    if (!formField.meta!.value) {
-      this.eventService.delete(formField.id as string).then(() => {
-        this.alert.success('delete ok');
-      });
-    } else if (formField.meta!.value) {
-      const entity = this.mapper.fieldToEntity(formField, this.day.date);
-      this.eventService.save(entity).then(id => {
-        formField.id = id;
-        this.alert.success('save ok');
-      });
-    }
+  public onCheckChange(calCheckboxEvent: CalendarCheckboxEvent): void {
+    console.log(calCheckboxEvent);
+    
+    /*   !calCheckboxEvent.value && calCheckboxEvent.id
+      ? this.eventService.delete(calCheckboxEvent.id as string).then(() => {
+          this.alert.success('delete ok');
+        })
+      : this.eventService.add(calCheckboxEvent, this.day.date).then(() => {
+          this.alert.success('save ok');
+        }); */
   }
 
   public onDisplayComment(): void {

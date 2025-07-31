@@ -121,6 +121,13 @@ export class CellRenderers {
     };
   }
 
+  public static toMonthName() {
+    return (row: any, col: ColumnSet) =>
+      `<div class="txt-nowrap">${
+        row[col.key] ? new Date(2000, row[col.key] - 1, 1).toLocaleDateString('fr-FR', { month: 'long' }) : ''
+      }</div>`;
+  }
+  
   public static toDate(row: any, col: ColumnSet, options: Intl.DateTimeFormatOptions): string {
     return `<div class="txt-nowrap">${
       row[col.key] ? new Date(row[col.key]).toLocaleDateString('fr-FR', options) : ''

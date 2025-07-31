@@ -69,6 +69,7 @@ export interface CalCheckboxEvent
       end: string;
       value?: boolean;
       rules: Record<string, boolean[]>;
+      calRecurringEventId: string;
     }>,
     'id' | 'title' | 'meta'
   > {}
@@ -76,13 +77,13 @@ export interface CalCheckboxEvent
 export class CalCheckboxEvent {
   constructor(calRecurringEvent: CalRecurringEvent) {
     const calRecurringEventType = calRecurringEvent.calRecurringEventType as CalRecurringEventType;
-    this.id = calRecurringEvent.id;
-    this.title = CalRecurringEvent.toTitle(calRecurringEvent);
+    this.title = CalRecurringEvent.toTitle(calRecurringEvent); //calRecurringEvent.name;
     this.meta = {
       type: CalEventTypeEnum.FAMILY,
       start: calRecurringEventType.startAt,
       end: calRecurringEventType.endAt,
-      rules: calRecurringEventType.rules as Record<string, boolean[]>
+      rules: calRecurringEventType.rules as Record<string, boolean[]>,
+      calRecurringEventId: calRecurringEvent.id as string
     };
   }
 }
@@ -172,6 +173,7 @@ export class CalRecurringEvent {
   public static readonly AGENDA_USER = { key: 'agendaUser', name: 'Qui' };
   public static readonly CAL_RECURRING_EVENT_TYPE = { key: 'calRecurringEventType', name: 'Type' };
   public static readonly ORDER = { key: 'order', name: 'ordre' };
+  public static readonly NAME = { key: 'name', name: 'Nom' };
   constructor(order: number) {
     this.order = order;
   }
@@ -201,7 +203,7 @@ export interface CalRecurringEventType extends Identifiable, Nameable {
   description: string;
 }
 
-export interface CalRecurringEvent extends Identifiable, Orderable {
+export interface CalRecurringEvent extends Identifiable, Orderable, Nameable {
   agendaUser: AgendaUser | DocumentReference<AgendaUser>;
   calRecurringEventType: CalRecurringEventType | DocumentReference<CalRecurringEventType>;
 }
@@ -226,4 +228,25 @@ export class CalBirthday {
   public static readonly DAY = { key: 'day', name: 'Jour' };
   public static readonly MONTH = { key: 'month', name: 'Mois' };
   public static readonly YEAR = { key: 'year', name: 'Année' };
+}
+
+export interface CalendarCheckboxEvent extends Identifiable, Nameable, Orderable {
+  rules: Record<string, boolean[]> | CalRecurringEventRule[];
+  description: string;
+  group: string;
+  value?: boolean;
+}
+
+export class CalendarCheckboxEvent {
+  public static readonly NAME = { key: 'name', name: 'Titre' };
+  public static readonly ORDER = { key: 'order', name: 'Ordre d\'affichage' };
+  public static readonly RULES = { key: 'rules', name: 'Règles' };
+  public static readonly GROUP = { key: 'group', name: 'Famille' };
+  public static readonly DESCRIPTION = { key: 'description', name: 'Description' };
+  constructor(order: number) {
+    this.order = order;
+    this.name = '';
+    this.description = '';
+    this.rules = [];
+  }
 }

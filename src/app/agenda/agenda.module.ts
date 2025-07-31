@@ -24,6 +24,8 @@ import { ScrollTodayDirective } from './directives/scroll-today.directive';
 import { PageAgendaComponent } from './page/page-agenda.component';
 import { ListEventComponent } from './components/list-event/list-event.component';
 import { EditEventComponent } from './components/edit-event/edit-event.component';
+import { ListCheckboxEventComponent } from './components/list-checkbox-event/list-checkbox-event.component';
+import { EditCheckboxEventComponent } from './components/edit-checkbox-event/edit-checkbox-event.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import { EditEventComponent } from './components/edit-event/edit-event.component
     ListBirthdayComponent,
     EditBirthdayComponent,
     ListEventComponent,
-    EditEventComponent
+    EditEventComponent,
+    ListCheckboxEventComponent,
+    EditCheckboxEventComponent
     ],
   imports: [
     CommonModule,
