@@ -144,4 +144,5 @@ export class TabContentComponent implements OnInit {
     this.saveDocument(this.list[toUp]);
     this.saveDocument(this.list[toDown]);
   }
+  
 }
