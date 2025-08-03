@@ -1,5 +1,5 @@
-import { CalBirthday } from '@agenda/models/calEvent.model';
-import { CalBirthdayService } from '@agenda/services/agenda.firestore.service';
+import { CalendarBirthday } from '@agenda/models/calEvent.model';
+import { CalendarBirthdayService } from '@agenda/services/agenda.firestore.service';
 import { Component, inject } from '@angular/core';
 import { ListController } from '@shared/abstracts/abstract-listController.directive';
 import { ActionSet, CellRenderers, ColumnHtml, ColumnSet, ColumnString } from '@shared/models/tableSet.interface';
@@ -10,15 +10,15 @@ import { takeUntil } from 'rxjs';
   templateUrl: './list-birthday.component.html',
   styleUrls: ['./list-birthday.component.scss']
 })
-export class ListBirthdayComponent extends ListController<CalBirthday> {
-  protected override firestoreService = inject(CalBirthdayService);
+export class ListBirthdayComponent extends ListController<CalendarBirthday> {
+  protected override firestoreService = inject(CalendarBirthdayService);
 
   protected override getColumnSet(): ColumnSet[] {
     return [
-      new ColumnString(CalBirthday.NAME, true),
-      new ColumnString(CalBirthday.DAY, true),
-      new ColumnHtml(CalBirthday.MONTH, true, CellRenderers.toMonthName()),
-      new ColumnString(CalBirthday.YEAR, true),
+      new ColumnString(CalendarBirthday.NAME, true),
+      new ColumnString(CalendarBirthday.DAY, true),
+      new ColumnHtml(CalendarBirthday.MONTH, true, CellRenderers.toMonthName()),
+      new ColumnString(CalendarBirthday.YEAR, true),
 
     ];
   }
@@ -41,6 +41,6 @@ export class ListBirthdayComponent extends ListController<CalBirthday> {
   }
 
   public override onCreate(): void {
-    this.onOpenModal("Créer un rappel d'anniversaire", new CalBirthday());
+    this.onOpenModal("Créer un rappel d'anniversaire", new CalendarBirthday());
   }
 }

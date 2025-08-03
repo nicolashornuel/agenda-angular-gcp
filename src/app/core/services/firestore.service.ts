@@ -37,14 +37,14 @@ export abstract class FirestoreService<T> {
   private firstVisible!: QueryDocumentSnapshot<T>;
   public hasNext!: boolean;
   public hasPrevious!: boolean;
-    // https://github.com/angular/angularfire/blob/master/docs/version-7-upgrade.md
+  // https://github.com/angular/angularfire/blob/master/docs/version-7-upgrade.md
   // https://github.com/javebratt/angularfire-idField/blob/main/src/app/home/home.page.ts
 
   constructor(path?: string) {
-   if (path) this.collectionRef = collection(this.firestore, path) as CollectionReference<T>;
+    if (path) this.collectionRef = collection(this.firestore, path) as CollectionReference<T>;
   }
-  
-  public setCollection(path: string): void {    
+
+  public setCollection(path: string): void {
     this.collectionRef = collection(this.firestore, path) as CollectionReference<T>;
   }
 
@@ -73,9 +73,16 @@ export abstract class FirestoreService<T> {
     document.id ? await this.update(document as T, document.id) : await this.save(document as T);
   }
 
-  public getByQuery(order: { fieldPath: string | FieldPath; directionStr?: OrderByDirection }, fieldToWhere?: { key: string; value: any }): Observable<T[]> {
+  public getByQuery(
+    order: { fieldPath: string | FieldPath; directionStr?: OrderByDirection },
+    fieldToWhere?: { key: string; value: any }
+  ): Observable<T[]> {
     const q = fieldToWhere
-      ? query(this.collectionRef, orderBy(order.fieldPath, order.directionStr), where(fieldToWhere.key, '==', fieldToWhere.value))
+      ? query(
+          this.collectionRef,
+          orderBy(order.fieldPath, order.directionStr),
+          where(fieldToWhere.key, '==', fieldToWhere.value)
+        )
       : query(this.collectionRef, orderBy(order.fieldPath, order.directionStr));
     return collectionData(q, { idField: 'id' });
   }
@@ -85,7 +92,10 @@ export abstract class FirestoreService<T> {
     return snapshot.data().count;
   }
 
-  public async firstPage(order: { fieldPath: string | FieldPath; directionStr?: OrderByDirection }, pageSize: number): Promise<Pageable<T>> {
+  public async firstPage(
+    order: { fieldPath: string | FieldPath; directionStr?: OrderByDirection },
+    pageSize: number
+  ): Promise<Pageable<T>> {
     const skip = 0;
     const take = pageSize + 1;
     const q = query(this.collectionRef, orderBy(order.fieldPath, order.directionStr), limit(take));
@@ -103,9 +113,17 @@ export abstract class FirestoreService<T> {
     };
   }
 
-  public async prevPage(order: { fieldPath: string | FieldPath; directionStr?: OrderByDirection }, pageSize: number): Promise<Pageable<T>> {
+  public async prevPage(
+    order: { fieldPath: string | FieldPath; directionStr?: OrderByDirection },
+    pageSize: number
+  ): Promise<Pageable<T>> {
     const take = pageSize + 1;
-    const q = query(this.collectionRef, orderBy(order.fieldPath, order.directionStr), endBefore(this.firstVisible), limitToLast(take));
+    const q = query(
+      this.collectionRef,
+      orderBy(order.fieldPath, order.directionStr),
+      endBefore(this.firstVisible),
+      limitToLast(take)
+    );
     const documentSnapshots = await getDocs(q);
     const items = documentSnapshots.docs.map(doc => ({ ...doc.data(), id: doc.id }));
     const skip = items.length == pageSize ? 0 : 1;
@@ -119,10 +137,18 @@ export abstract class FirestoreService<T> {
     };
   }
 
-  public async nextPage(order: { fieldPath: string | FieldPath; directionStr?: OrderByDirection }, pageSize: number): Promise<Pageable<T>> {
+  public async nextPage(
+    order: { fieldPath: string | FieldPath; directionStr?: OrderByDirection },
+    pageSize: number
+  ): Promise<Pageable<T>> {
     const skip = 0;
     const take = pageSize + 1;
-    const q = query(this.collectionRef, orderBy(order.fieldPath, order.directionStr), startAfter(this.lastVisible), limit(take));
+    const q = query(
+      this.collectionRef,
+      orderBy(order.fieldPath, order.directionStr),
+      startAfter(this.lastVisible),
+      limit(take)
+    );
     const documentSnapshots = await getDocs(q);
     const items = documentSnapshots.docs.map(doc => ({ ...doc.data(), id: doc.id }));
     const itemsCount = items.length;
@@ -137,7 +163,10 @@ export abstract class FirestoreService<T> {
     };
   }
 
-  public async lastPage(order: { fieldPath: string | FieldPath; directionStr?: OrderByDirection }, pageSize: number): Promise<Pageable<T>> {
+  public async lastPage(
+    order: { fieldPath: string | FieldPath; directionStr?: OrderByDirection },
+    pageSize: number
+  ): Promise<Pageable<T>> {
     const skip = 1;
     const countTotal = await this.getCountFromServer();
     const take = countTotal % pageSize === 0 ? pageSize : countTotal % pageSize;
@@ -152,5 +181,19 @@ export abstract class FirestoreService<T> {
       hasPrevious: countTotal > take,
       hasNext: false
     };
+  }
+
+  public async renameCollection(oldName: string, newName: string): Promise<void> {
+    const oldCollectionRef = collection(this.firestore, oldName);
+    const newCollectionRef = collection(this.firestore, newName);
+
+    const snapshot = await getDocs(oldCollectionRef);
+
+    for (const docSnap of snapshot.docs) {
+      const newDocRef = doc(newCollectionRef, docSnap.id);
+      await setDoc(newDocRef, docSnap.data());
+    }
+
+    console.log(`Migrated ${snapshot.size} docs from ${oldName} to ${newName}`);
   }
 }

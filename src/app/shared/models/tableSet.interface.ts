@@ -158,6 +158,16 @@ export class CellRenderers {
     return (row: any, col: ColumnSet) => CellRenderers.toDate(row, col, options);
   }
 
+  public static toLongDay() {
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      day: 'numeric',
+      year: 'numeric',
+      month: 'short'
+    };
+    return (row: any, col: ColumnSet) => CellRenderers.toDate(row, col, options);
+  }
+
   public static toCheckBox() {
     return CellRenderers.toInputComponent(InputCheckboxComponent);
   }

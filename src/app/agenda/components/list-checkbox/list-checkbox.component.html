@@ -11,7 +11,7 @@
 </ng-container>
 
 <ng-template #modal let-input>
-  <app-edit-checkbox-event [input]="input" (output)="onSave($event)"></app-edit-checkbox-event>
+  <app-edit-checkbox [input]="input" (output)="onSave($event)"></app-edit-checkbox>
 </ng-template>
 
 <ng-template #confirm let-input>

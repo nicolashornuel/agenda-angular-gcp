@@ -10,7 +10,13 @@ export enum CalEventTypeEnum {
   FAMILY = 'family'
 }
 
-export interface CalEventEntity
+export type CalendarEventType= CalendarEvent<
+  Partial<{
+    type: CalEventTypeEnum;
+  }>
+>;
+
+/* export interface CalEventEntity
   extends Identifiable,
     Pick<
       CalendarEvent<{
@@ -21,29 +27,6 @@ export interface CalEventEntity
       'title' | 'meta'
     > {}
 
-export class CalEventEntity {
-  public static readonly TYPE = { key: 'type', name: 'Type' };
-  public static readonly START_AT = { key: 'start', name: 'Heure de début' };
-  public static readonly END_AT = { key: 'end', name: 'Heure de fin' };
-  public static readonly TITLE = { key: 'title', name: 'Titre' };
-
-  public static toColor(type: CalEventTypeEnum): Color {
-    switch (type) {
-      case CalEventTypeEnum.FAMILY:
-        return Color.ORANGE;
-      case CalEventTypeEnum.COMMENT:
-        return Color.BLUE;
-      default:
-        return Color.LIGHT;
-    }
-  }
-}
-
-export type CalEventDTO = CalendarEvent<
-  Partial<{
-    type: CalEventTypeEnum;
-  }>
->;
 
 export type CalEventField = Pick<
   CalendarEvent<
@@ -72,37 +55,7 @@ export interface CalCheckboxEvent
       calRecurringEventId: string;
     }>,
     'id' | 'title' | 'meta'
-  > {}
-
-export class CalCheckboxEvent {
-  constructor(calRecurringEvent: CalRecurringEvent) {
-    const calRecurringEventType = calRecurringEvent.calRecurringEventType as CalRecurringEventType;
-    this.title = CalRecurringEvent.toTitle(calRecurringEvent); //calRecurringEvent.name;
-    this.meta = {
-      type: CalEventTypeEnum.FAMILY,
-      start: calRecurringEventType.startAt,
-      end: calRecurringEventType.endAt,
-      rules: calRecurringEventType.rules as Record<string, boolean[]>,
-      calRecurringEventId: calRecurringEvent.id as string
-    };
-  }
-}
-
-export class CalRecurringEventType {
-  public static readonly NAME = { key: 'name', name: 'Titre' };
-  public static readonly START_AT = { key: 'startAt', name: 'Début' };
-  public static readonly END_AT = { key: 'endAt', name: 'Fin' };
-  public static readonly RULES = { key: 'rules', name: 'Règles' };
-  public static readonly DESCRIPTION = { key: 'description', name: 'Description' };
-
-  constructor() {
-    this.name = '';
-    this.startAt = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-    this.endAt = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-    this.rules = [];
-    this.description = '';
-  }
-}
+  > {} */
 
 export class CalRecurringEventRuleCondition {
   public static readonly DEFAULT = { key: 'DEFAULT', name: 'Défaut' };
@@ -169,24 +122,6 @@ export class CalRecurringEventRule {
   }
 }
 
-export class CalRecurringEvent {
-  public static readonly AGENDA_USER = { key: 'agendaUser', name: 'Qui' };
-  public static readonly CAL_RECURRING_EVENT_TYPE = { key: 'calRecurringEventType', name: 'Type' };
-  public static readonly ORDER = { key: 'order', name: 'ordre' };
-  public static readonly NAME = { key: 'name', name: 'Nom' };
-  constructor(order: number) {
-    this.order = order;
-  }
-
-  public static toTitle(calRecurringEvent: CalRecurringEvent): string {
-    return (
-      (calRecurringEvent.calRecurringEventType as CalRecurringEventType).name +
-      ' ' +
-      (calRecurringEvent.agendaUser as AgendaUser).name
-    );
-  }
-}
-
 export interface Orderable {
   order: number;
 }
@@ -194,18 +129,6 @@ export interface Orderable {
 export interface CalRecurringEventRule {
   condition: { key: string; name: string };
   [key: number]: boolean;
-}
-
-export interface CalRecurringEventType extends Identifiable, Nameable {
-  startAt: string;
-  endAt: string;
-  rules: CalRecurringEventRule[] | Record<string, boolean[]>;
-  description: string;
-}
-
-export interface CalRecurringEvent extends Identifiable, Orderable, Nameable {
-  agendaUser: AgendaUser | DocumentReference<AgendaUser>;
-  calRecurringEventType: CalRecurringEventType | DocumentReference<CalRecurringEventType>;
 }
 
 export interface AgendaUserGroup extends Identifiable, Nameable {
@@ -217,27 +140,27 @@ export interface AgendaUser extends Identifiable, Nameable {
   uid?: string;
 }
 
-export interface CalBirthday extends Identifiable, Nameable {
+export interface CalendarBirthday extends Identifiable, Nameable {
   day: number;
   month: number;
   year?: number;
 }
 
-export class CalBirthday {
+export class CalendarBirthday {
   public static readonly NAME = { key: 'name', name: 'Titre' };
   public static readonly DAY = { key: 'day', name: 'Jour' };
   public static readonly MONTH = { key: 'month', name: 'Mois' };
   public static readonly YEAR = { key: 'year', name: 'Année' };
 }
 
-export interface CalendarCheckboxEvent extends Identifiable, Nameable, Orderable {
+export interface CalendarCheckbox extends Identifiable, Nameable, Orderable {
   rules: Record<string, boolean[]> | CalRecurringEventRule[];
   description: string;
   group: string;
   value?: boolean;
 }
 
-export class CalendarCheckboxEvent {
+export class CalendarCheckbox {
   public static readonly NAME = { key: 'name', name: 'Titre' };
   public static readonly ORDER = { key: 'order', name: 'Ordre d\'affichage' };
   public static readonly RULES = { key: 'rules', name: 'Règles' };
@@ -248,5 +171,29 @@ export class CalendarCheckboxEvent {
     this.name = '';
     this.description = '';
     this.rules = [];
+  }
+}
+
+export interface CalendarConfirmed extends Identifiable {
+  start: Timestamp;
+  recurringEventId?: string;
+  type: CalEventTypeEnum;
+  title?: string;
+}
+
+export class CalendarConfirmed {
+  public static readonly TYPE = { key: 'type', name: 'Type' };
+  public static readonly START = { key: 'start', name: 'Date' };
+  public static readonly TITLE = { key: 'title', name: 'Titre' };
+
+  public static toColor(type: CalEventTypeEnum): Color {
+    switch (type) {
+      case CalEventTypeEnum.FAMILY:
+        return Color.ORANGE;
+      case CalEventTypeEnum.COMMENT:
+        return Color.BLUE;
+      default:
+        return Color.LIGHT;
+    }
   }
 }

@@ -15,14 +15,9 @@ export class PageAgendaComponent {
         link: 'calendar',
       },
       {
-        name: 'Evènements Récurrents',
+        name: 'A Valider',
         closable: false,
-        link: 'recurrent-event',
-      },
-      {
-        name: 'A valider',
-        closable: false,
-        link: 'checkbox-event',
+        link: 'checkbox',
       },
       {
         name: 'Anniversaires',

@@ -1,20 +1,17 @@
+import {
+  CalendarBirthdayService,
+  CalendarCheckboxService,
+  CalendarConfirmedService
+} from '@agenda/services/agenda.firestore.service';
+import { DayClickedService } from '@agenda/services/agenda.observable.service';
 import { Holiday, HolidayService } from '@agenda/services/holiday.service';
+import { PublicHoliday, PublicHolidayService } from '@agenda/services/public-holiday.service';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DestroyService } from '@shared/services/destroy.service';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
 import { isSameDay } from 'date-fns';
 import { combineLatest, take, takeUntil } from 'rxjs';
-import { CalBirthday, CalendarCheckboxEvent, CalEventEntity, CalRecurringEvent } from '../../models/calEvent.model';
-import { MapperService } from '../../services/mapper.service';
-import { PublicHoliday, PublicHolidayService } from '@agenda/services/public-holiday.service';
-import {
-  CalBirthdayService,
-  CalendarCheckboxEventService,
-  CalEventService,
-  CalRecurringEventService
-} from '@agenda/services/agenda.firestore.service';
-import { UtilService } from '@shared/services/util.service';
-import { DayClickedService } from '@agenda/services/agenda.observable.service';
+import { CalendarBirthday, CalendarCheckbox } from '../../models/calEvent.model';
 
 @Component({
   selector: 'app-cal-body',
@@ -26,25 +23,21 @@ export class CalBodyComponent implements OnChanges {
   @Input() viewDate!: Date;
   @Input() isLocked!: boolean;
   public events: CalendarEvent[] = [];
-  public calRecurringEvents: CalendarCheckboxEvent[] = [];
-/*   public calRecurringEvents: CalRecurringEvent[] = [];
- */  public holidays: Holiday[] = [];
-  public birthdays: CalBirthday[] = [];
+  public calRecurringEvents: CalendarCheckbox[] = [];
+  public holidays: Holiday[] = [];
+  public birthdays: CalendarBirthday[] = [];
   private publicHolidays: PublicHoliday[] = [];
   public loading = false;
   public activeDayIsOpen: boolean = true;
 
   constructor(
-    private calEventService: CalEventService,
     private holidayService: HolidayService,
-    private calBirthdayService: CalBirthdayService,
+    private calBirthdayService: CalendarBirthdayService,
     private dayService: DayClickedService,
     private destroy$: DestroyService,
-    private mapper: MapperService,
     private publicHolidayService: PublicHolidayService,
-    private calRecurringEventService: CalRecurringEventService,
-    private calendarCheckboxEventService: CalendarCheckboxEventService,
-    private utilService: UtilService
+    private calendarCheckboxEventService: CalendarCheckboxService,
+    private calendarEventService: CalendarConfirmedService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -55,23 +48,19 @@ export class CalBodyComponent implements OnChanges {
   private initializeData(): void {
     this.loading = true;
     combineLatest([
-      this.calEventService.getByYear(this.viewDate),
       this.holidayService.getByYear(this.viewDate),
       this.publicHolidayService.getByYear(this.viewDate),
       this.calBirthdayService.getByMonth(this.viewDate),
-      this.calRecurringEventService.getDocs$(),
-      this.calendarCheckboxEventService.getAll()
+      this.calendarCheckboxEventService.getAllWithRecordRules(),
+      this.calendarEventService.getByMonth(this.viewDate)
     ])
       .pipe(take(1))
-      .subscribe(([events, holidays, publicHolidays, birthdays, calRecurringEvents, calendarCheckboxEvents]) => {
-        this.events = this.mapper.entitiesToDTOs(events as CalEventEntity[]);
+      .subscribe(([holidays, publicHolidays, birthdays, calendarCheckboxEvents, confirmedRecurringEvent]) => {
         this.holidays = holidays;
         this.publicHolidays = publicHolidays;
         this.birthdays = birthdays;
-        /* this.calRecurringEvents =
-          calRecurringEvents.length > 0 ? this.utilService.sortInByAsc(calRecurringEvents, 'order') : []; */
-        this.calRecurringEvents =
-          calendarCheckboxEvents.length > 0 ? this.utilService.sortInByAsc(calendarCheckboxEvents, 'order') : [];
+        this.calRecurringEvents = calendarCheckboxEvents;
+        this.events = confirmedRecurringEvent;
         this.loading = false;
       });
     this.dayService.get$.pipe(takeUntil(this.destroy$)).subscribe(date => {
@@ -109,6 +98,7 @@ export class CalBodyComponent implements OnChanges {
   }
 
   public eventTimesChanged(calendarEventTimesChangedEvent: CalendarEventTimesChangedEvent): void {
-    this.events = this.calEventService.eventTimesChanged(calendarEventTimesChangedEvent);
+    console.log('eventTimesChanged');
+    //this.events = this.calEventService.eventTimesChanged(calendarEventTimesChangedEvent);
   }
 }
