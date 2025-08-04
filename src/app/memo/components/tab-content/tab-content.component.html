@@ -15,7 +15,7 @@
 <ng-container *ngIf="!isLoading; else spinner">
   <section class="memo-container">
     <ng-container *ngFor="let item of list; let i = index">
-      <article class="memo-row" [style.--innerWidth]="innerWidth">
+      <article class="memo-row" [style.--innerWidth]="innerWidth" [appDraggableList]="{ items: list, index: i }">
         <ng-container [ngSwitch]="item.type.value">
           <ng-container *ngSwitchCase="'separator'" [ngTemplateOutlet]="abstractSeparator" [ngTemplateOutletContext]="{item: item, index: i}"></ng-container>
           <ng-container *ngSwitchCase="'title'" [ngTemplateOutlet]="abstractTitle" [ngTemplateOutletContext]="{item: item, index: i}"></ng-container>

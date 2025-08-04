@@ -1,5 +1,5 @@
-import { CalEventEntity } from '@agenda/models/calEvent.model';
-import { CalEventService } from '@agenda/services/agenda.firestore.service';
+import { CalendarCheckbox, CalendarConfirmed } from '@agenda/models/calEvent.model';
+import { CalendarCheckboxService, CalendarConfirmedService } from '@agenda/services/agenda.firestore.service';
 import { Component, inject } from '@angular/core';
 import { ListController } from '@shared/abstracts/abstract-listController.directive';
 import { Selectable } from '@shared/models/fieldSet.model';
@@ -11,48 +11,57 @@ import {
   ColumnSet,
   ColumnString
 } from '@shared/models/tableSet.interface';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-list-event',
   templateUrl: './list-event.component.html',
   styleUrls: ['./list-event.component.scss']
 })
-export class ListEventComponent extends ListController<CalEventEntity> {
+export class ListEventComponent extends ListController<CalendarConfirmed> {
   public override onCreate(): void {}
-  protected override firestoreService = inject(CalEventService);
+  protected override firestoreService = inject(CalendarConfirmedService);
+  private calendarCheckboxService = inject(CalendarCheckboxService);
+  private calendarCheckboxList: CalendarCheckbox[] = [];
 
   protected override getColumnSet(): ColumnSet[] {
     return [
-      new ColumnHtml(CalEventEntity.TITLE, true, CellRenderers.toName()).setWidth('40%'),
-      new ColumnHtml(CalEventEntity.START_AT, true, CellRenderers.toShortDate()),
-      new ColumnHtml(CalEventEntity.END_AT, true, CellRenderers.toShortDate()),
-      new ColumnCustom(CalEventEntity.TYPE, true, CellRenderers.toSimpleBadge())
+      new ColumnString(CalendarConfirmed.TITLE, true),
+      new ColumnHtml(CalendarConfirmed.START, true, CellRenderers.toLongDay()),
+      new ColumnCustom(CalendarConfirmed.TYPE, true, CellRenderers.toSimpleBadge())
     ];
   }
 
   protected override getActionSet(): ActionSet[] {
     return [
-      new ActionSet(ActionSet.EDIT, row => this.onOpenModal("Editer un évènement", row)),
-      new ActionSet(ActionSet.DELETE, row => this.onOpenConfirm('Supprimer un évènement', row))];
+      new ActionSet(ActionSet.EDIT, row => this.onOpenModal('Editer un évènement', row)),
+      new ActionSet(ActionSet.DELETE, row => this.onOpenConfirm('Supprimer un évènement', row))
+    ];
   }
 
   protected override async initData(): Promise<void> {
-    this.tableSet.height = 'calc(100vh - 272px)';
-    super.initColSorted({ fieldPath: 'meta.start', directionStr: 'asc' });
-    super.initPagination();
-    super.initDataFilter((entities: CalEventEntity[]) => {
-      const set = new Set(entities.map(entity => entity.title));
-      return [...set].map(type => new Selectable(type, 'title'));
-    });
+    this.calendarCheckboxService
+      .getAll()
+      .pipe(take(1))
+      .subscribe(calendarCheckboxList => {
+        this.calendarCheckboxList = calendarCheckboxList;
+        this.tableSet.height = 'calc(100vh - 272px)';
+        super.initColSorted({ fieldPath: 'start', directionStr: 'asc' });
+        super.initPagination();
+        super.initDataFilter(
+          [...new Set(this.calendarCheckboxList.map(calendarCheckbox => calendarCheckbox.name!))].map(
+            type => new Selectable(type, 'title')
+          )
+        );
+      });
   }
 
-  protected override toDto(entities: CalEventEntity[]) {
-    return entities.map(calEventEntity => ({
-      id: calEventEntity.id,
-      title: {name: calEventEntity.title, value: calEventEntity.title},
-      start: calEventEntity.meta!.start.toDate(),
-      end: calEventEntity.meta!.end?.toDate(),
-      type: { name: calEventEntity.meta!.type, color: CalEventEntity.toColor(calEventEntity.meta!.type) }
+  protected override toDto(entities: CalendarConfirmed[]) {
+    return entities.map(calendarConfirmed => ({
+      id: calendarConfirmed.id,
+      title: this.calendarCheckboxList.find(checkbox => checkbox.id === calendarConfirmed.recurringEventId)?.name,
+      start: calendarConfirmed.start.toDate(),
+      type: { name: calendarConfirmed.type, color: CalendarConfirmed.toColor(calendarConfirmed.type) }
     }));
   }
 }

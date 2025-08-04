@@ -1,26 +1,24 @@
-import { CalRecurringEventRule, CalRecurringEventRuleCondition, CalRecurringEventType } from '@agenda/models/calEvent.model';
+import { CalendarCheckbox, CalRecurringEventRule, CalRecurringEventRuleCondition } from '@agenda/models/calEvent.model';
 import { Component } from '@angular/core';
 import { EditController } from '@shared/abstracts/abstract-editController.directive';
-import { DataField, FieldSet, Nameable } from '@shared/models/fieldSet.model';
-import { ActionSet, CellRenderers, ColumnCustom, TableSet } from '@shared/models/tableSet.interface';
+import { FieldSet, DataField, Nameable } from '@shared/models/fieldSet.model';
+import { TableSet, ColumnCustom, CellRenderers, ActionSet } from '@shared/models/tableSet.interface';
 
 @Component({
-  selector: 'app-edit-recurring-event-type',
-  templateUrl: './edit-recurring-event-type.component.html',
-  styleUrls: ['./edit-recurring-event-type.component.scss']
+  selector: 'app-edit-checkbox',
+  templateUrl: './edit-checkbox.component.html',
+  styleUrls: ['./edit-checkbox.component.scss']
 })
-export class EditRecurringEventTypeComponent extends EditController<CalRecurringEventType> {
+export class EditCheckboxComponent extends EditController<CalendarCheckbox> {
   public nameField!: FieldSet;
-  public startAtField!: FieldSet;
-  public endAtField!: FieldSet;
   public descriptionField!: FieldSet;
   public ruleTable!: TableSet;
+  public orderField!: FieldSet;
 
   protected override initComponents(): void {
-    this.nameField = new DataField(CalRecurringEventType.NAME);
-    this.startAtField = new DataField(CalRecurringEventType.START_AT);
-    this.endAtField = new DataField(CalRecurringEventType.END_AT);
-    this.descriptionField = new DataField(CalRecurringEventType.DESCRIPTION);
+    this.nameField = new DataField(CalendarCheckbox.NAME);
+    this.orderField = new DataField(CalendarCheckbox.ORDER);
+    this.descriptionField = new DataField(CalendarCheckbox.DESCRIPTION);
     this.ruleTable = new TableSet('auto');
     this.ruleTable.verticaltextHeader = true;
     this.ruleTable.columnSet = [

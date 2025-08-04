@@ -125,21 +125,13 @@ export abstract class ListController<T extends Identifiable> implements OnInit, 
       colSorted ? (this.colSorted = colSorted) : undefined;
       this.getByQuery();
     });
-    this.firestoreService.getCountFromServer().then(count => console.log(count))
+    this.firestoreService.getCountFromServer().then(count => console.log(count));
   }
 
-  protected initDataFilter(toSelectable: (t: T[]) => Selectable<string>[]): void {
-    this.firestoreService
-      .getAll()
-      .pipe(
-        takeUntil(this.destroy$),
-        map(t => toSelectable(t)),
-        tap(options => options.unshift(new Selectable('Toutes catégories', 'Toutes catégories')))
-      )
-      .subscribe(options => {
-        this.filter = new DataSelect({ key: 'categorie', name: 'Filtrer par catégories' }, options);
-        this.filter.value = this.filter.options[0];
-      });
+  protected initDataFilter(options: Selectable<string>[]): void {
+    options.unshift(new Selectable('Toutes catégories', 'Toutes catégories'));
+    this.filter = new DataSelect({ key: 'categorie', name: 'Filtrer par catégories' }, options);
+    this.filter.value = this.filter.options[0];
   }
 
   protected getByQuery(): void {

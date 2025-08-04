@@ -1,17 +1,13 @@
 <div class="row-between-start f-wrap edit-container">
-  <app-input-text class="col-4" [label]="nameField.name" [(ngModel)]="input.name"></app-input-text>
+  <app-input-text class="col-6" [label]="nameField.name" [(ngModel)]="input.name"></app-input-text>
 
-  <app-input-time
-    class="col-4"
-    [label]="startAtField.name"
-    [(ngModel)]="input.startAt"
-  ></app-input-time>
-
-  <app-input-time
-    class="col-4"
-    [label]="endAtField.name"
-    [(ngModel)]="input.endAt"
-  ></app-input-time>
+  <app-input-number
+    class="col-6"
+    [label]="orderField.name"
+    [(ngModel)]="input.order"
+    [min]="0"
+    [step]="1"
+  ></app-input-number>
 
   <div class="col-12">
     <app-input-textarea

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CalendarMonthViewDay } from 'angular-calendar';
-import { CalEventDTO, CalEventTypeEnum } from '../../models/calEvent.model';
+import { CalendarEventType, CalEventTypeEnum } from '../../models/calEvent.model';
 import { ModalService } from '@shared/services/shared.observable.service';
 
 @Component({
@@ -17,8 +17,8 @@ export class CalMonthAddCommentComponent implements OnInit {
 
   ngOnInit(): void {
     this.events = this.input.events
-    .filter((event: CalEventDTO) => event.meta!.type === CalEventTypeEnum.FAMILY)
-    .map((event: CalEventDTO) => event.title)
+    .filter((event: CalendarEventType) => event.meta!.type === CalEventTypeEnum.FAMILY)
+    .map((event: CalendarEventType) => event.title)
   }
 
   public onClose(): void {

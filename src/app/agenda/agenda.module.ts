@@ -13,17 +13,14 @@ import { CalMonthAddCommentComponent } from './components/cal-month-add-comment/
 import { CalMonthCellComponent } from './components/cal-month-cell/cal-month-cell.component';
 import { CalMonthViewCommentComponent } from './components/cal-month-view-comment/cal-month-view-comment.component';
 import { EditBirthdayComponent } from './components/edit-birthday/edit-birthday.component';
-import { EditRecurringEventTypeComponent } from './components/edit-recurring-event-type/edit-recurring-event-type.component';
-import { EditRecurringEventComponent } from './components/edit-recurring-event/edit-recurring-event.component';
 import { ListBirthdayComponent } from './components/list-birthday/list-birthday.component';
-import { ListRecurringEventTypeComponent } from './components/list-recurring-event-type/list-recurring-event-type.component';
-import { ListRecurringEventComponent } from './components/list-recurring-event/list-recurring-event.component';
 import { TabCalendarComponent } from './components/tab-calendar/tab-calendar.component';
-import { TabRecurrentEventComponent } from './components/tab-recurrent-event/tab-recurrent-event.component';
 import { ScrollTodayDirective } from './directives/scroll-today.directive';
 import { PageAgendaComponent } from './page/page-agenda.component';
 import { ListEventComponent } from './components/list-event/list-event.component';
 import { EditEventComponent } from './components/edit-event/edit-event.component';
+import { EditCheckboxComponent } from './components/edit-checkbox/edit-checkbox.component';
+import { ListCheckboxComponent } from './components/list-checkbox/list-checkbox.component';
 
 @NgModule({
   declarations: [
@@ -34,16 +31,13 @@ import { EditEventComponent } from './components/edit-event/edit-event.component
     CalBodyComponent,
     ScrollTodayDirective,
     PageAgendaComponent,
-    TabRecurrentEventComponent,
     TabCalendarComponent,
-    ListRecurringEventComponent,
-    EditRecurringEventComponent,
-    EditRecurringEventTypeComponent,
-    ListRecurringEventTypeComponent,
     ListBirthdayComponent,
     EditBirthdayComponent,
     ListEventComponent,
-    EditEventComponent
+    EditEventComponent,
+    EditCheckboxComponent,
+    ListCheckboxComponent
     ],
   imports: [
     CommonModule,

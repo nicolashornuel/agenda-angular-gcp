@@ -23,6 +23,8 @@ export interface TableSet {
     delete: (id: string) => Promise<any>;
   };
   openDetailByClickRow?: (row: any) => string | void;
+  draggable?: boolean;
+  draggableSave?: (items: any[]) => void;
 }
 
 export class TableSet implements TableSet {
@@ -121,6 +123,13 @@ export class CellRenderers {
     };
   }
 
+  public static toMonthName() {
+    return (row: any, col: ColumnSet) =>
+      `<div class="txt-nowrap">${
+        row[col.key] ? new Date(2000, row[col.key] - 1, 1).toLocaleDateString('fr-FR', { month: 'long' }) : ''
+      }</div>`;
+  }
+  
   public static toDate(row: any, col: ColumnSet, options: Intl.DateTimeFormatOptions): string {
     return `<div class="txt-nowrap">${
       row[col.key] ? new Date(row[col.key]).toLocaleDateString('fr-FR', options) : ''
@@ -147,6 +156,16 @@ export class CellRenderers {
       month: 'short',
       hour: '2-digit',
       minute: '2-digit'
+    };
+    return (row: any, col: ColumnSet) => CellRenderers.toDate(row, col, options);
+  }
+
+  public static toLongDay() {
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      day: 'numeric',
+      year: 'numeric',
+      month: 'short'
     };
     return (row: any, col: ColumnSet) => CellRenderers.toDate(row, col, options);
   }

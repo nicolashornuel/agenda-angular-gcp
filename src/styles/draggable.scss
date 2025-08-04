@@ -1,0 +1,17 @@
+@import 'variables.scss';
+
+.article-draggable {
+  cursor: move;
+}
+
+.article-draggable:hover {
+  background-color: $grey-95;
+}
+
+.article-draggable.dragging {
+  background-color: $grey-90;
+}
+
+.article-draggable.drag-over {
+  background-color: $grey-90;
+}

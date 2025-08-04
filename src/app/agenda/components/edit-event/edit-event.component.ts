@@ -1,9 +1,10 @@
-import { CalEventEntity, CalEventTypeEnum, CalRecurringEvent } from '@agenda/models/calEvent.model';
-import { CalRecurringEventService } from '@agenda/services/agenda.firestore.service';
+import { CalendarCheckbox, CalendarConfirmed, CalEventTypeEnum } from '@agenda/models/calEvent.model';
+import { CalendarCheckboxService } from '@agenda/services/agenda.firestore.service';
 import { Component, inject } from '@angular/core';
 import { Timestamp } from '@angular/fire/firestore';
+import { Identifiable } from '@shared/abstracts/abstract-controller.directive';
 import { EditController } from '@shared/abstracts/abstract-editController.directive';
-import { DataField, DataList, DataSelect, FieldSet } from '@shared/models/fieldSet.model';
+import { DataField, DataSelect, FieldSet } from '@shared/models/fieldSet.model';
 import { take } from 'rxjs';
 
 @Component({
@@ -11,49 +12,56 @@ import { take } from 'rxjs';
   templateUrl: './edit-event.component.html',
   styleUrls: ['./edit-event.component.scss']
 })
-export class EditEventComponent extends EditController<any> {
-  private calRecurringEventService = inject(CalRecurringEventService);
-  public titleField!: DataSelect<any>;
+export class EditEventComponent extends EditController<CalendarConfirmed> {
+  private calendarCheckboxService = inject(CalendarCheckboxService);
+  public titleField!: DataSelect<String>;
   public startAtField!: FieldSet;
-  public endAtField!: FieldSet;
   public typeField!: DataSelect<CalEventTypeEnum>;
   public isLoading = false;
+  public inputForm: any;
+  private calendarCheckboxList!: CalendarCheckbox[];
 
   protected override initComponents(): void {
     this.isLoading = true;
-    this.calRecurringEventService
-      .getDocs$()
+    this.calendarCheckboxService
+      .getAll()
       .pipe(take(1))
-      .subscribe(calRecurringEvents => {
-        this.startAtField = new DataField(CalEventEntity.START_AT);
-        this.endAtField = new DataField(CalEventEntity.END_AT);
+      .subscribe(calendarCheckboxList => {
+        this.calendarCheckboxList = calendarCheckboxList;
+        this.startAtField = new DataField(CalendarConfirmed.START);
         this.titleField = new DataSelect(
-          CalEventEntity.TITLE,
-          calRecurringEvents.map(calRecurringEvent => ({
-            name: CalRecurringEvent.toTitle(calRecurringEvent),
-            value: CalRecurringEvent.toTitle(calRecurringEvent)
+          CalendarConfirmed.TITLE,
+          calendarCheckboxList.map(calendarCheckbox => ({
+            name: calendarCheckbox.name,
+            value: calendarCheckbox.id
           }))
         );
         this.typeField = new DataSelect(
-          CalEventEntity.TYPE,
+          CalendarConfirmed.TYPE,
           Object.values(CalEventTypeEnum).map(item => ({
             name: item,
-            color: CalEventEntity.toColor(item)
+            color: CalendarConfirmed.toColor(item)
           }))
         );
+
+        this.inputForm = {
+          id: this.input.id,
+          start: this.input.start,
+          title: { name: this.input.title, value: this.input.recurringEventId },
+          type: this.input.type
+        };
         this.isLoading = false;
       });
   }
 
   public override onSave(): void {
-    const entity: CalEventEntity = {
-      id: this.input.id,
-      title: this.input.title.name,
-      meta: {
-        type: this.input.type.name,
-        start: Timestamp.fromDate(this.input.start),
-        end: Timestamp.fromDate(this.input.end)
-      }
+    const entity: CalendarConfirmed = {
+      id: this.inputForm.id,
+      type: this.inputForm.type.name,
+      start: Timestamp.fromDate(this.inputForm.start),
+      recurringEventId: this.calendarCheckboxList.find(
+        calendarCheckbox => calendarCheckbox.name === this.inputForm.title.name
+      )!.id
     };
     this.output.emit(entity);
     this.modalService.set$(undefined);

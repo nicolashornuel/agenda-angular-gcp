@@ -1,11 +1,11 @@
 import {
   AgendaUser,
   AgendaUserGroup,
-  CalBirthday,
-  CalEventEntity,
-  CalRecurringEvent,
-  CalRecurringEventRule,
-  CalRecurringEventType
+  CalendarBirthday,
+  CalendarCheckbox,
+  CalendarConfirmed,
+  CalEventTypeEnum,
+  CalRecurringEventRule
 } from '@agenda/models/calEvent.model';
 import { Injectable } from '@angular/core';
 import {
@@ -13,24 +13,23 @@ import {
   collection,
   collectionData,
   doc,
-  docData,
   DocumentReference,
   getDoc,
   query,
   setDoc,
+  Timestamp,
   where
 } from '@angular/fire/firestore';
 import { FirestoreService } from '@core/services/firestore.service';
 import { CalendarEvent, CalendarEventTimesChangedEvent } from 'angular-calendar';
 import { Identifiable } from 'app/train/models/reservation.model';
-import { combineLatest, concatMap, from, map, Observable, of, switchMap, tap } from 'rxjs';
+import { concatMap, from, map, Observable, switchMap } from 'rxjs';
 
-const CAL_RECURRING_EVENT_TYPE = 'calRecurringEventType';
-const CAL_RECURRING_EVENT = 'calRecurringEvent';
+const CALENDAR_BIRTHDAY = 'calendarBirthday';
+const CALENDAR_CHECKBOX = 'calendarCheckbox';
+const CALENDAR_EVENT = 'calendarEvent';
 const AGENDA_USER = 'agendaUser';
 const AGENDA_USER_GROUP = 'agendaUserGroup';
-const CAL_BIRTHDAY = 'calBirthday';
-const CAL_EVENT = 'calendarEvent';
 
 @Injectable({
   providedIn: 'root'
@@ -66,148 +65,76 @@ export class AgendaUserService extends FirestoreService<AgendaUser> {
 @Injectable({
   providedIn: 'root'
 })
-export class CalRecurringEventTypeService extends FirestoreService<CalRecurringEventType> {
+export class CalendarBirthdayService extends FirestoreService<CalendarBirthday> {
   constructor() {
-    super(CAL_RECURRING_EVENT_TYPE);
+    super(CALENDAR_BIRTHDAY);
   }
 
-  public override getAll(): Observable<CalRecurringEventType[]> {
-    return super.getAll().pipe(
-      map(types =>
-        types.map(type => ({
-          ...type,
-          rules: CalRecurringEventRule.toArray(type.rules as Record<string, boolean[]>)
-        }))
-      )
-    );
-  }
-
-  public override async saveOrUpdate(calRecurringEventType: CalRecurringEventType): Promise<void> {
-    await super.saveOrUpdate({
-      ...calRecurringEventType,
-      rules: CalRecurringEventRule.toRecord(calRecurringEventType.rules as CalRecurringEventRule[])
-    } as CalRecurringEventType);
-  }
-}
-
-@Injectable({
-  providedIn: 'root'
-})
-export class CalRecurringEventService extends FirestoreService<CalRecurringEvent> {
-  private readonly agendaUserCollection = collection(this.firestore, AGENDA_USER);
-  private readonly calRecurringEventTypeCollection = collection(this.firestore, CAL_RECURRING_EVENT_TYPE);
-
-  constructor() {
-    super(CAL_RECURRING_EVENT);
-  }
-
-  public getDocs$(): Observable<CalRecurringEvent[]> {
-    return collectionData(this.collectionRef, { idField: 'id' }).pipe(
-      switchMap((events: any[]) => {
-        if (!events.length) return of([]); // Aucun événement
-
-        const eventObservables = events.map(event => {
-          const calRecurringEvent = event as CalRecurringEvent;
-
-          const calRecurringEventType$ = docData(
-            calRecurringEvent.calRecurringEventType as DocumentReference<CalRecurringEventType>,
-            { idField: 'id' }
-          ).pipe(map(data => data || ({} as CalRecurringEventType)));
-
-          const agendaUser$ = docData(calRecurringEvent.agendaUser as DocumentReference<AgendaUser>, {
-            idField: 'id'
-          }).pipe(map(data => data || ({} as AgendaUser)));
-
-          // On combine les 2 sous-documents
-          return combineLatest([agendaUser$, calRecurringEventType$]).pipe(
-            map(([agendaUser, calRecurringEventType]) => ({
-              ...calRecurringEvent,
-              agendaUser,
-              calRecurringEventType
-            }))
-          );
-        });
-
-        // Combine tous les observables en un seul tableau
-        return combineLatest(eventObservables);
-      })
-    );
-  }
-
-  public override async saveOrUpdate(calRecurringEvent: CalRecurringEvent): Promise<void> {
-    const calRecurringEventTypeRef = doc(
-      this.calRecurringEventTypeCollection,
-      calRecurringEvent.calRecurringEventType.id
-    );
-    const agendaUserRef = doc(this.agendaUserCollection, calRecurringEvent.agendaUser.id);
-    const entity = {
-      agendaUser: agendaUserRef,
-      calRecurringEventType: calRecurringEventTypeRef,
-      order: calRecurringEvent.order
-    } as CalRecurringEvent;
-    calRecurringEvent.id ? await this.update(entity, calRecurringEvent.id) : await this.save(entity);
-  }
-
-  public override async update(entity: CalRecurringEvent, id: string): Promise<void> {
-    const docRef = doc(this.collectionRef, id);
-    await setDoc(docRef, entity);
-  }
-
-  public override async save(entity: CalRecurringEvent): Promise<string> {
-    const docRef = await addDoc(this.collectionRef, entity);
-    entity.id = docRef.id;
-    return docRef.id;
-  }
-}
-
-@Injectable({
-  providedIn: 'root'
-})
-export class CalBirthdayService extends FirestoreService<CalBirthday> {
-  constructor() {
-    super(CAL_BIRTHDAY);
-  }
-
-  public getByMonth(date: Date): Observable<CalBirthday[]> {
+  public getByMonth(date: Date): Observable<CalendarBirthday[]> {
     const month = date.getMonth() + 1;
-    return this.getByQuery({ fieldPath: CalBirthday.MONTH.key }, { key: CalBirthday.MONTH.key, value: month });
+    return this.getByQuery(
+      { fieldPath: CalendarBirthday.MONTH.key },
+      { key: CalendarBirthday.MONTH.key, value: month }
+    );
   }
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class CalEventService extends FirestoreService<CalEventEntity> {
+export class CalendarConfirmedService extends FirestoreService<CalendarConfirmed> {
+  //CalEventEntity
+  private readonly calRecurringEventCollection = collection(this.firestore, CALENDAR_CHECKBOX);
+
   private events: CalendarEvent[] = [];
 
   constructor() {
-    super(CAL_EVENT);
+    super(CALENDAR_EVENT);
   }
 
-  public deleteByYear(year: Date): void {
-    this.getByYear(year).pipe(
-      switchMap(events => from(events).pipe(concatMap(event => from(this.delete(event.id! as string)))))
-    );
+  public async saveLikeComment(comment: CalendarEvent<Partial<{ type: CalEventTypeEnum }>>): Promise<void> {
+    const entity: CalendarConfirmed = {
+        start: Timestamp.fromDate(comment.start),
+  type: CalEventTypeEnum.COMMENT,
+      title: comment.title
+    };
+    await this.update(entity, comment.id as string);
   }
+
   public deleteByMonth(date: Date): Observable<void> {
     return this.getByMonth(date).pipe(
       switchMap(events => from(events).pipe(concatMap(event => from(this.delete(event.id! as string)))))
     );
   }
 
-  public getByYear(year: Date): Observable<CalEventEntity[]> {
-    const currentYear = year.getFullYear();
-    const startOfYear = new Date(currentYear, 0, 1); // 1er janvier à minuit
-    const endOfYear = new Date(currentYear + 1, 0, 1); // 1er janvier de l'année suivante
-    const q = query(this.collectionRef, where('meta.start', '>=', startOfYear), where('meta.start', '<', endOfYear));
-    return collectionData(q, { idField: 'id' });
+  public async confirmRecurringEvent(recurringEventId: string, date: Date): Promise<string> {
+    const entity: CalendarConfirmed = {
+      recurringEventId,
+      type: CalEventTypeEnum.FAMILY,
+      start: Timestamp.fromDate(new Date(date.toDateString()))
+    };
+    const { id } = await addDoc(this.collectionRef, entity);
+    return id;
   }
 
-  public getByMonth(date: Date): Observable<CalEventEntity[]> {
+  public getByMonth(date: Date): Observable<CalendarEvent[]> {
     const start = new Date(date.getFullYear(), date.getMonth(), 1);
     const end = new Date(date.getFullYear(), date.getMonth() + 1, 1);
-    const q = query(this.collectionRef, where('meta.start', '>=', start), where('meta.start', '<', end));
-    return collectionData(q, { idField: 'id' });
+    const q = query(this.collectionRef, where('start', '>=', start), where('start', '<', end));
+    return collectionData(q, { idField: 'id' }).pipe(
+      map(events =>
+        events.map(event => ({
+          id: event.id,
+          title: '',
+          start: event.start.toDate(),
+          meta: {
+            recurringEventId: event.recurringEventId,
+            type: event.type,
+            start: event.start
+          }
+        }))
+      )
+    );
   }
 
   public eventTimesChanged({ event, newStart, allDay }: CalendarEventTimesChangedEvent): CalendarEvent[] {
@@ -217,5 +144,37 @@ export class CalEventService extends FirestoreService<CalEventEntity> {
     this.events = [...this.events];
     return this.events;
   }
-  
 }
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CalendarCheckboxService extends FirestoreService<CalendarCheckbox> {
+  constructor() {
+    super(CALENDAR_CHECKBOX);
+  }
+
+  public getAllWithRecordRules(): Observable<CalendarCheckbox[]> {
+    return super.getByQuery({ fieldPath: 'order' });
+  }
+
+  public getList(): Observable<CalendarCheckbox[]> {
+    return super.getByQuery({ fieldPath: 'order' }).pipe(
+      map(checks =>
+        checks.map(check => ({
+          ...check,
+          rules: CalRecurringEventRule.toArray(check.rules as Record<string, boolean[]>)
+        }))
+      )
+    );
+  }
+
+  public override async saveOrUpdate(calendarCheckbox: CalendarCheckbox): Promise<void> {
+    await super.saveOrUpdate({
+      ...calendarCheckbox,
+      rules: CalRecurringEventRule.toRecord(calendarCheckbox.rules as CalRecurringEventRule[])
+    } as Identifiable);
+  }
+}
+
+

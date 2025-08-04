@@ -8,9 +8,9 @@
 <div class="p-3 check-container f-grow" *ngIf="day.inMonth" [ngClass]="day.cssClass" [attr.data-publicEvent]="day.meta?.publicEvent">
   <ng-container *ngFor="let field of formFields">
     <app-input-checkbox
-      [label]="field.title"
-      [value]="field.meta!.value!"
-      (onModelChange)="onCheckChange($event, field)"
+      [label]="field.calendarCheckboxEvent.name"
+      [(ngModel)]="field.value!"
+      (onModelChange)="onCheckChange(field)"
       [readonly]="isLocked"
     ></app-input-checkbox>
   </ng-container>
