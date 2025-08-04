@@ -1,6 +1,9 @@
-<section class="scrolling-table" [style.--maxiHeight]="tableSet.maxiHeight" [style.--height]="tableSet.height">
+<section
+  class="scrolling-table"
+  [style.--maxiHeight]="tableSet.maxiHeight"
+  [style.--height]="tableSet.height"
+>
   <div class="table-container">
-    
     <div class="table-row header" [ngClass]="tableSet.verticaltextHeader ? 'vertical' : ' '">
       <ng-container *ngFor="let column of tableSet.columnSet">
         <app-table-cell-header
@@ -16,62 +19,85 @@
       </ng-container>
     </div>
 
+    <ng-container *ngIf="tableSet.draggable; else noDraggable">
+      <form
+        #f="ngForm"
+        class="table-row body"
+        *ngFor="let row of tableSet.data; let i = index"
+        [appDraggableList]="{ items: tableSet.data, index: i, save: tableSet.draggableSave}"
+      >
+        <ng-container [ngTemplateOutlet]="rowTemplate" [ngTemplateOutletContext]="{ i: i, f: f, tableSet: tableSet }"></ng-container>
+      </form>
+    </ng-container>
 
-    <form
-      #f="ngForm"
-      class="table-row body"
-      [ngClass]="tableSet.hover ? 'hover' : ''"
-      *ngFor="let row of tableSet.data; let i = index"
-      (click)="tableSet.openDetailByClickRow ? tableSet.openDetailByClickRow(row) : null"
-    >
-
-      <!-- ROW DATA -->
-      <ng-container *ngFor="let column of tableSet.columnSet">
-        <ng-container *ngIf="enableEditIndex; else globalEdit">
-          <app-table-cell
-          class="table-cell"
-          [ngStyle]="{ width: column.width ?? null }"
-          *ngIf="column.visible"
-          [rowData]="tableSet.data[i]"
-          [columnSet]="column"
-          [readonly]="enableEditIndex !== i"
-          [parentForm]="f"
-        ></app-table-cell>
-        </ng-container>
-        <ng-template #globalEdit>
-          <app-table-cell
-          class="table-cell"
-          [ngStyle]="{ width: column.width ?? null }"
-          *ngIf="column.visible"
-          [rowData]="tableSet.data[i]"
-          [columnSet]="column"
-          [readonly]="false"
-          [parentForm]="f"
-        ></app-table-cell>
-        </ng-template>
-      </ng-container>
-
-      <!-- ROW ACTIONS -->
-      <ng-container *ngIf="tableSet.actions || tableSet.actionSet">
-        <div class="table-cell">
-          <div class="row-center-center">
-            <ng-container *ngFor="let action of tableSet.actionSet">
-              <button appButton ghost size="tiny" (click)="action.method(tableSet.data[i], i)"><i [ngClass]="action.icon"></i></button>
-            </ng-container>
-            <ng-container *ngIf="tableSet.actions">
-              <ng-container *ngIf="enableEditIndex !== i; else edit">
-                <button appButton ghost size="tiny" (click)="enableEditMethod(i)"><i class="fas fa-pencil-alt"></i></button>
-                <button appButton ghost size="tiny" (click)="onDelete(i)"><i class="fas fa-trash-alt"></i></button>
-              </ng-container>
-              <ng-template #edit>
-                <button appButton ghost size="tiny" (click)="onCancel(f, tableSet.data[i])"><i class="fas fa-times"></i></button>
-                <button appButton ghost size="tiny" (click)="onSave(f, tableSet.data[i])"><i class="fas fa-save"></i></button>
-              </ng-template>
-            </ng-container>
-          </div>
-        </div>
-      </ng-container>
-
-    </form>
+    <ng-template #noDraggable>
+      <form
+        #f="ngForm"
+        class="table-row body"
+        [ngClass]="tableSet.hover ? 'hover' : ''"
+        *ngFor="let row of tableSet.data; let i = index"
+        (click)="tableSet.openDetailByClickRow ? tableSet.openDetailByClickRow(row) : null"
+      >
+        <ng-container [ngTemplateOutlet]="rowTemplate" [ngTemplateOutletContext]="{ i: i, f: f, tableSet: tableSet }"></ng-container>
+      </form>
+    </ng-template>
   </div>
 </section>
+
+<ng-template #rowTemplate let-i="i" let-f="f" let-tableSet="tableSet">
+  <!-- ROW DATA -->
+  <ng-container *ngFor="let column of tableSet.columnSet">
+    <ng-container *ngIf="enableEditIndex; else globalEdit">
+      <app-table-cell
+        class="table-cell"
+        [ngStyle]="{ width: column.width ?? null }"
+        *ngIf="column.visible"
+        [rowData]="tableSet.data[i]"
+        [columnSet]="column"
+        [readonly]="enableEditIndex !== i"
+        [parentForm]="f"
+      ></app-table-cell>
+    </ng-container>
+    <ng-template #globalEdit>
+      <app-table-cell
+        class="table-cell"
+        [ngStyle]="{ width: column.width ?? null }"
+        *ngIf="column.visible"
+        [rowData]="tableSet.data[i]"
+        [columnSet]="column"
+        [readonly]="false"
+      ></app-table-cell>
+    </ng-template>
+  </ng-container>
+
+  <!-- ROW ACTIONS -->
+  <ng-container *ngIf="tableSet.actions || tableSet.actionSet">
+    <div class="table-cell">
+      <div class="row-center-center">
+        <ng-container *ngFor="let action of tableSet.actionSet">
+          <button appButton ghost size="tiny" (click)="action.method(tableSet.data[i], i)">
+            <i [ngClass]="action.icon"></i>
+          </button>
+        </ng-container>
+        <ng-container *ngIf="tableSet.actions">
+          <ng-container *ngIf="enableEditIndex !== i; else edit">
+            <button appButton ghost size="tiny" (click)="enableEditMethod(i)">
+              <i class="fas fa-pencil-alt"></i>
+            </button>
+            <button appButton ghost size="tiny" (click)="onDelete(i)">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </ng-container>
+          <ng-template #edit>
+            <button appButton ghost size="tiny" (click)="onCancel(f, tableSet.data[i])">
+              <i class="fas fa-times"></i>
+            </button>
+            <button appButton ghost size="tiny" (click)="onSave(f, tableSet.data[i])">
+              <i class="fas fa-save"></i>
+            </button>
+          </ng-template>
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+</ng-template>

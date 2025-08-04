@@ -23,6 +23,8 @@ export interface TableSet {
     delete: (id: string) => Promise<any>;
   };
   openDetailByClickRow?: (row: any) => string | void;
+  draggable?: boolean;
+  draggableSave?: (items: any[]) => void;
 }
 
 export class TableSet implements TableSet {

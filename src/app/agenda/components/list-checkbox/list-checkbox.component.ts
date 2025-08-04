@@ -31,6 +31,15 @@ export class ListCheckboxComponent extends ListController<CalendarCheckbox> {
   }
   protected override initData(): void {
     this.tableSet.height = 'calc(100vh - 272px)';
+    this.tableSet.draggable = true;
+    this.tableSet.draggableSave = (items: CalendarCheckbox[]) => {
+      items.forEach((item, i) => this.firestoreService.saveOrUpdate({
+          ...item,
+          order: i
+        })
+      )
+    }
+    
     this.isLoading = true;
     this.firestoreService
       .getList()

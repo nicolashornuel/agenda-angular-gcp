@@ -18,7 +18,7 @@ import { take } from 'rxjs';
   templateUrl: './list-event.component.html',
   styleUrls: ['./list-event.component.scss']
 })
-export class ListEventComponent extends ListController<any> {
+export class ListEventComponent extends ListController<CalendarConfirmed> {
   public override onCreate(): void {}
   protected override firestoreService = inject(CalendarConfirmedService);
   private calendarCheckboxService = inject(CalendarCheckboxService);
@@ -56,7 +56,7 @@ export class ListEventComponent extends ListController<any> {
       });
   }
 
-  protected override toDto(entities: any[]) {
+  protected override toDto(entities: CalendarConfirmed[]) {
     return entities.map(calendarConfirmed => ({
       id: calendarConfirmed.id,
       title: this.calendarCheckboxList.find(checkbox => checkbox.id === calendarConfirmed.recurringEventId)?.name,

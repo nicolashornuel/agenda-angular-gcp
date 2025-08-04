@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostBinding, HostListener, Input, Renderer2 } from '@angular/core';
+import { Directive, HostBinding, HostListener, Input } from '@angular/core';
 
 export interface DraggableListConfig {
   items: any[];
