@@ -70,7 +70,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
     this.calRecurringEvents.forEach(calendarCheckboxEvent => {
       const existField = this.day.events
         .filter((eventField: CalendarEventType) => eventField.meta!.type === CalEventTypeEnum.FAMILY)
-        .find((dayEvent: CalendarEvent) => dayEvent.meta!.recurringEventId === calendarCheckboxEvent.id);
+        .find((dayEvent: CalendarEvent) => dayEvent.meta!.checkboxId === calendarCheckboxEvent.id);
 
       if (this.isReadyRule(calendarCheckboxEvent.rules as Record<string, boolean[]>))
         this.formFields.push({
@@ -108,7 +108,7 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
       ? this.calendarEventService.delete(calendarEvent.id).then(() => {
           this.alert.success('delete ok');
         })
-      : this.calendarEventService.confirmRecurringEvent(calendarEvent.calendarCheckboxEvent.id, this.day.date).then(id => {
+      : this.calendarEventService.confirmCheckbox(calendarEvent.calendarCheckboxEvent.id, this.day.date).then(id => {
           calendarEvent.id = id;
           this.alert.success('save ok');
         });

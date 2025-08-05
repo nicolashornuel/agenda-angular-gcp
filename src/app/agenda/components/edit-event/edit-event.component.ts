@@ -47,7 +47,7 @@ export class EditEventComponent extends EditController<CalendarConfirmed> {
         this.inputForm = {
           id: this.input.id,
           start: this.input.start,
-          title: { name: this.input.title, value: this.input.recurringEventId },
+          title: { name: this.input.title, value: this.input.checkboxId },
           type: this.input.type
         };
         this.isLoading = false;
@@ -59,7 +59,7 @@ export class EditEventComponent extends EditController<CalendarConfirmed> {
       id: this.inputForm.id,
       type: this.inputForm.type.name,
       start: Timestamp.fromDate(this.inputForm.start),
-      recurringEventId: this.calendarCheckboxList.find(
+      checkboxId: this.calendarCheckboxList.find(
         calendarCheckbox => calendarCheckbox.name === this.inputForm.title.name
       )!.id
     };

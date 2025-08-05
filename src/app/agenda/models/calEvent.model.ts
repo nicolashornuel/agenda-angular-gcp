@@ -176,9 +176,9 @@ export class CalendarCheckbox {
 
 export interface CalendarConfirmed extends Identifiable {
   start: Timestamp;
-  recurringEventId?: string;
   type: CalEventTypeEnum;
   title?: string;
+  checkboxId?: string;
 }
 
 export class CalendarConfirmed {

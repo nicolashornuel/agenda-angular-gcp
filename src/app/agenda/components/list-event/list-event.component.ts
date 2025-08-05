@@ -11,7 +11,7 @@ import {
   ColumnSet,
   ColumnString
 } from '@shared/models/tableSet.interface';
-import { take } from 'rxjs';
+import { from, switchMap, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-list-event',
@@ -50,7 +50,7 @@ export class ListEventComponent extends ListController<CalendarConfirmed> {
         super.initPagination();
         super.initDataFilter(
           this.calendarCheckboxList.map(
-            calendarCheckbox => new Selectable(calendarCheckbox.name, {key: 'recurringEventId', value: calendarCheckbox.id!})
+            calendarCheckbox => new Selectable(calendarCheckbox.name, {key: 'checkboxId', value: calendarCheckbox.id!})
           )
         );
       });
@@ -59,7 +59,7 @@ export class ListEventComponent extends ListController<CalendarConfirmed> {
   protected override toDto(entities: CalendarConfirmed[]) {
     return entities.map(calendarConfirmed => ({
       id: calendarConfirmed.id,
-      title: this.calendarCheckboxList.find(checkbox => checkbox.id === calendarConfirmed.recurringEventId)?.name,
+      title: this.calendarCheckboxList.find(checkbox => checkbox.id === calendarConfirmed.checkboxId)?.name,
       start: calendarConfirmed.start.toDate(),
       type: { name: calendarConfirmed.type, color: CalendarConfirmed.toColor(calendarConfirmed.type) }
     }));
