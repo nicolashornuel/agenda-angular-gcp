@@ -83,8 +83,6 @@ export class CalendarBirthdayService extends FirestoreService<CalendarBirthday> 
   providedIn: 'root'
 })
 export class CalendarConfirmedService extends FirestoreService<CalendarConfirmed> {
-  //CalEventEntity
-  private readonly calRecurringEventCollection = collection(this.firestore, CALENDAR_CHECKBOX);
 
   private events: CalendarEvent[] = [];
 
@@ -107,9 +105,9 @@ export class CalendarConfirmedService extends FirestoreService<CalendarConfirmed
     );
   }
 
-  public async confirmRecurringEvent(recurringEventId: string, date: Date): Promise<string> {
+  public async confirmCheckbox(checkboxId: string, date: Date): Promise<string> {
     const entity: CalendarConfirmed = {
-      recurringEventId,
+      checkboxId,
       type: CalEventTypeEnum.FAMILY,
       start: Timestamp.fromDate(new Date(date.toDateString()))
     };
@@ -128,7 +126,7 @@ export class CalendarConfirmedService extends FirestoreService<CalendarConfirmed
           title: '',
           start: event.start.toDate(),
           meta: {
-            recurringEventId: event.recurringEventId,
+            checkboxId: event.checkboxId,
             type: event.type,
             start: event.start
           }
