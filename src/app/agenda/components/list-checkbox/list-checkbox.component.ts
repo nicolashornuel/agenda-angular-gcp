@@ -33,13 +33,17 @@ export class ListCheckboxComponent extends ListController<CalendarCheckbox> {
     this.tableSet.height = 'calc(100vh - 272px)';
     this.tableSet.draggable = true;
     this.tableSet.draggableSave = (items: CalendarCheckbox[]) => {
-      items.forEach((item, i) => this.firestoreService.saveOrUpdate({
-          ...item,
-          order: i
-        })
-      )
-    }
-    
+      Promise.all(
+        items.map(
+          async (item, i) =>
+            await this.firestoreService.saveOrUpdate({
+              ...item,
+              order: i
+            })
+        )
+      ).then(() => this.alertService.success('Nouvel arrangement sauvegardé'));
+    };
+
     this.isLoading = true;
     this.firestoreService
       .getList()

@@ -41,7 +41,7 @@ export class ListEventComponent extends ListController<CalendarConfirmed> {
 
   protected override async initData(): Promise<void> {
     this.calendarCheckboxService
-      .getAll()
+      .getList()
       .pipe(take(1))
       .subscribe(calendarCheckboxList => {
         this.calendarCheckboxList = calendarCheckboxList;
@@ -49,8 +49,8 @@ export class ListEventComponent extends ListController<CalendarConfirmed> {
         super.initColSorted({ fieldPath: 'start', directionStr: 'asc' });
         super.initPagination();
         super.initDataFilter(
-          [...new Set(this.calendarCheckboxList.map(calendarCheckbox => calendarCheckbox.name!))].map(
-            type => new Selectable(type, 'title')
+          this.calendarCheckboxList.map(
+            calendarCheckbox => new Selectable(calendarCheckbox.name, {key: 'recurringEventId', value: calendarCheckbox.id!})
           )
         );
       });

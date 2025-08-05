@@ -128,7 +128,7 @@ export abstract class ListController<T extends Identifiable> implements OnInit, 
     this.firestoreService.getCountFromServer().then(count => console.log(count));
   }
 
-  protected initDataFilter(options: Selectable<string>[]): void {
+  protected initDataFilter(options: Selectable<any>[]): void {
     options.unshift(new Selectable('Toutes catégories', 'Toutes catégories'));
     this.filter = new DataSelect({ key: 'categorie', name: 'Filtrer par catégories' }, options);
     this.filter.value = this.filter.options[0];
@@ -139,7 +139,7 @@ export abstract class ListController<T extends Identifiable> implements OnInit, 
     this.filter === undefined || this.filter?.value.value === 'Toutes catégories'
       ? this.onFirstPage()
       : this.firestoreService
-          .getByQuery(this.colSorted, { key: this.filter.value.value, value: this.filter.value.name })
+          .getByQuery(this.colSorted, { key: this.filter.value.value.key, value: this.filter.value.value.value })
           .subscribe(items => this.defineData({ items: items, hasNext: false, hasPrevious: false }));
   }
 
