@@ -1,7 +1,10 @@
 <div class="row-end-center mb-3 gap-3">
+  
+  <span class="f-grow">{{tableSet.data.length}} éléments</span>
+
   <app-input-select
     *ngIf="filter; else spinner"
-    class="col-3"
+    class="col-3 relative"
     [options]="filter.options"
     [(ngModel)]="filter.value"
     (ngModelChange)="onFilterChange()"

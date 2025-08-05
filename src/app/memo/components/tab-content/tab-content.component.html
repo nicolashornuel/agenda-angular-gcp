@@ -13,7 +13,7 @@
 </div>
 
 <ng-container *ngIf="!isLoading; else spinner">
-  <section class="memo-container">
+  <section class="memo-container w-100">
     <ng-container *ngFor="let item of list; let i = index">
       <article class="memo-row" [style.--innerWidth]="innerWidth" [appDraggableList]="{ items: list, index: i }">
         <ng-container [ngSwitch]="item.type.value">
