@@ -1,8 +1,10 @@
-import { CalendarCheckbox, CalendarConfirmed } from '@agenda/models/calEvent.model';
+import { CalendarCheckbox, CalendarConfirmed } from '@agenda/models/agenda.model';
 import { CalendarCheckboxService, CalendarConfirmedService } from '@agenda/services/agenda.firestore.service';
 import { Component, inject } from '@angular/core';
+import { IsAdmin } from '@core/decorators/hasRole.decorator';
+import { Identifiable } from '@shared/abstracts/abstract-controller.directive';
 import { ListController } from '@shared/abstracts/abstract-listController.directive';
-import { Selectable } from '@shared/models/fieldSet.model';
+import { Nameable, Selectable } from '@shared/models/fieldSet.model';
 import {
   ActionSet,
   CellRenderers,
@@ -11,7 +13,7 @@ import {
   ColumnSet,
   ColumnString
 } from '@shared/models/tableSet.interface';
-import { from, switchMap, take, takeUntil } from 'rxjs';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-list-event',
@@ -50,18 +52,56 @@ export class ListEventComponent extends ListController<CalendarConfirmed> {
         super.initPagination();
         super.initDataFilter(
           this.calendarCheckboxList.map(
-            calendarCheckbox => new Selectable(calendarCheckbox.name, {key: 'checkboxId', value: calendarCheckbox.id!})
+            calendarCheckbox =>
+              new Selectable(calendarCheckbox.name, { key: 'checkboxId', value: calendarCheckbox.id! })
           )
         );
       });
+    this.initPeriod();
   }
 
   protected override toDto(entities: CalendarConfirmed[]) {
     return entities.map(calendarConfirmed => ({
       id: calendarConfirmed.id,
-      title: this.calendarCheckboxList.find(checkbox => checkbox.id === calendarConfirmed.checkboxId)?.name,
+      checkboxId: this.calendarCheckboxList.find(checkbox => checkbox.id === calendarConfirmed.checkboxId)?.name,
       start: calendarConfirmed.start.toDate(),
       type: { name: calendarConfirmed.type, color: CalendarConfirmed.toColor(calendarConfirmed.type) }
     }));
+  }
+
+  //////////////////////////////////////////// DELETE BY PERIOD ////////////////////////////////////////////
+
+  public period!: { startAt: Date; endAt: Date };
+  public isLocked = true;
+
+  private initPeriod(): void {
+    let date = new Date();
+    date.setDate(date.getDate() - 1);
+    this.period = {
+      startAt: date,
+      endAt: new Date()
+    };
+  }
+
+  public onPeriodFilter(): void {
+    this.isLoading = true;
+    this.firestoreService
+      .findByDateRange('start', new Date(this.period.startAt), new Date(this.period.endAt))
+      .pipe(take(1))
+      .subscribe(items => this.defineData({ items: items, hasNext: false, hasPrevious: false }));
+  }
+
+  @IsAdmin()
+  public onPeriodDelete(): void {
+    this.isLoading = true;
+    let promises = this.tableSet.data.map((item: Identifiable) => this.firestoreService.delete(item.id!));
+    Promise.all(promises)
+      .then(() => {
+        this.isLoading = false;
+        this.tableSet.data = [];
+      })
+      .catch(() => {
+        this.isLoading = false;
+      });
   }
 }

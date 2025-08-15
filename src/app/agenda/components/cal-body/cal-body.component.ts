@@ -11,7 +11,7 @@ import { DestroyService } from '@shared/services/destroy.service';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
 import { isSameDay } from 'date-fns';
 import { combineLatest, take, takeUntil } from 'rxjs';
-import { CalendarBirthday, CalendarCheckbox } from '../../models/calEvent.model';
+import { CalendarBirthday, CalendarCheckbox } from '../../models/agenda.model';
 
 @Component({
   selector: 'app-cal-body',
@@ -23,7 +23,7 @@ export class CalBodyComponent implements OnChanges {
   @Input() viewDate!: Date;
   @Input() isLocked!: boolean;
   public events: CalendarEvent[] = [];
-  public calRecurringEvents: CalendarCheckbox[] = [];
+  public calendarCheckboxList: CalendarCheckbox[] = [];
   public holidays: Holiday[] = [];
   public birthdays: CalendarBirthday[] = [];
   private publicHolidays: PublicHoliday[] = [];
@@ -36,7 +36,7 @@ export class CalBodyComponent implements OnChanges {
     private dayService: DayClickedService,
     private destroy$: DestroyService,
     private publicHolidayService: PublicHolidayService,
-    private calendarCheckboxEventService: CalendarCheckboxService,
+    private calendarCheckboxService: CalendarCheckboxService,
     private calendarEventService: CalendarConfirmedService,
   ) {}
 
@@ -51,15 +51,15 @@ export class CalBodyComponent implements OnChanges {
       this.holidayService.getByYear(this.viewDate),
       this.publicHolidayService.getByYear(this.viewDate),
       this.calBirthdayService.getByMonth(this.viewDate),
-      this.calendarCheckboxEventService.getAllWithRecordRules(),
+      this.calendarCheckboxService.getAllWithRecordRules(),
       this.calendarEventService.getByMonth(this.viewDate)
     ])
       .pipe(take(1))
-      .subscribe(([holidays, publicHolidays, birthdays, calendarCheckboxEvents, confirmedRecurringEvent]) => {
+      .subscribe(([holidays, publicHolidays, birthdays, calendarCheckboxList, confirmedRecurringEvent]) => {
         this.holidays = holidays;
         this.publicHolidays = publicHolidays;
         this.birthdays = birthdays;
-        this.calRecurringEvents = calendarCheckboxEvents;
+        this.calendarCheckboxList = calendarCheckboxList;
         this.events = confirmedRecurringEvent;
         this.loading = false;
       });

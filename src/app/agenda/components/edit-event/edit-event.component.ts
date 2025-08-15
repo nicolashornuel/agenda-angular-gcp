@@ -1,4 +1,4 @@
-import { CalendarCheckbox, CalendarConfirmed, CalEventTypeEnum } from '@agenda/models/calEvent.model';
+import { CalendarCheckbox, CalendarConfirmed, CalendarTypeEnum } from '@agenda/models/agenda.model';
 import { CalendarCheckboxService } from '@agenda/services/agenda.firestore.service';
 import { Component, inject } from '@angular/core';
 import { Timestamp } from '@angular/fire/firestore';
@@ -16,7 +16,7 @@ export class EditEventComponent extends EditController<CalendarConfirmed> {
   private calendarCheckboxService = inject(CalendarCheckboxService);
   public titleField!: DataSelect<String>;
   public startAtField!: FieldSet;
-  public typeField!: DataSelect<CalEventTypeEnum>;
+  public typeField!: DataSelect<CalendarTypeEnum>;
   public isLoading = false;
   public inputForm: any;
   private calendarCheckboxList!: CalendarCheckbox[];
@@ -38,7 +38,7 @@ export class EditEventComponent extends EditController<CalendarConfirmed> {
         );
         this.typeField = new DataSelect(
           CalendarConfirmed.TYPE,
-          Object.values(CalEventTypeEnum).map(item => ({
+          Object.values(CalendarTypeEnum).map(item => ({
             name: item,
             color: CalendarConfirmed.toColor(item)
           }))
