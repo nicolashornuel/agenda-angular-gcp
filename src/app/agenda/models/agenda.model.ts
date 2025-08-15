@@ -4,60 +4,19 @@ import { Color } from '@shared/models/color.enum';
 import { Nameable } from '@shared/models/fieldSet.model';
 import { CalendarEvent } from 'angular-calendar';
 
-export enum CalEventTypeEnum {
+export enum CalendarTypeEnum {
   COMMENT = 'comment',
   ANNIVERSAIRE = 'anniversaire',
   FAMILY = 'family'
 }
 
-export type CalendarEventType= CalendarEvent<
+export type CalendarEventType = CalendarEvent<
   Partial<{
-    type: CalEventTypeEnum;
+    type: CalendarTypeEnum;
   }>
 >;
 
-/* export interface CalEventEntity
-  extends Identifiable,
-    Pick<
-      CalendarEvent<{
-        type: CalEventTypeEnum;
-        start: Timestamp;
-        end?: Timestamp;
-      }>,
-      'title' | 'meta'
-    > {}
-
-
-export type CalEventField = Pick<
-  CalendarEvent<
-    Partial<{
-      type: CalEventTypeEnum;
-      start: string;
-      end: string;
-      daysWhenHoliday: number[];
-      daysWhenNotHoliday: number[];
-      daysWhenPublicHoliday: number[];
-      value: boolean;
-      description: string;
-    }>
-  >,
-  'id' | 'title' | 'meta'
->;
-
-export interface CalCheckboxEvent
-  extends Pick<
-    CalendarEvent<{
-      type: CalEventTypeEnum;
-      start: string;
-      end: string;
-      value?: boolean;
-      rules: Record<string, boolean[]>;
-      calRecurringEventId: string;
-    }>,
-    'id' | 'title' | 'meta'
-  > {} */
-
-export class CalRecurringEventRuleCondition {
+export class CalendarCheckboxRuleCondition {
   public static readonly DEFAULT = { key: 'DEFAULT', name: 'Défaut' };
   public static readonly HOLIDAY = { key: 'HOLIDAY', name: 'Vacance' };
   public static readonly NOT_HOLIDAY = { key: 'NOT_HOLIDAY', name: 'Période scolaire' };
@@ -70,7 +29,7 @@ export class CalRecurringEventRuleCondition {
   ];
 }
 
-export class CalRecurringEventRule {
+export class CalendarCheckboxRule {
   public static readonly CONDITION = { key: 'condition', name: 'Type de condition' };
   public static readonly DAYS_OF_WEEK = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
 
@@ -78,14 +37,14 @@ export class CalRecurringEventRule {
     for (let i = 0; i < 7; i++) {
       this[i] = false; // Initialise les index 0 à 6
     }
-    this.condition = CalRecurringEventRuleCondition.DEFAULT;
+    this.condition = CalendarCheckboxRuleCondition.DEFAULT;
   }
 
-  public static toArray(rules: Record<string, boolean[]>): CalRecurringEventRule[] {
+  public static toArray(rules: Record<string, boolean[]>): CalendarCheckboxRule[] {
     return Object.keys(rules).map((rule, i) => {
       const days = Object.values(rules)[i] as boolean[];
       return {
-        condition: CalRecurringEventRuleCondition.CONDITIONS.find(condition => condition.key === rule)!,
+        condition: CalendarCheckboxRuleCondition.CONDITIONS.find(condition => condition.key === rule)!,
         0: days[0] ?? false,
         1: days[1] ?? false,
         2: days[2] ?? false,
@@ -97,24 +56,24 @@ export class CalRecurringEventRule {
     });
   }
 
-  public static toRecord(rules: CalRecurringEventRule[]): Record<string, boolean[]> {
+  public static toRecord(rules: CalendarCheckboxRule[]): Record<string, boolean[]> {
     return Object.fromEntries(
       new Map<string, boolean[]>(
-        (rules as CalRecurringEventRule[]).map(rule => [
+        (rules as CalendarCheckboxRule[]).map(rule => [
           rule.condition.key,
-          CalRecurringEventRule.DAYS_OF_WEEK.map((_day, i) => Object.values(rule)[i] as boolean)
+          CalendarCheckboxRule.DAYS_OF_WEEK.map((_day, i) => Object.values(rule)[i] as boolean)
         ])
       )
     );
   }
 
-  public static toString(rules: CalRecurringEventRule[]): string {
+  public static toString(rules: CalendarCheckboxRule[]): string {
     return rules
       .map(
         rule =>
           `<strong>${rule.condition.name}:</strong> ${[0, 1, 2, 3, 4, 5, 6]
             .map(index => (rule as any)[index] ?? false)
-            .map((day, index) => (day ? CalRecurringEventRule.DAYS_OF_WEEK[index] : ''))
+            .map((day, index) => (day ? CalendarCheckboxRule.DAYS_OF_WEEK[index] : ''))
             .filter(day => day !== '')
             .join(', ')}`
       )
@@ -126,7 +85,7 @@ export interface Orderable {
   order: number;
 }
 
-export interface CalRecurringEventRule {
+export interface CalendarCheckboxRule {
   condition: { key: string; name: string };
   [key: number]: boolean;
 }
@@ -154,7 +113,7 @@ export class CalendarBirthday {
 }
 
 export interface CalendarCheckbox extends Identifiable, Nameable, Orderable {
-  rules: Record<string, boolean[]> | CalRecurringEventRule[];
+  rules: Record<string, boolean[]> | CalendarCheckboxRule[];
   description: string;
   group: string;
   value?: boolean;
@@ -176,7 +135,7 @@ export class CalendarCheckbox {
 
 export interface CalendarConfirmed extends Identifiable {
   start: Timestamp;
-  type: CalEventTypeEnum;
+  type: CalendarTypeEnum;
   title?: string;
   checkboxId?: string;
 }
@@ -184,13 +143,13 @@ export interface CalendarConfirmed extends Identifiable {
 export class CalendarConfirmed {
   public static readonly TYPE = { key: 'type', name: 'Type' };
   public static readonly START = { key: 'start', name: 'Date' };
-  public static readonly TITLE = { key: 'title', name: 'Titre' };
+  public static readonly TITLE = { key: 'checkboxId', name: 'Titre' };
 
-  public static toColor(type: CalEventTypeEnum): Color {
+  public static toColor(type: CalendarTypeEnum): Color {
     switch (type) {
-      case CalEventTypeEnum.FAMILY:
+      case CalendarTypeEnum.FAMILY:
         return Color.ORANGE;
-      case CalEventTypeEnum.COMMENT:
+      case CalendarTypeEnum.COMMENT:
         return Color.BLUE;
       default:
         return Color.LIGHT;

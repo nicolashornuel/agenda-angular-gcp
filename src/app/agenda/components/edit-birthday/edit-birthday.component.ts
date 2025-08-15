@@ -1,4 +1,4 @@
-import { CalendarBirthday } from '@agenda/models/calEvent.model';
+import { CalendarBirthday } from '@agenda/models/agenda.model';
 import { Component } from '@angular/core';
 import { EditController } from '@shared/abstracts/abstract-editController.directive';
 import { DataField, FieldSet } from '@shared/models/fieldSet.model';

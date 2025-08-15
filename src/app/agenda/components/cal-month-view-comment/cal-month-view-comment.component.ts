@@ -3,7 +3,7 @@ import { Component, Input, OnChanges, SimpleChanges, ViewChild, ViewContainerRef
 import { collapseAnimation } from '@shared/models/triggerAnimation.constant';
 import { AlertService } from '@shared/services/alert.service';
 import { CalendarEvent } from 'angular-calendar';
-import { CalendarBirthday, CalendarEventType, CalEventTypeEnum } from '../../models/calEvent.model';
+import { CalendarBirthday, CalendarEventType, CalendarTypeEnum } from '../../models/agenda.model';
 import { SaintDuJourService } from '../../services/saintDuJour.service';
 
 @Component({
@@ -34,7 +34,7 @@ export class CalMonthViewCommentComponent implements OnChanges {
     this.saintDuJour = await this.saint.getWithDate(this.viewDate);
     this.annivDuJour = this.birthdays.filter(birthday => birthday.day === this.viewDate.getDate());
     if (this.events) {
-      this.comments = this.events.filter((eventField: CalendarEventType) => eventField.meta!.type === CalEventTypeEnum.COMMENT);
+      this.comments = this.events.filter((eventField: CalendarEventType) => eventField.meta!.type === CalendarTypeEnum.COMMENT);
     }
   }
 

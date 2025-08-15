@@ -1,4 +1,4 @@
-import { CalendarCheckbox, CalRecurringEventRule, CalRecurringEventRuleCondition } from '@agenda/models/calEvent.model';
+import { CalendarCheckbox, CalendarCheckboxRule, CalendarCheckboxRuleCondition } from '@agenda/models/agenda.model';
 import { Component } from '@angular/core';
 import { EditController } from '@shared/abstracts/abstract-editController.directive';
 import { FieldSet, DataField, Nameable } from '@shared/models/fieldSet.model';
@@ -23,24 +23,24 @@ export class EditCheckboxComponent extends EditController<CalendarCheckbox> {
     this.ruleTable.verticaltextHeader = true;
     this.ruleTable.columnSet = [
       new ColumnCustom(
-        CalRecurringEventRule.CONDITION,
+        CalendarCheckboxRule.CONDITION,
         true,
-        CellRenderers.toInputSelect(CalRecurringEventRuleCondition.CONDITIONS)
+        CellRenderers.toInputSelect(CalendarCheckboxRuleCondition.CONDITIONS)
       ).setWidth('100%'),
-      ...CalRecurringEventRule.DAYS_OF_WEEK.map(
+      ...CalendarCheckboxRule.DAYS_OF_WEEK.map(
         (day: string, index: number) =>
           new ColumnCustom({ key: index, name: day } as Nameable, true, CellRenderers.toCheckBox())
       )
     ];
     this.ruleTable.actionSet = [new ActionSet(ActionSet.DELETE, (row, index) => this.delete(row, index!))];
-    this.ruleTable.data = this.input.rules as CalRecurringEventRule[];
+    this.ruleTable.data = this.input.rules as CalendarCheckboxRule[];
   }
 
   public onAddRule() {
-    this.ruleTable.data.push({ ...new CalRecurringEventRule() });
+    this.ruleTable.data.push({ ...new CalendarCheckboxRule() });
   }
 
-  private delete(row: CalRecurringEventRule, index: number) {
+  private delete(row: CalendarCheckboxRule, index: number) {
     this.ruleTable.data.splice(index, 1);
   }
 }

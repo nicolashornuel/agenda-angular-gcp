@@ -1,4 +1,4 @@
-import { CalendarBirthday } from '@agenda/models/calEvent.model';
+import { CalendarBirthday } from '@agenda/models/agenda.model';
 import { CalendarBirthdayService } from '@agenda/services/agenda.firestore.service';
 import { Component, inject } from '@angular/core';
 import { ListController } from '@shared/abstracts/abstract-listController.directive';

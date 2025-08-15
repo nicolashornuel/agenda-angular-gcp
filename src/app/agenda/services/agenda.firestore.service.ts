@@ -4,9 +4,9 @@ import {
   CalendarBirthday,
   CalendarCheckbox,
   CalendarConfirmed,
-  CalEventTypeEnum,
-  CalRecurringEventRule
-} from '@agenda/models/calEvent.model';
+  CalendarTypeEnum,
+  CalendarCheckboxRule
+} from '@agenda/models/agenda.model';
 import { Injectable } from '@angular/core';
 import {
   addDoc,
@@ -83,17 +83,16 @@ export class CalendarBirthdayService extends FirestoreService<CalendarBirthday> 
   providedIn: 'root'
 })
 export class CalendarConfirmedService extends FirestoreService<CalendarConfirmed> {
-
   private events: CalendarEvent[] = [];
 
   constructor() {
     super(CALENDAR_EVENT);
   }
 
-  public async saveLikeComment(comment: CalendarEvent<Partial<{ type: CalEventTypeEnum }>>): Promise<void> {
+  public async saveLikeComment(comment: CalendarEvent<Partial<{ type: CalendarTypeEnum }>>): Promise<void> {
     const entity: CalendarConfirmed = {
-        start: Timestamp.fromDate(comment.start),
-  type: CalEventTypeEnum.COMMENT,
+      start: Timestamp.fromDate(comment.start),
+      type: CalendarTypeEnum.COMMENT,
       title: comment.title
     };
     await this.update(entity, comment.id as string);
@@ -108,7 +107,7 @@ export class CalendarConfirmedService extends FirestoreService<CalendarConfirmed
   public async confirmCheckbox(checkboxId: string, date: Date): Promise<string> {
     const entity: CalendarConfirmed = {
       checkboxId,
-      type: CalEventTypeEnum.FAMILY,
+      type: CalendarTypeEnum.FAMILY,
       start: Timestamp.fromDate(new Date(date.toDateString()))
     };
     const { id } = await addDoc(this.collectionRef, entity);
@@ -133,6 +132,11 @@ export class CalendarConfirmedService extends FirestoreService<CalendarConfirmed
         }))
       )
     );
+  }
+
+  public findByDateRange(key: string, startAt: Date, endAt: Date): Observable<CalendarConfirmed[]> {
+    const q = query(this.collectionRef, where(key, '>=', startAt), where(key, '<', endAt));
+    return collectionData(q, { idField: 'id' });
   }
 
   public eventTimesChanged({ event, newStart, allDay }: CalendarEventTimesChangedEvent): CalendarEvent[] {
@@ -161,7 +165,7 @@ export class CalendarCheckboxService extends FirestoreService<CalendarCheckbox> 
       map(checks =>
         checks.map(check => ({
           ...check,
-          rules: CalRecurringEventRule.toArray(check.rules as Record<string, boolean[]>)
+          rules: CalendarCheckboxRule.toArray(check.rules as Record<string, boolean[]>)
         }))
       )
     );
@@ -170,9 +174,7 @@ export class CalendarCheckboxService extends FirestoreService<CalendarCheckbox> 
   public override async saveOrUpdate(calendarCheckbox: CalendarCheckbox): Promise<void> {
     await super.saveOrUpdate({
       ...calendarCheckbox,
-      rules: CalRecurringEventRule.toRecord(calendarCheckbox.rules as CalRecurringEventRule[])
+      rules: CalendarCheckboxRule.toRecord(calendarCheckbox.rules as CalendarCheckboxRule[])
     } as Identifiable);
   }
 }
-
-

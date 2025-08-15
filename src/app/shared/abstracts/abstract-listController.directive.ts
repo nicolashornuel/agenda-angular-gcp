@@ -163,7 +163,7 @@ export abstract class ListController<T extends Identifiable> implements OnInit, 
     this.firestoreService.lastPage(this.colSorted, this.pageSize).then(t => this.defineData(t));
   }
 
-  private defineData(page: Pageable<T>): void {
+  public defineData(page: Pageable<T>): void {
     this.tableSet.data = this.toDto ? this.toDto(page.items) : page.items;
     this.hasNext = page.hasNext;
     this.hasPrev = page.hasPrevious;

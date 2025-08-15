@@ -1,4 +1,4 @@
-import { CalendarCheckbox, CalRecurringEventRule } from '@agenda/models/calEvent.model';
+import { CalendarCheckbox, CalendarCheckboxRule } from '@agenda/models/agenda.model';
 import { CalendarCheckboxService } from '@agenda/services/agenda.firestore.service';
 import { Component, inject } from '@angular/core';
 import { ListController } from '@shared/abstracts/abstract-listController.directive';
@@ -18,7 +18,7 @@ export class ListCheckboxComponent extends ListController<CalendarCheckbox> {
       new ColumnString(CalendarCheckbox.NAME, true),
       new ColumnString(CalendarCheckbox.DESCRIPTION, true).setWidth('30%'),
       new ColumnHtml(CalendarCheckbox.RULES, true, (row: any, col: ColumnSet) =>
-        CalRecurringEventRule.toString(row[col.key])
+        CalendarCheckboxRule.toString(row[col.key])
       ),
       new ColumnString(CalendarCheckbox.ORDER, true).setWidth('15%')
     ];
