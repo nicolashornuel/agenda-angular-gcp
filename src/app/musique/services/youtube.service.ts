@@ -70,8 +70,8 @@ class YoutubeVideo {
     this.thumbnail = url;
     this.channelTitle = channelTitle;
     this.src = `https://www.youtube.com/embed/${id}`;
-    this.viewCount = parseInt(viewCount);
-    this.likeCount = parseInt(likeCount);
+    this.viewCount = viewCount ? parseInt(viewCount) : 0;
+    this.likeCount = likeCount ? parseInt(likeCount) : 0;
   }
   private decodeHTMLEntities(text: string) {
     var entities = [

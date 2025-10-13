@@ -14,5 +14,5 @@ export interface VideoGAPI {
   rating: number;
   discogs: any;
   viewCount: number;
-  likeCount: number;
+  likeCount?: number;
 }

@@ -24,8 +24,8 @@ export class WatchModalComponent extends VideoController implements Modal, OnIni
   ngOnInit(): void {
     this.loading = true;
     this.youtubeService.getViewCount(this.input.videoId).subscribe(({ viewCount, likeCount }) => {
-      this.input.viewCount = viewCount;
-      this.input.likeCount = likeCount;
+      this.input.viewCount = viewCount ?? 0;
+      this.input.likeCount = likeCount ?? 0;
       this.loading = false;
     });
 
