@@ -3,6 +3,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { IsAdmin } from '@core/decorators/hasRole.decorator';
 import { FirestoreStorageService } from '@core/services/firebasestorage.service';
+import { Identifiable } from '@shared/abstracts/abstract-controller.directive';
+import { DraggableListConfig } from '@shared/directives/draggable-list.directive';
 import { Modal, ModalParam } from '@shared/models/modalParam.interface';
 import { AlertService } from '@shared/services/alert.service';
 import { DestroyService } from '@shared/services/destroy.service';
@@ -102,6 +104,18 @@ export class TabContentComponent implements OnInit {
     this.alertService.success('suppression réussie');
   }
 
+  public draggableSave(): (items: AbstractField[]) => void {
+    return (items: AbstractField[]) => Promise.all(
+      items.map(
+        async (item, i) =>
+          await this.saveDocument({
+            ...item,
+            order: i
+          })
+      )
+    ).then(() => this.alertService.success('Nouvel arrangement sauvegardé'));
+  }
+
   /////////////////////////////////////// SHARED PRIVATE
 
   private openItemModal(modal: TemplateRef<Modal>, title: string, t: AbstractItem): void {
@@ -121,7 +135,6 @@ export class TabContentComponent implements OnInit {
     }
     if (document.type.name === AbstractField.HTML.name) {
       delete document.safeHtml;
-      
     }
     await this.memoService.saveOrUpdate(document);
   }
@@ -144,5 +157,4 @@ export class TabContentComponent implements OnInit {
     this.saveDocument(this.list[toUp]);
     this.saveDocument(this.list[toDown]);
   }
-  
 }

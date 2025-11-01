@@ -128,10 +128,9 @@ export class CalMonthCellComponent implements OnInit, OnChanges {
   }
 
   public async onAddComment(comment: string): Promise<void> {
-/*     if (comment) {
-      const entity = this.mapper.commentToEntity(comment, this.day.date);
-      await this.eventService.save(entity);
+    if (comment) {
+      await this.calendarEventService.saveLikeComment({start: this.day.date, title: comment});
       this.alert.success('save ok');
-    } */
+    }
   }
 }
