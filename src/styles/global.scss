@@ -112,3 +112,22 @@ body {
     max-width: 1520px;
   }
 }
+
+@media print {
+  app-navbar,
+  app-tabs,
+  app-cal-month-view-comment,
+  app-audio-handler,
+  input,
+  button:not(:has(app-badge)),
+  input[type='checkbox']:not(:checked) + label {
+    display: none;
+  }
+  app-page-agenda app-layout .container {
+    max-width: 95%;
+  }
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

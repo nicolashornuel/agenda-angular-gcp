@@ -95,7 +95,7 @@ export class CalendarConfirmedService extends FirestoreService<CalendarConfirmed
       type: CalendarTypeEnum.COMMENT,
       title: comment.title
     };
-    await this.update(entity, comment.id as string);
+    comment.id ? await this.update(entity, comment.id as string) : await this.save(entity);
   }
 
   public deleteByMonth(date: Date): Observable<void> {
@@ -122,7 +122,7 @@ export class CalendarConfirmedService extends FirestoreService<CalendarConfirmed
       map(events =>
         events.map(event => ({
           id: event.id,
-          title: '',
+          title: event.title || '',
           start: event.start.toDate(),
           meta: {
             checkboxId: event.checkboxId,
