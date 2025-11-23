@@ -63,7 +63,7 @@ export class ListEventComponent extends ListController<CalendarConfirmed> {
   protected override toDto(entities: CalendarConfirmed[]) {
     return entities.map(calendarConfirmed => ({
       id: calendarConfirmed.id,
-      checkboxId: this.calendarCheckboxList.find(checkbox => checkbox.id === calendarConfirmed.checkboxId)?.name,
+      checkboxId: this.calendarCheckboxList.find(checkbox => checkbox.id === calendarConfirmed.checkboxId)?.name || calendarConfirmed.title,
       start: calendarConfirmed.start.toDate(),
       type: { name: calendarConfirmed.type, color: CalendarConfirmed.toColor(calendarConfirmed.type) }
     }));

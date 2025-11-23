@@ -87,6 +87,13 @@ export abstract class FirestoreService<T> {
     return collectionData(q, { idField: 'id' });
   }
 
+  public get(): Observable<T[]> {
+    //'where' | 'orderBy' | 'limit' | 'limitToLast' | 'startAt' | 'startAfter' | 'endAt' | 'endBefore';
+
+    query(this.collectionRef, orderBy('id', 'asc'), limit(10), where('id', '!=', null));
+    return collectionData(this.collectionRef, { idField: 'id' });
+  }
+
   public async getCountFromServer(): Promise<number> {
     const snapshot = await getCountFromServer(this.collectionRef);
     return snapshot.data().count;

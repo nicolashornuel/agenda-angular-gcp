@@ -11,6 +11,7 @@ import { ModalService } from '@shared/services/shared.observable.service';
 import { UtilService } from '@shared/services/util.service';
 import { map, takeUntil, tap } from 'rxjs';
 import { Identifiable } from '../../train/models/reservation.model';
+import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 
 @Directive({
   selector: '[appListe]'
@@ -29,6 +30,14 @@ export abstract class ListController<T extends Identifiable> implements OnInit, 
   public alertService = inject(AlertService);
   public colSortable = inject(ColumnsortableService);
   public utilService = inject(UtilService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+
+  protected abstract getColumnSet(): ColumnSet[];
+  protected abstract getActionSet(): ActionSet[];
+  protected abstract initData(): void;
+  public abstract onCreate(): void;
+  protected abstract firestoreService: FirestoreService<T>;
 
   ngOnInit(): void {
     this.initComponents();
@@ -84,12 +93,6 @@ export abstract class ListController<T extends Identifiable> implements OnInit, 
     this.isSaving = false;
   }
 
-  protected abstract getColumnSet(): ColumnSet[];
-  protected abstract getActionSet(): ActionSet[];
-  protected abstract initData(): void;
-  public abstract onCreate(): void;
-  protected abstract firestoreService: FirestoreService<T>;
-
   private initComponents() {
     this.tableSet = {
       verticaltextHeader: false,
@@ -113,6 +116,7 @@ export abstract class ListController<T extends Identifiable> implements OnInit, 
   public hasNext!: boolean;
   public hasPrev!: boolean;
   protected toDto?(t: T[]): any[];
+  private lastDocId: string | null = null;
 
   protected initColSorted(colSorted: ColSorted): void {
     this.colSorted = colSorted;
@@ -143,6 +147,36 @@ export abstract class ListController<T extends Identifiable> implements OnInit, 
           .subscribe(items => this.defineData({ items: items, hasNext: false, hasPrevious: false }));
   }
 
+  protected getRouteParms(): void {
+    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe((params: ParamMap) => {
+      if (params.get('order-by')) this.colSorted.fieldPath = params.get('order-by')!;
+      if (params.get('order-direction')) this.colSorted.directionStr = params.get('order-direction') as 'asc' | 'desc';
+      if (params.get('filter-key')) this.filter.value.value.key = params.get('filter-key');
+      if (params.get('filter-value')) this.filter.value.value.value = params.get('filter-value');
+      if (params.get('last-doc')) this.lastDocId = params.get('last-doc');
+    });
+  }
+
+  protected updateRouteParams(): void {
+    const queryParams: Params = {
+      'order-by': this.colSorted.fieldPath,
+      'order-direction': this.colSorted.directionStr
+    };
+    if (this.filter && this.filter.value.value.key && this.filter.value.value.value) {
+      queryParams['filter-key'] = this.filter.value.value.key;
+      queryParams['filter-value'] = this.filter.value.value.value;
+    }
+    if (this.lastDocId) {
+      queryParams['last-doc'] = this.lastDocId;
+    }
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams,
+      queryParamsHandling: 'merge' // conserve les autres paramètres
+    });
+  }
+
   public onFirstPage(): void {
     this.isLoading = true;
     this.firestoreService.firstPage(this.colSorted, this.pageSize).then(t => this.defineData(t));
@@ -167,6 +201,7 @@ export abstract class ListController<T extends Identifiable> implements OnInit, 
     this.tableSet.data = this.toDto ? this.toDto(page.items) : page.items;
     this.hasNext = page.hasNext;
     this.hasPrev = page.hasPrevious;
+    this.updateRouteParams();
     this.isLoading = false;
   }
 
