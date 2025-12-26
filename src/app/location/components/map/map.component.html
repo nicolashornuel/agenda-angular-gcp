@@ -1,0 +1,23 @@
+<ng-container>
+  <div class="row-end-center my-2">
+    <app-input-number
+      class="col-2"
+      label="Nombre de points"
+      [(ngModel)]="count"
+      (ngModelChange)="count$.next($event)"
+    ></app-input-number>
+  </div>
+
+  <section
+    class="map-container"
+    *ngIf="!isLoading; else spinner"
+    leaflet
+    [leafletOptions]="options"
+    (leafletMapReady)="onMapReady($event)"
+    (leafletClick)="onMapClicked($event)"
+  ></section>
+</ng-container>
+
+<ng-template #spinner>
+  <app-spinner></app-spinner>
+</ng-template>

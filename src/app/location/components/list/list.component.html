@@ -1,0 +1,63 @@
+<div class="row-end-center mb-3 gap-3">
+  <span class="f-grow">{{ tableSet.data.length }} / {{ totalCount }} éléments</span>
+
+  <app-input-date class="col-2" label="Début période" [(ngModel)]="period.startAt"></app-input-date>
+  <app-input-date class="col-2" label="Fin période" [(ngModel)]="period.endAt"></app-input-date>
+  <button appButton outline  (click)="onPeriodFilter()">Filtrer</button>
+  <div class="row-end-center gap-5">
+    <app-button-group>
+      <button appButton (click)="isLocked = !isLocked">
+        <i [ngClass]="isLocked ? 'fas fa-lock' : 'fas fa-unlock'"></i>
+      </button>
+      <button appButton outline (click)="onPeriodDelete()" [disabled]="isLocked">
+        Supprimer
+      </button>
+    </app-button-group>
+  </div>
+
+  <app-button-group>
+    <button appButton outline (click)="onFirstPage()" [disabled]="!hasPrev">
+      <i class="fas fa-angles-left"></i>
+    </button>
+    <button appButton outline (click)="onPrevPage()" [disabled]="!hasPrev">
+      <i class="fas fa-angle-left"></i>
+    </button>
+    <button appButton outline (click)="onNextPage()" [disabled]="!hasNext">
+      <i class="fas fa-angle-right"></i>
+    </button>
+    <button appButton outline (click)="onLastPage()" [disabled]="!hasNext">
+      <i class="fas fa-angles-right"></i>
+    </button>
+  </app-button-group>
+</div>
+
+<ng-container *ngIf="!isLoading; else spinner">
+  <app-table [tableSet]="tableSet"></app-table>
+</ng-container>
+
+<ng-template #confirm let-input>
+  <div class="row-end-center gap-2">
+    <button appButton outline size="regular" color="blue" (click)="onClose()">Annuler</button>
+
+    <ng-container *ngIf="!isSaving; else loadingTpl">
+      <button appButton filled size="regular" color="blue" (click)="onConfirmDelete(input)">
+        Supprimer
+      </button>
+    </ng-container>
+
+    <ng-template #loadingTpl>
+      <button appButton filled size="regular" color="blue" disabled class="relative">
+        Supprimer
+        <app-spinner size="btn"></app-spinner>
+      </button>
+    </ng-template>
+  </div>
+</ng-template>
+
+<ng-template #modal let-input>
+  <!-- <app-edit-event [input]="input" (output)="onSave($event)"></app-edit-event> -->
+</ng-template>
+
+<ng-template #spinner>
+  <app-spinner></app-spinner>
+</ng-template>

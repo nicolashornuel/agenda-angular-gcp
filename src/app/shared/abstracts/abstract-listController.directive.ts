@@ -115,6 +115,7 @@ export abstract class ListController<T extends Identifiable> implements OnInit, 
   protected colSorted!: ColSorted;
   public hasNext!: boolean;
   public hasPrev!: boolean;
+  public totalCount!: number;
   protected toDto?(t: T[]): any[];
   private lastDocId: string | null = null;
 
@@ -129,7 +130,7 @@ export abstract class ListController<T extends Identifiable> implements OnInit, 
       colSorted ? (this.colSorted = colSorted) : undefined;
       this.getByQuery();
     });
-    this.firestoreService.getCountFromServer().then(count => console.log(count));
+    this.firestoreService.getCountFromServer().then(count => this.totalCount = count);
   }
 
   protected initDataFilter(options: Selectable<any>[]): void {

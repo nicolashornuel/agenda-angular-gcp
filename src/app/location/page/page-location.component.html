@@ -1,36 +1,4 @@
 <app-layout>
-  <div class="row gap-5 mt-2">
-    <app-input-date
-      class="col-2"
-      label="Début période"
-      [(ngModel)]="periode.start"
-    ></app-input-date>
-    <app-input-date class="col-2" label="Fin période" [(ngModel)]="periode.end"></app-input-date>
-    <button appButton outline size="small" (click)="onFilterData()">Filtrer</button>
-    <div class="f-grow row-end-center gap-5">
-      <span>Nombre d'éléments : {{ locations.length }}</span>
-      <app-button-group>
-        <button appButton size="small" (click)="isLocked = !isLocked">
-          <i [ngClass]="isLocked ? 'fas fa-lock' : 'fas fa-unlock'"></i>
-        </button>
-        <button appButton outline size="small" (click)="onDeleteData()" [disabled]="isLocked">
-          Supprimer
-        </button>
-      </app-button-group>
-    </div>
-  </div>
+  <app-tabs [items]="tabs"></app-tabs>
+    <router-outlet></router-outlet>
 </app-layout>
-
-<section class="container">
-  <div class="map-container"
-    *ngIf="!isLoading; else spinner"
-    leaflet
-    [leafletOptions]="options"
-    (leafletMapReady)="onMapReady($event)"
-    (leafletClick)="onMapClicked($event)"
-  ></div>
-</section>
-
-<ng-template #spinner>
-  <app-spinner></app-spinner>
-</ng-template>

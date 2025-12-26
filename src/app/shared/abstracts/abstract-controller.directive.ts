@@ -9,6 +9,10 @@ export interface Identifiable {
   id?: string;
 }
 
+export class Identifiable {
+  public static readonly ID = { key: 'id', name: 'ID' };
+}
+
 @Directive({
   selector: '[]'
 })

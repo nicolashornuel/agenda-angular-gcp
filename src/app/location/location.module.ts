@@ -5,10 +5,14 @@ import { LocationRoutingModule } from './location-routing.module';
 import { PageLocationComponent } from './page/page-location.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { SharedModule } from '@shared/shared.module';
+import { ListComponent } from './components/list/list.component';
+import { MapComponent } from './components/map/map.component';
 
 @NgModule({
   declarations: [
-    PageLocationComponent
+    PageLocationComponent,
+    ListComponent,
+    MapComponent
   ],
   imports: [
     CommonModule,
