@@ -3,23 +3,32 @@ import * as Leaflet from 'leaflet';
 import { tileLayer } from 'leaflet';
 
 export interface TrackingLocation extends Identifiable {
+  accuracy: number;
   address: string;
-  date: Date;
+  altitude: number;
+  bearing?: number;
+  date: number;
   lat: number;
   lng: number;
+  provider: string;
+  speed: number;
   time: number;
   user: string;
-  provider: string;
 }
 
+
 export class TrackingLocation {
+  public static readonly ACCURACY = { key: 'accuracy', name: 'Précision' };
   public static readonly ADDRESS = { key: 'address', name: 'Adresse' };
+  public static readonly ALTITUDE = { key: 'altitude', name: 'Altitude' };
+  public static readonly BEARING = { key: 'bearing', name: 'Direction' };
   public static readonly DATE = { key: 'date', name: 'Date Sauvegarde' };
   public static readonly LAT = { key: 'lat', name: 'Latitude' };
   public static readonly LNG = { key: 'lng', name: 'Longitude' };
+  public static readonly PROVIDER = { key: 'provider', name: 'Fournisseur' };
+  public static readonly SPEED = { key: 'speed', name: 'Vitesse' };
   public static readonly TIME = { key: 'time', name: 'Date Position' };
   public static readonly USER = { key: 'user', name: 'Utilisateur' };
-  public static readonly PROVIDER = { key: 'provider', name: 'Fournisseur' };
 }
 
 // Define our base layers so we can reference them multiple times

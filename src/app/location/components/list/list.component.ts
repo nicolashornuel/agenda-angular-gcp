@@ -2,13 +2,7 @@ import { Component, inject } from '@angular/core';
 import { IsAdmin } from '@core/decorators/hasRole.decorator';
 import { Identifiable } from '@shared/abstracts/abstract-controller.directive';
 import { ListController } from '@shared/abstracts/abstract-listController.directive';
-import {
-  ActionSet,
-  CellRenderers,
-  ColumnHtml,
-  ColumnSet,
-  ColumnString
-} from '@shared/models/tableSet.interface';
+import { ActionSet, CellRenderers, ColumnHtml, ColumnSet, ColumnString } from '@shared/models/tableSet.interface';
 import { TrackingLocation } from 'app/location/models/locations.constant';
 import { LocationService } from 'app/location/services/location.firestore.service';
 import { take } from 'rxjs';
@@ -23,25 +17,43 @@ export class ListComponent extends ListController<TrackingLocation> {
 
   protected override getColumnSet(): ColumnSet[] {
     return [
+      new ColumnHtml(TrackingLocation.ACCURACY, true, (row: any, col: ColumnSet) => "± " + row[col.key].toFixed(1) + ' m'),
       new ColumnString(TrackingLocation.ADDRESS, true),
+      new ColumnHtml(TrackingLocation.ALTITUDE, true, (row: any, col: ColumnSet) => row[col.key].toFixed(1) + ' m'),
+      new ColumnHtml(TrackingLocation.BEARING, true, (row: any, col: ColumnSet) => {
+        const bearing = row[col.key];
+        let direction;
+        if (bearing >= 337.5 || bearing < 22.5) direction = 'N';
+        else if (bearing < 67.5) direction = 'NE';
+        else if (bearing < 112.5) direction = 'E';
+        else if (bearing < 157.5) direction = 'SE';
+        else if (bearing < 202.5) direction = 'S';
+        else if (bearing < 247.5) direction = 'SO';
+        else if (bearing < 292.5) direction = 'O';
+        else direction = 'NO';
+        return direction;
+      }),
+      new ColumnHtml(TrackingLocation.DATE, true, CellRenderers.toShortDate()),
+      new ColumnString(TrackingLocation.PROVIDER, true),
+      new ColumnHtml(TrackingLocation.SPEED, true, (row: any, col: ColumnSet) => {
+        const speedKmh = row[col.key] * 3.6;
+        return speedKmh.toFixed(1) + ' km/h';
+      }),
       new ColumnHtml(TrackingLocation.TIME, true, CellRenderers.toShortDate()),
-      new ColumnString(TrackingLocation.USER, true),
-      new ColumnString(TrackingLocation.PROVIDER, true)
+      new ColumnString(TrackingLocation.USER, true)
     ];
   }
   protected override getActionSet(): ActionSet[] {
-    return [
-      new ActionSet(ActionSet.DELETE, row => this.onOpenConfirm('Supprimer', row))
-    ];
+    return [new ActionSet(ActionSet.DELETE, row => this.onOpenConfirm('Supprimer', row))];
   }
 
   protected override initData(): void {
     this.tableSet.height = 'calc(100vh - 272px)';
     super.initColSorted({ fieldPath: 'time', directionStr: 'desc' });
     super.initPagination();
-    this.initPeriod(); 
+    this.initPeriod();
   }
-  
+
   public override onCreate(): void {
     throw new Error('Method not implemented.');
   }
