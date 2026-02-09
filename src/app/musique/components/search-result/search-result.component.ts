@@ -28,16 +28,17 @@ export class SearchResultComponent extends VideoController implements OnInit {
     if (this.param) {
       this.loading = true;
       forkJoin([
-        this.discogsService.getByArtistName(this.param.keyword),
+        //this.discogsService.getByArtistName(this.param.keyword),
         this.wikipediaService.getWiki(this.param.keyword, 'fr'),
         this.wikipediaService.getWiki(this.param.keyword, 'en'),
         this.youtubeService.getVideos(this.param.keyword, this.param.order)
       ])
         .pipe(take(1))
         .subscribe(results => {
-          this.discogs = results[0].results;
-          this.extractWiki = results[1] ?? results[2];
-          this.videos = results[3];
+          //this.discogs = results[0].results;
+          this.discogs = [];
+          this.extractWiki = results[0] ?? results[1];
+          this.videos = results[2];
           this.loading = false;
         });
     }
