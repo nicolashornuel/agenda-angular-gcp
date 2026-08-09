@@ -3,6 +3,10 @@
   flex-wrap: wrap;
 }
 
+.row-reverse {
+  flex-direction: row-reverse;
+}
+
 .col {
   display: flex;
   flex-direction: column;

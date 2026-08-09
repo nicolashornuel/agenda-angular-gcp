@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core
 import { Pageable } from '@core/services/firestore.service';
 import { DataSelect, Selectable } from '@shared/models/fieldSet.model';
 import { Modal } from '@shared/models/modalParam.interface';
-import { CellRenderers, ColumnSet, TableSet } from '@shared/models/tableSet.interface';
+import { ActionSet, CellRenderers, ColumnCustom, ColumnSet, TableSet } from '@shared/models/tableSet.interface';
 import { ColSorted, ColumnsortableService } from '@shared/services/columnsortable.service';
 import { VideoController } from 'app/musique/abstracts/videoController.abstract';
 import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
@@ -21,7 +21,7 @@ export class ListSavedComponent extends VideoController implements OnInit {
     title: 'Ma playlist',
     verticaltextHeader: false,
     hover: true,
-    height: 'calc(100vh - 330px)',
+    height: 'calc(100vh - 300px)',
     openDetailByClickRow: (row: VideoGAPI) => this.openModal(row, this.modal),
     columnSet: [
       {
@@ -55,14 +55,14 @@ export class ListSavedComponent extends VideoController implements OnInit {
         key: 'addedAt',
         title: "Date d'ajout",
         type: 'date',
-        visible: true,
+        visible: false,
         width: '10%'
       },
       {
         key: 'extractWiki',
         title: 'Wikipedia',
         type: 'html',
-        visible: true,
+        visible: false,
         width: '10%',
         innerHTML: (row: any, col: ColumnSet) =>
           row['extractWiki'] ? `<img width="20px" src='../../../assets/Wiki.svg' />` : ''
@@ -74,7 +74,8 @@ export class ListSavedComponent extends VideoController implements OnInit {
         visible: true,
         width: '10%',
         render: CellRenderers.toPriority()
-      }
+      },
+      new ColumnCustom({ name:'Actions' }, true, CellRenderers.toDrag()).setWidth('10%'),
     ],
     data: []
   };

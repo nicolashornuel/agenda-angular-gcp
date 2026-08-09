@@ -8,6 +8,9 @@ import { WatchModalComponent } from './components/watch-modal/watch-modal.compon
 import { IframeTrackerDirective } from './directives/iframe-tracker.directive';
 import { PageMusiqueComponent } from './page/page-musique.component';
 import { MusiqueRoutingModule } from './musique-routing.module';
+import { DropPlaylistComponent } from './components/drop-playlist/drop-playlist.component';
+import { DragCellComponent } from './components/drag-cell/drag-cell.component';
+import { LeftBarModule } from 'app/left-bar/left-bar.module';
 
 @NgModule({
   declarations: [
@@ -15,12 +18,15 @@ import { MusiqueRoutingModule } from './musique-routing.module';
     SearchResultComponent,
     ListSavedComponent,
     WatchModalComponent,
-    IframeTrackerDirective
+    IframeTrackerDirective,
+    DropPlaylistComponent,
+    DragCellComponent
   ],
   imports: [
     CommonModule,
     MusiqueRoutingModule,
     SharedModule,
+    LeftBarModule
   ]
 })
 export class MusiqueModule { }

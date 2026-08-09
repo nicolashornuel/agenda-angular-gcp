@@ -1,0 +1,27 @@
+@import 'variables.scss';
+
+%content {
+  padding: 3px 9px;
+  border-radius: 12px;
+  text-decoration: none;
+  text-wrap: nowrap;
+}
+
+.link-content {
+  cursor: pointer;
+  
+  @extend %content;
+  color: #212529;
+  span {
+    position: absolute;
+    top: -1px;
+    margin-left: 5px;
+    color: $blue;
+    &:hover {
+      color: $blue-hover;
+    }
+    &:active {
+      color: $blue-active;
+    }
+  }
+}

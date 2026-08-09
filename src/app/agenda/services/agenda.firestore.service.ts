@@ -175,6 +175,6 @@ export class CalendarCheckboxService extends FirestoreService<CalendarCheckbox> 
     await super.saveOrUpdate({
       ...calendarCheckbox,
       rules: CalendarCheckboxRule.toRecord(calendarCheckbox.rules as CalendarCheckboxRule[])
-    } as Identifiable);
+    });
   }
 }

@@ -1,17 +1,48 @@
 @import 'variables.scss';
 
-.article-draggable {
+.drag-zone {
   cursor: move;
 }
 
-.article-draggable:hover {
+.drag-zone:hover {
   background-color: $grey-95;
 }
 
-.article-draggable.dragging {
+.drag-zone.dragging {
   background-color: $grey-90;
 }
 
-.article-draggable.drag-over {
-  background-color: $grey-90;
+.drag-zone.drag-over {
+  background-color: $grey-90 !important;
+}
+
+.drop-zone.drag-over {
+  position: relative;
+}
+
+.drop-zone.drag-over::before {
+  position: absolute;
+  content: '';
+  inset: 0;
+  background: $grey-90;
+  opacity: 0.7;
+  z-index: 1;
+  
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.drop-zone.drag-over::after {
+  position: absolute;
+  content: 'dropZone';
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+  border: 2px dashed $grey-80;
+  margin: 8px;
+  z-index: 2;
 }

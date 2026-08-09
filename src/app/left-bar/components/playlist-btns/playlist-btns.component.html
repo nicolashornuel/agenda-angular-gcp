@@ -1,0 +1,39 @@
+<section class="row-between-center my-3">
+  <app-button-group class="mx-3">
+    <button appButton outline (click)="onPrev()" [disabled]="isFirst">
+      <i class="fas fa-angle-left"></i>
+    </button>
+    <button appButton outline (click)="onNext()" [disabled]="isLast">
+      <i class="fas fa-angle-right"></i>
+    </button>
+  </app-button-group>
+
+  <ng-container *ngIf="playlistSelect">
+    <div class="row-center-center gap-2">
+      <button
+        appButton
+        outline
+        class="badge"
+        (click)="loadPlaylist(playlist)"
+        [class.active]="playlist.id === currentPlaylist.id"
+        *ngFor="let playlist of playlistSelect.options; let i = index"
+      >
+        {{ playlist.name }}
+      </button>
+    </div>
+  </ng-container>
+
+  <app-button-group class="row-end-center mx-3">
+    <button
+      appButton
+      outline
+      (click)="onShuffle()"
+      [class.active]="(shuffleService.get$ | async) ?? false"
+    >
+      <i class="fa-solid fa-shuffle"></i>
+    </button>
+    <button appButton outline (click)="onRepeat()" [class.active]="repeatActive">
+      <i class="fa-solid" [class]="repeatIcon"></i>
+    </button>
+  </app-button-group>
+</section>

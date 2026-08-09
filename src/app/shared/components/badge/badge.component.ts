@@ -11,7 +11,10 @@ export class BadgeComponent {
 
   @Input() text: string | number = '';
   @Input() color: Colors = 'red';
-
+  @Input('left') left: string = "100%";
+  @Input('top') top: string = "0";
+  @Input('position') position: string = "absolute";
+  
   @HostBinding('class')
   get additionalClasses() {
     return this.color;

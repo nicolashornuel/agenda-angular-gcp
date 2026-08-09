@@ -8,6 +8,7 @@ import { InputTextComponent } from '@shared/components/input-text/input-text.com
 import { FieldSet, Nameable, Selectable } from '@shared/models/fieldSet.model';
 import { Color } from './color.enum';
 import { InputNumberComponent } from '@shared/components/input-number/input-number.component';
+import { DragCellComponent } from 'app/musique/components/drag-cell/drag-cell.component';
 
 export interface TableSet {
   title?: string;
@@ -29,12 +30,12 @@ export interface TableSet {
 
 export class TableSet implements TableSet {
   constructor(height: string) {
-    (this.verticaltextHeader = false),
+    ((this.verticaltextHeader = false),
       (this.hover = false),
       (this.height = height), //  'calc(100vh - 240px)',
       (this.columnSet = []),
       (this.actionSet = []),
-      (this.data = []);
+      (this.data = []));
   }
 }
 
@@ -48,6 +49,7 @@ export class ActionSet {
   public static readonly DELETE = 'fas fa-trash-alt';
   public static readonly CANCEL = 'fas fa-times';
   public static readonly SAVE = 'fas fa-save';
+  public static readonly SHOW = 'fas fa-eye';
   constructor(icon: string, method: (row: any, index?: number) => Promise<any> | void) {
     this.icon = icon;
     this.method = method;
@@ -66,7 +68,7 @@ export interface ColumnSet {
 
 export interface ColumnCustomRenderer<T, C, F> {
   component: C;
-  bind: (row: T, key: string, componentRef: ComponentRef<C>) => void;
+  bind: (row: T, key: string, componentRef: ComponentRef<C>, index: number) => void;
   listener?: (componentRef: ComponentRef<C>) => EventEmitter<F>;
   valueSave?: (row: T) => any;
 }
@@ -81,7 +83,7 @@ interface DataColumn<T extends 'string' | 'custom' | 'html' | 'date'> {
 
 class DataColumn<T> implements DataColumn<T> {
   constructor(fieldSet: FieldSet, visible: boolean, type: T) {
-    (this.key = fieldSet.key!), (this.title = fieldSet.name), (this.visible = visible), (this.type = type);
+    ((this.key = fieldSet.key!), (this.title = fieldSet.name), (this.visible = visible), (this.type = type));
   }
 
   setWidth(width: string) {
@@ -129,7 +131,7 @@ export class CellRenderers {
         row[col.key] ? new Date(2000, row[col.key] - 1, 1).toLocaleDateString('fr-FR', { month: 'long' }) : ''
       }</div>`;
   }
-  
+
   public static toDate(row: any, col: ColumnSet, options: Intl.DateTimeFormatOptions): string {
     return `<div class="txt-nowrap">${
       row[col.key] ? new Date(row[col.key]).toLocaleDateString('fr-FR', options) : ''
@@ -233,5 +235,14 @@ export class CellRenderers {
 
   public static toPriority() {
     return CellRenderers.toInputComponent(InputStarComponent);
+  }
+
+  public static toDrag() {
+    return {
+      component: DragCellComponent,
+      bind: (row: any, key: string, componentRef: ComponentRef<DragCellComponent>) => {
+        componentRef.instance.item = row;
+      }
+    };
   }
 }

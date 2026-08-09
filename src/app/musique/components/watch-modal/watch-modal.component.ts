@@ -33,6 +33,17 @@ export class WatchModalComponent extends VideoController implements Modal, OnIni
     this.getCategories().subscribe(categories => (this.categories = categories));
   }
 
+  onSearchByChannelId(): void {
+    this.youtubeService.getVideosFromChannelId(this.input.channelId).subscribe(videos => {
+      console.log('videos from channelId', videos);
+    });
+  }
+  onSearchByChannelName(): void {
+    this.youtubeService.getVideosFromChannelName(this.input.channelTitle).subscribe(videos => {
+      console.log('videos from channel name', videos);
+    });
+  }
+
   @IsAdmin()
   public onDelete(): void {
     this.deleteVideo(this.input);

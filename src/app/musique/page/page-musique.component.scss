@@ -14,3 +14,12 @@
         flex-basis: 25%
       }
   }
+
+  .right {
+    overflow-y: auto;
+    padding-right: 8px;
+  }
+
+  .left {
+    flex: 1 1 80%;
+  }

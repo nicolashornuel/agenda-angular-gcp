@@ -1,0 +1,41 @@
+<ng-container [ngSwitch]="width">
+  <ng-container *ngSwitchCase="'100%'">
+    <div class="sideBar" [ngClass]="isOpen ? 'show' : ''">
+      <button appButton filled (click)="onToggleOpen()">
+        <i class="fas fa-arrow-right fa-2x"></i>
+      </button>
+      <div class="sideBar-content">
+        <ng-container [ngTemplateOutlet]="content"></ng-container>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngSwitchDefault>
+    <div
+      class="left-bar row row-reverse"
+      [ngClass]="isOpen ? 'open' : 'close'"
+      [style.--width]="width"
+    >
+      <div class="row-center-center f-grow row-reverse">
+        <div class="col">
+          <div class="radius-inverted bottom-left"></div>
+          <div class="tab-icon row-center-center">
+            <app-icon color="light" (click)="onToggleOpen()" path="chevron-right"></app-icon>
+          </div>
+          <div class="radius-inverted top-left"></div>
+        </div>
+
+        <div class="tab-content">
+          <ng-container [ngTemplateOutlet]="content"></ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="backdrop" (click)="onToggleOpen()" [ngClass]="isOpen ? 'open' : 'close'"></div>
+  </ng-container>
+</ng-container>
+
+<ng-template #content>
+  <app-player></app-player>
+  <app-playlist-btns></app-playlist-btns>
+  <app-playlist-table></app-playlist-table>
+</ng-template>

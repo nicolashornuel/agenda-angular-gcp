@@ -112,6 +112,9 @@ $colors: (
     //border-color: $transparent-disabled-border;
     color: $transparent-disabled-text;
   }
+  &:focus {
+    @extend %box-shadow-active;
+  }
 }
 
 button.icon {

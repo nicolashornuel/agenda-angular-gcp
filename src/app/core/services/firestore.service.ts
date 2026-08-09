@@ -1,28 +1,31 @@
 import { inject } from '@angular/core';
 import {
-  CollectionReference,
-  DocumentReference,
-  FieldPath,
-  Firestore,
-  OrderByDirection,
-  QueryDocumentSnapshot,
   collection,
   collectionData,
+  CollectionReference,
   deleteDoc,
   doc,
+  docData,
+  DocumentReference,
   endBefore,
+  FieldPath,
+  Firestore,
   getCountFromServer,
   getDocs,
   limit,
   limitToLast,
   orderBy,
+  OrderByDirection,
   query,
+  QueryConstraint,
+  QueryDocumentSnapshot,
   setDoc,
   startAfter,
-  where
+  where,
+  WhereFilterOp
 } from '@angular/fire/firestore';
 import { Identifiable } from 'app/train/models/reservation.model';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 export type Pageable<T> = {
   items: T[];
@@ -30,9 +33,15 @@ export type Pageable<T> = {
   hasPrevious: boolean;
 };
 
-export abstract class FirestoreService<T> {
+export interface QueryFilter {
+  key: string;
+  operator: WhereFilterOp;
+  value: any;
+}
+
+export abstract class FirestoreService<T extends Identifiable> {
   protected firestore = inject(Firestore);
-  protected collectionRef!: CollectionReference<T>;
+  protected collectionRef!: CollectionReference<T & Identifiable>;
   private lastVisible!: QueryDocumentSnapshot<T>;
   private firstVisible!: QueryDocumentSnapshot<T>;
   public hasNext!: boolean;
@@ -41,11 +50,15 @@ export abstract class FirestoreService<T> {
   // https://github.com/javebratt/angularfire-idField/blob/main/src/app/home/home.page.ts
 
   constructor(path?: string) {
-    if (path) this.collectionRef = collection(this.firestore, path) as CollectionReference<T>;
+    if (path) this.collectionRef = collection(this.firestore, path) as CollectionReference<T & Identifiable>;
+  }
+
+  public createId(): string {
+    return doc(this.collectionRef).id;
   }
 
   public setCollection(path: string): void {
-    this.collectionRef = collection(this.firestore, path) as CollectionReference<T>;
+    this.collectionRef = collection(this.firestore, path) as CollectionReference<T & Identifiable>;
   }
 
   public getAll(): Observable<T[]> {
@@ -54,8 +67,8 @@ export abstract class FirestoreService<T> {
 
   public async save(document: T): Promise<string> {
     const docRef: DocumentReference<T> = doc(this.collectionRef);
-    await setDoc(docRef, { ...document });
     (document as Identifiable).id = docRef.id;
+    await setDoc(docRef, { ...document });
     return docRef.id;
   }
 
@@ -69,7 +82,7 @@ export abstract class FirestoreService<T> {
     await deleteDoc(docRef);
   }
 
-  public async saveOrUpdate(document: Identifiable): Promise<any> {
+  public async saveOrUpdate(document: T): Promise<any> {
     document.id ? await this.update(document as T, document.id) : await this.save(document as T);
   }
 
@@ -87,11 +100,14 @@ export abstract class FirestoreService<T> {
     return collectionData(q, { idField: 'id' });
   }
 
-  public get(): Observable<T[]> {
+  public get(constraints: QueryConstraint[]): Observable<T[]> {
     //'where' | 'orderBy' | 'limit' | 'limitToLast' | 'startAt' | 'startAfter' | 'endAt' | 'endBefore';
+    return collectionData(query(this.collectionRef, ...constraints), { idField: 'id' });
+  }
 
-    query(this.collectionRef, orderBy('id', 'asc'), limit(10), where('id', '!=', null));
-    return collectionData(this.collectionRef, { idField: 'id' });
+  public getById(id: string): Observable<T | undefined> {
+    const docRef = doc(this.collectionRef, id);
+    return docData(docRef, { idField: 'id' });
   }
 
   public async getCountFromServer(): Promise<number> {

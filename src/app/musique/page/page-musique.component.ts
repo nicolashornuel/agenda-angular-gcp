@@ -52,7 +52,7 @@ export class PageMusiqueComponent implements OnInit {
   private createTabResult(keyword: string): TabParam {
     const param = {
       keyword,
-      order: OrderYoutube.VIEWCOUNT
+      order: OrderYoutube.VIEWCOUNT //par défaut RELEVANCE
     };
 
     return {

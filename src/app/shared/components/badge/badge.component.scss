@@ -3,13 +3,14 @@
 .badge-content {
     border-radius: 50%;
     transform: translate(-50%,-50%);
-    left: 100%;
-    top: 0;
     position: absolute;
-    padding: .35em .65em;
     font-size: 10px;
     font-weight: 700;
-    line-height: 1;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 %white-txt {

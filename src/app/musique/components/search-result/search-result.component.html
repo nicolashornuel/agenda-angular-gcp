@@ -42,6 +42,7 @@
           [isMiniCard]="true"
           (click)="openModal(video, modal)"
           style="cursor: pointer"
+          [appDragZone]="video"
         >
           <img [src]="video.thumbnail" />
           <div class="information m-3 f-grow">

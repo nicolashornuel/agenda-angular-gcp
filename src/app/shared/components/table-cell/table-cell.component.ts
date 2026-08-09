@@ -23,21 +23,31 @@ import { AlertService } from '../../services/alert.service';
 export class TableCellComponent implements AfterViewInit, OnDestroy, OnChanges {
   @Input() columnSet!: ColumnSet;
   @Input() rowData?: any;
+  @Input() rowIndex!: number;
   @Input() readonly?: boolean;
   @Input() parentForm?: NgForm;
   @ViewChild('custom', { read: ViewContainerRef }) target!: ViewContainerRef;
   private childComponent!: ComponentRef<any>;
 
-  constructor(public alert: AlertService, private destroy$: DestroyService) {}
+  constructor(
+    public alert: AlertService,
+    private destroy$: DestroyService
+  ) {}
 
   ngAfterViewInit(): void {
     if (this.columnSet.type === 'custom') this.loadComponent();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['readonly'] && this.childComponent) {
+    if (!this.childComponent) return;
+
+    if (changes['readonly'])
       this.childComponent.instance.readonly = changes['readonly'].currentValue;
-    }
+
+    if (changes['rowIndex'])
+      this.childComponent.instance.text = this.rowIndex + 1;
+
+    this.childComponent.changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {
@@ -49,7 +59,7 @@ export class TableCellComponent implements AfterViewInit, OnDestroy, OnChanges {
   private loadComponent(): void {
     if (this.columnSet.render) {
       this.childComponent = this.target.createComponent<any>(this.columnSet.render.component);
-      this.columnSet.render.bind(this.rowData, this.columnSet.key, this.childComponent);
+      this.columnSet.render.bind(this.rowData, this.columnSet.key, this.childComponent, this.rowIndex);
       if (this.columnSet.render.listener) {
         this.columnSet.render
           .listener(this.childComponent)
@@ -60,7 +70,7 @@ export class TableCellComponent implements AfterViewInit, OnDestroy, OnChanges {
     }
   }
 
-/*   private getNestedValue(obj: any, path: any) {
+  /*   private getNestedValue(obj: any, path: any) {
     return path.split('.').reduce((acc: any, part: any) => acc?.[part], obj);
   }
 

@@ -33,7 +33,9 @@
                 "output": "./assets/"
               }
             ],
-    
+            "allowedCommonJsDependencies": [
+              "leaflet"
+            ],
             "styles": [
               "src/styles.scss",
               "./node_modules/leaflet/dist/leaflet.css"

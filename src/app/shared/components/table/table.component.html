@@ -38,7 +38,7 @@
         *ngFor="let row of tableSet.data; let i = index"
         (click)="tableSet.openDetailByClickRow ? tableSet.openDetailByClickRow(row) : null"
       >
-        <ng-container [ngTemplateOutlet]="rowTemplate" [ngTemplateOutletContext]="{ i: i, f: f, tableSet: tableSet }"></ng-container>
+        <ng-container [ngTemplateOutlet]="rowTemplate" [ngTemplateOutletContext]="{ i, f, tableSet }"></ng-container>
       </form>
     </ng-template>
   </div>
@@ -53,6 +53,7 @@
         [ngStyle]="{ width: column.width ?? null }"
         *ngIf="column.visible"
         [rowData]="tableSet.data[i]"
+        [rowIndex]="i"
         [columnSet]="column"
         [readonly]="enableEditIndex !== i"
         [parentForm]="f"
@@ -64,6 +65,7 @@
         [ngStyle]="{ width: column.width ?? null }"
         *ngIf="column.visible"
         [rowData]="tableSet.data[i]"
+        [rowIndex]="i"
         [columnSet]="column"
         [readonly]="false"
       ></app-table-cell>

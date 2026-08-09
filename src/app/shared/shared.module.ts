@@ -46,6 +46,8 @@ import { InputTimeComponent } from './components/input-time/input-time.component
 import { TitleComponent } from './components/title/title.component';
 import { InputMonthComponent } from './components/input-month/input-month.component';
 import { DraggableListDirective } from './directives/draggable-list.directive';
+import { DropZoneDirective } from './directives/drop-zone.directive';
+import { DragZoneDirective } from './directives/drag-zone.directive';
 
 const sharedComponents = [
   TableComponent,
@@ -101,13 +103,15 @@ const sharedDirectives = [
   IsMobileDirective,
   NumberSuffixPipe,
   DraggableDirective,
-  DraggableListDirective
+  DraggableListDirective,
+  DropZoneDirective,
+  DragZoneDirective
 ]
 
 @NgModule({
   declarations: [
     sharedComponents,
-    sharedDirectives,
+    sharedDirectives
   ],
   imports: [
     sharedModules

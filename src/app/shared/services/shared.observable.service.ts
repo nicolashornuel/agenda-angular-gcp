@@ -39,3 +39,12 @@ export class RightBarIsOpenedService extends BehaviorSubjectService<boolean> {
     super(false);
   }
 }
+
+@Injectable({
+  providedIn: 'root'
+})
+export class LeftBarIsOpenedService extends BehaviorSubjectService<boolean> {
+  constructor() {
+    super(false);
+  }
+}

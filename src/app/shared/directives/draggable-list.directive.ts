@@ -10,7 +10,7 @@ export interface DraggableListConfig {
   selector: '[appDraggableList]'
 })
 export class DraggableListDirective {
-  @HostBinding('class.article-draggable') articleDraggableClass = true;
+  @HostBinding('class.drag-zone') dragZoneClass = true;
 @HostBinding('attr.draggable') draggable = true;
   @HostBinding('class.dragging') isDragging = false;
   @HostBinding('class.drag-over') isDragOver = false;

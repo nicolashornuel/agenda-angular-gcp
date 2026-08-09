@@ -15,4 +15,5 @@ export interface VideoGAPI {
   discogs: any;
   viewCount: number;
   likeCount?: number;
+  channelId: string;
 }

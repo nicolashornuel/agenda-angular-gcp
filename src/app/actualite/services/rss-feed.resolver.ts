@@ -45,7 +45,7 @@ export class RssFeedResolver<T = any> {
       ),
       tap((feeds) =>  {
         if (!params.get(RssFeed.SLUG_KEY.key)) 
-          this.router.navigate([feeds.at(0)?.link], { relativeTo: route })
+          this.router.navigate([feeds[0]?.link], { relativeTo: route })
         }
       )
     );
@@ -84,7 +84,7 @@ export class RssFeedResolver<T = any> {
     return this.feedRepository.getByQuery({fieldPath: RssFeed.ORDER_KEY.key}, query).pipe(
       take(1),
       filter(feeds => feeds.length > 0),
-      map(feeds => feeds.at(0)),
+      map(feeds => feeds[0]),
       switchMap(feed => this.fetchFunction.getText(feed!.url)),
       map(doc => this.feedMapper.createCards(doc.data))
     );

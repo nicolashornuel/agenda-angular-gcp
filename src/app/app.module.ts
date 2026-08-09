@@ -15,6 +15,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from '@core/core.module';
 import { GlobalInjector } from '@core/decorators/global-injector';
+import { LeftBarModule } from './left-bar/left-bar.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,6 +24,7 @@ import { GlobalInjector } from '@core/decorators/global-injector';
     AppRoutingModule,
     HttpClientModule,
     RadioModule,
+    LeftBarModule,
     SharedModule,
     CoreModule,
     BrowserAnimationsModule,

@@ -5,9 +5,11 @@
     </iframe>
   </div>
   <p class="f-grow word-break">
+    {{ input.channelId }} - {{ input.channelTitle }} - {{ input.publishedAt | date: 'MMMM y' }}
+
     <app-read-more [text]="input.description"></app-read-more>
     <span *ngIf="input.viewCount && !loading; else spinner" class="viewcount">
-      {{ input.viewCount | numberSuffix : 2 }} de vues
+      {{ input.viewCount | numberSuffix: 2 }} de vues
     </span>
   </p>
   <div *ngIf="input.extractWiki" class="row-end-center">
@@ -29,6 +31,16 @@
     </app-input-suggestion>
   </div>
   <div class="row-end-center gap-2">
+    <ng-container *ngIf="input.channelId; else noChannelId">
+      <button appButton outline color="blue" (click)="onSearchByChannelId()">
+        Voir la chaîne par Id
+      </button>
+    </ng-container>
+    <ng-template #noChannelId>
+      <button appButton outline color="blue" (click)="onSearchByChannelName()">
+        Voir la chaîne par Name
+      </button>
+    </ng-template>
     <ng-container *ngIf="input.id">
       <button appButton color="red" (click)="onDelete()">Supprimer</button>
     </ng-container>

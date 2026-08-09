@@ -1,0 +1,126 @@
+@import 'variables.scss';
+
+$padding-tab-icon: 5px;
+$padding-tab-content: 30px;
+$height-tab-content: 204px;
+$height-tab: 60px;
+$width-tab: 30px;
+$width-open: calc($width-tab + var(--width));
+$width-closed: $width-tab + 10px;
+$radius: 7px;
+$bg-color: $red;
+
+%tab {
+  .radius-inverted {
+    position: relative;
+    height: $height-tab;
+    width: $width-tab;
+    &:before {
+      content: '';
+      position: absolute;
+      height: $height-tab;
+      width: $width-tab;
+    }
+    &.top-left:before {
+      border-top-left-radius: $radius;
+      box-shadow: -5px -5px 0 0 $bg-color;
+      clip-path: inset(-1px 0 0);
+    }
+    &.bottom-left:before {
+      border-bottom-left-radius: $radius;
+      box-shadow: -5px 5px 0 0 $bg-color;
+      clip-path: inset(0 0 -1px);
+    }
+  }
+  .tab-icon {
+    border-top-right-radius: $radius;
+    border-bottom-right-radius: $radius;
+    background-color: $bg-color;
+    width: $width-tab;
+    height: $height-tab;
+    padding: $padding-tab-icon;
+    fill: $grey-100;
+    * {
+      cursor: pointer;
+    }
+  }
+  .tab-content {
+    width: var(--width);
+    height: calc(100vh - $height-nav);
+    padding: $padding-tab-content;
+    border-right: 10px solid $bg-color;
+    background-color: $grey-95;
+    overflow-x: auto;
+  }
+}
+
+.left-bar {
+  @extend %tab;
+  position: fixed;
+  left: 0;
+  top: $height-nav;
+  z-index: $z-index-left-bar;
+  transition: width 0.5s ease-in;
+  &.close {
+    width: $width-closed;
+    .tab-icon app-icon {
+      transform: rotate(0deg);
+    }
+  }
+  &.open {
+    width: $width-open;
+    .tab-icon app-icon {
+      transform: rotate(180deg);
+    }
+  }
+  ~ .backdrop {
+    &.open {
+      background-color: rgba(0, 0, 0, 0.3);
+      width: 100vw;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: $z-index-left-bar-backdrop;
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 0.5s ease-in;
+    }
+    &.close {
+      opacity: 0;
+      transition: opacity 0.5s ease-in;
+    }
+  }
+}
+
+.sideBar {
+  button {
+    position: fixed;
+    left: 0;
+    top: $height-nav;
+    z-index: $z-index-left-bar;
+    margin: 12px;
+  }
+
+  .sideBar-content {
+    position: fixed;
+    top: $height-nav;
+    z-index: $z-index-left-bar-backdrop;
+    transition: all 0.3s ease-in;
+    width: 100%;
+    left: -100%;
+    height: calc(100vh - $height-nav - $height-rss);
+    padding: 20px;
+    background-color: $grey-95;
+    overflow-x: auto;
+  }
+
+  &.show {
+    .sideBar-content {
+      left: 0%;
+    }
+    i {
+      transform: rotate(180deg);
+    }
+  }
+}

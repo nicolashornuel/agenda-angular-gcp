@@ -1,4 +1,4 @@
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, ReplaySubject, Subject} from 'rxjs';
 
 export abstract class SubjectService<T> {
   private subject$ = new Subject<T | null | undefined>();
@@ -25,5 +25,21 @@ export abstract class BehaviorSubjectService<T> {
 
   public set$(newValue: T): void {
     this.behaviorSubject$.next(newValue);
+  }
+
+  public get value(): T {
+    return this.behaviorSubject$.value;
+  }
+}
+
+export abstract class ObservableService<T> {
+  private subject$ = new ReplaySubject<T>(1);
+
+  public get get$(): Observable<T> {
+    return this.subject$.asObservable();
+  }
+
+  public set$(value: T): void {
+    this.subject$.next(value);
   }
 }
