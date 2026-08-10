@@ -9,6 +9,7 @@ import { FieldSet, Nameable, Selectable } from '@shared/models/fieldSet.model';
 import { Color } from './color.enum';
 import { InputNumberComponent } from '@shared/components/input-number/input-number.component';
 import { DragCellComponent } from 'app/musique/components/drag-cell/drag-cell.component';
+import { Observable } from 'rxjs';
 
 export interface TableSet {
   title?: string;
@@ -26,6 +27,7 @@ export interface TableSet {
   openDetailByClickRow?: (row: any) => string | void;
   draggable?: boolean;
   draggableSave?: (items: any[]) => void;
+  scrollCurrent?: (row: any) => Observable<boolean>;
 }
 
 export class TableSet implements TableSet {

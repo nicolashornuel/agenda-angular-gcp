@@ -21,3 +21,14 @@
   right: 8px;
   top: 8px;
 }
+
+.playlist-drop-zone .relative {
+
+  .actions {
+  opacity: 0;
+  }
+
+  &:hover .actions {
+    opacity: 1;
+  }
+}

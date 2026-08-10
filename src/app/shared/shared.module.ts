@@ -48,6 +48,7 @@ import { InputMonthComponent } from './components/input-month/input-month.compon
 import { DraggableListDirective } from './directives/draggable-list.directive';
 import { DropZoneDirective } from './directives/drop-zone.directive';
 import { DragZoneDirective } from './directives/drag-zone.directive';
+import { ScrollToRowDirective } from './directives/scroll-to-row.directive';
 
 const sharedComponents = [
   TableComponent,
@@ -105,21 +106,22 @@ const sharedDirectives = [
   DraggableDirective,
   DraggableListDirective,
   DropZoneDirective,
-  DragZoneDirective
+  DragZoneDirective,
+  ScrollToRowDirective
 ]
 
 @NgModule({
   declarations: [
-    sharedComponents,
-    sharedDirectives
+    ...sharedComponents,
+    ...sharedDirectives,
   ],
   imports: [
-    sharedModules
+    ...sharedModules
   ],
   exports: [
-    sharedComponents,
-    sharedModules,
-    sharedDirectives
+    ...sharedComponents,
+    ...sharedModules,
+    ...sharedDirectives
   ]
 })
 export class SharedModule { }

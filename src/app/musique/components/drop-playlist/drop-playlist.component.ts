@@ -66,4 +66,14 @@ export class DropPlaylistComponent extends PlaylistController implements OnInit 
     await this.createPlaylist(input.value!);
     this.modalService.set$(undefined);
   }
+
+  public moveIndex(fromIndex: number, toIndex: number): void {
+    const movedItem = this.videos!.splice(fromIndex, 1)[0];
+    this.videos!.splice(toIndex, 0, movedItem);
+    this.playlistService.move();
+  }
+
+  public remove(video: PlaylistVideo): void {
+    this.playlistService.remove(video);
+  }
 }

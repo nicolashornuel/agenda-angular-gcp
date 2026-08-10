@@ -37,15 +37,16 @@ export class YoutubePlayerService {
     document.body.appendChild(script);
   }
 
-    createPlayer(elementId: string, videoId: string, onEnded: () => void): any {
+  createPlayer(elementId: string, videoId: string, onEnded: () => void): any {
     return new YT.Player(elementId, {
       videoId,
+      width: '100%',
+      height: '100%',
       playerVars: {
         autoplay: 1
       },
       events: {
         onStateChange: (event: any) => {
-
           this.playerStateService.set$(event.data);
 
           if (event.data === YT.PlayerState.ENDED) {
@@ -56,7 +57,7 @@ export class YoutubePlayerService {
     });
   }
 
-/*   public createPlayer(elementId: string, videoId: string, onEnded: () => void): Observable<any> {
+  /*   public createPlayer(elementId: string, videoId: string, onEnded: () => void): Observable<any> {
     return new Observable(observer => {
       const player = new YT.Player(elementId, {
         videoId,

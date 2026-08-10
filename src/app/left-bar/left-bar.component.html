@@ -1,7 +1,8 @@
-<ng-container [ngSwitch]="width">
+<ng-container [ngSwitch]="(isMobileService.get$ | async) ? '100%' : width">
+
   <ng-container *ngSwitchCase="'100%'">
     <div class="sideBar" [ngClass]="isOpen ? 'show' : ''">
-      <button appButton filled (click)="onToggleOpen()">
+      <button appButton filled color="red" (click)="onToggleOpen()">
         <i class="fas fa-arrow-right fa-2x"></i>
       </button>
       <div class="sideBar-content">
@@ -9,6 +10,7 @@
       </div>
     </div>
   </ng-container>
+  
   <ng-container *ngSwitchDefault>
     <div
       class="left-bar row row-reverse"

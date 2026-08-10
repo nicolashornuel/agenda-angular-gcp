@@ -1,37 +1,37 @@
 <app-layout>
-  <div class="row-between-start gap-5" style="height: calc(100vh - 172px)">
-    <section class="col left">
-      <ng-container *ngIf="!isMobile; else mobile">
-
+  <ng-container *ngIf="!isMobile; else mobile">
+    <div class="row-between-start gap-5" style="height: calc(100vh - 172px)">
+      <section class="col left">
         <div class="row-end-center">
-        <app-input-text
-          class="musique-header-input"
-          label="Recherche Youtube"
-          ngModel
-          #box
-          (keyup.enter)="onSearch(box.value)"
-          name="q"
-        ></app-input-text>
+          <app-input-text
+            class="musique-header-input"
+            label="Recherche Youtube"
+            ngModel
+            #box
+            (keyup.enter)="onSearch(box.value)"
+            name="q"
+          ></app-input-text>
         </div>
-
-      </ng-container>
-
-      <ng-template #mobile>
-        <app-input-text
-          class="musique-header-input"
-          label="Recherche Youtube"
-          ngModel
-          #box
-          (onBlur)="onSearch(box.value)"
-          name="q"
-        ></app-input-text>
-      </ng-template>
-
-      <app-tabs [items]="tabs" [selected]="tabSelected"></app-tabs>
-    </section>
-
-    <section class="col-3 right" style="height: calc(100vh - 172px)">
-      <app-drop-playlist></app-drop-playlist>
-    </section>
-  </div>
+        <app-tabs [items]="tabs" [selected]="tabSelected"></app-tabs>
+      </section>
+      <section class="col-3 right" style="height: calc(100vh - 172px)">
+        <app-drop-playlist></app-drop-playlist>
+      </section>
+    </div>
+  </ng-container>
 </app-layout>
+
+<ng-template #mobile>
+  <div class="col gap-5">
+    <app-input-text
+      class="musique-header-input"
+      label="Recherche Youtube"
+      ngModel
+      #box
+      (onBlur)="onSearch(box.value)"
+      name="q"
+    ></app-input-text>
+    <app-tabs [items]="tabs" [selected]="tabSelected"></app-tabs>
+    <app-drop-playlist></app-drop-playlist>
+  </div>
+</ng-template>

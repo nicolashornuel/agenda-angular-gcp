@@ -109,7 +109,7 @@ $bg-color: $blue;
     transition: all 0.3s ease-in;
     width: 100%;
     right: -100%;
-    height: calc(100vh - $height-nav - $height-rss);
+    height: calc(100vh - $height-nav);
     padding: 20px;
     background-color: $grey-95;
     overflow-x: auto;

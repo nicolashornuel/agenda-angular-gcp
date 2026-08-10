@@ -1,10 +1,13 @@
-import { Component, ComponentRef, OnInit } from '@angular/core';
+import { Component, ComponentRef, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { BadgeComponent } from '@shared/components/badge/badge.component';
 import { Nameable } from '@shared/models/fieldSet.model';
 import { ActionSet, ColumnCustom, ColumnString, TableSet } from '@shared/models/tableSet.interface';
 import { PlaylistController } from '../abstracts/playlist-controller.abstract';
 import { ChannelCellComponent } from '../channel-cell/channel-cell.component';
 import { StateCellComponent } from '../state-cell/state-cell.component';
+import { TableComponent } from '@shared/components/table/table.component';
+import { map } from 'rxjs';
+import { PlaylistVideo } from 'app/left-bar/models/left-bar.model';
 
 @Component({
   selector: 'app-playlist-table',
@@ -18,6 +21,7 @@ export class PlaylistTableComponent extends PlaylistController implements OnInit
     hover: false,
     draggable: true,
     draggableSave: () => this.playlistService.move(),
+    scrollCurrent: (row: PlaylistVideo) => this.currentVideo$.pipe(map(video => video === row)),
     height: 'calc(100vh - 600px)',
     columnSet: [
       new ColumnCustom({ name: 'Ordre' }, true, this.toIndexBadge()).setWidth('10%'),
@@ -58,6 +62,8 @@ export class PlaylistTableComponent extends PlaylistController implements OnInit
       }
     };
   }
+
+  //scrollToView: row => this.currentVideo$.pipe(map(video => video.))
 
 /*   public toChannelLink(tooltip: string, keyId: string) {
     return {

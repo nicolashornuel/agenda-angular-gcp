@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { YoutubePlayerService } from '@shared/services/youtube-player.service';
-import { filter, switchMap, take, takeUntil, tap } from 'rxjs';
+import { RepeatMode } from 'app/left-bar/models/left-bar.model';
+import { filter, take } from 'rxjs';
 import { PlaylistController } from '../abstracts/playlist-controller.abstract';
-import { PlaylistVideo, RepeatMode } from 'app/left-bar/models/left-bar.model';
 
 @Component({
   selector: 'app-player',

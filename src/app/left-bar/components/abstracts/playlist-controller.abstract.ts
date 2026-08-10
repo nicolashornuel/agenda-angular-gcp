@@ -54,10 +54,6 @@ export abstract class PlaylistController {
     this.playlistService.add(video);
   }
 
-  protected onMove() {
-    this.playlistService.move();
-  }
-
   protected async onRemovePlaylistSummary(id: string): Promise<void> {
     await this.playlistSummaryService.remove(id);
     await this.playlistService.removePlaylist(id);

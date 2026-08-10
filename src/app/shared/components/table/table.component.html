@@ -25,6 +25,7 @@
         class="table-row body"
         *ngFor="let row of tableSet.data; let i = index"
         [appDraggableList]="{ items: tableSet.data, index: i, save: tableSet.draggableSave}"
+        [appScrollToRow]="tableSet.scrollCurrent?.(row) | async"
       >
         <ng-container [ngTemplateOutlet]="rowTemplate" [ngTemplateOutletContext]="{ i: i, f: f, tableSet: tableSet }"></ng-container>
       </form>
@@ -37,6 +38,7 @@
         [ngClass]="tableSet.hover ? 'hover' : ''"
         *ngFor="let row of tableSet.data; let i = index"
         (click)="tableSet.openDetailByClickRow ? tableSet.openDetailByClickRow(row) : null"
+        [appScrollToRow]="tableSet.scrollCurrent?.(row) | async"
       >
         <ng-container [ngTemplateOutlet]="rowTemplate" [ngTemplateOutletContext]="{ i, f, tableSet }"></ng-container>
       </form>
