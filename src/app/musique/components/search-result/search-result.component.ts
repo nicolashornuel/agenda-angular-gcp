@@ -1,11 +1,18 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { IsAdmin } from '@core/decorators/hasRole.decorator';
 import { WikipediaService } from '@core/services/wikipedia.service';
+import { Nameable } from '@shared/models/fieldSet.model';
 import { VideoController } from 'app/musique/abstracts/videoController.abstract';
 import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
 import { DiscogsService } from 'app/musique/services/discogs.service';
-import { OrderYoutube, YoutubeService } from 'app/musique/services/youtube.service';
-import { forkJoin, take } from 'rxjs';
+import { YoutubeService } from 'app/musique/services/youtube.service';
+import { finalize, forkJoin } from 'rxjs';
+
+export type SearchType = 'keyword' | 'channelId' | 'channelTitle';
+
+export interface SearchParam extends Nameable {
+  type: SearchType;
+}
 
 @Component({
   selector: 'app-search-result',
@@ -13,7 +20,7 @@ import { forkJoin, take } from 'rxjs';
   styleUrls: ['./search-result.component.scss']
 })
 export class SearchResultComponent extends VideoController implements OnInit {
-  @Input() param!: {keyword: string, order: OrderYoutube};
+  @Input() param!: SearchParam;
 
   public loading: boolean = false;
   public discogs: any[] = [];
@@ -25,23 +32,55 @@ export class SearchResultComponent extends VideoController implements OnInit {
   private youtubeService = inject(YoutubeService);
 
   ngOnInit(): void {
-    if (this.param) {
-      this.loading = true;
-      forkJoin([
-        //this.discogsService.getByArtistName(this.param.keyword),
-        this.wikipediaService.getWiki(this.param.keyword, 'fr'),
-        this.wikipediaService.getWiki(this.param.keyword, 'en'),
-        this.youtubeService.getVideos(this.param.keyword, this.param.order)
-      ])
-        .pipe(take(1))
-        .subscribe(results => {
-          //this.discogs = results[0].results;
-          this.discogs = [];
-          this.extractWiki = results[0] ?? results[1];
-          this.videos = results[2];
-          this.loading = false;
-        });
+    this.load();
+  }
+
+  private load(): void {
+    this.loading = true;
+
+    switch (this.param.type) {
+      case 'channelId':
+        this.loadChannelId(this.param.name);
+        break;
+
+      case 'channelTitle':
+        this.loadChannelTitle(this.param.name);
+        break;
+
+      case 'keyword':
+        this.loadKeyword(this.param.name);
+        break;
     }
+  }
+
+  private loadChannelId(channelId: string): void {
+    this.youtubeService
+      .getVideosFromChannelId(channelId)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe(videos => (this.videos = videos));
+  }
+
+  private loadChannelTitle(channelTitle: string): void {
+    this.youtubeService
+      .getVideosFromChannelName(channelTitle)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe(videos => (this.videos = videos));
+  }
+
+  private loadKeyword(keyword: string): void {
+    forkJoin([
+      //this.discogsService.getByArtistName(keyword),
+      this.wikipediaService.getWiki(keyword, 'fr'),
+      this.wikipediaService.getWiki(keyword, 'en'),
+      this.youtubeService.getVideos(keyword)
+    ])
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe(results => {
+        //this.discogs = results[0].results;
+        this.discogs = [];
+        this.extractWiki = results[0] ?? results[1];
+        this.videos = results[2];
+      });
   }
 
   @IsAdmin()

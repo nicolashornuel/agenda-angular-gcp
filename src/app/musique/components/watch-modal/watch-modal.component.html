@@ -5,8 +5,6 @@
     </iframe>
   </div>
   <p class="f-grow word-break">
-    {{ input.channelId }} - {{ input.channelTitle }} - {{ input.publishedAt | date: 'MMMM y' }}
-
     <app-read-more [text]="input.description"></app-read-more>
     <span *ngIf="input.viewCount && !loading; else spinner" class="viewcount">
       {{ input.viewCount | numberSuffix: 2 }} de vues

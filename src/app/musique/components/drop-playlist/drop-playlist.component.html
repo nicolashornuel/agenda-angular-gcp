@@ -35,7 +35,7 @@
               *ngTemplateOutlet="actionTemplate; context: { i, videos, video }"
             ></ng-template>
           </div>
-          <img [src]="video.thumbnail" />
+          <img [src]="video.thumbnail" [draggable]="false"/>
           <div class="information m-2 f-grow">
             <div class="title">{{ video.title }}</div>
             <div class="channel">

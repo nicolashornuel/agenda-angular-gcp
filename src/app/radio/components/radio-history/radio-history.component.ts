@@ -50,8 +50,9 @@ export class RadioHistoryComponent implements AfterViewInit {
 
   public async onSearch(song: SongDTO): Promise<void> {
     this.output.emit();
-    const isRedirect = await this.router.navigateByUrl('/musique', { state: { keyword: song.artist } });
-    if (!isRedirect) this.tabService.set$(song.artist);
+    const keyword = song.artist + " " + song.title;
+    const isRedirect = await this.router.navigate(['/musique'], { queryParams: { keyword } });
+    if (!isRedirect) this.tabService.set$(keyword);
     this.rightBarIsOpenedService.set$(false);
   }
 

@@ -116,7 +116,7 @@ export class YoutubeService {
     private _sanitizer: DomSanitizer
   ) {}
 
-  getVideos(keyword: string, order: OrderYoutube): Observable<any> {
+  getVideos(keyword: string): Observable<any> {
     return this.http.get(`${this.url}/search`, { params: { ...new SearchParams(keyword) } }).pipe(
       switchMap((response: any) =>
         this.http.get(`${this.url}/videos`, {
@@ -136,19 +136,14 @@ export class YoutubeService {
   getVideosFromChannelId(channelId: string): Observable<any> {
     return this.http
       .get(`${this.url}/search`, { params: { ...new ChannelIdParams(channelId) } })
-      .pipe(map((response: any) => new ChannelPlaylist(response.items, this._sanitizer)));
+      .pipe(map((response: any) => response.items.map((item: any) => new PlaylistVideo(item, this._sanitizer))));
   }
 
   getVideosFromChannelName(channelName: string): Observable<any> {
     return this.http.get(`${this.url}/search`, { params: { ...new ChannelNameParams(channelName) } }).pipe(
       switchMap((response: any) => {
         const channelId = response.items?.[0]?.id?.channelId;
-
-        if (!channelId) {
-          return throwError(() => new Error('Chaîne introuvable'));
-        }
-
-        return this.getVideosFromChannelId(channelId);
+        return channelId ? this.getVideosFromChannelId(channelId) : throwError(() => new Error('Chaîne introuvable'));
       })
     );
   }
@@ -204,15 +199,5 @@ class PlaylistVideo {
       text = text.replace(new RegExp('&' + entities[i][0] + ';', 'g'), entities[i][1]);
 
     return text;
-  }
-}
-
-class ChannelPlaylist implements Playlist {
-  name: string;
-  videos: PlaylistVideo[];
-
-  constructor(items: any[], sanitizer: DomSanitizer) {
-    this.name = items[0]?.snippet.channelTitle ?? '';
-    this.videos = items.map(item => new PlaylistVideo(item, sanitizer));
   }
 }

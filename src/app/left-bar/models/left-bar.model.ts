@@ -30,3 +30,15 @@ export enum RepeatMode {
   All,
   One
 }
+
+export const VISITOR_PLAYLIST_ID = '__visitor__';
+
+export const VISITOR_PLAYLIST_SUMMARY: PlaylistSummary = {
+  id: VISITOR_PLAYLIST_ID,
+  name: 'Visiteur'
+};
+
+export const VISITOR_PLAYLIST: Playlist = {
+  id: VISITOR_PLAYLIST_ID,
+  videos: []
+};

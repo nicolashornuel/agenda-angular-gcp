@@ -4,9 +4,10 @@ import { DestroyService } from '@shared/services/destroy.service';
 import { IsMobileService } from '@shared/services/shared.observable.service';
 import { take, takeUntil } from 'rxjs';
 import { ListSavedComponent } from '../components/list-saved/list-saved.component';
-import { SearchResultComponent } from '../components/search-result/search-result.component';
+import { SearchParam, SearchResultComponent } from '../components/search-result/search-result.component';
 import { TabResultService } from '../services/musique.observable.service';
 import { OrderYoutube } from '../services/youtube.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-page-musique',
@@ -27,7 +28,8 @@ export class PageMusiqueComponent implements OnInit {
   constructor(
     private destroy$: DestroyService,
     private tabService: TabResultService,
-    private isMobileService: IsMobileService
+    private isMobileService: IsMobileService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -38,25 +40,36 @@ export class PageMusiqueComponent implements OnInit {
       this.tabSelected = this.tabs.length - 1;
     });
 
-    this.checkNavigation();
+    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
+    const channelId = params.get('channelId');
+    const channelTitle = params.get('channelTitle');
+    const keyword = params.get('keyword');
+
+      if (channelId)
+        this.tabs.push(
+          this.createTabResult({ type: 'channelId', name: channelId })
+        );
+      else if (channelTitle)
+        this.tabs.push(
+          this.createTabResult({ type: 'channelTitle', name: channelTitle })
+        );
+      else if (keyword)
+        this.tabs.push(
+          this.createTabResult({ type: 'keyword', name: keyword})
+        );
+
+      this.tabSelected = this.tabs.length - 1;
+  });
   }
 
-  private checkNavigation(): void {
-    if (history.state.keyword) this.tabService.set$(history.state.keyword);
-  }
 
   onSearch(keyword: string): void {
     this.tabService.set$(keyword);
   }
 
-  private createTabResult(keyword: string): TabParam {
-    const param = {
-      keyword,
-      order: OrderYoutube.VIEWCOUNT //par défaut RELEVANCE
-    };
-
+  private createTabResult(param: SearchParam): TabParam {
     return {
-      name: param.keyword,
+      name: param.name,
       closable: true,
       content: SearchResultComponent,
       bind: (componentRef: ComponentRef<SearchResultComponent>) => (componentRef.instance.param = param)

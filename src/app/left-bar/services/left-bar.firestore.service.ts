@@ -24,18 +24,14 @@ export class FirestorePlaylistSummaryService extends FirestoreService<PlaylistSu
     super('playlistSummary');
   }
 
-  private get ownerId(): string {
-    const uid = this.auth.currentUser?.uid;
-    if (!uid) throw new Error('Utilisateur non connecté');
-    return uid;
-  }
-
-  public getAllByOwnerId(): Observable<PlaylistSummary[]> {
-    const constraints: QueryConstraint[] = [where('ownerId', '==', this.ownerId)];
+  public getAllByOwnerId(ownerId: string): Observable<PlaylistSummary[]> {
+    const constraints: QueryConstraint[] = [where('ownerId', '==', ownerId)];
     return this.get(constraints).pipe(map(playlists => playlists.map(({ id, name }) => ({ id, name }))));
   }
 
   public override async saveOrUpdate(playlist: PlaylistSummary): Promise<void> {
-    await super.saveOrUpdate({ ...playlist, ownerId: this.ownerId });
+    const ownerId = this.auth.currentUser?.uid;
+    if (!ownerId) throw new Error('Utilisateur non authentifié');
+    await super.saveOrUpdate({ ...playlist, ownerId });
   }
 }

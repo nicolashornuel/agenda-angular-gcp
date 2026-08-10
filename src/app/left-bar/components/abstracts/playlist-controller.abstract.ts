@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { DestroyService } from '@shared/services/destroy.service';
-import { PlaylistSummary, RepeatMode } from 'app/left-bar/models/left-bar.model';
+import { PlaylistSummary, RepeatMode, VISITOR_PLAYLIST, VISITOR_PLAYLIST_ID } from 'app/left-bar/models/left-bar.model';
 import {
   CurrentVideoService,
   PlayerStateService,
@@ -36,6 +36,11 @@ export abstract class PlaylistController {
   protected loadPlaylist(playlistSummary?: PlaylistSummary): void {
     if (!playlistSummary?.id) {
       this.playlistService.clear();
+      return;
+    }
+
+    if (playlistSummary.id === VISITOR_PLAYLIST_ID) {
+      this.playlistService.loadInMemory(VISITOR_PLAYLIST);
       return;
     }
 

@@ -104,16 +104,23 @@ export class TabContentComponent implements OnInit {
     this.alertService.success('suppression réussie');
   }
 
+  @IsAdmin()
+  public onOpenLink(event: MouseEvent, url: string): void {
+    event.preventDefault();
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
   public draggableSave(): (items: AbstractField[]) => void {
-    return (items: AbstractField[]) => Promise.all(
-      items.map(
-        async (item, i) =>
-          await this.saveDocument({
-            ...item,
-            order: i
-          })
-      )
-    ).then(() => this.alertService.success('Nouvel arrangement sauvegardé'));
+    return (items: AbstractField[]) =>
+      Promise.all(
+        items.map(
+          async (item, i) =>
+            await this.saveDocument({
+              ...item,
+              order: i
+            })
+        )
+      ).then(() => this.alertService.success('Nouvel arrangement sauvegardé'));
   }
 
   /////////////////////////////////////// SHARED PRIVATE

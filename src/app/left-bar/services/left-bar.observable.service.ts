@@ -1,10 +1,19 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, authState } from '@angular/fire/auth';
+import { Auth, authState, User } from '@angular/fire/auth';
+import { IsAdmin } from '@core/decorators/hasRole.decorator';
 import { BehaviorSubjectService, ObservableService } from '@shared/abstracts/observable.abstract';
-import { filter, Observable, switchMap, take, tap } from 'rxjs';
-import { FirestorePlaylistService, FirestorePlaylistSummaryService } from './left-bar.firestore.service';
 import { VideoGAPI } from 'app/musique/models/videoGAPI.interface';
-import { PlayerState, Playlist, PlaylistSummary, PlaylistVideo, RepeatMode } from '../models/left-bar.model';
+import { filter, Observable, of, switchMap, take, tap } from 'rxjs';
+import {
+  PlayerState,
+  Playlist,
+  PlaylistSummary,
+  PlaylistVideo,
+  RepeatMode,
+  VISITOR_PLAYLIST_ID,
+  VISITOR_PLAYLIST_SUMMARY
+} from '../models/left-bar.model';
+import { FirestorePlaylistService, FirestorePlaylistSummaryService } from './left-bar.firestore.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,16 +25,12 @@ export class PlaylistSummaryService extends ObservableService<PlaylistSummary[]>
   constructor() {
     super();
     authState(this.auth)
-      .pipe(
-        filter(Boolean),
-        take(1),
-        switchMap(() => this.load())
-      )
-      .subscribe(playlists => this.set$(playlists!));
+      .pipe(switchMap(user => this.load(user)))
+      .subscribe(playlists => this.set$(playlists));
   }
 
-  private load(): Observable<PlaylistSummary[]> {
-    return this.firestore.getAllByOwnerId();
+  private load(user: User | null): Observable<PlaylistSummary[]> {
+    return user ? this.firestore.getAllByOwnerId(user.uid) : of([VISITOR_PLAYLIST_SUMMARY]);
   }
 
   public async add(name: string): Promise<PlaylistSummary> {
@@ -62,6 +67,11 @@ export class PlaylistService extends BehaviorSubjectService<Playlist> {
     );
   }
 
+  public loadInMemory(playlist: Playlist): void {
+    this.set$(playlist);
+    this.loaded = true;
+  }
+
   public async removePlaylist(id: string): Promise<void> {
     await this.firestore.delete(id);
   }
@@ -95,6 +105,17 @@ export class PlaylistService extends BehaviorSubjectService<Playlist> {
 
   private async update(playlist: Playlist) {
     if (!this.loaded) return;
+
+    if (playlist.id === VISITOR_PLAYLIST_ID) {
+      this.set$(playlist);
+      return;
+    }
+
+    await this.save(playlist);
+  }
+
+  @IsAdmin()
+  private async save(playlist: Playlist) {
     await this.firestore.saveOrUpdate(playlist);
     this.set$(playlist);
   }

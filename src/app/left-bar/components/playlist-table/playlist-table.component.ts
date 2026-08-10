@@ -1,13 +1,14 @@
-import { Component, ComponentRef, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ComponentRef, inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BadgeComponent } from '@shared/components/badge/badge.component';
 import { Nameable } from '@shared/models/fieldSet.model';
 import { ActionSet, ColumnCustom, ColumnString, TableSet } from '@shared/models/tableSet.interface';
+import { LeftBarIsOpenedService } from '@shared/services/shared.observable.service';
+import { PlaylistVideo } from 'app/left-bar/models/left-bar.model';
+import { map } from 'rxjs';
 import { PlaylistController } from '../abstracts/playlist-controller.abstract';
 import { ChannelCellComponent } from '../channel-cell/channel-cell.component';
 import { StateCellComponent } from '../state-cell/state-cell.component';
-import { TableComponent } from '@shared/components/table/table.component';
-import { map } from 'rxjs';
-import { PlaylistVideo } from 'app/left-bar/models/left-bar.model';
 
 @Component({
   selector: 'app-playlist-table',
@@ -15,6 +16,8 @@ import { PlaylistVideo } from 'app/left-bar/models/left-bar.model';
   styleUrls: ['./playlist-table.component.scss']
 })
 export class PlaylistTableComponent extends PlaylistController implements OnInit {
+  private router = inject(Router);
+  private leftBarIsOpenedService = inject(LeftBarIsOpenedService);
   public loading: boolean = false;
   public tableSet: TableSet = {
     verticaltextHeader: false,
@@ -26,12 +29,11 @@ export class PlaylistTableComponent extends PlaylistController implements OnInit
     columnSet: [
       new ColumnCustom({ name: 'Ordre' }, true, this.toIndexBadge()).setWidth('10%'),
       new ColumnString({ name: 'Titre', key: 'title' } as Nameable, true),
-      new ColumnString({ name: 'Chaine Youtube', key: 'channelTitle' } as Nameable, true),
-      /* new ColumnCustom(
+      new ColumnCustom(
         { name: 'Chaine Youtube', key: 'channelTitle' } as Nameable,
         true,
         this.toChannelLink('Voir la chaîne', 'channelId')
-      ), */
+      ),
       new ColumnCustom({ name: 'Lecture' }, true, this.toState()).setWidth('10%')
     ],
     data: [],
@@ -63,9 +65,7 @@ export class PlaylistTableComponent extends PlaylistController implements OnInit
     };
   }
 
-  //scrollToView: row => this.currentVideo$.pipe(map(video => video.))
-
-/*   public toChannelLink(tooltip: string, keyId: string) {
+  public toChannelLink(tooltip: string, keyId: string) {
     return {
       component: ChannelCellComponent,
       bind: (row: any, key: string, componentRef: ComponentRef<ChannelCellComponent>) => {
@@ -79,12 +79,7 @@ export class PlaylistTableComponent extends PlaylistController implements OnInit
   }
 
   private openChannel(channelId: string, channelTitle: string): void {
-    const request$ = channelId
-      ? this.youtubeService.getVideosFromChannelId(channelId)
-      : this.youtubeService.getVideosFromChannelName(channelTitle);
-
-    request$.subscribe(playlist => {
-      this.playlistService.set$(playlist);
-    });
-  } */
+    this.router.navigate(['/musique'], { queryParams: { channelId, channelTitle } });
+    this.leftBarIsOpenedService.set$(false);
+  }
 }
