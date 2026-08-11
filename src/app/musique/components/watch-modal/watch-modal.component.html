@@ -29,16 +29,9 @@
     </app-input-suggestion>
   </div>
   <div class="row-end-center gap-2">
-    <ng-container *ngIf="input.channelId; else noChannelId">
-      <button appButton outline color="blue" (click)="onSearchByChannelId()">
-        Voir la chaîne par Id
+      <button appButton outline color="blue" (click)="onOpenChannel()">
+        Voir la chaîne
       </button>
-    </ng-container>
-    <ng-template #noChannelId>
-      <button appButton outline color="blue" (click)="onSearchByChannelName()">
-        Voir la chaîne par Name
-      </button>
-    </ng-template>
     <ng-container *ngIf="input.id">
       <button appButton color="red" (click)="onDelete()">Supprimer</button>
     </ng-container>

@@ -1,5 +1,6 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { IsAdmin } from '@core/decorators/hasRole.decorator';
 import { Modal } from '@shared/models/modalParam.interface';
 import { VideoController } from 'app/musique/abstracts/videoController.abstract';
@@ -16,6 +17,7 @@ export class WatchModalComponent extends VideoController implements Modal, OnIni
   @Input() input!: VideoGAPI;
   public src!: SafeResourceUrl;
   public categories!: Set<string>;
+  private router = inject(Router);
   private youtubeService = inject(YoutubeService);
   private youtubeConvert = inject(YoutubeConvertService);
   public loading: boolean = false;
@@ -28,20 +30,14 @@ export class WatchModalComponent extends VideoController implements Modal, OnIni
       this.input.likeCount = likeCount ?? 0;
       this.loading = false;
     });
-
     this.src = this.sanitizeUrl(this.input.src);
     this.getCategories().subscribe(categories => (this.categories = categories));
   }
 
-  onSearchByChannelId(): void {
-    this.youtubeService.getVideosFromChannelId(this.input.channelId).subscribe(videos => {
-      console.log('videos from channelId', videos);
-    });
-  }
-  onSearchByChannelName(): void {
-    this.youtubeService.getVideosFromChannelName(this.input.channelTitle).subscribe(videos => {
-      console.log('videos from channel name', videos);
-    });
+  public onOpenChannel() {
+    const { channelId, channelTitle } = this.input;
+    this.router.navigate(['/musique'], { queryParams: { channelId, channelTitle } });
+    this.closeModal();
   }
 
   @IsAdmin()

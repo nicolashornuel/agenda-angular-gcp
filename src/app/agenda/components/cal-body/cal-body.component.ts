@@ -10,7 +10,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DestroyService } from '@shared/services/destroy.service';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
 import { isSameDay } from 'date-fns';
-import { combineLatest, take, takeUntil } from 'rxjs';
+import { combineLatest, finalize, take, takeUntil } from 'rxjs';
 import { CalendarBirthday, CalendarCheckbox } from '../../models/agenda.model';
 
 @Component({
@@ -37,7 +37,7 @@ export class CalBodyComponent implements OnChanges {
     private destroy$: DestroyService,
     private publicHolidayService: PublicHolidayService,
     private calendarCheckboxService: CalendarCheckboxService,
-    private calendarEventService: CalendarConfirmedService,
+    private calendarEventService: CalendarConfirmedService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -48,15 +48,18 @@ export class CalBodyComponent implements OnChanges {
   private initializeData(): void {
     this.loading = true;
     combineLatest([
-      this.holidayService.getByYear(this.viewDate),
+      /* this.holidayService.getByYear(this.viewDate), */
       this.publicHolidayService.getByYear(this.viewDate),
       this.calBirthdayService.getByMonth(this.viewDate),
       this.calendarCheckboxService.getAllWithRecordRules(),
       this.calendarEventService.getByMonth(this.viewDate)
     ])
-      .pipe(take(1))
-      .subscribe(([holidays, publicHolidays, birthdays, calendarCheckboxList, confirmedRecurringEvent]) => {
-        this.holidays = holidays;
+      .pipe(
+        take(1),
+        finalize(() => (this.loading = false))
+      )
+      .subscribe(([publicHolidays, birthdays, calendarCheckboxList, confirmedRecurringEvent]) => {
+        /* this.holidays = holidays; */
         this.publicHolidays = publicHolidays;
         this.birthdays = birthdays;
         this.calendarCheckboxList = calendarCheckboxList;
@@ -71,6 +74,14 @@ export class CalBodyComponent implements OnChanges {
         this.activeDayIsOpen = false;
       }
     });
+
+    this.holidayService
+    .getByYear(this.viewDate)
+    .pipe(take(1))
+    .subscribe(holidays => {
+      this.holidays = holidays;
+    });
+
   }
 
   public beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): void {

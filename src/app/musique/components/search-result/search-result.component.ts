@@ -12,6 +12,7 @@ export type SearchType = 'keyword' | 'channelId' | 'channelTitle';
 
 export interface SearchParam extends Nameable {
   type: SearchType;
+  q: string;
 }
 
 @Component({
@@ -40,15 +41,15 @@ export class SearchResultComponent extends VideoController implements OnInit {
 
     switch (this.param.type) {
       case 'channelId':
-        this.loadChannelId(this.param.name);
+        this.loadChannelId(this.param.q);
         break;
 
       case 'channelTitle':
-        this.loadChannelTitle(this.param.name);
+        this.loadChannelTitle(this.param.q);
         break;
 
       case 'keyword':
-        this.loadKeyword(this.param.name);
+        this.loadKeyword(this.param.q);
         break;
     }
   }

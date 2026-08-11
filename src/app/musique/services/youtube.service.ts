@@ -157,6 +157,7 @@ class PlaylistVideo {
   thumbnail!: string;
   channelTitle!: string;
   channelId!: string;
+  src!: string;
   constructor(
     {
       id: { videoId },
@@ -180,6 +181,7 @@ class PlaylistVideo {
     this.thumbnail = url;
     this.channelTitle = channelTitle;
     this.channelId = channelId;
+    this.src = `https://www.youtube.com/embed/${videoId}`;
   }
   private decodeHTMLEntities(text: string) {
     var entities = [

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { SafeObservableService } from '@core/services/safe-observable.service';
 import { Observable, map } from 'rxjs';
 
 interface Record {
@@ -37,14 +38,17 @@ export class HolidayService {
     }
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private safeService: SafeObservableService) {}
 
   public getByYear(date: Date): Observable<Holiday[]> {
     const year = date.getMonth() == 0 ? date.getFullYear() - 1 : date.getFullYear();
     this.openAPI.params['refine.start_date'] = year;
     return this.http
       .get<{ records: Record[] }>(this.openAPI.url, { params: this.openAPI.params })
-      .pipe(map(({ records }) => records.map(record => this.mapperHoliday(record))));
+      .pipe(
+        map(({ records }) => records.map(record => this.mapperHoliday(record))),
+        this.safeService.safe<Holiday[]>([], 'holidays')
+      );
   }
 
   private mapperHoliday({ fields }: Record): Holiday {

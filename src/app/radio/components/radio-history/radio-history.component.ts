@@ -52,7 +52,7 @@ export class RadioHistoryComponent implements AfterViewInit {
     this.output.emit();
     const keyword = song.artist + " " + song.title;
     const isRedirect = await this.router.navigate(['/musique'], { queryParams: { keyword } });
-    if (!isRedirect) this.tabService.set$(keyword);
+    if (!isRedirect) this.tabService.set$({ type: 'keyword', name: keyword, q: keyword });
     this.rightBarIsOpenedService.set$(false);
   }
 

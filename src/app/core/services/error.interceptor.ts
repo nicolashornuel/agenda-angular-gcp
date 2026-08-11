@@ -12,14 +12,52 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status && error.error instanceof Blob) {
-          error.error.text().then((text: string) => {
-            const json = JSON.parse(text);
-            this.alert.error(json.error || 'Erreur serveur');
-          });
-        }
+        this.handleError(error, request);
         return throwError(() => error);
       })
     );
+  }
+
+  private handleError(error: HttpErrorResponse, request: HttpRequest<unknown>): void {
+
+    const url = new URL(request.url);
+    const domain = url.hostname;
+
+    // 1. Blob
+    if (error.error instanceof Blob) {
+      error.error.text().then(text => {
+        try {
+          const json = JSON.parse(text);
+
+          this.alert.error(`${domain} : ${json.error || json.message || 'Erreur serveur'}`);
+        } catch {
+          this.alert.error(`${domain} : Erreur serveur`);
+        }
+      });
+
+      return;
+    }
+
+    // 2. JSON
+    if (error.error && typeof error.error === 'object') {
+      this.alert.error(`${domain} : ${error.error.error || error.error.message || 'Erreur serveur'}`);
+
+      return;
+    }
+
+    // 3. Texte
+    if (typeof error.error === 'string') {
+      this.alert.error(`${domain} : ${error.error}`);
+      return;
+    }
+
+    // 4. Erreur réseau
+    if (error.status === 0) {
+      this.alert.error(`${domain} : Impossible de contacter le serveur.`);
+      return;
+    }
+
+    // 5. Fallback
+    this.alert.error(`${domain} : ${error.message || 'Une erreur est survenue.'}`);
   }
 }
