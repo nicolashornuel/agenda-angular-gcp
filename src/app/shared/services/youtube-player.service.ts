@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { PlayerStateService } from 'app/left-bar/services/left-bar.observable.service';
-import { Observable, ReplaySubject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 
 declare const YT: any;
 
@@ -42,9 +42,6 @@ export class YoutubePlayerService {
       videoId,
       width: '100%',
       height: '100%',
-      playerVars: {
-        autoplay: 1
-      },
       events: {
         onStateChange: (event: any) => {
           this.playerStateService.set$(event.data);
@@ -56,31 +53,4 @@ export class YoutubePlayerService {
       }
     });
   }
-
-  /*   public createPlayer(elementId: string, videoId: string, onEnded: () => void): Observable<any> {
-    return new Observable(observer => {
-      const player = new YT.Player(elementId, {
-        videoId,
-        playerVars: {
-          autoplay: 1
-        },
-        events: {
-          onReady: () => {
-            observer.next(player);
-            observer.complete();
-          },
-
-          onStateChange: (event: any) => {
-            this.playerStateService.set$(event.data);
-            if (event.data === YT.PlayerState.ENDED)
-              onEnded();
-          }
-        }
-      });
-
-      return () => {
-        player.destroy();
-      };
-    });
-  } */
 }

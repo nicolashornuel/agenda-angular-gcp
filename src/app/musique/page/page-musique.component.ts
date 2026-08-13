@@ -1,5 +1,5 @@
 import { Component, ComponentRef, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { TabParam } from '@shared/models/tabParam.interface';
 import { DestroyService } from '@shared/services/destroy.service';
 import { IsMobileService } from '@shared/services/shared.observable.service';
@@ -18,6 +18,7 @@ export class PageMusiqueComponent implements OnInit {
   private tabService = inject(TabResultService);
   private isMobileService = inject(IsMobileService);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   public tabs: TabParam[] = [
     {
       name: 'Playlist',
@@ -25,7 +26,6 @@ export class PageMusiqueComponent implements OnInit {
       content: ListSavedComponent
     }
   ];
-  public tabSelected = 0;
   public isMobile!: boolean;
 
   ngOnInit(): void {
@@ -67,7 +67,6 @@ export class PageMusiqueComponent implements OnInit {
 
   private addSearchTab(param: SearchParam): void {
     this.tabs.push(this.createTabResult(param));
-    this.tabSelected = this.tabs.length - 1;
   }
 
   private createTabResult(param: SearchParam): TabParam {
@@ -75,7 +74,21 @@ export class PageMusiqueComponent implements OnInit {
       name: param.name,
       closable: true,
       content: SearchResultComponent,
-      bind: (componentRef: ComponentRef<SearchResultComponent>) => (componentRef.instance.param = param)
+      bind: (componentRef: ComponentRef<SearchResultComponent>) => (componentRef.instance.param = param),
+      onClose: () => this.clearNavigationParams()
     };
+  }
+
+  private clearNavigationParams() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        channelId: null,
+        channelTitle: null,
+        keyword: null
+      },
+      queryParamsHandling: 'merge',
+      replaceUrl: true
+    });
   }
 }

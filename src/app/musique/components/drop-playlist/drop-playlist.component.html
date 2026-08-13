@@ -35,7 +35,7 @@
               *ngTemplateOutlet="actionTemplate; context: { i, videos, video }"
             ></ng-template>
           </div>
-          <img [src]="video.thumbnail" [draggable]="false"/>
+          <img [src]="video.thumbnail" [draggable]="false" />
           <div class="information m-2 f-grow">
             <div class="title">{{ video.title }}</div>
             <div class="channel">
@@ -43,6 +43,32 @@
             </div>
           </div>
         </div>
+
+        <!-- <div
+          class="row-between-start"
+          *ngFor="let video of videos; let i = index"
+          backgroundColor="hsl(0, 0%, 95%)"
+        >
+          <div class="col-7 relative">
+            <app-badge [left]="'16px'" [top]="'16px'" [text]="i + 1"></app-badge>
+            <div class="state col gap-1">
+              <ng-template *ngTemplateOutlet="stateTemplate; context: { video }"></ng-template>
+              <ng-template
+                *ngTemplateOutlet="actionTemplate; context: { i, videos, video }"
+              ></ng-template>
+            </div>
+            <img class="w-100" [src]="video.thumbnail" [draggable]="false" />
+          </div>
+          <div class="information m-2 col-6">
+            <div class="title">{{ video.title }}</div>
+            <div class="channel">
+              {{ video.channelTitle }}
+            </div>
+            <div class="channel">
+              {{ video.publishedAt | date: 'MMMM y' }}
+            </div>
+          </div>
+        </div> -->
       </ng-container>
     </section>
   </app-card>
@@ -78,7 +104,7 @@
       (click)="goTo(i)"
       *ngIf="currentVideo.videoId !== item.videoId"
     >
-       <i class="fas fa-play"></i>
+      <i class="fas fa-play"></i>
     </button>
   </ng-container>
   <button class="actions" appButton size="tiny" (click)="moveIndex(i, i - 1)" *ngIf="i > 0">

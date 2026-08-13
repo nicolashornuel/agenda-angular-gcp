@@ -1,6 +1,14 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewContainerRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewContainerRef
+} from '@angular/core';
 import { TabParam } from '@shared/models/tabParam.interface';
-
 
 @Component({
   selector: 'app-tabs',
@@ -9,15 +17,16 @@ import { TabParam } from '@shared/models/tabParam.interface';
 })
 export class TabsComponent implements OnInit, OnChanges {
   @Input() items: TabParam[] = [];
-  @Input() selected: number = 0;
+  protected selected = 0;
 
   constructor(private el: ViewContainerRef) {}
 
-  ngOnChanges(_changes: SimpleChanges): void {
-    this.renderTab();  
+  ngOnInit(): void {
+    this.renderTab();
   }
 
-  ngOnInit(): void {
+  ngOnChanges(_changes: SimpleChanges): void {
+    this.selected = this.items.length - 1;
     this.renderTab();
   }
 
@@ -26,7 +35,17 @@ export class TabsComponent implements OnInit, OnChanges {
     this.renderTab();
   }
 
+  private renderTab(): void {
+    this.el.clear();
+    const item = this.items[this.selected];
+    if (!item?.content) return;
+    const componentRef = this.el.createComponent<any>(item.content);
+    item.bind?.(componentRef);
+  }
+
   onCloseTab(index: number) {
+    const tab = this.items[index];
+    tab.onClose?.();
     this.items.splice(index, 1);
     if (index === this.selected && index === this.items.length) {
       // je ferme la tab courante qui est dernière
@@ -38,15 +57,6 @@ export class TabsComponent implements OnInit, OnChanges {
       this.renderTab();
     } else {
       this.selected = this.selected - 1;
-    }
-  }
-
-  private renderTab(): void {
-    this.el.clear();
-    const item = this.items[this.selected];
-    if (item.content) {
-      const componentRef = this.el.createComponent<any>(item.content);
-      if (item.bind) item.bind(componentRef);
     }
   }
 }

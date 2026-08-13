@@ -13,6 +13,7 @@ export class PlayerComponent extends PlaylistController implements OnInit {
   private youtubePlayerService = inject(YoutubePlayerService);
   public loading: boolean = false;
   private player: any;
+  private isFirstLoad = true;
 
   ngOnInit(): void {
     this.handleYoutubeIframe();
@@ -29,8 +30,17 @@ export class PlayerComponent extends PlaylistController implements OnInit {
       this.currentVideo$
         .pipe(filter(currentVideo => !!currentVideo))
         .subscribe(currentVideo => {
-          this.player.loadVideoById(currentVideo?.videoId)});
+          if (this.isFirstLoad) {
+            this.isFirstLoad = false;
+            this.player.cueVideoById(currentVideo?.videoId);
+          } else {
+            this.player.loadVideoById(currentVideo?.videoId);
+          }
+        });
     });
+
+    this.playing$.subscribe(isPlaying => isPlaying ? this.player.playVideo() : this.player.pauseVideo());
+
   }
 
   private playNext(): void {

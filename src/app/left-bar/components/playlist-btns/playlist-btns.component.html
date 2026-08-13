@@ -6,6 +6,9 @@
     <button appButton outline (click)="onNext()" [disabled]="isLast">
       <i class="fas fa-angle-right"></i>
     </button>
+    <button appButton outline (click)="onTooglePlay()">
+      <i [ngClass]="isPlaying ? 'fas fa-pause' : 'fas fa-play'"></i>
+    </button>
   </app-button-group>
 
   <ng-container *ngIf="playlistSelect">
@@ -14,11 +17,11 @@
         appButton
         outline
         class="badge"
-        (click)="loadPlaylist(playlist)"
-        [class.active]="playlist.id === currentPlaylist.id"
-        *ngFor="let playlist of playlistSelect.options; let i = index"
+        (click)="option.load(option.summary)"
+        [class.active]="option.summary.id === currentPlaylistId"
+        *ngFor="let option of playlistSelect.options; let i = index"
       >
-        {{ playlist.name }}
+        {{ option.summary.name }}
       </button>
     </div>
   </ng-container>

@@ -9,14 +9,18 @@
 
 .link-content {
   cursor: pointer;
+
+  &:hover span {
+    opacity: 1;
+  }
   
   @extend %content;
   color: #212529;
   span {
     position: absolute;
-    top: -1px;
     margin-left: 5px;
     color: $blue;
+    opacity: 0;
     &:hover {
       color: $blue-hover;
     }

@@ -12,7 +12,7 @@
 
          <!-- sans routerLink -->
         <ng-template #noLink>
-          <div class="nav-item" [ngClass]="i === selected ? 'active' : ''">
+          <div class="nav-item" [class.active]="i === selected">
             <a class="nav-link" (click)="onChangeTab(i)" [title]="item.name">{{ item.name }}</a>
             <ng-container *ngIf="item.closable">
                 <app-icon size="12px" path="close" class="ml-3 tab-close" (click)="onCloseTab(i)"></app-icon>

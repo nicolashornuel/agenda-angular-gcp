@@ -29,6 +29,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         try {
           const json = JSON.parse(text);
 
+          console.log('blob', json)
           this.alert.error(`${domain} : ${json.error || json.message || 'Erreur serveur'}`);
         } catch {
           this.alert.error(`${domain} : Erreur serveur`);
@@ -40,13 +41,14 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     // 2. JSON
     if (error.error && typeof error.error === 'object') {
-      this.alert.error(`${domain} : ${error.error.error || error.error.message || 'Erreur serveur'}`);
+      this.alert.error(`${domain} : ${error.error.error.message || 'Erreur serveur'}`);
 
       return;
     }
 
     // 3. Texte
     if (typeof error.error === 'string') {
+      console.log('string', error)
       this.alert.error(`${domain} : ${error.error}`);
       return;
     }

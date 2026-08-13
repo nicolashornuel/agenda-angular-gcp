@@ -167,3 +167,12 @@ export class SuffleService extends BehaviorSubjectService<boolean> {
     super(false);
   }
 }
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PlayingService extends BehaviorSubjectService<boolean> {
+  constructor() {
+    super(false);
+  }
+}

@@ -4,6 +4,7 @@ import { PlaylistSummary, RepeatMode, VISITOR_PLAYLIST, VISITOR_PLAYLIST_ID } fr
 import {
   CurrentVideoService,
   PlayerStateService,
+  PlayingService,
   PlaylistService,
   PlaylistSummaryService,
   RepeatModeService,
@@ -23,6 +24,7 @@ export abstract class PlaylistController {
   protected repeatModeService = inject(RepeatModeService);
   protected shuffleService = inject(SuffleService);
   protected youtubeService = inject(YoutubeService);
+  protected playingService = inject(PlayingService);
 
   protected readonly playlistSummary$ = this.playlistSummaryService.get$.pipe(takeUntil(this.destroy$));
   protected readonly playlist$ = this.playlistService.get$.pipe(takeUntil(this.destroy$));
@@ -30,6 +32,7 @@ export abstract class PlaylistController {
   protected readonly playerState$ = this.playerStateService.get$.pipe(takeUntil(this.destroy$));
   protected readonly repeatMode$ = this.repeatModeService.get$.pipe(takeUntil(this.destroy$));
   protected readonly shuffle$ = this.shuffleService.get$.pipe(takeUntil(this.destroy$));
+  protected readonly playing$ = this.playingService.get$.pipe(takeUntil(this.destroy$));
 
   public readonly RepeatMode = RepeatMode;
 

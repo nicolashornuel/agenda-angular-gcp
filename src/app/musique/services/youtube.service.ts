@@ -29,7 +29,7 @@ class ChannelIdParams {
   readonly part = 'snippet';
   readonly type = 'video';
   readonly order = 'date';
-  readonly maxResults = 25;
+  readonly maxResults = 18;
   readonly key = environment.youtubeToken;
   constructor(public readonly channelId: string) {}
 }
@@ -39,7 +39,7 @@ class VideoParams {
   constructor(public readonly id: string) {}
 }
 class SearchParams {
-  readonly maxResults = 24;
+  readonly maxResults = 18;
   readonly key = environment.youtubeToken;
   readonly part = 'id'; // snippet
   readonly type = 'video';

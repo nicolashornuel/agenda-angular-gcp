@@ -50,10 +50,12 @@
               {{ video.title }}
             </div>
             <div>
-              {{ video.publishedAt | date : 'MMMM y' }}
+              {{ video.publishedAt | date: 'MMMM y' }}
             </div>
-            <i class="fa-solid fa-thumbs-up"></i> {{ video.likeCount | numberSuffix : 2 }} •
-            {{ video.viewCount | numberSuffix : 2 }} de vues
+            <ng-container *ngIf="video.likeCount && video.viewCount">
+              <i class="fa-solid fa-thumbs-up"></i> {{ video.likeCount | numberSuffix: 2 }} •
+              {{ video.viewCount | numberSuffix: 2 }} de vues
+            </ng-container>
           </div>
         </app-card>
       </div>

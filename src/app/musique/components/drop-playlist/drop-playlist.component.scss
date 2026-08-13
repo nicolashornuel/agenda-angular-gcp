@@ -9,6 +9,11 @@
 .title {
   font-weight: 600;
   font-size: 12px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 
 .channel {
@@ -23,9 +28,8 @@
 }
 
 .playlist-drop-zone .relative {
-
   .actions {
-  opacity: 0;
+    opacity: 0;
   }
 
   &:hover .actions {

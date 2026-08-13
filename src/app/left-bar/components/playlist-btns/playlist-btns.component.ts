@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { PlaylistSummary } from 'app/left-bar/models/left-bar.model';
+import { Component, inject, OnInit } from '@angular/core';
+import { PlayerState, PlaylistSummary } from 'app/left-bar/models/left-bar.model';
+import {
+  FirestorePlaylistService,
+  FirestoreVideoCenterService
+} from 'app/left-bar/services/left-bar.firestore.service';
 import { PlaylistController } from '../abstracts/playlist-controller.abstract';
 
 @Component({
@@ -8,25 +12,61 @@ import { PlaylistController } from '../abstracts/playlist-controller.abstract';
   styleUrls: ['./playlist-btns.component.scss']
 })
 export class PlaylistBtnsComponent extends PlaylistController implements OnInit {
-
   public playlistSelect: any = {};
   protected currentPlaylistId?: string;
-  
+  protected isPlaying: boolean = false;
+
+  protected firestorePlaylistService = inject(FirestorePlaylistService);
+  protected firestoreVideoCenterService = inject(FirestoreVideoCenterService);
+
   ngOnInit(): void {
     this.playlistSummary$.subscribe(list => this.initPlaylistSelect(list));
-    this.playlist$.subscribe(playlist => this.currentPlaylistId = playlist.id);
+    this.playlist$.subscribe(playlist => (this.currentPlaylistId = playlist.id));
+    this.playing$.subscribe(playing => this.isPlaying = playing);
+    this.playerState$.subscribe(state => this.isPlaying = state === PlayerState.Playing);
   }
 
-    private initPlaylistSelect(list: PlaylistSummary[]) {
-      this.playlistSelect.label = 'Playlist disponible';
-      this.playlistSelect.options = list;
-      if (list.length === 0) {
-        this.playlistSelect.selected = undefined;
-        this.playlistService.clear();
-        return;
+  private initPlaylistSelect(list: PlaylistSummary[]) {
+    this.playlistSelect.options = this.buildOptions(list);
+  }
+
+  private buildOptions(list: PlaylistSummary[]) {
+    return [
+      /* ...list.map(item => ({
+        summary: item,
+        load: (summary: PlaylistSummary) => this.loadPlaylist(summary)
+      })), */
+      ...list.map(item => ({
+        summary: item,
+        load: (summary: PlaylistSummary) =>
+          this.firestorePlaylistService
+            .getById(summary.id!)
+            .subscribe(playlist => this.playlistService.set$(playlist ?? { id: summary.id, videos: [] }))
+      })),
+      {
+        summary: {
+          id: 'latest',
+          name: 'Dernier ajout'
+        },
+        load: (summary: PlaylistSummary) =>
+          this.firestoreVideoCenterService
+            .getLatest()
+            .subscribe(videos => this.playlistService.set$({ ...summary, videos }))
+      },
+      {
+        summary: {
+          id: 'topRated',
+          name: 'Meilleur note'
+        },
+        load: (summary: PlaylistSummary) =>
+          this.firestoreVideoCenterService
+            .getTopRated()
+            .subscribe(videos => this.playlistService.set$({ ...summary, videos }))
       }
-      this.playlistSelect.selected = list[0];
-      this.playlistSelect.onChange = (playlist: PlaylistSummary) => this.loadPlaylist(playlist);
-      this.loadPlaylist(list[0]);
-    }
+    ];
+  }
+
+  onTooglePlay(): void {
+    this.playingService.set$(!this.isPlaying);
+  }
 }

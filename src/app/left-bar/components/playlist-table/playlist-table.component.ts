@@ -27,14 +27,14 @@ export class PlaylistTableComponent extends PlaylistController implements OnInit
     scrollCurrent: (row: PlaylistVideo) => this.currentVideo$.pipe(map(video => video === row)),
     height: 'calc(100vh - 600px)',
     columnSet: [
-      new ColumnCustom({ name: 'Ordre' }, true, this.toIndexBadge()).setWidth('10%'),
+      new ColumnCustom({ name: 'Ordre' }, true, this.toIndexBadge()).setWidth('5%'),
       new ColumnString({ name: 'Titre', key: 'title' } as Nameable, true),
       new ColumnCustom(
         { name: 'Chaine Youtube', key: 'channelTitle' } as Nameable,
         true,
         this.toChannelLink('Voir la chaîne', 'channelId')
       ),
-      new ColumnCustom({ name: 'Lecture' }, true, this.toState()).setWidth('10%')
+      new ColumnCustom({ name: 'Lecture' }, true, this.toState()).setWidth('5%')
     ],
     data: [],
     actionSet: [new ActionSet(ActionSet.DELETE, (row, index) => this.playlistService.remove(row))]

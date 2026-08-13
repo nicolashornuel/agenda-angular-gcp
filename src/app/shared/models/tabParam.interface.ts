@@ -7,6 +7,7 @@ export interface TabParam {
   link?: string;
   bind?: (componentRef: ComponentRef<any>) => void;
   queryParams?: { [key: string]: string };
+  onClose?: () => void;
 }
 
 export class TabParam {
