@@ -36,7 +36,8 @@ export class CarouselComponent implements AfterViewInit {
     let padding = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
     let border = parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
     const rect = element.getBoundingClientRect();
-    this.itemWidth = rect.width + margin + padding + border;
+    this.itemWidth = rect.width + margin + border;
+    /* this.itemWidth = rect.width + margin + padding + border; */
     this.hiddenWidth = this.items.length * this.itemWidth - this.carouselWidth;
     this.updateVisibility();
     this.loading = false;

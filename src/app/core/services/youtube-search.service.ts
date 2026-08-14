@@ -77,7 +77,7 @@ class YoutubeVideo {
         channelTitle,
         channelId
       },
-      statistics: { viewCount, likeCount, commentCount }
+      statistics: { viewCount, likeCount }
     }: any,
     _sanitizer: DomSanitizer
   ) {
@@ -125,14 +125,9 @@ export class YoutubeSearchService {
   ) {}
 
   getVideos(keyword: string): Observable<any> {
-    return this.http.get(`${this.url}/search`, { params: { ...new SearchParams(keyword) } }).pipe(
-      switchMap((response: any) =>
-        this.http.get(`${this.url}/videos`, {
-          params: { ...new VideoParams(response.items.map((item: any) => item.id.videoId).join(',')) }
-        })
-      ),
-      map((response: any) => response.items.map((item: any) => new YoutubeVideo(item, this._sanitizer)))
-    );
+    return this.http
+      .get(`${this.url}/search`, { params: { ...new SearchParams(keyword) } })
+      .pipe(switchMap(this.getStatistics()), map(this.toVideo()));
   }
 
   getViewCount(videoId: string): Observable<any> {
@@ -144,7 +139,7 @@ export class YoutubeSearchService {
   getVideosFromChannelId(channelId: string): Observable<any> {
     return this.http
       .get(`${this.url}/search`, { params: { ...new ChannelIdParams(channelId) } })
-      .pipe(map((response: any) => response.items.map((item: any) => new PlaylistVideo(item, this._sanitizer))));
+      .pipe(switchMap(this.getStatistics()), map(this.toVideo()));
   }
 
   getVideosFromChannelName(channelName: string): Observable<any> {
@@ -155,59 +150,15 @@ export class YoutubeSearchService {
       })
     );
   }
-}
 
-class PlaylistVideo {
-  videoId!: string;
-  publishedAt!: Date;
-  title!: string;
-  description!: string;
-  thumbnail!: string;
-  channelTitle!: string;
-  channelId!: string;
-  src!: string;
-  constructor(
-    {
-      id: { videoId },
-      snippet: {
-        publishedAt,
-        title,
-        description,
-        thumbnails: {
-          medium: { url }
-        },
-        channelTitle,
-        channelId
-      }
-    }: any,
-    _sanitizer: DomSanitizer
-  ) {
-    this.videoId = videoId;
-    this.publishedAt = publishedAt;
-    this.title = this.decodeHTMLEntities(title);
-    this.description = this.decodeHTMLEntities(description);
-    this.thumbnail = url;
-    this.channelTitle = channelTitle;
-    this.channelId = channelId;
-    this.src = `https://www.youtube.com/embed/${videoId}`;
+  private getStatistics() {
+    return (response: any) =>
+      this.http.get(`${this.url}/videos`, {
+        params: { ...new VideoParams(response.items.map((item: any) => item.id.videoId).join(',')) }
+      });
   }
-  private decodeHTMLEntities(text: string) {
-    var entities = [
-      ['amp', '&'],
-      ['apos', "'"],
-      ['#x27', "'"],
-      ['#x2F', '/'],
-      ['#39', "'"],
-      ['#47', '/'],
-      ['lt', '<'],
-      ['gt', '>'],
-      ['nbsp', ' '],
-      ['quot', '"']
-    ];
 
-    for (var i = 0, max = entities.length; i < max; ++i)
-      text = text.replace(new RegExp('&' + entities[i][0] + ';', 'g'), entities[i][1]);
-
-    return text;
+  private toVideo() {
+    return (response: any) => response.items.map((item: any) => new YoutubeVideo(item, this._sanitizer));
   }
 }

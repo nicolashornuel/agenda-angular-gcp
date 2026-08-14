@@ -1,16 +1,4 @@
 <section class="row-between-center my-3">
-  <app-button-group class="mx-3">
-    <button appButton outline (click)="onPrev()" [disabled]="isFirst">
-      <i class="fas fa-angle-left"></i>
-    </button>
-    <button appButton outline (click)="onNext()" [disabled]="isLast">
-      <i class="fas fa-angle-right"></i>
-    </button>
-    <button appButton outline (click)="onTooglePlay()">
-      <i [ngClass]="isPlaying ? 'fas fa-pause' : 'fas fa-play'"></i>
-    </button>
-  </app-button-group>
-
   <ng-container *ngIf="playlistSelect">
     <div class="row-center-center gap-2">
       <button
@@ -27,6 +15,9 @@
   </ng-container>
 
   <app-button-group class="row-end-center mx-3">
+    <button appButton outline (click)="onTooglePlay()">
+      <i [ngClass]="isPlaying ? 'fas fa-pause' : 'fas fa-play'"></i>
+    </button>
     <button
       appButton
       outline
@@ -37,6 +28,12 @@
     </button>
     <button appButton outline (click)="onRepeat()" [class.active]="repeatActive">
       <i class="fa-solid" [class]="repeatIcon"></i>
+    </button>
+        <button appButton outline (click)="onPrev()" [disabled]="isFirst">
+      <i class="fas fa-angle-left"></i>
+    </button>
+    <button appButton outline (click)="onNext()" [disabled]="isLast">
+      <i class="fas fa-angle-right"></i>
     </button>
   </app-button-group>
 </section>
