@@ -9,13 +9,13 @@ import { connectStorageEmulator, getStorage, provideStorage } from '@angular/fir
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '@shared/shared.module';
-import { RadioModule } from 'app/radio/radio.module';
 import { environment } from '../environments/environment.prod';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from '@core/core.module';
 import { GlobalInjector } from '@core/decorators/global-injector';
-import { LeftBarModule } from './left-bar/left-bar.module';
+import { LeftBarModule } from './features/left-bar/left-bar.module';
+import { RadioModule } from '@features/radio/radio.module';
 
 @NgModule({
   declarations: [AppComponent],

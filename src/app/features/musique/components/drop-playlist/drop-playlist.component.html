@@ -1,0 +1,102 @@
+<section class="h-100">
+  <app-card title="Playlist de lecture" backgroundColor="hsl(0, 0%, 95%)">
+    <ng-container *ngIf="playlistSelect">
+      <section class="row-between-center my-3">
+        <app-input-select
+          class="col-9"
+          [options]="playlistSelect.options"
+          [ngModel]="playlistSelect.selected"
+          [label]="playlistSelect.label"
+          (ngModelChange)="playlistSelect.onChange($event)"
+        ></app-input-select>
+        <app-button-group>
+          <button appButton outline (click)="onRemovePlaylistSummary(playlistSelect.selected.id)">
+            <i class="fas fa-trash"></i>
+          </button>
+          <button appButton outline (click)="onOpenModal(modal)">
+            <i class="fas fa-plus"></i>
+          </button>
+        </app-button-group>
+      </section>
+    </ng-container>
+
+    <section class="playlist-drop-zone h-100" appDropZone (itemDropped)="onDrop($event)">
+      <ng-container *ngIf="videos?.length">
+        <div
+          class="col relative"
+          *ngFor="let video of videos; let i = index"
+          backgroundColor="hsl(0, 0%, 95%)"
+        >
+          <app-badge [left]="'16px'" [top]="'16px'" [text]="i + 1"></app-badge>
+          <div class="state col gap-1">
+            <ng-template
+              *ngTemplateOutlet="actionTemplate; context: { i, videos, video }"
+            ></ng-template>
+          </div>
+          <img [src]="video.thumbnail" [draggable]="false" />
+          <div class="information m-2 f-grow">
+            <div class="title">{{ video.title }}</div>
+            <div class="channel">
+              {{ video.channelTitle }} - {{ video.publishedAt | date: 'MMMM y' }}
+            </div>
+          </div>
+        </div>
+
+        <!-- <div
+          class="row-between-start"
+          *ngFor="let video of videos; let i = index"
+          backgroundColor="hsl(0, 0%, 95%)"
+        >
+          <div class="col-7 relative">
+            <app-badge [left]="'16px'" [top]="'16px'" [text]="i + 1"></app-badge>
+            <div class="state col gap-1">
+              <ng-template *ngTemplateOutlet="stateTemplate; context: { video }"></ng-template>
+              <ng-template
+                *ngTemplateOutlet="actionTemplate; context: { i, videos, video }"
+              ></ng-template>
+            </div>
+            <img class="w-100" [src]="video.thumbnail" [draggable]="false" />
+          </div>
+          <div class="information m-2 col-6">
+            <div class="title">{{ video.title }}</div>
+            <div class="channel">
+              {{ video.channelTitle }}
+            </div>
+            <div class="channel">
+              {{ video.publishedAt | date: 'MMMM y' }}
+            </div>
+          </div>
+        </div> -->
+      </ng-container>
+    </section>
+  </app-card>
+</section>
+
+<ng-template #modal let-selectable>
+  <app-input-text
+    class="d-block my-3"
+    [(ngModel)]="selectable.value"
+    [label]="selectable.name"
+  ></app-input-text>
+  <div class="row-end-center gap-2">
+    <button appButton color="green" (click)="onCreate(selectable)">Créer</button>
+  </div>
+</ng-template>
+
+<ng-template #actionTemplate let-i="i" let-list="videos" let-item="video">
+  <button class="actions" appButton size="tiny" (click)="moveIndex(i, i - 1)" *ngIf="i > 0">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+  <button
+    class="actions"
+    appButton
+    size="tiny"
+    (click)="moveIndex(i, i + 1)"
+    *ngIf="i < list.length - 1"
+  >
+    <i class="fas fa-chevron-down"></i>
+  </button>
+  <button class="actions" appButton size="tiny" (click)="playlistService.remove(item)">
+    <i class="fas fa-trash"></i>
+  </button>
+</ng-template>

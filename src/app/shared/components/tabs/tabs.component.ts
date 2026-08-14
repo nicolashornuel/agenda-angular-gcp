@@ -17,6 +17,8 @@ import { TabParam } from '@shared/models/tabParam.interface';
 })
 export class TabsComponent implements OnInit, OnChanges {
   @Input() items: TabParam[] = [];
+  @Output() itemsChange = new EventEmitter<TabParam[]>();
+
   protected selected = 0;
 
   constructor(private el: ViewContainerRef) {}
@@ -47,6 +49,7 @@ export class TabsComponent implements OnInit, OnChanges {
     const tab = this.items[index];
     tab.onClose?.();
     this.items.splice(index, 1);
+    this.itemsChange.next(this.items);
     if (index === this.selected && index === this.items.length) {
       // je ferme la tab courante qui est dernière
       this.selected = index - 1;

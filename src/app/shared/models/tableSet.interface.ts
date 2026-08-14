@@ -8,7 +8,7 @@ import { InputTextComponent } from '@shared/components/input-text/input-text.com
 import { FieldSet, Nameable, Selectable } from '@shared/models/fieldSet.model';
 import { Color } from './color.enum';
 import { InputNumberComponent } from '@shared/components/input-number/input-number.component';
-import { DragCellComponent } from 'app/musique/components/drag-cell/drag-cell.component';
+import { DragCellComponent } from 'app/features/musique/components/drag-cell/drag-cell.component';
 import { Observable } from 'rxjs';
 
 export interface TableSet {

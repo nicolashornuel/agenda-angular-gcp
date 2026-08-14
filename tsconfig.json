@@ -6,9 +6,8 @@
     "paths": { 
       "@shared/*": ["app/shared/*"], 
       "@core/*": ["app/core/*"], 
-      "@agenda/*": [
-        "app/agenda/*"
-      ],
+      "@domain/*": ["app/domain/*"],
+      "@features/*": ["app/features/*"],
       "shared": [
         "dist/shared"
       ],

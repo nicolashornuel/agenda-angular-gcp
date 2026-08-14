@@ -10,8 +10,8 @@ import { DestroyService } from '@shared/services/destroy.service';
 import { ModalService } from '@shared/services/shared.observable.service';
 import { UtilService } from '@shared/services/util.service';
 import { map, takeUntil, tap } from 'rxjs';
-import { Identifiable } from '../../train/models/reservation.model';
 import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
+import { Identifiable } from './abstract-controller.directive';
 
 @Directive({
   selector: '[appListe]'

@@ -24,7 +24,7 @@ import {
   where,
   WhereFilterOp
 } from '@angular/fire/firestore';
-import { Identifiable } from 'app/train/models/reservation.model';
+import { Identifiable } from '@shared/abstracts/abstract-controller.directive';
 import { map, Observable } from 'rxjs';
 
 export type Pageable<T> = {

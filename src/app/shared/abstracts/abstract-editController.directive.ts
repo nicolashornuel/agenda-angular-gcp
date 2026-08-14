@@ -1,6 +1,6 @@
 import { Directive, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { ModalService } from '@shared/services/shared.observable.service';
-import { Identifiable } from '../../train/models/reservation.model';
+import { Identifiable } from './abstract-controller.directive';
 
 @Directive({
   selector: '[appListe]'
