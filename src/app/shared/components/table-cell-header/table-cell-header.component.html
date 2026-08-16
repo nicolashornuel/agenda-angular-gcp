@@ -1,13 +1,12 @@
-<ng-container *ngIf="isEditing; else sortable">
-  <div class="unsortable row-start-center gap-2">
+<ng-container *ngIf="tableSet.sortable; else unsortable">
+  <div class="sortable row-start-center gap-2" (click)="sort()">
     <span class="ellipsis">{{ columnSet.title }}</span>
     <i [ngClass]="sortClass"></i>
   </div>
 </ng-container>
 
-<ng-template #sortable>
-  <div class="sortable row-start-center gap-2" (click)="sort()">
+<ng-template #unsortable>
+  <div class="unsortable row-start-center gap-2">
     <span class="ellipsis">{{ columnSet.title }}</span>
-    <i [ngClass]="sortClass"></i>
   </div>
 </ng-template>

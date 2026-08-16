@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { collectionData, limit, orderBy, query, where } from '@angular/fire/firestore';
-import { FirestoreService } from '@core/services/firestore.service';
+import { FirestoreService } from '@core/abstracts/firestore.abstract';
 import { Observable } from 'rxjs';
 import { TrackingLocation } from '../models/locations.constant';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class LocationService extends FirestoreService<TrackingLocation> {
   constructor() {
     super('locations');

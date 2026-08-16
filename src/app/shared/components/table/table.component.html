@@ -11,7 +11,6 @@
           *ngIf="column.visible"
           [tableSet]="tableSet"
           [columnSet]="column"
-          [isEditing]="enableEditIndex != undefined ? true : false"
         ></app-table-cell-header>
       </ng-container>
       <ng-container *ngIf="tableSet.actions || tableSet.actionSet">

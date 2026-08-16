@@ -5,9 +5,7 @@ import { environment } from 'environments/environment.prod';
 import { Observable, filter, map, tap } from 'rxjs';
 import { JourneyDTO, NavitiaResponse, Disruption, DisruptionDTO, ScheduleDTO, Schedule } from '../models/sncf.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class SncfService {
   constructor(private http: HttpClient, private datePipe: DatePipe) {}
   /**

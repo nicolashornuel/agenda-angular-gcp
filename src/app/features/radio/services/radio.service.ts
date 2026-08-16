@@ -8,9 +8,7 @@ import { Brand, Grid, Live } from '../models/radioFrance.interface';
 
 // see https://apollo-angular.com/docs/development-and-testing/testing
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class RadioService {
   constructor(private apollo: Apollo) {}
 

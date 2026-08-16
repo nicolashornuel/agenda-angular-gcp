@@ -15,9 +15,7 @@ export class PublicHoliday {
   }
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class PublicHolidayService {
   private readonly publicHolidayApi = environment.publicHolidayApi;
   private readonly countryCode = 'FR';

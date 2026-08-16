@@ -22,9 +22,7 @@ export interface Holiday {
   start: Date;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class HolidayService {
   // https://data.education.gouv.fr/explore/dataset/fr-en-calendrier-scolaire/api/?disjunctive.description&disjunctive.population&disjunctive.location&disjunctive.zones&disjunctive.annee_scolaire&sort=end_date&timezone=&refine.zones=Zone+C&refine.annee_scolaire=2022-2023&refine.location=Montpellier&exclude.population=%C3%89l%C3%A8ves
   private openAPI = {

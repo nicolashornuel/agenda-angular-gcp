@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
   ElementRef,
@@ -16,11 +17,11 @@ import { CarouselItemDirective } from './carousel-item.directive';
 })
 export class CarouselComponent implements AfterViewInit {
   @ContentChildren(CarouselItemDirective) items!: QueryList<CarouselItemDirective>;
-  @ViewChild('translateBloc') translateBloc!: ElementRef<any>;
+  @ViewChild('carouselContent') carouselContent!: ElementRef;
   public loading = true;
   public position: number = 0;
-  public hasPrevious!: boolean;
-  public hasNext!: boolean;
+  public hasPrevious = false;
+  public hasNext = false;
   private hiddenWidth!: number;
   private itemWidth!: number;
 
@@ -28,6 +29,8 @@ export class CarouselComponent implements AfterViewInit {
   get class(): string {
     return 'w-100';
   }
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit(): void {
     let element = this.items.get(0)!.el.nativeElement;
@@ -41,6 +44,7 @@ export class CarouselComponent implements AfterViewInit {
     this.hiddenWidth = this.items.length * this.itemWidth - this.carouselWidth;
     this.updateVisibility();
     this.loading = false;
+    this.cdr.detectChanges();
   }
 
   next(): void {
@@ -58,7 +62,7 @@ export class CarouselComponent implements AfterViewInit {
   }
 
   private get carouselWidth(): number {
-    return this.translateBloc.nativeElement.getBoundingClientRect().width;
+    return this.carouselContent.nativeElement.getBoundingClientRect().width;
   }
 
   private updateVisibility(): void {

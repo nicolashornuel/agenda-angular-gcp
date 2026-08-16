@@ -8,6 +8,7 @@ import { EditionFieldComponent } from './components/edition-field/edition-field.
 import { EditionTitleComponent } from './components/edition-title/edition-title.component';
 import { TabContentComponent } from './components/tab-content/tab-content.component';
 import { PageMemoComponent } from './page/page-memo.component';
+import { MemoService } from './service/memo.firestore.service';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { PageMemoComponent } from './page/page-memo.component';
     CommonModule,
     MemoRoutingModule,
     SharedModule
-  ]
+  ],
+  providers: [MemoService]
 })
 export class MemoModule { }

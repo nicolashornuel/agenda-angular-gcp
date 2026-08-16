@@ -1,23 +1,19 @@
 import { inject, Injectable } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { limit, orderBy, QueryConstraint, where } from '@angular/fire/firestore';
-import { FirestoreService } from '@core/services/firestore.service';
+import { FirestoreService } from '@core/abstracts/firestore.abstract';
 import { map, Observable } from 'rxjs';
 import { Playlist, PlaylistSummary } from '../models/left-bar.model';
 import { VideoGAPI } from '@features/musique/models/musique.interface';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class FirestorePlaylistService extends FirestoreService<Playlist> {
   constructor() {
     super('playlists');
   }
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class FirestorePlaylistSummaryService extends FirestoreService<PlaylistSummary> {
   private auth = inject(Auth);
 
@@ -37,9 +33,7 @@ export class FirestorePlaylistSummaryService extends FirestoreService<PlaylistSu
   }
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class FirestoreVideoCenterService extends FirestoreService<VideoGAPI> {
   constructor() {
     super('videoCenter');

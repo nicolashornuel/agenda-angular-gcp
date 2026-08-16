@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { mapOptions, TrackingLocation, baseLayers, mobileMarkerOptions, dotMarkerOptions } from '@features/location/models/locations.constant';
+import { baseLayers, dotMarkerOptions, mapOptions, mobileMarkerOptions, TrackingLocation } from '@features/location/models/locations.constant';
 import { LocationService } from '@features/location/services/location.firestore.service';
 import { DestroyService } from '@shared/services/destroy.service';
-import { UtilService } from '@shared/services/util.service';
+import { Utils } from '@shared/utils/utils';
 import * as Leaflet from 'leaflet';
 import { BehaviorSubject, switchMap, takeUntil } from 'rxjs';
 
@@ -22,7 +22,6 @@ export class MapComponent implements OnInit {
   private map!: Leaflet.Map;
   private destroy$ = inject(DestroyService);
   private firestoreService = inject(LocationService);
-  private util = inject(UtilService);
   private userLayers = new Map<
     string,
     {
@@ -42,7 +41,7 @@ export class MapComponent implements OnInit {
         takeUntil(this.destroy$)
       )
       .subscribe(locations => {
-        this.locations = locations.length > 0 ? this.util.sortInByAsc(locations, 'time') : [];
+        this.locations = locations.length > 0 ? Utils.sortByAsc(locations, 'time') : [];
         this.isLoading = false;
         if (this.mapReady) {
           this.buildLayers();

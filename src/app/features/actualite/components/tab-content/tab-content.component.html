@@ -1,14 +1,10 @@
-<section
-  *ngIf="!resolvable.isLoading; else spinner"
-  class="scrolling row-between-stretch f-wrap cards-container"
->
-  <app-card *ngFor="let card of resolvable.data" backgroundColor="hsl(0, 0%, 95%)" [isMiniCard]="true">
+<section class="scrolling row-between-stretch f-wrap cards-container">
+  <app-card *ngFor="let card of items" backgroundColor="hsl(0, 0%, 95%)" [isMiniCard]="true">
     <div class="relative h-100">
       <a [href]="card.link" target="_blank">
         <p class="date">{{ card.pubDate | date : 'fullDate' }}</p>
         <img [src]="card.img" (load)="onImageLoad($event)" class="img-placeholder"/>
         <p>{{ card.title }}</p>
-<!--         <p [innerHTML]="card.description"></p> -->
       </a>
       <div *ngIf="card.description" class="description">
         <i [appTooltip]="card.description" class="fa-solid fa-ellipsis"></i>
@@ -16,7 +12,3 @@
     </div>
   </app-card>
 </section>
-
-<ng-template #spinner>
-  <app-spinner></app-spinner>
-</ng-template>

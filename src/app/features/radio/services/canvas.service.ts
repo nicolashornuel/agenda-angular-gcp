@@ -1,8 +1,6 @@
 import { ElementRef, Injectable } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CanvasService {
 
   public clearCanvas(canvas: ElementRef<HTMLCanvasElement>): void {

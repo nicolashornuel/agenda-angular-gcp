@@ -21,6 +21,17 @@ import { ListEventComponent } from './components/list-event/list-event.component
 import { EditEventComponent } from './components/edit-event/edit-event.component';
 import { EditCheckboxComponent } from './components/edit-checkbox/edit-checkbox.component';
 import { ListCheckboxComponent } from './components/list-checkbox/list-checkbox.component';
+import {
+  AgendaUserGroupService,
+  AgendaUserService,
+  CalendarBirthdayService,
+  CalendarConfirmedService,
+  CalendarCheckboxService
+} from './services/agenda.firestore.service';
+import { AgendaUserSercice, DayClickedService } from './services/agenda.observable.service';
+import { HolidayService } from './services/holiday.service';
+import { PublicHolidayService } from './services/public-holiday.service';
+import { SaintDuJourService } from './services/saintDuJour.service';
 
 @NgModule({
   declarations: [
@@ -38,13 +49,25 @@ import { ListCheckboxComponent } from './components/list-checkbox/list-checkbox.
     EditEventComponent,
     EditCheckboxComponent,
     ListCheckboxComponent
-    ],
+  ],
   imports: [
     CommonModule,
     AgendaRoutingModule,
     SharedModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ],
-  providers: [DatePipe]
+  providers: [
+    DatePipe,
+    AgendaUserGroupService,
+    AgendaUserService,
+    CalendarBirthdayService,
+    CalendarConfirmedService,
+    CalendarCheckboxService,
+    AgendaUserSercice,
+    DayClickedService,
+    HolidayService,
+    PublicHolidayService,
+    SaintDuJourService
+  ]
 })
-export class AgendaModule { }
+export class AgendaModule {}

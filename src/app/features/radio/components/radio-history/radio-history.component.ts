@@ -9,7 +9,6 @@ import { RadioService } from '@features/radio/services/radio.service';
 import { AlertService } from '@shared/services/alert.service';
 import { DestroyService } from '@shared/services/destroy.service';
 import { RightBarIsOpenedService } from '@shared/services/shared.observable.service';
-import { TabResultService } from 'app/features/musique/services/musique.observable.service';
 import { Subscription, interval, take, takeUntil, timer } from 'rxjs';
 
 @Component({
@@ -31,7 +30,6 @@ export class RadioHistoryComponent implements AfterViewInit {
     private radioService: RadioService,
     private transform: RadioTransformService,
     private titleService: Title,
-    private tabService: TabResultService,
     private rightBarIsOpenedService: RightBarIsOpenedService,
     private router: Router,
     private stationRadioService: StationRadioService,
@@ -51,8 +49,7 @@ export class RadioHistoryComponent implements AfterViewInit {
   public async onSearch(song: SongDTO): Promise<void> {
     this.output.emit();
     const keyword = song.artist!;
-    const isRedirect = await this.router.navigate(['/musique'], { queryParams: { keyword } });
-    if (!isRedirect) this.tabService.set$({ type: 'keyword', name: keyword, q: keyword });
+    await this.router.navigate(['/musique'], { queryParams: { keyword } });
     this.rightBarIsOpenedService.set$(false);
   }
 

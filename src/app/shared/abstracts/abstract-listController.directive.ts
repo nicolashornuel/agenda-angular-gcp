@@ -1,6 +1,7 @@
 import { Directive, OnChanges, OnInit, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';
+import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
+import { FirestoreService, Pageable } from '@core/abstracts/firestore.abstract';
 import { IsAdmin } from '@core/decorators/hasRole.decorator';
-import { FirestoreService, Pageable } from '@core/services/firestore.service';
 import { DataSelect, FieldSet, Selectable } from '@shared/models/fieldSet.model';
 import { Modal, ModalParam } from '@shared/models/modalParam.interface';
 import { ActionSet, ColumnSet, TableSet } from '@shared/models/tableSet.interface';
@@ -8,9 +9,7 @@ import { AlertService } from '@shared/services/alert.service';
 import { ColSorted, ColumnsortableService } from '@shared/services/columnsortable.service';
 import { DestroyService } from '@shared/services/destroy.service';
 import { ModalService } from '@shared/services/shared.observable.service';
-import { UtilService } from '@shared/services/util.service';
-import { map, takeUntil, tap } from 'rxjs';
-import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
+import { takeUntil } from 'rxjs';
 import { Identifiable } from './abstract-controller.directive';
 
 @Directive({
@@ -29,7 +28,6 @@ export abstract class ListController<T extends Identifiable> implements OnInit, 
   public modalService = inject(ModalService);
   public alertService = inject(AlertService);
   public colSortable = inject(ColumnsortableService);
-  public utilService = inject(UtilService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 

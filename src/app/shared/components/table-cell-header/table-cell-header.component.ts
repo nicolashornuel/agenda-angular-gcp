@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ColumnSet, TableSet } from '@shared/models/tableSet.interface';
-import { ColSorted, ColumnsortableService } from '@shared/services/columnsortable.service';
+import { ColSorted } from '@shared/services/columnsortable.service';
 import { DestroyService } from '@shared/services/destroy.service';
-import { UtilService } from '@shared/services/util.service';
+import { Utils } from '@shared/utils/utils';
 import { takeUntil } from 'rxjs';
 
 @Component({
@@ -13,18 +13,13 @@ import { takeUntil } from 'rxjs';
 export class TableCellHeaderComponent implements OnInit {
   @Input() tableSet!: TableSet;
   @Input() columnSet!: ColumnSet;
-  @Input() isEditing!: boolean;
   public colSorted?: ColSorted;
   public sortClass!: string;
 
-  constructor(
-    private util: UtilService,
-    private colSortable: ColumnsortableService,
-    private destroy$: DestroyService
-  ) {}
+  constructor(private destroy$: DestroyService) {}
 
   ngOnInit(): void {
-    this.colSortable.getColumnSort$.pipe(takeUntil(this.destroy$)).subscribe((colSorted: ColSorted | undefined) => {
+    this.tableSet.sortable?.getColumnSort$.pipe(takeUntil(this.destroy$)).subscribe((colSorted: ColSorted | undefined) => {
       if (colSorted) {
         this.colSorted = colSorted;
         if (colSorted.fieldPath != this.columnSet.key) {
@@ -45,14 +40,14 @@ export class TableCellHeaderComponent implements OnInit {
   }
 
   public sortInByDesc(): void {
-    this.tableSet.data = this.util.sortInByDesc(this.tableSet.data, this.columnSet.key);
-    this.colSortable.setColumnSort$({fieldPath: this.columnSet.key, directionStr: 'asc'});
+    this.tableSet.data = Utils.sortByDesc(this.tableSet.data, this.columnSet.key);
+    this.tableSet.sortable?.setColumnSort$({fieldPath: this.columnSet.key, directionStr: 'asc'});
     this.sortClass = 'fas fa-sort-down';
   }
 
   public sortInByAsc(): void {
-    this.tableSet.data = this.util.sortInByAsc(this.tableSet.data, this.columnSet.key);
-    this.colSortable.setColumnSort$({fieldPath: this.columnSet.key, directionStr: 'desc'});
+    this.tableSet.data = Utils.sortByAsc(this.tableSet.data, this.columnSet.key);
+    this.tableSet.sortable?.setColumnSort$({fieldPath: this.columnSet.key, directionStr: 'desc'});
     this.sortClass = 'fas fa-sort-up';
   }
 }

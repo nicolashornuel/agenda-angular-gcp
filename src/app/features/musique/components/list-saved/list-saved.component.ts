@@ -1,5 +1,5 @@
-import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
-import { Pageable } from '@core/services/firestore.service';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Pageable } from '@core/abstracts/firestore.abstract';
 import { VideoGAPI } from '@features/musique/models/musique.interface';
 import { DataSelect, Selectable } from '@shared/models/fieldSet.model';
 import { Modal } from '@shared/models/modalParam.interface';
@@ -77,22 +77,21 @@ export class ListSavedComponent extends VideoController implements OnInit {
       },
       new ColumnCustom({ name:'Actions' }, true, CellRenderers.toDrag()).setWidth('10%'),
     ],
-    data: []
+    data: [],
+    sortable: new ColumnsortableService
   };
 
   public categoryFilter!: DataSelect<string>;
   public readonly pageSize = 20;
-  private colSortable: ColumnsortableService = inject(ColumnsortableService);
   private colSorted: ColSorted = { fieldPath: 'addedAt', directionStr: 'desc' };
   public hasNext!: boolean;
   public hasPrev!: boolean;
 
   ngOnInit(): void {
-    this.colSortable.setColumnSort$(this.colSorted);
+    this.tableSet.sortable?.setColumnSort$(this.colSorted);
     this.onFirstPage();
-    this.colSortable.getColumnSort$.pipe(takeUntil(this.destroy$)).subscribe((colSorted: ColSorted | undefined) => {
+    this.tableSet.sortable?.getColumnSort$.pipe(takeUntil(this.destroy$)).subscribe((colSorted: ColSorted | undefined) => {
       colSorted ? (this.colSorted = colSorted) : undefined;
-
       this.getByQuery();
     });
 

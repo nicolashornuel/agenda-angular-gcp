@@ -12,7 +12,7 @@ import {
   Timestamp,
   where
 } from '@angular/fire/firestore';
-import { FirestoreService } from '@core/services/firestore.service';
+import { FirestoreService } from '@core/abstracts/firestore.abstract';
 import { CalendarEvent, CalendarEventTimesChangedEvent } from 'angular-calendar';
 import { concatMap, from, map, Observable, switchMap } from 'rxjs';
 import { AgendaUserGroup, AgendaUser, CalendarBirthday, CalendarConfirmed, CalendarTypeEnum, CalendarCheckbox, CalendarCheckboxRule } from '../models/agenda.model';
@@ -23,18 +23,14 @@ const CALENDAR_EVENT = 'calendarEvent';
 const AGENDA_USER = 'agendaUser';
 const AGENDA_USER_GROUP = 'agendaUserGroup';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AgendaUserGroupService extends FirestoreService<AgendaUserGroup> {
   constructor() {
     super(AGENDA_USER_GROUP);
   }
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AgendaUserService extends FirestoreService<AgendaUser> {
   private readonly agendaUserGroupCollection = collection(this.firestore, AGENDA_USER_GROUP);
 
@@ -54,9 +50,7 @@ export class AgendaUserService extends FirestoreService<AgendaUser> {
   }
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CalendarBirthdayService extends FirestoreService<CalendarBirthday> {
   constructor() {
     super(CALENDAR_BIRTHDAY);
@@ -71,9 +65,7 @@ export class CalendarBirthdayService extends FirestoreService<CalendarBirthday> 
   }
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CalendarConfirmedService extends FirestoreService<CalendarConfirmed> {
   private events: CalendarEvent[] = [];
 
@@ -140,9 +132,7 @@ export class CalendarConfirmedService extends FirestoreService<CalendarConfirmed
   }
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CalendarCheckboxService extends FirestoreService<CalendarCheckbox> {
   constructor() {
     super(CALENDAR_CHECKBOX);

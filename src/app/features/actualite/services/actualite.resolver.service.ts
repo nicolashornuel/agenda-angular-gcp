@@ -1,68 +1,29 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { RssItem } from '@core/services/rss.service';
+import { inject, Injectable } from '@angular/core';
+import { AbstractFetchFunctionService } from '@core/services/abstractFetchFunction.service';
+import { RssItem, RssService } from '@core/services/rss.service';
 import { TabParam } from '@shared/models/tabParam.interface';
-import { filter, map, Observable, switchMap, take, takeUntil, tap } from 'rxjs';
-import { AbstractActualiteService } from '../abstracts/actualite.abstracts';
+import { Utils } from '@shared/utils/utils';
+import { map, Observable, shareReplay, switchMap } from 'rxjs';
+import { FirestoreRssFeedService } from './actualite.firestore.service';
 import { RssFeed } from '../models/actualite.model';
-import { Resolvable } from '@core/models/resolvable.model';
 
+@Injectable()
+export class RssFeedResolverService {
+  private readonly feedService = inject(FirestoreRssFeedService);
+  private readonly fetchFunction = inject(AbstractFetchFunctionService);
+  private readonly feedMapper = inject(RssService);
 
-@Injectable({
-  providedIn: 'root'
-})
-export class RssFeedResolver<T = any> extends AbstractActualiteService {
+  private readonly feeds$ = this.feedService.getAll().pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
-  public resolveTabs(route: ActivatedRoute): Resolvable<T[]> {
-    let resolvable = new Resolvable(route, []);
-    const callback = (params: ParamMap) => this.feedRepository.getAll().pipe(
-      map(feeds =>
-        this.utilService
-          .sortInByAsc(feeds, RssFeed.ORDER_KEY.key)
-          .map(feed => new TabParam(feed.name, false, feed.slug))
-      ),
-      tap((feeds) =>  {
-        if (!params.get(RssFeed.SLUG_KEY.key)) 
-          this.router.navigate([feeds[0]?.link], { relativeTo: route })
-        }
-      )
+  getTabs(): Observable<TabParam[]> {
+    return this.feeds$.pipe(
+      map(feeds => Utils.sortByAsc(feeds, RssFeed.ORDER_KEY.key).map(feed => new TabParam(feed.name, false, feed.slug)))
     );
-    this.resolve(resolvable, callback);
-    return resolvable;
   }
 
-  public resolveItems(route: ActivatedRoute): Resolvable<T[]> {
-    let resolvable = new Resolvable(route, []);
-    const callback = (params: ParamMap) => {
-      const filterDefault = {
-        key: RssFeed.ORDER_KEY.key,
-        value: 1
-      };
-      const filterBySlug = {
-        key: RssFeed.SLUG_KEY.key,
-        value: params.get(RssFeed.SLUG_KEY.key)
-      };
-      return this.getOrDefault(params.get(RssFeed.SLUG_KEY.key) ? filterBySlug : filterDefault);
-    }
-    this.resolve(resolvable, callback);
-    return resolvable;
-  }
-
-  private resolve(resolvable: Resolvable, callback: any): void {
-    resolvable.route.paramMap.pipe(
-      takeUntil(this.destroy$),
-      tap(() => resolvable.isLoading = true),
-      switchMap(callback)).subscribe(data => {
-      resolvable.data = data;
-      resolvable.isLoading = false;
-    });
-  }
-
-  private getOrDefault(query: { key: string; value: any }): Observable<RssItem[]> {
-    return this.feedRepository.getByQuery({fieldPath: RssFeed.ORDER_KEY.key}, query).pipe(
-      take(1),
-      filter(feeds => feeds.length > 0),
-      map(feeds => feeds[0]),
+  getItems(slug: string): Observable<RssItem[]> {
+    return this.feeds$.pipe(
+      map(feeds => feeds.find(feed => feed.slug === slug)),
       switchMap(feed => this.fetchFunction.getText(feed!.url)),
       map(doc => this.feedMapper.createItems(doc.data))
     );

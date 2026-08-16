@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IsAdmin } from '@core/decorators/hasRole.decorator';
 import { FirestoreStorageService } from '@core/services/firebasestorage.service';
 import { AbstractField, AbstractTitle, AbstractSeparator, AbstractItem } from '@features/memo/models/memo.model';
-import { MemoService } from '@features/memo/service/memo.service';
+import { MemoService } from '@features/memo/service/memo.firestore.service';
 import { Modal, ModalParam } from '@shared/models/modalParam.interface';
 import { AlertService } from '@shared/services/alert.service';
 import { DestroyService } from '@shared/services/destroy.service';

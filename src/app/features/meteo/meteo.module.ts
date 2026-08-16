@@ -7,6 +7,7 @@ import { ForecastMapComponent } from './components/forecast-map/forecast-map.com
 import { PollutantComponent } from './components/pollutant/pollutant.component';
 import { PageMeteoComponent } from './page/page-meteo.component';
 import { MeteoRoutingModule } from './meteo-routing.module';
+import { MeteoService } from './services/meteo.service';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { MeteoRoutingModule } from './meteo-routing.module';
     PollutantComponent
   ],
   imports: [MeteoRoutingModule, CommonModule, SharedModule],
+  providers: [MeteoService]
 })
 export class MeteoModule {}
 

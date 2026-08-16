@@ -3,14 +3,12 @@ import { UserInfo } from '@angular/fire/auth';
 import { collectionData, query, where } from '@angular/fire/firestore';
 import { AlertService } from '@shared/services/alert.service';
 import { KEY_STORAGE_USER } from '@core/services/auth.service';
-import { FirestoreService } from '@core/services/firestore.service';
+import { FirestoreService } from '@core/abstracts/firestore.abstract';
 import { StorageService } from '@core/services/storage.service';
 import { Observable, map, of } from 'rxjs';
 import { Selectable } from '@shared/models/fieldSet.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AudioEqualizerService extends FirestoreService<EqualizerSelectable> {
 
   constructor(private alertService: AlertService, private storage: StorageService) {

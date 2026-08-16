@@ -2,14 +2,15 @@ import { ComponentRef, EventEmitter } from '@angular/core';
 import { AbstractInputComponent } from '@shared/abstracts/input.component';
 import { BadgeLinkComponent } from '@shared/components/badge-link/badge-link.component';
 import { InputCheckboxComponent } from '@shared/components/input-checkbox/input-checkbox.component';
+import { InputNumberComponent } from '@shared/components/input-number/input-number.component';
 import { InputSelectComponent } from '@shared/components/input-select/input-select.component';
 import { InputStarComponent } from '@shared/components/input-star/input-star.component';
 import { InputTextComponent } from '@shared/components/input-text/input-text.component';
 import { FieldSet, Nameable, Selectable } from '@shared/models/fieldSet.model';
-import { Color } from './color.enum';
-import { InputNumberComponent } from '@shared/components/input-number/input-number.component';
+import { ColumnsortableService } from '@shared/services/columnsortable.service';
 import { DragCellComponent } from 'app/features/musique/components/drag-cell/drag-cell.component';
 import { Observable } from 'rxjs';
+import { Color } from './color.enum';
 
 export interface TableSet {
   title?: string;
@@ -28,6 +29,7 @@ export interface TableSet {
   draggable?: boolean;
   draggableSave?: (items: any[]) => void;
   scrollCurrent?: (row: any) => Observable<boolean>;
+  sortable?: ColumnsortableService;
 }
 
 export class TableSet implements TableSet {

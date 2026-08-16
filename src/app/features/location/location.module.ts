@@ -7,6 +7,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { SharedModule } from '@shared/shared.module';
 import { ListComponent } from './components/list/list.component';
 import { MapComponent } from './components/map/map.component';
+import { LocationService } from './services/location.firestore.service';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { MapComponent } from './components/map/map.component';
     LocationRoutingModule,
     LeafletModule,
     SharedModule
-  ]
+  ],
+  providers: [LocationService]
 })
 export class LocationModule { }

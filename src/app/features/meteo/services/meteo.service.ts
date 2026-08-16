@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { City, Forecast } from '../models/meteo.interface';
 import { environment } from 'environments/environment.prod';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class MeteoService {
 
   private apiUrl = environment.weatherApi.url;

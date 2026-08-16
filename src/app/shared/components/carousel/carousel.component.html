@@ -4,8 +4,8 @@
       <app-icon path="chevron-left"></app-icon>
     </span>
   </div>
-  <div class="content">
-    <div #translateBloc class="translateBloc" [ngStyle]="{'transform': 'translateX(' + position + 'px)'}">
+  <div class="content" #carouselContent>
+    <div class="translateBloc" [ngStyle]="{'transform': 'translateX(' + position + 'px)'}">
         <ng-content></ng-content>
       </div>
   </div>

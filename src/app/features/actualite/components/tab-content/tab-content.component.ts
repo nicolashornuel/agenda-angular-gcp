@@ -1,8 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Resolvable } from '@core/models/resolvable.model';
 import { RssItem } from '@core/services/rss.service';
-import { RssFeedResolver } from '@features/actualite/services/actualite.resolver.service';
 
 @Component({
   selector: 'app-tab-content',
@@ -10,12 +8,13 @@ import { RssFeedResolver } from '@features/actualite/services/actualite.resolver
   styleUrls: ['./tab-content.component.scss']
 })
 export class TabContentComponent implements OnInit {
-  private activatedRoute = inject(ActivatedRoute);
-  private feedResolver = inject(RssFeedResolver);
-  public resolvable!: Resolvable<RssItem[]>;
+  protected route = inject(ActivatedRoute);
+  public items: RssItem[] = [];
 
   ngOnInit(): void {
-    this.resolvable = this.feedResolver.resolveItems(this.activatedRoute);
+    this.route.data.subscribe(data => {
+      this.items = data['items'];
+    });
   }
 
   public onImageLoad(event: Event): void {

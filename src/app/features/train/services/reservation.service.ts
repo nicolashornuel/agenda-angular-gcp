@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
-import { FirestoreService } from '@core/services/firestore.service';
+import { FirestoreService } from '@core/abstracts/firestore.abstract';
 import { Reservation } from '../models/reservation.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ReservationService extends FirestoreService<Reservation> {
-  
   constructor() {
     super('trainReservation');
   }
-
 }

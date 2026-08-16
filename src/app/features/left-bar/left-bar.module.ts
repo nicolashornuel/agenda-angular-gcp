@@ -9,6 +9,19 @@ import { StateCellComponent } from './components/state-cell/state-cell.component
 import { PlayingBarComponent } from './components/playing-bar/playing-bar.component';
 import { ChannelCellComponent } from './components/channel-cell/channel-cell.component';
 import { PageComponent } from './page/page.component';
+import {
+  FirestorePlaylistService,
+  FirestorePlaylistSummaryService,
+  FirestoreVideoCenterService
+} from './services/left-bar.firestore.service';
+import {
+  PlaylistSummaryService,
+  PlaylistService,
+  CurrentVideoService,
+  RepeatModeService,
+  SuffleService,
+  PlayingService
+} from './services/left-bar.observable.service';
 
 const Elements = [
   PageComponent,
@@ -19,13 +32,21 @@ const Elements = [
   StateCellComponent,
   PlayingBarComponent,
   ChannelCellComponent
-]
+];
 @NgModule({
   declarations: Elements,
-  imports: [
-    CommonModule,
-    SharedModule
-  ],
-  exports: Elements 
+  imports: [CommonModule, SharedModule],
+  exports: Elements,
+  providers: [
+    FirestorePlaylistService,
+    FirestorePlaylistSummaryService,
+    FirestoreVideoCenterService,
+    PlaylistSummaryService,
+    PlaylistService,
+    CurrentVideoService,
+    RepeatModeService,
+    SuffleService,
+    PlayingService
+  ]
 })
-export class LeftBarModule { }
+export class LeftBarModule {}

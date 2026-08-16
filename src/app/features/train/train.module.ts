@@ -9,6 +9,8 @@ import { ListeArrivalComponent, ListeDepartureComponent, ListeNextComponent } fr
 import { ListeReservationComponent } from './components/liste-reservation/liste-reservation.component';
 import { PageTrainComponent } from './page/page-train.component';
 import { TrainRoutingModule } from './train-routing.module';
+import { ReservationService } from './services/reservation.service';
+import { SncfService } from './services/sncf.service';
 
 
 @NgModule({
@@ -27,6 +29,6 @@ import { TrainRoutingModule } from './train-routing.module';
     TrainRoutingModule,
     SharedModule
   ],
-  providers: [DatePipe]
+  providers: [DatePipe, ReservationService, SncfService]
 })
 export class TrainModule { }

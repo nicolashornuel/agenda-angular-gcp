@@ -14,9 +14,7 @@ import {
 import { FirestorePlaylistService, FirestorePlaylistSummaryService } from './left-bar.firestore.service';
 import { VideoGAPI } from '@features/musique/models/musique.interface';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class PlaylistSummaryService extends ObservableService<PlaylistSummary[]> {
   private firestore = inject(FirestorePlaylistSummaryService);
   private auth = inject(Auth);
@@ -44,9 +42,7 @@ export class PlaylistSummaryService extends ObservableService<PlaylistSummary[]>
   }
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class PlaylistService extends BehaviorSubjectService<Playlist> {
   protected firestore = inject(FirestorePlaylistService);
   private loaded = false;
@@ -130,36 +126,28 @@ export class PlaylistService extends BehaviorSubjectService<Playlist> {
   }
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CurrentVideoService extends BehaviorSubjectService<PlaylistVideo | null> {
   constructor() {
     super(null);
   }
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class RepeatModeService extends BehaviorSubjectService<RepeatMode> {
   constructor() {
     super(RepeatMode.None);
   }
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class SuffleService extends BehaviorSubjectService<boolean> {
   constructor() {
     super(false);
   }
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class PlayingService extends BehaviorSubjectService<boolean> {
   constructor() {
     super(false);

@@ -10,6 +10,8 @@ import { PageMusiqueComponent } from './page/page-musique.component';
 import { MusiqueRoutingModule } from './musique-routing.module';
 import { DropPlaylistComponent } from './components/drop-playlist/drop-playlist.component';
 import { DragCellComponent } from './components/drag-cell/drag-cell.component';
+import { VideoService } from './services/musique.firestore.service';
+import { TabResultService, MusiquePlaylistSummaryService, MusiquePlaylistService } from './services/musique.observable.service';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,7 @@ import { DragCellComponent } from './components/drag-cell/drag-cell.component';
     CommonModule,
     MusiqueRoutingModule,
     SharedModule
-  ]
+  ],
+  providers: [VideoService, TabResultService, MusiquePlaylistSummaryService, MusiquePlaylistService]
 })
 export class MusiqueModule { }

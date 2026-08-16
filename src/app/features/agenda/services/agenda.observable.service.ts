@@ -2,17 +2,13 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubjectService, SubjectService } from '@shared/abstracts/observable.abstract';
 
 
-@Injectable({
-  providedIn: 'root'
-})
-export class AgendaUser$ extends BehaviorSubjectService<any> {
+@Injectable()
+export class AgendaUserSercice extends BehaviorSubjectService<any> {
   constructor() {
     super(undefined);
   }
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class DayClickedService extends SubjectService<Date> {}
 

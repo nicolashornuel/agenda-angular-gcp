@@ -25,7 +25,7 @@ export class PlaylistTableComponent extends PlaylistController implements OnInit
     draggable: true,
     draggableSave: () => this.playlistService.move(),
     scrollCurrent: (row: PlaylistVideo) => this.currentVideo$.pipe(map(video => video === row)),
-    height: 'calc(100vh - 600px)',
+    height: 'auto', //'calc(100vh - 600px)',
     columnSet: [
       new ColumnCustom({ name: 'Ordre' }, true, this.toIndexBadge()).setWidth('5%'),
       new ColumnString({ name: 'Titre', key: 'title' } as Nameable, true),

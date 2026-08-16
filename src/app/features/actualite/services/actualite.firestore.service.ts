@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { FirestoreService } from '@core/services/firestore.service';
+import { FirestoreService } from '@core/abstracts/firestore.abstract';
 import { RssFeed } from '../models/actualite.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class FirestoreRssFeedService extends FirestoreService<RssFeed> {
   
   constructor() {

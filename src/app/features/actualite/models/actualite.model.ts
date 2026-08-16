@@ -8,15 +8,14 @@ export interface RssFeed extends Identifiable, Nameable {
 }
 
 export class RssFeed {
-  public static readonly NAME_KEY = { key: 'name', name: 'Nom' };
-  public static readonly URL_KEY = { key: 'url', name: 'Url' };
-  public static readonly SLUG_KEY = { key: 'slug', name: 'Slug' };
-  public static readonly ORDER_KEY = { key: 'order', name: 'Ordre' };
+  public static readonly NAME_KEY = { key: 'name', name: 'Nom' } as const;
+  public static readonly URL_KEY = { key: 'url', name: 'Url' } as const;;
+  public static readonly SLUG_KEY = { key: 'slug', name: 'Slug' } as const;;
+  public static readonly ORDER_KEY = { key: 'order', name: 'Ordre' } as const;
 
-  constructor(order: number) {
+  constructor(public order: number) {
     this.name = '';
     this.url = '';
     this.slug = '';
-    this.order = order;
   }
 }

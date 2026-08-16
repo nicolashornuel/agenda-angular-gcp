@@ -6,7 +6,7 @@ import { AudioHandlerComponent } from './components/audio-handler/audio-handler.
 import { AudioControlPadComponent } from './components/audio-control-pad/audio-control-pad.component';
 import { AudioControlPotComponent } from './components/audio-control-pot/audio-control-pot.component';
 import { AudioControlEquComponent } from './components/audio-control-equ/audio-control-equ.component';
-import {TruncateFreqPipe} from './pipes/truncate-freq.pipe';
+import { TruncateFreqPipe } from './pipes/truncate-freq.pipe';
 import { AudioNodeDistortionComponent } from './components/audio-node-distortion/audio-node-distortion.component';
 import { AudioNodeRadioComponent } from './components/audio-node-radio/audio-node-radio.component';
 import { RadioHistoryComponent } from './components/radio-history/radio-history.component';
@@ -18,6 +18,17 @@ import { AudioPadFilterDirective } from './directives/audio-pad-filter.directive
 import { AudioPadReverbDirective } from './directives/audio-pad-reverb.directive';
 import { AudioAnalyserParticleDirective } from './directives/audio-analyser-particle.directive';
 import { AudioControlOscComponent } from './components/audio-control-osc/audio-control-osc.component';
+import {
+  AudioVolumeService,
+  EffectPersistService,
+  RadioPlayingService,
+  SourceAudioService,
+  StationRadioService
+} from './services/audio.observable.service';
+import { AudioEqualizerService } from './services/audio.firestore.service';
+import { CanvasService } from './services/canvas.service';
+import { RadioTransformService } from './services/radio-transform.service';
+import { RadioService } from './services/radio.service';
 
 const RadioElements = [
   AudioHandlerComponent,
@@ -36,14 +47,21 @@ const RadioElements = [
   AudioAnalyserBarsDirective,
   AudioAnalyserWaveDirective,
   AudioAnalyserParticleDirective
-]
+];
 @NgModule({
   declarations: RadioElements,
-  imports: [
-    CommonModule,
-    SharedModule,
-    GraphQLModule
-  ],
-  exports: RadioElements 
+  imports: [CommonModule, SharedModule, GraphQLModule],
+  exports: RadioElements,
+  providers: [
+    AudioEqualizerService,
+    AudioVolumeService,
+    EffectPersistService,
+    SourceAudioService,
+    StationRadioService,
+    RadioPlayingService,
+    CanvasService,
+    RadioTransformService,
+    RadioService
+  ]
 })
-export class RadioModule { }
+export class RadioModule {}

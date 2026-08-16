@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BlankStep, Brand, BrandDTO, DiffusionStep, Live, SongDTO, Step, StepEnum, TrackStep } from '../models/radioFrance.interface';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class RadioTransformService {
 
   constructor() { }

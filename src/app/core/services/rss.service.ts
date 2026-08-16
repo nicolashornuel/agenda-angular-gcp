@@ -44,16 +44,14 @@ export class RssService {
     let img = item.querySelector('content')?.getAttribute('url') ?? placeholderImg;
     img = item.querySelector('enclosure')?.getAttribute('url') ?? img;
 
-    return item.querySelector('enclosure')
-      ? {
-          title: item.querySelector('title')?.textContent ?? '',
-          link: item.querySelector('link')?.textContent ?? '',
-          description: this.cleanDescription(item.querySelector('description')?.textContent ?? ''),
-          img,
-          pubDate: new Date(item.querySelector('pubDate')?.textContent ?? ''),
-          category: item.querySelector('category')?.textContent || undefined
-        }
-      : null;
+    return {
+      title: item.querySelector('title')?.textContent ?? '',
+      link: item.querySelector('link')?.textContent ?? '',
+      description: this.cleanDescription(item.querySelector('description')?.textContent ?? ''),
+      img,
+      pubDate: new Date(item.querySelector('pubDate')?.textContent ?? ''),
+      category: item.querySelector('category')?.textContent || undefined
+    };
   }
 
   private cleanDescription(description: string): string {
