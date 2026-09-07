@@ -10,8 +10,15 @@ import { PageMusiqueComponent } from './page/page-musique.component';
 import { MusiqueRoutingModule } from './musique-routing.module';
 import { DropPlaylistComponent } from './components/drop-playlist/drop-playlist.component';
 import { DragCellComponent } from './components/drag-cell/drag-cell.component';
-import { VideoService } from './services/musique.firestore.service';
-import { TabResultService, MusiquePlaylistSummaryService, MusiquePlaylistService } from './services/musique.observable.service';
+import {
+  FirestorePlaylistService,
+  FirestorePlaylistSummaryService,
+  VideoService
+} from './services/musique.firestore.service';
+import { PlaylistService, PlaylistSummaryService, TabResultService } from './services/musique.observable.service';
+import { DeezerComponent } from './components/deezer/deezer.component';
+import { DurationToPipe } from '@shared/pipes/duration-to.pipe';
+import { DeezerPlayingBtnComponent } from './components/deezer-playing-btn/deezer-playing-btn.component';
 
 @NgModule({
   declarations: [
@@ -21,13 +28,19 @@ import { TabResultService, MusiquePlaylistSummaryService, MusiquePlaylistService
     WatchModalComponent,
     IframeTrackerDirective,
     DropPlaylistComponent,
-    DragCellComponent
+    DragCellComponent,
+    DeezerComponent,
+    DeezerPlayingBtnComponent
   ],
-  imports: [
-    CommonModule,
-    MusiqueRoutingModule,
-    SharedModule
-  ],
-  providers: [VideoService, TabResultService, MusiquePlaylistSummaryService, MusiquePlaylistService]
+  imports: [CommonModule, MusiqueRoutingModule, SharedModule],
+  providers: [
+    VideoService,
+    FirestorePlaylistService,
+    FirestorePlaylistSummaryService,
+    TabResultService,
+    PlaylistSummaryService,
+    PlaylistService,
+    DurationToPipe
+  ]
 })
-export class MusiqueModule { }
+export class MusiqueModule {}

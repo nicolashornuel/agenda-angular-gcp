@@ -3,12 +3,12 @@ import { Router } from '@angular/router';
 import { BadgeComponent } from '@shared/components/badge/badge.component';
 import { Nameable } from '@shared/models/fieldSet.model';
 import { ActionSet, ColumnCustom, ColumnString, TableSet } from '@shared/models/tableSet.interface';
-import { LeftBarIsOpenedService } from '@shared/services/shared.observable.service';
 import { PlaylistVideo } from 'app/features/left-bar/models/left-bar.model';
 import { map } from 'rxjs';
 import { PlaylistController } from '../abstracts/playlist-controller.abstract';
 import { ChannelCellComponent } from '../channel-cell/channel-cell.component';
 import { StateCellComponent } from '../state-cell/state-cell.component';
+import { SidebarIsOpenedService } from '@features/left-bar/services/left-bar.observable.service';
 
 @Component({
   selector: 'app-playlist-table',
@@ -17,7 +17,7 @@ import { StateCellComponent } from '../state-cell/state-cell.component';
 })
 export class PlaylistTableComponent extends PlaylistController implements OnInit {
   private router = inject(Router);
-  private leftBarIsOpenedService = inject(LeftBarIsOpenedService);
+  private sidebarIsOpenedService = inject(SidebarIsOpenedService);
   public loading: boolean = false;
   public tableSet: TableSet = {
     verticaltextHeader: false,
@@ -80,6 +80,6 @@ export class PlaylistTableComponent extends PlaylistController implements OnInit
 
   private openChannel(channelId: string, channelTitle: string): void {
     this.router.navigate(['/musique'], { queryParams: { channelId, channelTitle } });
-    this.leftBarIsOpenedService.set$(false);
+    this.sidebarIsOpenedService.set$(false);
   }
 }

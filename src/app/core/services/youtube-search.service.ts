@@ -6,6 +6,8 @@ import { Observable, throwError } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment.prod';
 
+const MAX_RESULT = 12;
+
 export interface QueryGAPI {
   q: string;
   order: string;
@@ -37,7 +39,7 @@ class ChannelIdParams {
   readonly part = 'snippet';
   readonly type = 'video';
   readonly order = 'date';
-  readonly maxResults = 18;
+  readonly maxResults = MAX_RESULT;
   readonly key = environment.youtubeToken;
   constructor(public readonly channelId: string) {}
 }
@@ -47,7 +49,7 @@ class VideoParams {
   constructor(public readonly id: string) {}
 }
 class SearchParams {
-  readonly maxResults = 18;
+  readonly maxResults = MAX_RESULT;
   readonly key = environment.youtubeToken;
   readonly part = 'id'; // snippet
   readonly type = 'video';

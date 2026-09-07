@@ -47,6 +47,7 @@ export class SncfService {
    */
   public getJourneys(vehicle_journeyId: string): Observable<string[]> {
     return this.get(`coverage/sncf/vehicle_journeys/${vehicle_journeyId}`).pipe(
+      tap(f=>console.log(f)),
       map(response => response.vehicle_journeys[0].stop_times.map(stop_time => stop_time.stop_point.name))
     );
   }

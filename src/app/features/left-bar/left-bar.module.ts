@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LeftBarComponent } from './left-bar.component';
 import { SharedModule } from '@shared/shared.module';
 import { PlayerComponent } from './components/player/player.component';
 import { PlaylistBtnsComponent } from './components/playlist-btns/playlist-btns.component';
@@ -20,12 +19,12 @@ import {
   CurrentVideoService,
   RepeatModeService,
   SuffleService,
-  PlayingService
+  PlayingService,
+  SidebarIsOpenedService
 } from './services/left-bar.observable.service';
 
 const Elements = [
   PageComponent,
-  LeftBarComponent,
   PlayerComponent,
   PlaylistBtnsComponent,
   PlaylistTableComponent,
@@ -46,7 +45,8 @@ const Elements = [
     CurrentVideoService,
     RepeatModeService,
     SuffleService,
-    PlayingService
+    PlayingService,
+    SidebarIsOpenedService
   ]
 })
 export class LeftBarModule {}

@@ -5,9 +5,9 @@ import { Modal, ModalParam } from '@shared/models/modalParam.interface';
 import { AlertService } from '@shared/services/alert.service';
 import { DestroyService } from '@shared/services/destroy.service';
 import { ModalService } from '@shared/services/shared.observable.service';
-import { Observable, map, takeUntil } from 'rxjs';
-import { VideoService } from '../services/musique.firestore.service';
+import { map, Observable, takeUntil } from 'rxjs';
 import { VideoGAPI } from '../models/musique.interface';
+import { VideoService } from '../services/musique.firestore.service';
 
 @Component({template: ''})
 export abstract class VideoController {

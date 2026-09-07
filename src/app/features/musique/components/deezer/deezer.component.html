@@ -1,0 +1,43 @@
+<section class="row-center-center gap-2 mb-4">
+      <button
+        appButton
+        outline
+        class="badge"
+        (click)="loadPlaylist(option)"
+        [class.active]="option.id === selectedPlaylist?.id"
+        *ngFor="let option of favoritePlaylists; let i = index"
+      >
+        {{ option.name }}
+      </button>
+
+  <!-- <app-input-select
+    class="select-param"
+    [options]="favoritePlaylists"
+    [(ngModel)]="selectedPlaylist"
+    (ngModelChange)="onSelectPlaylist()"
+  ></app-input-select> -->
+<!--   <button appButton outline (click)="onTooglePlay()">
+    <app-icon [path]="isPlaying ? 'pause' : 'play'"></app-icon>
+  </button> -->
+</section>
+
+<ng-container *ngIf="!loading; else spinner">
+  <section class="row-start-start gap-4">
+    <ng-container *ngIf="playlist">
+      <div class="col-start-start col-2">
+        <img class="img-playlist" [src]="playlist.picture_medium" />
+        <span class="title-playlist mt-2">{{ playlist.title }}</span>
+        <div class="description-playlist">
+            <div class="my-1">{{ playlist.creator.name }}</div>
+            <div class="my-1"> {{ playlist.nb_tracks }} titres</div>
+            <div> Mise à jour : {{ playlist.add_date | date : 'dd/MM' }}</div>
+        </div>
+      </div>
+      <app-table [tableSet]="tableSet"></app-table>
+    </ng-container>
+  </section>
+</ng-container>
+
+<ng-template #spinner>
+  <app-spinner></app-spinner>
+</ng-template>

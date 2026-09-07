@@ -9,11 +9,12 @@ import { take } from 'rxjs';
 })
 export class DisruptionComponent implements OnInit {
   @Input() disruptionId!: string;
-  public isLoading!: boolean;
-  public message!: string;
+  public isLoading: boolean = false;
+  public message: string = "";
 
   constructor(private sncfService: SncfService) {}
   ngOnInit(): void {
+    console.log(this.disruptionId)
     this.isLoading = true;
     this.sncfService
       .getDisruption(this.disruptionId)

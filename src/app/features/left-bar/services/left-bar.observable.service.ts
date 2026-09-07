@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Auth, authState, User } from '@angular/fire/auth';
 import { IsAdmin } from '@core/decorators/hasRole.decorator';
 import { BehaviorSubjectService, ObservableService } from '@shared/abstracts/observable.abstract';
-import { filter, Observable, of, switchMap, take, tap } from 'rxjs';
+import { filter, Observable, of, switchMap, tap } from 'rxjs';
 import {
   Playlist,
   PlaylistSummary,
@@ -12,7 +12,6 @@ import {
   VISITOR_PLAYLIST_SUMMARY
 } from '../models/left-bar.model';
 import { FirestorePlaylistService, FirestorePlaylistSummaryService } from './left-bar.firestore.service';
-import { VideoGAPI } from '@features/musique/models/musique.interface';
 
 @Injectable()
 export class PlaylistSummaryService extends ObservableService<PlaylistSummary[]> {
@@ -28,17 +27,6 @@ export class PlaylistSummaryService extends ObservableService<PlaylistSummary[]>
 
   private load(user: User | null): Observable<PlaylistSummary[]> {
     return user ? this.firestore.getAllByOwnerId(user.uid) : of([VISITOR_PLAYLIST_SUMMARY]);
-  }
-
-  public async add(name: string): Promise<PlaylistSummary> {
-    const id = this.firestore.createId();
-    const summary: PlaylistSummary = { id, name };
-    await this.firestore.saveOrUpdate(summary);
-    return summary;
-  }
-
-  public async remove(id: string): Promise<void> {
-    await this.firestore.delete(id);
   }
 }
 
@@ -66,24 +54,9 @@ export class PlaylistService extends BehaviorSubjectService<Playlist> {
     this.loaded = true;
   }
 
-  public async removePlaylist(id: string): Promise<void> {
-    await this.firestore.delete(id);
-  }
-
-  public async createPlaylist(id: string): Promise<void> {
-    await this.firestore.saveOrUpdate({ id, videos: [] });
-  }
-
   public clear(): void {
     this.loaded = false;
     this.set$({ videos: [] });
-  }
-
-  public add(video: VideoGAPI): void {
-    this.update({
-      ...this.value,
-      videos: [...this.value.videos, this.toPlaylistVideo(video)]
-    });
   }
 
   public remove(video: PlaylistVideo): void {
@@ -113,17 +86,6 @@ export class PlaylistService extends BehaviorSubjectService<Playlist> {
     await this.firestore.saveOrUpdate(playlist);
     this.set$(playlist);
   }
-
-  private toPlaylistVideo(video: VideoGAPI): PlaylistVideo {
-    return {
-      videoId: video.videoId,
-      publishedAt: video.publishedAt,
-      title: video.title,
-      thumbnail: video.thumbnail,
-      channelTitle: video.channelTitle,
-      channelId: video.channelId ?? null
-    };
-  }
 }
 
 @Injectable()
@@ -149,6 +111,13 @@ export class SuffleService extends BehaviorSubjectService<boolean> {
 
 @Injectable()
 export class PlayingService extends BehaviorSubjectService<boolean> {
+  constructor() {
+    super(false);
+  }
+}
+
+@Injectable()
+export class SidebarIsOpenedService extends BehaviorSubjectService<boolean> {
   constructor() {
     super(false);
   }

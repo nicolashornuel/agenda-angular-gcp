@@ -1,0 +1,26 @@
+<!-- <button appButton ghost size="tiny" (click)="onTooglePlay()">
+  <app-icon [path]="isPlaying ? 'pause' : 'play'"></app-icon>
+</button>
+
+<audio
+  #audio
+  [src]="src"
+  preload="auto"
+  controls
+  style="display: none"
+  crossorigin="anonymous"
+>
+  <source type="audio/mpeg" />
+</audio> -->
+
+<div class="audio-wrapper">
+    <audio
+      #audio
+      [src]="src"
+      preload="auto"
+      controls
+      crossorigin="anonymous"
+    >
+      <source type="audio/mpeg" />
+    </audio>
+</div>

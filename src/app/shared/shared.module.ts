@@ -49,6 +49,8 @@ import { DraggableListDirective } from './directives/draggable-list.directive';
 import { DropZoneDirective } from './directives/drop-zone.directive';
 import { DragZoneDirective } from './directives/drag-zone.directive';
 import { ScrollToRowDirective } from './directives/scroll-to-row.directive';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { DurationToPipe } from './pipes/duration-to.pipe';
 
 const sharedComponents = [
   TableComponent,
@@ -87,7 +89,8 @@ const sharedComponents = [
   ReadMoreComponent,
   InputTimeComponent,
   InputMonthComponent,
-  TitleComponent
+  TitleComponent,
+  SidebarComponent
 ]
 
 const sharedModules = [
@@ -107,13 +110,14 @@ const sharedDirectives = [
   DraggableListDirective,
   DropZoneDirective,
   DragZoneDirective,
-  ScrollToRowDirective
+  ScrollToRowDirective,
+  DurationToPipe
 ]
 
 @NgModule({
   declarations: [
     ...sharedComponents,
-    ...sharedDirectives,
+    ...sharedDirectives
   ],
   imports: [
     ...sharedModules

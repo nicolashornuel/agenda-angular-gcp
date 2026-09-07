@@ -1,0 +1,20 @@
+@import 'variables.scss';
+
+.img-playlist {
+    width: 150px;
+}
+.title-playlist {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+}
+.description-playlist {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 130%;
+    color: $grey-60;
+}
+button.badge {
+    border-radius: 16px;
+    padding: 0 12px;
+}

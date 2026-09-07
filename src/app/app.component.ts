@@ -37,10 +37,10 @@ export class AppComponent implements OnInit {
       title: 'Actualité',
       route: 'actualite'
     },
-    /*     {
+        {
       title: 'Train',
       route: 'train'
-    }, */
+    },
     {
       title: 'GPS',
       route: 'location'
@@ -48,8 +48,8 @@ export class AppComponent implements OnInit {
     {
       title: 'Météo',
       route: 'meteo'
-    }
-    /*     {
+    },
+/*     {
       title: 'Trading',
       route: 'trading'
     }, */

@@ -7,6 +7,7 @@ import { take, takeUntil } from 'rxjs';
 import { ListSavedComponent } from '../components/list-saved/list-saved.component';
 import { SearchParam, SearchResultComponent } from '../components/search-result/search-result.component';
 import { TabResultService } from '../services/musique.observable.service';
+import { DeezerComponent } from '../components/deezer/deezer.component';
 
 @Component({
   selector: 'app-page-musique',
@@ -24,6 +25,11 @@ export class PageMusiqueComponent implements OnInit {
       name: 'Playlist',
       closable: false,
       content: ListSavedComponent
+    },
+    {
+      name: 'Deezer',
+      closable: false,
+      content: DeezerComponent
     }
   ];
   public isMobile!: boolean;

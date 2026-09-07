@@ -9,11 +9,12 @@ import { take } from 'rxjs';
 })
 export class ListeArretComponent implements OnInit {
   @Input() trajetId!: string;
-  public arrets!: string[];
-  public isLoading!: boolean;
+  public arrets: string[] = []
+  public isLoading: boolean = false;
 
   constructor(private sncfService: SncfService) {}
   ngOnInit(): void {
+    console.log(this.trajetId)
     this.isLoading = true;
     this.sncfService
       .getJourneys(this.trajetId)

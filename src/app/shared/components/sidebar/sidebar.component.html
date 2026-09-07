@@ -1,4 +1,4 @@
-<ng-container [ngSwitch]="(isMobileService.get$ | async) ? '100%' : width">
+<ng-container [ngSwitch]="(isMobileService.get$ | async) ? '100%' : config.width">
 
   <ng-container *ngSwitchCase="'100%'">
     <div class="sideBar" [ngClass]="isOpen ? 'show' : ''">
@@ -15,7 +15,7 @@
     <div
       class="left-bar row row-reverse"
       [ngClass]="isOpen ? 'open' : 'close'"
-      [style.--width]="width"
+      [style.--width]="config.width"
     >
       <div class="row-center-center f-grow row-reverse">
         <div class="col">
@@ -37,7 +37,5 @@
 </ng-container>
 
 <ng-template #content>
-  <app-player></app-player>
-  <app-playlist-btns></app-playlist-btns>
-  <app-playlist-table></app-playlist-table>
+  <ng-content></ng-content>
 </ng-template>
