@@ -13,7 +13,6 @@ import {
 import { DurationToPipe } from '@shared/pipes/duration-to.pipe';
 import { DeezerPlayingBtnComponent } from '../deezer-playing-btn/deezer-playing-btn.component';
 import { Router } from '@angular/router';
-import { clamp } from 'date-fns';
 import { InputStarComponent } from '@shared/components/input-star/input-star.component';
 
 @Component({
@@ -33,7 +32,7 @@ export class DeezerComponent implements OnInit {
   public tableSet: TableSet = {
     verticaltextHeader: false,
     hover: false,
-    height: 'calc(100vh - 256px)',
+    height: 'calc(100vh - 305px)',
     columnSet: [
       new ColumnHtml({ name: '', key: 'album' } as Nameable, true, (row: any, col: ColumnSet) => {
         const src = (row[col.key] as DeezerAlbum).cover_medium;

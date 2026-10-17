@@ -14,6 +14,8 @@ nvm install 16.13
 #If you want to see what versions are installed
 nvm ls
 nvm use v16.13.2
+# . Choisir la version par défaut, Pour démarrer les nouveaux terminaux avec Node 18 :
+nvm alias default 18
 ```
 
 ## @angular/fire
@@ -58,6 +60,10 @@ npm install -g firebase-tools
 Déploiement
 
 ```sh
+firebase login:list
+firebase login --reauth
+firebase projects:list
+firebase use
 firebase deploy --only functions
 firebase deploy --only functions:onCallGetJson,functions:onCallGetText
 firebase functions:delete myFunction myOtherFunction

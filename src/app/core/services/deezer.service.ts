@@ -7,15 +7,10 @@ import { AbstractFetchFunctionService } from './abstractFetchFunction.service';
 export class DeezerService {
   private readonly fetchFunction = inject(AbstractFetchFunctionService);
   public favoritePlaylists = [
-    { name: 'Top France', id: '1109890291'},
-    { name: 'Les titres du moment', id: '53362031'},
-    { name : "Electronic Hits", id: '1902101402'},
-    
-  ]
-
-  public getFrenchTopChart(): Promise<any> {
-    return this.getPlaylist('1109890291');
-  }
+    { name: 'Top France', id: '1109890291' },
+    { name: 'Les titres du moment', id: '53362031' },
+    { name: 'Electronic Hits', id: '1902101402' }
+  ];
 
   public async getPlaylist(id: string): Promise<DeezerPlaylist> {
     const response = await this.fetchFunction.getJson(`https://api.deezer.com/playlist/${id}`);
