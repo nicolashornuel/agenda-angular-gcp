@@ -19,10 +19,9 @@
           </div>
           <div class="col-start-start network" [ngClass]="!isTimeDisplay ? 'show' : 'hide'">
             <span>{{ item.delay }}</span>
-            <!-- <app-disruption
-              *ngIf="item.disruptionId"
-              [disruptionId]="item.disruptionId"
-            ></app-disruption> -->
+            <ng-container *ngFor="let disruptionId of item.disruptionIds">
+              <app-disruption [disruptionId]="disruptionId"></app-disruption>
+            </ng-container>
           </div>
         </div>
         <h1 class="width-col-150 text-center fw-semibold yellow">
@@ -32,9 +31,6 @@
           {{ item.direction.split(' (')[0] }}
         </h1>
       </div>
-
-      {{item | json }}
-
       <app-liste-arret [trajetId]="item.trajetId"></app-liste-arret>
     </div>
   </section>

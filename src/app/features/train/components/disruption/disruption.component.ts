@@ -14,7 +14,6 @@ export class DisruptionComponent implements OnInit {
 
   constructor(private sncfService: SncfService) {}
   ngOnInit(): void {
-    console.log(this.disruptionId)
     this.isLoading = true;
     this.sncfService
       .getDisruption(this.disruptionId)

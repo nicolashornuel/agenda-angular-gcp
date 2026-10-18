@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment.prod';
-import { Observable, filter, map, tap } from 'rxjs';
+import { Observable, filter, map, of, tap } from 'rxjs';
 import { JourneyDTO, NavitiaResponse, Disruption, DisruptionDTO, ScheduleDTO, Schedule } from '../models/sncf.model';
 
 @Injectable()
@@ -47,7 +47,6 @@ export class SncfService {
    */
   public getJourneys(vehicle_journeyId: string): Observable<string[]> {
     return this.get(`coverage/sncf/vehicle_journeys/${vehicle_journeyId}`).pipe(
-      tap(f=>console.log(f)),
       map(response => response.vehicle_journeys[0].stop_times.map(stop_time => stop_time.stop_point.name))
     );
   }
@@ -55,10 +54,8 @@ export class SncfService {
    * get disruption by id
    */
   public getDisruption(id: string): Observable<DisruptionDTO> {
-    //return this.get(`coverage/sncf/disruptions/${id}`).pipe(
-    return this.get(`coverage/sncf/disruptions/`).pipe(
+    return this.get(`coverage/sncf/disruptions/${id}`).pipe(
       filter(response => response.disruptions && response.disruptions.length > 0),
-      tap(response => console.log('Disruption response:', response)),
       map(response => this.mapperDisruption(response.disruptions[0]))
     );
   }
@@ -92,12 +89,12 @@ export class SncfService {
   }
   private mapperArrivals(response: NavitiaResponse): JourneyDTO[] {    
     return response.arrivals!.map(arrival => ({
-      disruptionId: arrival.display_informations.links[0]?.id,
+      disruptionIds: arrival.display_informations.links.filter(link => link.type === 'disruption').map(link => link.id) ?? [],
       ...arrival.display_informations,
       baseHour: this.formatBaseHour(
         arrival.stop_date_time.base_arrival_date_time ?? arrival.stop_date_time.arrival_date_time
       ),
-      trajetId: arrival.links[1].id,
+      trajetId: arrival.links[2].id, // vehicle_journey
       delay: this.getDifference(
         arrival.stop_date_time.base_arrival_date_time ?? arrival.stop_date_time.arrival_date_time,
         arrival.stop_date_time.arrival_date_time
@@ -107,12 +104,12 @@ export class SncfService {
 
   private mapperDepartures(response: NavitiaResponse): JourneyDTO[] {
     return response.departures!.map(departure => ({
-      disruptionId: departure.display_informations.links[0]?.id,
+      disruptionIds: departure.display_informations.links.filter(link => link.type === 'disruption').map(link => link.id) ?? [],
       ...departure.display_informations,
       baseHour: this.formatBaseHour(
         departure.stop_date_time.base_departure_date_time ?? departure.stop_date_time.departure_date_time
       ),
-      trajetId: departure.links[1].id,
+      trajetId: departure.links[2].id, // vehicle_journey
       delay: this.getDifference(
         departure.stop_date_time.base_departure_date_time ?? departure.stop_date_time.departure_date_time,
         departure.stop_date_time.departure_date_time

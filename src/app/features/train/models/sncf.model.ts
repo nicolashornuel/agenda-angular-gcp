@@ -81,7 +81,7 @@ export interface Journey {
 }
 
 export interface JourneyDTO {
-  disruptionId?: string;
+  disruptionIds: string[];
   headsign: string;
   network: string;
   direction: string;

@@ -13,8 +13,8 @@ export class ListeArretComponent implements OnInit {
   public isLoading: boolean = false;
 
   constructor(private sncfService: SncfService) {}
+  
   ngOnInit(): void {
-    console.log(this.trajetId)
     this.isLoading = true;
     this.sncfService
       .getJourneys(this.trajetId)

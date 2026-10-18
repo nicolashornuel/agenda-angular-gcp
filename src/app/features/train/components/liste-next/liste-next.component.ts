@@ -40,7 +40,6 @@ export class ListeNextComponent implements OnInit {
     this.function(this.sncfService, this.select.value!.value)
       .pipe(take(1))
       .subscribe(liste => {
-        console.log(liste)
         this.liste = liste;
         this.interval$?.unsubscribe();
         this.initInterval();
